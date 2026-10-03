@@ -2,7 +2,7 @@
 set -eu
 D=/tmp/leon-kernel4-fs
 B=$D/busybox
-case "$(uname -v)" in '#4 '*|'#5 '*) ;; *) exit 91;; esac
+case "$(uname -v)" in '#4 '*|'#5 '*|'#6 '*) ;; *) exit 91;; esac
 grep -q 'root=/dev/mmcblk0p4' /proc/cmdline
 $B mount --make-rprivate /
 cd "$D"

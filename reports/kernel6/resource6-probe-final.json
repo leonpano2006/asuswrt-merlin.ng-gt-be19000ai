@@ -1,0 +1,23 @@
+{
+  "label": "resource6-probe-final",
+  "stop_reason": "qemu_exit",
+  "exit_code": 0,
+  "elapsed_seconds": 12.23,
+  "kernel_sha256": "807318115f76789e20d7d3ebfeff8cf22a5c19959ac1ecedf1d33dc96eff93ce",
+  "initramfs_sha256": "48301057190eac901c0925c18a5910e4be8087e6069ac1e9a5ab6e63e9410e93",
+  "log_sha256": "96b4b5a23fdd37b4f7929473a0fae5b5b28d04991fc8f698ae82de88eae54837",
+  "init_reached": true,
+  "guest_complete": true,
+  "panic": false,
+  "lab_lines": [
+    "LAB_CPU_STAT nr_periods=31",
+    "LAB_CPU_STAT nr_throttled=31",
+    "LAB_CPU_STAT throttled_time=5330147152",
+    "LAB_RESOURCE_PASS cpu_quota_two_busy_children",
+    "LAB_RESOURCE_PASS cpuset_cpu1_and_fork_inheritance",
+    "LAB_IO_WRITE_SECONDS 3.999",
+    "LAB_IO_READ_SECONDS 4.003",
+    "LAB_RESOURCE_PASS block_read_write_bandwidth_and_data",
+    "LAB_RESOURCE_PASS unprivileged_uid_gid_mount_net_pid_namespaces"
+  ]
+}

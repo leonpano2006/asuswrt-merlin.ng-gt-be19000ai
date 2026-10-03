@@ -1,0 +1,23 @@
+{
+  "source_files": 121,
+  "exact_match": true,
+  "upstream_commit": "69838e4a60564e5550e97f11d8a8cf2c6260c4f0",
+  "patches": [
+    {
+      "name": "0001-be98-kernel-feature-port.patch",
+      "sha256": "08ac709548e4e22ba640ff35e9c938bf045975a8f5c2ad5496f732dd24e104c9"
+    },
+    {
+      "name": "0002-be19000ai-netdev-abi.patch",
+      "sha256": "346913ea57bda1ec1b65d59c8d9e0492d169cc930c54496f4767e1d5d97f14d8"
+    },
+    {
+      "name": "0003-trial-metadata-protection.patch",
+      "sha256": "0790bdade92bc1672ba2ab930d03033770e60506c65f3ab3277dbd10d0bb8c61"
+    },
+    {
+      "name": "0004-cpu-cpuset-blkio-userns-abi.patch",
+      "sha256": "b4b01ec3c612ab9c9595240371392106b44af978fbb15f0451cd5d8802b3b455"
+    }
+  ]
+}

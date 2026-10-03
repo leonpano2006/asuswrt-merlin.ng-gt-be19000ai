@@ -1,0 +1,13 @@
+8+0 records in
+8+0 records out
+LAB_CPU_STAT nr_periods=31
+LAB_CPU_STAT nr_throttled=31
+LAB_CPU_STAT throttled_time=5305143440
+LAB_RESOURCE_PASS cpu_quota_two_busy_children
+LAB_RESOURCE_PASS cpuset_cpu1_and_fork_inheritance
+LAB_IO_WRITE_SECONDS 4.002
+LAB_IO_READ_SECONDS 4.002
+LAB_RESOURCE_PASS block_read_write_bandwidth_and_data
+LAB_RESOURCE_PASS unprivileged_uid_gid_mount_net_pid_namespaces
+RESOURCE_PROBE_COMPLETE
+HARDWARE_RESOURCE_COMPLETE

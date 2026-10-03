@@ -1,0 +1,8 @@
+{
+  "previous_kernel": "4.19.294 #5",
+  "returned_kernel": "4.19.294 #1 stock Merlin",
+  "active_slot": 2,
+  "committed_slot": 2,
+  "normal_reboot_fallback_observed": true,
+  "permanent_commit_performed": false
+}

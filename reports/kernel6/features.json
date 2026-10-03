@@ -1,0 +1,39 @@
+{
+  "kernel": "4.19.294 #6",
+  "config_sha256": "6343cfb8c8de0338bd4361cc5b9f3a4e4b8cbe134e615050a11a7d4fccb2c4ed",
+  "kernel_sha256": "807318115f76789e20d7d3ebfeff8cf22a5c19959ac1ecedf1d33dc96eff93ce",
+  "enabled": [
+    "CONFIG_CGROUP_SCHED",
+    "CONFIG_FAIR_GROUP_SCHED",
+    "CONFIG_CFS_BANDWIDTH",
+    "CONFIG_CPUSETS",
+    "CONFIG_BLK_CGROUP",
+    "CONFIG_BLK_DEV_THROTTLING",
+    "CONFIG_USER_NS"
+  ],
+  "abi_guards": {
+    "task_struct_bytes": 2688,
+    "sched_entity_bytes": 192,
+    "bio_bytes": 112,
+    "request_bytes": 296,
+    "request_list_bytes": 88,
+    "request_queue_bytes": 2184,
+    "old_block_members_checked_at_compile_time": 142,
+    "dwarf_old_member_differences_only": [
+      "cgroup",
+      "css_set",
+      "cgroup_root"
+    ]
+  },
+  "scope_limits": [
+    "Rootless Docker 29.8.0 tested offline in QEMU, UID 1000 daemon, vfs storage, network none.",
+    "The original firmware userspace has not gained rootless helpers, subordinate ID mappings or service management.",
+    "Rootless Docker resource flags require cgroup v2 and systemd delegation; the stock rc/cgroup v1 environment does not provide that integration.",
+    "Block read/write throttling validated with direct I/O. Buffered per-cgroup writeback, blkio low-latency policy and I/O latency controller remain disabled."
+  ],
+  "references": [
+    "https://docs.docker.com/engine/security/rootless/",
+    "https://docs.docker.com/engine/security/rootless/tips/"
+  ],
+  "rootless_production_service_installed": false
+}

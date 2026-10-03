@@ -1,0 +1,7 @@
+{
+  "url": "https://download.docker.com/linux/static/stable/aarch64/docker-rootless-extras-29.8.0.tgz",
+  "sha256": "8e568a023a9319a34b2436e3eeb7b446b8ecb43f665a1c27bfa88ead6ba95832",
+  "bytes": 11105229,
+  "host_installed_or_modified": false,
+  "router_userspace_installed_or_modified": false
+}

@@ -12,7 +12,7 @@ mkdir -p /dev/pts /dev/shm /var/run /sys/fs/cgroup
 mount -t devpts devpts /dev/pts || exit 1
 mount -t tmpfs tmpfs /dev/shm || exit 1
 mount -t tmpfs tmpfs /sys/fs/cgroup || exit 1
-for c in memory cpuacct devices freezer pids; do mkdir /sys/fs/cgroup/$c; mount -t cgroup -o $c $c /sys/fs/cgroup/$c || exit 1; done
+for c in memory cpu,cpuacct cpuset blkio devices freezer pids; do mkdir /sys/fs/cgroup/$c; mount -t cgroup -o $c $c /sys/fs/cgroup/$c || exit 1; done
 echo 1 > /sys/fs/cgroup/memory/memory.use_hierarchy || exit 1
 for n in tfat tntfs thfsplus raid6_pq xor btrfs exportfs overlay; do /load_one "$n" "/modules/$n.ko" || exit 1; done
 losetup /dev/loop0 /btrfs.img || exit 1
@@ -34,6 +34,9 @@ docker info || exit 1
 docker import /image.tar memcg-lab:local || exit 1
 docker run --rm --network none --memory 32m --memory-swap 32m --pids-limit 32 --cap-drop ALL --security-opt no-new-privileges memcg-lab:local /bin/sh -c 'test "$(cat /sys/fs/cgroup/memory/memory.limit_in_bytes)" = 33554432 && test "$(cat /sys/fs/cgroup/memory/memory.memsw.limit_in_bytes)" = 33554432 && /memload 8 0' || exit 1
 echo LAB_DOCKER_PASS memory_and_memswap_limit_visible
+# Kernel #6: exercise Docker's resource flags, not only direct cgroup writes.
+docker run --rm --network none --cpus .25 --cpuset-cpus 1 --device-read-bps /dev/loop0:1mb --device-write-bps /dev/loop0:1mb memcg-lab:local /bin/sh -c 'test "$(cat /sys/fs/cgroup/cpu,cpuacct/cpu.cfs_period_us)" = 100000 && test "$(cat /sys/fs/cgroup/cpu,cpuacct/cpu.cfs_quota_us)" = 25000 && test "$(cat /sys/fs/cgroup/cpuset/cpuset.cpus)" = 1 && grep -q "7:0 1048576" /sys/fs/cgroup/blkio/blkio.throttle.read_bps_device && grep -q "7:0 1048576" /sys/fs/cgroup/blkio/blkio.throttle.write_bps_device' || exit 1
+echo LAB_DOCKER_PASS cpu_quota_cpuset_blkio_flags
 # A file-backed allocation exercises the rebuilt filesystem with memcg enabled.
 docker run --rm --network none --memory 32m --memory-swap 32m --pids-limit 32 memcg-lab:local /bin/sh -c 'dd if=/dev/zero of=/testfile bs=1048576 count=8 && sync && test "$(wc -c < /testfile)" = 8388608' || exit 1
 echo LAB_DOCKER_PASS btrfs_overlay_pagecache

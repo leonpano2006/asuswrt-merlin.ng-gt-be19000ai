@@ -9,9 +9,7 @@ if not (src/'.git').exists():
  run('git','clone','--filter=blob:none','--no-checkout','--depth=1','--branch',u['tag'],u['repository'],str(src))
 run('git','-C',str(src),'sparse-checkout','set','release/src-rt-5.04behnd.4916','release/src/router/fltr')
 assert subprocess.check_output(['git','-C',str(src),'rev-parse','HEAD'],text=True).strip()==u['commit']
-for patch in sorted((r/'patches').glob('*.patch')):
- check=subprocess.run(['git','-C',str(src),'apply','--reverse','--check',str(patch)],capture_output=True)
- if check.returncode:run('git','-C',str(src),'apply',str(patch))
+run('python3',str(r/'scripts/apply-patch-stack.py'),'--source',str(src),'--patches',str(r/'patches'))
 kconf=['# Generated from BSP autodetect files.'];make=['# Generated from BSP autodetect files.']
 for f in sorted((p/'bcmdrivers').rglob('autodetect')):
  m=re.search(r'^(?:DRIVER|FEATURE):\s*(\w+)',f.read_text(),re.M)

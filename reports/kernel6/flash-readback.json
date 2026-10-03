@@ -1,0 +1,10 @@
+{
+  "bootfs1": "3f921031bec7b1425f556822ded72a712a879ec98afb7054c1c016fa407364a0",
+  "rootfs1": "78b8eb8761cc331531e0a0436b4293b05ee1b70fa371e2d6ab5f44d4fb5c7301",
+  "bootfs2": "ecda0c1ad0dab3fbe28ef93ab9500e713e19b2b238a055d1fd3971ede03a0256",
+  "rootfs2": "51128dda31033fb34ef315e25b767f1b4557967bb1168bbdb8636c1e79b76465",
+  "readback_verified": true,
+  "original_slot2_unchanged": true,
+  "committed_slot": 2,
+  "trial_slot_commit_flag": 0
+}

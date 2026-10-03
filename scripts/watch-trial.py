@@ -3,7 +3,7 @@
 from pathlib import Path
 import getpass,time,socket,json,argparse,datetime
 import paramiko
-p=argparse.ArgumentParser();p.add_argument('--host',required=True);p.add_argument('--ai-host',required=True);p.add_argument('--username',required=True);p.add_argument('--version',type=int,required=True);p.add_argument('--previous-boot',required=True);p.add_argument('--seconds',type=int,default=240);a=p.parse_args();assert 30<=a.seconds<=600
+p=argparse.ArgumentParser();p.add_argument('--host',required=True);p.add_argument('--source',help='Optional local source IP for hosts with multiple LAN interfaces');p.add_argument('--ai-host',required=True);p.add_argument('--username',required=True);p.add_argument('--version',type=int,required=True);p.add_argument('--previous-boot',required=True);p.add_argument('--seconds',type=int,default=240);a=p.parse_args();assert 30<=a.seconds<=600
 r=Path(__file__).resolve().parents[1];password=getpass.getpass('Router SSH password: ');start=time.monotonic();last=None;events=[]
 client=paramiko.SSHClient();client.load_system_host_keys()
 # Require the previously trusted router key from OpenSSH known_hosts.
@@ -12,13 +12,13 @@ while time.monotonic()-start<a.seconds:
  sec=round(time.monotonic()-start,1);state=[]
  for addr in [a.host,a.ai_host]:
   try:
-   with socket.create_connection((addr,22),timeout=1):state.append('ssh-open')
+   with socket.create_connection((addr,22),timeout=1,source_address=(a.source,0) if a.source else None):state.append('ssh-open')
   except OSError:state.append('ssh-closed')
  if state!=last:
   event={'seconds':sec,'router':state[0],'ai':state[1]};events.append(event);print(json.dumps(event),flush=True);last=state
  if state[0]=='ssh-open':
   try:
-   client.connect(a.host,username=a.username,password=password,allow_agent=False,look_for_keys=False,timeout=4,banner_timeout=4,auth_timeout=4)
+   client.connect(a.host,sock=socket.create_connection((a.host,22),timeout=4,source_address=(a.source,0) if a.source else None),username=a.username,password=password,allow_agent=False,look_for_keys=False,timeout=4,banner_timeout=4,auth_timeout=4)
    cin,check,cerr=client.exec_command('cat /proc/sys/kernel/random/boot_id',timeout=5)
    current_boot=check.read().decode().strip();cin.close();check.close();cerr.close()
    if current_boot==a.previous_boot:

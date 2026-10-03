@@ -1,0 +1,37 @@
+{
+  "kernel": "4.19.294 #6",
+  "kernel_sha256": "807318115f76789e20d7d3ebfeff8cf22a5c19959ac1ecedf1d33dc96eff93ce",
+  "config_sha256": "6343cfb8c8de0338bd4361cc5b9f3a4e4b8cbe134e615050a11a7d4fccb2c4ed",
+  "running_config_matches": true,
+  "pid1_executable": "/sbin/rc",
+  "mesh_online": true,
+  "mesh_backhaul_path": "1",
+  "radio_up": [
+    true,
+    true,
+    true
+  ],
+  "ai_internal_ping": true,
+  "ai_api_http_status": 200,
+  "ai_api_seconds": 0.092,
+  "active_slot": 1,
+  "committed_slot": 2,
+  "next_boot_slot": 2,
+  "trial_commit_flag": 0,
+  "metadata_readonly": [
+    true,
+    true
+  ],
+  "hardware_resource_probe": "pass",
+  "io_write_4MiB_at_1MiB_per_second_seconds": 4.002,
+  "io_read_4MiB_at_1MiB_per_second_seconds": 4.002,
+  "hardware_oom_namespace_seccomp_probe": "pass",
+  "hardware_btrfs_zstd_overlay_probe": "pass",
+  "hardware_acceleration_enabled": true,
+  "acceleration_mode": "L3",
+  "runner_flow_counters": "No rows returned by the sampled proc flow tables; no positive traffic-counter or throughput claim for this trial.",
+  "kernel_taint": 4097,
+  "kernel_panic_oops_warning_observed": false,
+  "observed_uptime_seconds": 347.79,
+  "limitation": "No throughput benchmark or extended soak. Actual rootless Docker daemon/container tested in QEMU; hardware test covers unprivileged UID/GID/mount/net/PID namespaces. Original userspace unchanged; rootless service/delegation not installed."
+}

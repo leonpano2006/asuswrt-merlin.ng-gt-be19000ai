@@ -1,0 +1,1470 @@
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/Kconfig b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/Kconfig
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/Kconfig
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/Kconfig
+@@ -119,6 +119,7 @@
+ config BLK_DEV_THROTTLING_LOW
+ 	bool "Block throttling .low limit interface support (EXPERIMENTAL)"
+ 	depends on BLK_DEV_THROTTLING
++	depends on !GTBE19000AI_RESOURCE_ABI
+ 	default n
+ 	---help---
+ 	Add .low limit interface for block throttling. The low limit is a best
+@@ -152,6 +153,7 @@
+ config BLK_CGROUP_IOLATENCY
+ 	bool "Enable support for latency based cgroup IO protection"
+ 	depends on BLK_CGROUP=y
++	depends on !GTBE19000AI_RESOURCE_ABI
+ 	default n
+ 	---help---
+ 	Enabling this option enables the .latency interface for IO throttling.
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/bfq-cgroup.c b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/bfq-cgroup.c
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/bfq-cgroup.c
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/bfq-cgroup.c
+@@ -829,7 +829,7 @@
+ {
+ 	struct blkcg_gq *blkg;
+ 
+-	list_for_each_entry(blkg, &bfqd->queue->blkg_list, q_node) {
++	list_for_each_entry(blkg, &blkcg_q(bfqd->queue)->blkg_list, q_node) {
+ 		struct bfq_group *bfqg = blkg_to_bfqg(blkg);
+ 
+ 		bfq_end_wr_async_queues(bfqd, bfqg);
+@@ -1033,7 +1033,7 @@
+ 	if (ret)
+ 		return NULL;
+ 
+-	return blkg_to_bfqg(bfqd->queue->root_blkg);
++	return blkg_to_bfqg(blkcg_q(bfqd->queue)->root_blkg);
+ }
+ 
+ struct blkcg_policy blkcg_policy_bfq = {
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/bio-blkcg-abi.c b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/bio-blkcg-abi.c
+new file mode 100644
+--- /dev/null
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/bio-blkcg-abi.c
+@@ -0,0 +1,88 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Included by bio.c. Only the kernel owns this map; bio's existing padding
++ * stores a handle, keeping embedded/stack bios used by vendor modules valid.
++ * A bio's normal ownership serializes association/uninit; the IDR lock protects
++ * concurrent independent bios. CSS references live until bio_uninit/reset.
++ */
++#include <linux/idr.h>
++static DEFINE_IDR(bio_css_ids);
++static DEFINE_SPINLOCK(bio_css_lock);
++#define BIO_CSS_NOMEM (~0U)
++
++struct cgroup_subsys_state *bio_blkcg_css(struct bio *bio)
++{
++	struct cgroup_subsys_state *css = NULL;
++	unsigned long flags;
++	unsigned int id = bio->bi_abi_css_id;
++	if (id && id != BIO_CSS_NOMEM) {
++		spin_lock_irqsave(&bio_css_lock, flags);
++		css = idr_find(&bio_css_ids, id);
++		spin_unlock_irqrestore(&bio_css_lock, flags);
++	}
++	return css;
++}
++EXPORT_SYMBOL_GPL(bio_blkcg_css);
++
++int bio_associate_blkcg(struct bio *bio, struct cgroup_subsys_state *css)
++{
++	unsigned long flags;
++	int id;
++	if (bio->bi_abi_css_id == BIO_CSS_NOMEM)
++		return -ENOMEM;
++	if (bio->bi_abi_css_id)
++		return -EBUSY;
++	css_get(css);
++	spin_lock_irqsave(&bio_css_lock, flags);
++	id = idr_alloc(&bio_css_ids, css, 1, 0, GFP_ATOMIC);
++	spin_unlock_irqrestore(&bio_css_lock, flags);
++	if (id < 0) {
++		css_put(css);
++		bio->bi_abi_css_id = BIO_CSS_NOMEM;
++		return -ENOMEM;
++	}
++	bio->bi_abi_css_id = id;
++	return 0;
++}
++EXPORT_SYMBOL_GPL(bio_associate_blkcg);
++#ifdef CONFIG_MEMCG
++int bio_associate_blkcg_from_page(struct bio *bio, struct page *page)
++{
++	struct cgroup_subsys_state *css;
++	int ret;
++	if (!page->mem_cgroup)
++		return 0;
++	css = cgroup_get_e_css(page->mem_cgroup->css.cgroup, &io_cgrp_subsys);
++	ret = bio_associate_blkcg(bio, css);
++	css_put(css);
++	return ret;
++}
++#endif
++int bio_associate_blkg(struct bio *bio, struct blkcg_gq *blkg)
++{
++	/* Low-latency policies are excluded by Kconfig for this ABI. */
++	return -EOPNOTSUPP;
++}
++void bio_disassociate_task(struct bio *bio)
++{
++	struct cgroup_subsys_state *css = NULL;
++	unsigned long flags;
++	unsigned int id = bio->bi_abi_css_id;
++	if (id && id != BIO_CSS_NOMEM) {
++		spin_lock_irqsave(&bio_css_lock, flags);
++		css = idr_remove(&bio_css_ids, id);
++		spin_unlock_irqrestore(&bio_css_lock, flags);
++	}
++	bio->bi_abi_css_id = 0;
++	if (css)
++		css_put(css);
++}
++void bio_clone_blkcg_association(struct bio *dst, struct bio *src)
++{
++	struct cgroup_subsys_state *css = bio_blkcg_css(src);
++	if (src->bi_abi_css_id == BIO_CSS_NOMEM)
++		dst->bi_abi_css_id = BIO_CSS_NOMEM;
++	else if (css)
++		/* On ENOMEM the destination stays poisoned until submission. */
++		bio_associate_blkcg(dst, css);
++}
++EXPORT_SYMBOL_GPL(bio_clone_blkcg_association);
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/bio.c b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/bio.c
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/bio.c
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/bio.c
+@@ -1962,6 +1962,10 @@
+ 
+ #ifdef CONFIG_BLK_CGROUP
+ 
++#ifdef CONFIG_GTBE19000AI_RESOURCE_ABI
++#include "bio-blkcg-abi.c"
++#else
++
+ #ifdef CONFIG_MEMCG
+ /**
+  * bio_associate_blkcg_from_page - associate a bio with the page's blkcg
+@@ -2058,6 +2062,7 @@
+ 		WARN_ON(bio_associate_blkcg(dst, src->bi_css));
+ }
+ EXPORT_SYMBOL_GPL(bio_clone_blkcg_association);
++#endif /* vendor bio ABI */
+ #endif /* CONFIG_BLK_CGROUP */
+ 
+ static void __init biovec_init_slabs(void)
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/blk-cgroup.c b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/blk-cgroup.c
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/blk-cgroup.c
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/blk-cgroup.c
+@@ -27,8 +27,23 @@
+ #include <linux/atomic.h>
+ #include <linux/ctype.h>
+ #include <linux/blk-cgroup.h>
++#include <linux/blk-mq.h>
+ #include <linux/tracehook.h>
+ #include "blk.h"
++
++#ifdef CONFIG_GTBE19000AI_RESOURCE_ABI
++/* The MQ driver PDU uses tag_set->cmd_size, not the legacy q->cmd_size.
++ * Keep request and its PDU at the vendor offsets; append our pointer after
++ * the entire PDU in both allocation paths (including flush requests). */
++struct request_list **blkcg_request_rl(struct request *rq)
++{
++	unsigned int cmd_size = rq->q->mq_ops ? rq->q->tag_set->cmd_size :
++					       rq->q->cmd_size;
++
++	return (void *)((char *)rq + ALIGN(sizeof(*rq) + cmd_size, sizeof(void *)));
++}
++EXPORT_SYMBOL_GPL(blkcg_request_rl);
++#endif
+ 
+ #define MAX_KEY_LEN 100
+ 
+@@ -56,7 +71,7 @@
+ static bool blkcg_policy_enabled(struct request_queue *q,
+ 				 const struct blkcg_policy *pol)
+ {
+-	return pol && test_bit(pol->plid, q->blkcg_pols);
++	return pol && test_bit(pol->plid, blkcg_q(q)->blkcg_pols);
+ }
+ 
+ /**
+@@ -116,7 +131,9 @@
+ 	if (blkcg != &blkcg_root) {
+ 		if (blk_init_rl(&blkg->rl, q, gfp_mask))
+ 			goto err_free;
++#ifndef CONFIG_GTBE19000AI_RESOURCE_ABI
+ 		blkg->rl.blkg = blkg;
++#endif
+ 	}
+ 
+ 	for (i = 0; i < BLKCG_MAX_POLS; i++) {
+@@ -230,7 +247,7 @@
+ 	ret = radix_tree_insert(&blkcg->blkg_tree, q->id, blkg);
+ 	if (likely(!ret)) {
+ 		hlist_add_head_rcu(&blkg->blkcg_node, &blkcg->blkg_list);
+-		list_add(&blkg->q_node, &q->blkg_list);
++		list_add(&blkg->q_node, &blkcg_q(q)->blkg_list);
+ 
+ 		for (i = 0; i < BLKCG_MAX_POLS; i++) {
+ 			struct blkcg_policy *pol = blkcg_policy[i];
+@@ -368,7 +385,7 @@
+ 
+ 	lockdep_assert_held(q->queue_lock);
+ 
+-	list_for_each_entry_safe(blkg, n, &q->blkg_list, q_node) {
++	list_for_each_entry_safe(blkg, n, &blkcg_q(q)->blkg_list, q_node) {
+ 		struct blkcg *blkcg = blkg->blkcg;
+ 
+ 		spin_lock(&blkcg->lock);
+@@ -376,8 +393,10 @@
+ 		spin_unlock(&blkcg->lock);
+ 	}
+ 
+-	q->root_blkg = NULL;
++	blkcg_q(q)->root_blkg = NULL;
++#ifndef CONFIG_GTBE19000AI_RESOURCE_ABI
+ 	q->root_rl.blkg = NULL;
++#endif
+ }
+ 
+ /*
+@@ -418,7 +437,7 @@
+ 	 * root_rl which is off @q->blkg_list and mapped to the head.
+ 	 */
+ 	if (rl == &q->root_rl) {
+-		ent = &q->blkg_list;
++		ent = &blkcg_q(q)->blkg_list;
+ 		/* There are no more block groups, hence no request lists */
+ 		if (list_empty(ent))
+ 			return NULL;
+@@ -429,9 +448,9 @@
+ 
+ 	/* walk to the next list_head, skip root blkcg */
+ 	ent = ent->next;
+-	if (ent == &q->root_blkg->q_node)
++	if (ent == &blkcg_q(q)->root_blkg->q_node)
+ 		ent = ent->next;
+-	if (ent == &q->blkg_list)
++	if (ent == &blkcg_q(q)->blkg_list)
+ 		return NULL;
+ 
+ 	blkg = container_of(ent, struct blkcg_gq, q_node);
+@@ -1247,8 +1266,10 @@
+ 	blkg = blkg_create(&blkcg_root, q, new_blkg);
+ 	if (IS_ERR(blkg))
+ 		goto err_unlock;
+-	q->root_blkg = blkg;
++	blkcg_q(q)->root_blkg = blkg;
++#ifndef CONFIG_GTBE19000AI_RESOURCE_ABI
+ 	q->root_rl.blkg = blkg;
++#endif
+ 	spin_unlock_irq(q->queue_lock);
+ 	rcu_read_unlock();
+ 
+@@ -1293,7 +1314,7 @@
+ 	 * @q could be exiting and already have destroyed all blkgs as
+ 	 * indicated by NULL root_blkg.  If so, don't confuse policies.
+ 	 */
+-	if (!q->root_blkg)
++	if (!blkcg_q(q)->root_blkg)
+ 		return;
+ 
+ 	blk_throtl_drain(q);
+@@ -1429,7 +1450,7 @@
+ 
+ 	spin_lock_irq(q->queue_lock);
+ 
+-	list_for_each_entry(blkg, &q->blkg_list, q_node) {
++	list_for_each_entry(blkg, &blkcg_q(q)->blkg_list, q_node) {
+ 		struct blkg_policy_data *pd;
+ 
+ 		if (blkg->pd[pol->plid])
+@@ -1450,7 +1471,7 @@
+ 			pol->pd_init_fn(pd);
+ 	}
+ 
+-	__set_bit(pol->plid, q->blkcg_pols);
++	__set_bit(pol->plid, blkcg_q(q)->blkcg_pols);
+ 	ret = 0;
+ 
+ 	spin_unlock_irq(q->queue_lock);
+@@ -1488,9 +1509,9 @@
+ 
+ 	spin_lock_irq(q->queue_lock);
+ 
+-	__clear_bit(pol->plid, q->blkcg_pols);
+-
+-	list_for_each_entry(blkg, &q->blkg_list, q_node) {
++	__clear_bit(pol->plid, blkcg_q(q)->blkcg_pols);
++
++	list_for_each_entry(blkg, &blkcg_q(q)->blkg_list, q_node) {
+ 		if (blkg->pd[pol->plid]) {
+ 			if (pol->pd_offline_fn)
+ 				pol->pd_offline_fn(blkg->pd[pol->plid]);
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/blk-core.c b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/blk-core.c
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/blk-core.c
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/blk-core.c
+@@ -146,7 +146,7 @@
+ static void blk_clear_congested(struct request_list *rl, int sync)
+ {
+ #ifdef CONFIG_CGROUP_WRITEBACK
+-	clear_wb_congested(rl->blkg->wb_congested, sync);
++	clear_wb_congested(blkcg_rl_blkg(rl)->wb_congested, sync);
+ #else
+ 	/*
+ 	 * If !CGROUP_WRITEBACK, all blkg's map to bdi->wb and we shouldn't
+@@ -160,7 +160,7 @@
+ static void blk_set_congested(struct request_list *rl, int sync)
+ {
+ #ifdef CONFIG_CGROUP_WRITEBACK
+-	set_wb_congested(rl->blkg->wb_congested, sync);
++	set_wb_congested(blkcg_rl_blkg(rl)->wb_congested, sync);
+ #else
+ 	/* see blk_clear_congested() */
+ 	if (rl == &rl->q->root_rl)
+@@ -851,7 +851,7 @@
+ 	struct request_queue *q = data;
+ 	struct request *rq;
+ 
+-	rq = kmalloc_node(sizeof(struct request) + q->cmd_size, gfp_mask,
++	rq = kmalloc_node(blkcg_request_bytes(q->cmd_size), gfp_mask,
+ 			q->node);
+ 	if (rq && q->init_rq_fn && q->init_rq_fn(q, rq, gfp_mask) < 0) {
+ 		kfree(rq);
+@@ -872,10 +872,9 @@
+ int blk_init_rl(struct request_list *rl, struct request_queue *q,
+ 		gfp_t gfp_mask)
+ {
++	rl->q = q;
+ 	if (unlikely(rl->rq_pool) || q->mq_ops)
+ 		return 0;
+-
+-	rl->q = q;
+ 	rl->count[BLK_RW_SYNC] = rl->count[BLK_RW_ASYNC] = 0;
+ 	rl->starved[BLK_RW_SYNC] = rl->starved[BLK_RW_ASYNC] = 0;
+ 	init_waitqueue_head(&rl->wait[BLK_RW_SYNC]);
+@@ -1013,6 +1012,7 @@
+ 	if (!q)
+ 		return NULL;
+ 
++	q->root_rl.q = q;
+ 	INIT_LIST_HEAD(&q->queue_head);
+ 	q->last_merge = NULL;
+ 	q->end_sector = 0;
+@@ -1049,7 +1049,7 @@
+ 	INIT_LIST_HEAD(&q->timeout_list);
+ 	INIT_LIST_HEAD(&q->icq_list);
+ #ifdef CONFIG_BLK_CGROUP
+-	INIT_LIST_HEAD(&q->blkg_list);
++	INIT_LIST_HEAD(&blkcg_q(q)->blkg_list);
+ #endif
+ 	INIT_DELAYED_WORK(&q->delay_work, blk_delay_work);
+ 
+@@ -3962,10 +3962,10 @@
+ 		panic("Failed to create kblockd\n");
+ 
+ 	request_cachep = kmem_cache_create("blkdev_requests",
+-			sizeof(struct request), 0, SLAB_PANIC, NULL);
++			blkcg_request_bytes(0), 0, SLAB_PANIC, NULL);
+ 
+ 	blk_requestq_cachep = kmem_cache_create("request_queue",
+-			sizeof(struct request_queue), 0, SLAB_PANIC, NULL);
++			sizeof(struct request_queue) + BLKCG_QUEUE_EXTRA_SIZE, 0, SLAB_PANIC, NULL);
+ 
+ #ifdef CONFIG_DEBUG_FS
+ 	blk_debugfs_root = debugfs_create_dir("block", NULL);
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/blk-flush.c b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/blk-flush.c
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/blk-flush.c
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/blk-flush.c
+@@ -590,7 +590,7 @@
+ 	if (q->mq_ops)
+ 		spin_lock_init(&fq->mq_flush_lock);
+ 
+-	rq_sz = round_up(rq_sz + cmd_size, cache_line_size());
++	rq_sz = round_up(blkcg_request_bytes(cmd_size), cache_line_size());
+ 	fq->flush_rq = kzalloc_node(rq_sz, flags, node);
+ 	if (!fq->flush_rq)
+ 		goto fail_rq;
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/blk-iolatency.c b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/blk-iolatency.c
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/blk-iolatency.c
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/blk-iolatency.c
+@@ -634,7 +634,7 @@
+ 
+ 	rcu_read_lock();
+ 	blkg_for_each_descendant_pre(blkg, pos_css,
+-				     blkiolat->rqos.q->root_blkg) {
++				     blkcg_q(blkiolat->rqos.q)->root_blkg) {
+ 		struct iolatency_grp *iolat;
+ 		struct child_latency_info *lat_info;
+ 		unsigned long flags;
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/blk-mq.c b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/blk-mq.c
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/blk-mq.c
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/blk-mq.c
+@@ -328,7 +328,7 @@
+ 	rq->next_rq = NULL;
+ 
+ #ifdef CONFIG_BLK_CGROUP
+-	rq->rl = NULL;
++	blk_rq_set_rl(rq, NULL);
+ #endif
+ 
+ 	data->ctx->rq_dispatched[op_is_sync(op)]++;
+@@ -2062,7 +2062,7 @@
+ 	 * rq_size is the size of the request plus driver payload, rounded
+ 	 * to the cacheline size
+ 	 */
+-	rq_size = round_up(sizeof(struct request) + set->cmd_size,
++	rq_size = round_up(blkcg_request_bytes(set->cmd_size),
+ 				cache_line_size());
+ 	left = rq_size * depth;
+ 
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/blk-throttle.c b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/blk-throttle.c
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/blk-throttle.c
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/blk-throttle.c
+@@ -518,7 +518,7 @@
+ {
+ 	struct throtl_grp *tg = pd_to_tg(pd);
+ 	struct blkcg_gq *blkg = tg_to_blkg(tg);
+-	struct throtl_data *td = blkg->q->td;
++	struct throtl_data *td = blkcg_q(blkg->q)->td;
+ 	struct throtl_service_queue *sq = &tg->service_queue;
+ 
+ 	/*
+@@ -575,7 +575,7 @@
+ 	bool low_valid = false;
+ 
+ 	rcu_read_lock();
+-	blkg_for_each_descendant_post(blkg, pos_css, td->queue->root_blkg) {
++	blkg_for_each_descendant_post(blkg, pos_css, blkcg_q(td->queue)->root_blkg) {
+ 		struct throtl_grp *tg = blkg_to_tg(blkg);
+ 
+ 		if (tg->bps[READ][LIMIT_LOW] || tg->bps[WRITE][LIMIT_LOW] ||
+@@ -1391,7 +1391,7 @@
+ 	 * blk-throttle.
+ 	 */
+ 	blkg_for_each_descendant_pre(blkg, pos_css,
+-			global ? tg->td->queue->root_blkg : tg_to_blkg(tg)) {
++			global ? blkcg_q(tg->td->queue)->root_blkg : tg_to_blkg(tg)) {
+ 		struct throtl_grp *this_tg = blkg_to_tg(blkg);
+ 		struct throtl_grp *parent_tg;
+ 
+@@ -1729,7 +1729,7 @@
+ 
+ static void throtl_shutdown_wq(struct request_queue *q)
+ {
+-	struct throtl_data *td = q->td;
++	struct throtl_data *td = blkcg_q(q)->td;
+ 
+ 	cancel_work_sync(&td->dispatch_work);
+ }
+@@ -1862,7 +1862,7 @@
+ 		return false;
+ 
+ 	rcu_read_lock();
+-	blkg_for_each_descendant_post(blkg, pos_css, td->queue->root_blkg) {
++	blkg_for_each_descendant_post(blkg, pos_css, blkcg_q(td->queue)->root_blkg) {
+ 		struct throtl_grp *tg = blkg_to_tg(blkg);
+ 
+ 		if (tg == this_tg)
+@@ -1908,7 +1908,7 @@
+ 	td->low_upgrade_time = jiffies;
+ 	td->scale = 0;
+ 	rcu_read_lock();
+-	blkg_for_each_descendant_post(blkg, pos_css, td->queue->root_blkg) {
++	blkg_for_each_descendant_post(blkg, pos_css, blkcg_q(td->queue)->root_blkg) {
+ 		struct throtl_grp *tg = blkg_to_tg(blkg);
+ 		struct throtl_service_queue *sq = &tg->service_queue;
+ 
+@@ -2128,7 +2128,7 @@
+ #ifdef CONFIG_BLK_DEV_THROTTLING_LOW
+ 	/* fallback to root_blkg if we fail to get a blkg ref */
+ 	if (bio->bi_css && (bio_associate_blkg(bio, tg_to_blkg(tg)) == -ENODEV))
+-		bio_associate_blkg(bio, bio->bi_disk->queue->root_blkg);
++		bio_associate_blkg(bio, blkcg_q(bio->bi_disk->queue)->root_blkg);
+ 	bio_issue_init(&bio->bi_issue, bio_sectors(bio));
+ #endif
+ }
+@@ -2137,7 +2137,7 @@
+ 		    struct bio *bio)
+ {
+ 	struct throtl_qnode *qn = NULL;
+-	struct throtl_grp *tg = blkg_to_tg(blkg ?: q->root_blkg);
++	struct throtl_grp *tg = blkg_to_tg(blkg ?: blkcg_q(q)->root_blkg);
+ 	struct throtl_service_queue *sq;
+ 	bool rw = bio_data_dir(bio);
+ 	bool throttled = false;
+@@ -2269,7 +2269,7 @@
+ void blk_throtl_stat_add(struct request *rq, u64 time_ns)
+ {
+ 	struct request_queue *q = rq->q;
+-	struct throtl_data *td = q->td;
++	struct throtl_data *td = blkcg_q(q)->td;
+ 
+ 	throtl_track_latency(td, rq->throtl_size, req_op(rq), time_ns >> 10);
+ }
+@@ -2358,7 +2358,7 @@
+ void blk_throtl_drain(struct request_queue *q)
+ 	__releases(q->queue_lock) __acquires(q->queue_lock)
+ {
+-	struct throtl_data *td = q->td;
++	struct throtl_data *td = blkcg_q(q)->td;
+ 	struct blkcg_gq *blkg;
+ 	struct cgroup_subsys_state *pos_css;
+ 	struct bio *bio;
+@@ -2373,7 +2373,7 @@
+ 	 * better to walk service_queue tree directly but blkg walk is
+ 	 * easier.
+ 	 */
+-	blkg_for_each_descendant_post(blkg, pos_css, td->queue->root_blkg)
++	blkg_for_each_descendant_post(blkg, pos_css, blkcg_q(td->queue)->root_blkg)
+ 		tg_drain_bios(&blkg_to_tg(blkg)->service_queue);
+ 
+ 	/* finally, transfer bios from top-level tg's into the td */
+@@ -2416,7 +2416,7 @@
+ 	INIT_WORK(&td->dispatch_work, blk_throtl_dispatch_work_fn);
+ 	throtl_service_queue_init(&td->service_queue);
+ 
+-	q->td = td;
++	blkcg_q(q)->td = td;
+ 	td->queue = q;
+ 
+ 	td->limit_valid[LIMIT_MAX] = true;
+@@ -2436,13 +2436,13 @@
+ 
+ void blk_throtl_exit(struct request_queue *q)
+ {
+-	BUG_ON(!q->td);
+-	del_timer_sync(&q->td->service_queue.pending_timer);
++	BUG_ON(!blkcg_q(q)->td);
++	del_timer_sync(&blkcg_q(q)->td->service_queue.pending_timer);
+ 	throtl_shutdown_wq(q);
+ 	blkcg_deactivate_policy(q, &blkcg_policy_throtl);
+-	free_percpu(q->td->latency_buckets[READ]);
+-	free_percpu(q->td->latency_buckets[WRITE]);
+-	kfree(q->td);
++	free_percpu(blkcg_q(q)->td->latency_buckets[READ]);
++	free_percpu(blkcg_q(q)->td->latency_buckets[WRITE]);
++	kfree(blkcg_q(q)->td);
+ }
+ 
+ void blk_throtl_register_queue(struct request_queue *q)
+@@ -2450,7 +2450,7 @@
+ 	struct throtl_data *td;
+ 	int i;
+ 
+-	td = q->td;
++	td = blkcg_q(q)->td;
+ 	BUG_ON(!td);
+ 
+ 	if (blk_queue_nonrot(q)) {
+@@ -2477,9 +2477,9 @@
+ #ifdef CONFIG_BLK_DEV_THROTTLING_LOW
+ ssize_t blk_throtl_sample_time_show(struct request_queue *q, char *page)
+ {
+-	if (!q->td)
++	if (!blkcg_q(q)->td)
+ 		return -EINVAL;
+-	return sprintf(page, "%u\n", jiffies_to_msecs(q->td->throtl_slice));
++	return sprintf(page, "%u\n", jiffies_to_msecs(blkcg_q(q)->td->throtl_slice));
+ }
+ 
+ ssize_t blk_throtl_sample_time_store(struct request_queue *q,
+@@ -2488,14 +2488,14 @@
+ 	unsigned long v;
+ 	unsigned long t;
+ 
+-	if (!q->td)
++	if (!blkcg_q(q)->td)
+ 		return -EINVAL;
+ 	if (kstrtoul(page, 10, &v))
+ 		return -EINVAL;
+ 	t = msecs_to_jiffies(v);
+ 	if (t == 0 || t > MAX_THROTL_SLICE)
+ 		return -EINVAL;
+-	q->td->throtl_slice = t;
++	blkcg_q(q)->td->throtl_slice = t;
+ 	return count;
+ }
+ #endif
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/blk.h b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/blk.h
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/blk.h
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/blk.h
+@@ -365,7 +365,7 @@
+  */
+ static inline struct io_context *rq_ioc(struct bio *bio)
+ {
+-#ifdef CONFIG_BLK_CGROUP
++#if defined(CONFIG_BLK_CGROUP) && !defined(CONFIG_GTBE19000AI_RESOURCE_ABI)
+ 	if (bio && bio->bi_ioc)
+ 		return bio->bi_ioc;
+ #endif
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/cfq-iosched.c b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/cfq-iosched.c
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/cfq-iosched.c
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/cfq-iosched.c
+@@ -4596,7 +4596,7 @@
+ 	if (ret)
+ 		goto out_free;
+ 
+-	cfqd->root_group = blkg_to_cfqg(q->root_blkg);
++	cfqd->root_group = blkg_to_cfqg(blkcg_q(q)->root_blkg);
+ #else
+ 	ret = -ENOMEM;
+ 	cfqd->root_group = kzalloc_node(sizeof(*cfqd->root_group),
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/drivers/block/loop.c b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/drivers/block/loop.c
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/drivers/block/loop.c
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/drivers/block/loop.c
+@@ -1905,8 +1905,8 @@
+ 
+ 	/* always use the first bio's css */
+ #ifdef CONFIG_BLK_CGROUP
+-	if (cmd->use_aio && rq->bio && rq->bio->bi_css) {
+-		cmd->css = rq->bio->bi_css;
++	if (cmd->use_aio && rq->bio && bio_blkcg_css(rq->bio)) {
++		cmd->css = bio_blkcg_css(rq->bio);
+ 		css_get(cmd->css);
+ 	} else
+ #endif
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/bio.h b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/bio.h
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/bio.h
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/bio.h
+@@ -554,6 +554,16 @@
+ #endif
+ 
+ #ifdef CONFIG_BLK_CGROUP
++struct blkcg_gq;
++struct cgroup_subsys_state;
++#ifdef CONFIG_GTBE19000AI_RESOURCE_ABI
++struct cgroup_subsys_state *bio_blkcg_css(struct bio *bio);
++#else
++static inline struct cgroup_subsys_state *bio_blkcg_css(struct bio *bio)
++{
++	return bio->bi_css;
++}
++#endif
+ int bio_associate_blkcg(struct bio *bio, struct cgroup_subsys_state *blkcg_css);
+ int bio_associate_blkg(struct bio *bio, struct blkcg_gq *blkg);
+ void bio_disassociate_task(struct bio *bio);
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/blk-cgroup.h b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/blk-cgroup.h
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/blk-cgroup.h
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/blk-cgroup.h
+@@ -232,6 +232,19 @@
+ void blkg_conf_finish(struct blkg_conf_ctx *ctx);
+ 
+ 
++#ifdef CONFIG_GTBE19000AI_RESOURCE_ABI
++static inline struct blkcg_gq *blkcg_rl_blkg(struct request_list *rl)
++{
++	return rl == &rl->q->root_rl ? blkcg_q(rl->q)->root_blkg :
++		container_of(rl, struct blkcg_gq, rl);
++}
++#else
++static inline struct blkcg_gq *blkcg_rl_blkg(struct request_list *rl)
++{
++	return rl->blkg;
++}
++#endif
++
+ static inline struct blkcg *css_to_blkcg(struct cgroup_subsys_state *css)
+ {
+ 	return css ? container_of(css, struct blkcg, css) : NULL;
+@@ -241,8 +254,8 @@
+ {
+ 	struct cgroup_subsys_state *css;
+ 
+-	if (bio && bio->bi_css)
+-		return css_to_blkcg(bio->bi_css);
++	if (bio && bio_blkcg_css(bio))
++		return css_to_blkcg(bio_blkcg_css(bio));
+ 	css = kthread_blkcg();
+ 	if (css)
+ 		return css_to_blkcg(css);
+@@ -314,7 +327,7 @@
+ 	struct blkcg_gq *blkg;
+ 
+ 	if (blkcg == &blkcg_root)
+-		return q->root_blkg;
++		return blkcg_q(q)->root_blkg;
+ 
+ 	blkg = rcu_dereference(blkcg->blkg_hint);
+ 	if (blkg && blkg->q == q)
+@@ -350,7 +363,7 @@
+  */
+ static inline struct blkcg_gq *blk_queue_root_blkg(struct request_queue *q)
+ {
+-	return q->root_blkg;
++	return blkcg_q(q)->root_blkg;
+ }
+ 
+ /**
+@@ -566,8 +579,8 @@
+  */
+ static inline void blk_put_rl(struct request_list *rl)
+ {
+-	if (rl->blkg->blkcg != &blkcg_root)
+-		blkg_put(rl->blkg);
++	if (blkcg_rl_blkg(rl)->blkcg != &blkcg_root)
++		blkg_put(blkcg_rl_blkg(rl));
+ }
+ 
+ /**
+@@ -580,7 +593,11 @@
+  */
+ static inline void blk_rq_set_rl(struct request *rq, struct request_list *rl)
+ {
++#ifdef CONFIG_GTBE19000AI_RESOURCE_ABI
++	*blkcg_request_rl(rq) = rl;
++#else
+ 	rq->rl = rl;
++#endif
+ }
+ 
+ /**
+@@ -591,7 +608,11 @@
+  */
+ static inline struct request_list *blk_rq_rl(struct request *rq)
+ {
++#ifdef CONFIG_GTBE19000AI_RESOURCE_ABI
++	return *blkcg_request_rl(rq);
++#else
+ 	return rq->rl;
++#endif
+ }
+ 
+ struct request_list *__blk_queue_next_rl(struct request_list *rl,
+@@ -809,7 +830,17 @@
+ 	blkcg = bio_blkcg(bio);
+ 
+ 	/* associate blkcg if bio hasn't attached one */
++#ifdef CONFIG_GTBE19000AI_RESOURCE_ABI
++	/* Never silently escape the controller if handle allocation fails. */
++	if (bio_associate_blkcg(bio, &blkcg->css) == -ENOMEM) {
++		rcu_read_unlock();
++		bio->bi_status = BLK_STS_RESOURCE;
++		bio_endio(bio);
++		return false;
++	}
++#else
+ 	bio_associate_blkcg(bio, &blkcg->css);
++#endif
+ 
+ 	blkg = blkg_lookup(blkcg, q);
+ 	if (unlikely(!blkg)) {
+@@ -823,7 +854,7 @@
+ 	throtl = blk_throtl_bio(q, blkg, bio);
+ 
+ 	if (!throtl) {
+-		blkg = blkg ?: q->root_blkg;
++		blkg = blkg ?: blkcg_q(q)->root_blkg;
+ 		/*
+ 		 * If the bio is flagged with BIO_QUEUE_ENTERED it means this
+ 		 * is a split bio and we would have already accounted for the
+@@ -856,7 +887,11 @@
+  */
+ static inline bool blk_cgroup_mergeable(struct request *rq, struct bio *bio)
+ {
++#ifdef CONFIG_GTBE19000AI_RESOURCE_ABI
++	return bio_blkcg_css(rq->bio) == bio_blkcg_css(bio) &&
++#else
+ 	return rq->bio->bi_blkg == bio->bi_blkg &&
++#endif
+ 		bio_issue_as_root_blkg(rq->bio) == bio_issue_as_root_blkg(bio);
+ }
+ 
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/blk_types.h b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/blk_types.h
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/blk_types.h
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/blk_types.h
+@@ -169,10 +169,14 @@
+ 	struct bvec_iter	bi_iter;
+ 
+ 	atomic_t		__bi_remaining;
++#ifdef CONFIG_GTBE19000AI_RESOURCE_ABI
++	/* Handle in original four-byte padding; bio remains 112 bytes. */
++	unsigned int bi_abi_css_id;
++#endif
+ 	bio_end_io_t		*bi_end_io;
+ 
+ 	void			*bi_private;
+-#ifdef CONFIG_BLK_CGROUP
++#if defined(CONFIG_BLK_CGROUP) && !defined(CONFIG_GTBE19000AI_RESOURCE_ABI)
+ 	/*
+ 	 * Optional ioc and css associated with this bio.  Put on bio
+ 	 * release.  Read comment on top of bio_associate_current().
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/blkdev.h b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/blkdev.h
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/blkdev.h
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/blkdev.h
+@@ -71,7 +71,7 @@
+ 
+ struct request_list {
+ 	struct request_queue	*q;	/* the queue this rl belongs to */
+-#ifdef CONFIG_BLK_CGROUP
++#if defined(CONFIG_BLK_CGROUP) && !defined(CONFIG_GTBE19000AI_RESOURCE_ABI)
+ 	struct blkcg_gq		*blkg;	/* blkg this request pool belongs to */
+ #endif
+ 	/*
+@@ -273,7 +273,7 @@
+ 	/* for bidi */
+ 	struct request *next_rq;
+ 
+-#ifdef CONFIG_BLK_CGROUP
++#if defined(CONFIG_BLK_CGROUP) && !defined(CONFIG_GTBE19000AI_RESOURCE_ABI)
+ 	struct request_list *rl;		/* rl this rq is alloced from */
+ #endif
+ };
+@@ -594,7 +594,7 @@
+ 	struct list_head	timeout_list;
+ 
+ 	struct list_head	icq_list;
+-#ifdef CONFIG_BLK_CGROUP
++#if defined(CONFIG_BLK_CGROUP) && !defined(CONFIG_GTBE19000AI_RESOURCE_ABI)
+ 	DECLARE_BITMAP		(blkcg_pols, BLKCG_MAX_POLS);
+ 	struct blkcg_gq		*root_blkg;
+ 	struct list_head	blkg_list;
+@@ -655,7 +655,7 @@
+ 	struct bsg_class_device bsg_dev;
+ #endif
+ 
+-#ifdef CONFIG_BLK_DEV_THROTTLING
++#if defined(CONFIG_BLK_DEV_THROTTLING) && !defined(CONFIG_GTBE19000AI_RESOURCE_ABI)
+ 	/* Throttle data */
+ 	struct throtl_data *td;
+ #endif
+@@ -683,6 +683,31 @@
+ #define BLK_MAX_WRITE_HINTS	5
+ 	u64			write_hints[BLK_MAX_WRITE_HINTS];
+ };
++
++#ifdef CONFIG_GTBE19000AI_RESOURCE_ABI
++/* Kernel-allocated queues own a private trailer. Preserve every vendor field
++ * and sizeof(request_queue), including its embedded request_list/bio_set. */
++struct blkcg_queue_state {
++	DECLARE_BITMAP(blkcg_pols, BLKCG_MAX_POLS);
++	struct blkcg_gq *root_blkg;
++	struct list_head blkg_list;
++	struct throtl_data *td;
++};
++static inline struct blkcg_queue_state *blkcg_q(struct request_queue *q)
++{
++	return (void *)(q + 1);
++}
++#define BLKCG_QUEUE_EXTRA_SIZE sizeof(struct blkcg_queue_state)
++static inline size_t blkcg_request_bytes(unsigned int cmd_size)
++{
++	return ALIGN(sizeof(struct request) + cmd_size, sizeof(void *)) + sizeof(void *);
++}
++struct request_list **blkcg_request_rl(struct request *rq);
++#else
++#define blkcg_q(q) (q)
++#define BLKCG_QUEUE_EXTRA_SIZE 0
++#define blkcg_request_bytes(cmd_size) (sizeof(struct request) + (cmd_size))
++#endif
+ 
+ #define QUEUE_FLAG_QUEUED	0	/* uses generic tag queueing */
+ #define QUEUE_FLAG_STOPPED	1	/* queue is stopped */
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/sched.h b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/sched.h
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/sched.h
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/sched.h
+@@ -450,7 +450,11 @@
+ 	unsigned long			runnable_weight;
+ 	struct rb_node			run_node;
+ 	struct list_head		group_node;
+-	unsigned int			on_rq;
++	unsigned int				on_rq;
++#if defined(CONFIG_GTBE19000AI_RESOURCE_ABI) && defined(CONFIG_FAIR_GROUP_SCHED)
++	/* Original sched_entity alignment hole at 68. */
++	int depth;
++#endif
+ 
+ 	u64				exec_start;
+ 	u64				sum_exec_runtime;
+@@ -462,8 +466,10 @@
+ 	struct sched_statistics		statistics;
+ 
+ #ifdef CONFIG_FAIR_GROUP_SCHED
++#ifndef CONFIG_GTBE19000AI_RESOURCE_ABI
+ 	int				depth;
+ 	struct sched_entity		*parent;
++#endif
+ 	/* rq on which this entity is (to be) queued: */
+ 	struct cfs_rq			*cfs_rq;
+ 	/* rq "owned" by this entity/group: */
+@@ -616,7 +622,10 @@
+ 	atomic_t			usage;
+ 	/* Per task flags (PF_*), defined further below: */
+ 	unsigned int			flags;
+-	unsigned int			ptrace;
++	unsigned int				ptrace;
++#if defined(CONFIG_GTBE19000AI_RESOURCE_ABI) && defined(CONFIG_CPUSETS)
++	seqcount_t mems_allowed_seq;
++#endif
+ 
+ #ifdef CONFIG_SMP
+ 	struct llist_node		wake_entry;
+@@ -625,7 +634,10 @@
+ 	/* Current CPU: */
+ 	unsigned int			cpu;
+ #endif
+-	unsigned int			wakee_flips;
++	unsigned int				wakee_flips;
++#if defined(CONFIG_GTBE19000AI_RESOURCE_ABI) && defined(CONFIG_CPUSETS)
++	int cpuset_mem_spread_rotor;
++#endif
+ 	unsigned long			wakee_flip_decay_ts;
+ 	struct task_struct		*last_wakee;
+ 
+@@ -644,7 +656,10 @@
+ 	int				prio;
+ 	int				static_prio;
+ 	int				normal_prio;
+-	unsigned int			rt_priority;
++	unsigned int				rt_priority;
++#if defined(CONFIG_GTBE19000AI_RESOURCE_ABI) && defined(CONFIG_CPUSETS)
++	int cpuset_slab_spread_rotor;
++#endif
+ 
+ 	const struct sched_class	*sched_class;
+ #ifdef CONFIG_GTBE98_CGROUP_ABI
+@@ -662,9 +677,13 @@
+ 	struct seccomp			seccomp;
+ #endif
+ #endif
++#if defined(CONFIG_GTBE19000AI_RESOURCE_ABI) && defined(CONFIG_CGROUP_SCHED)
++	/* Last eight bytes of the original pre-se alignment hole. */
++	struct task_group *sched_task_group;
++#endif
+ 	struct sched_entity		se;
+ 	struct sched_rt_entity		rt;
+-#ifdef CONFIG_CGROUP_SCHED
++#if defined(CONFIG_CGROUP_SCHED) && !defined(CONFIG_GTBE19000AI_RESOURCE_ABI)
+ 	struct task_group		*sched_task_group;
+ #endif
+ 	struct sched_dl_entity		dl;
+@@ -762,7 +781,7 @@
+ 	/* disallow userland-initiated cgroup migration */
+ 	unsigned			no_cgroup_migration:1;
+ #endif
+-#ifdef CONFIG_BLK_CGROUP
++#if defined(CONFIG_BLK_CGROUP) && !defined(CONFIG_GTBE19000AI_RESOURCE_ABI)
+ 	/* to be used once the psi infrastructure lands upstream. */
+ 	unsigned			use_memdelay:1;
+ #endif
+@@ -770,6 +789,10 @@
+ #ifdef CONFIG_GTBE98_MEMCG_ABI
+ 	/* Append to the existing bitfield word: never shift vendor-visible bits. */
+ 	unsigned			in_user_fault:1;
++#endif
++
++#if defined(CONFIG_BLK_CGROUP) && defined(CONFIG_GTBE19000AI_RESOURCE_ABI)
++	unsigned			use_memdelay:1;
+ #endif
+ 
+ 	unsigned long			atomic_flags; /* Flags requiring atomic access. */
+@@ -1006,7 +1029,7 @@
+ 	/* stime + utime since last update: */
+ 	u64				acct_timexpd;
+ #endif
+-#ifdef CONFIG_CPUSETS
++#if defined(CONFIG_CPUSETS) && !defined(CONFIG_GTBE19000AI_RESOURCE_ABI)
+ 	/* Protected by ->alloc_lock: */
+ 	nodemask_t			mems_allowed;
+ 	/* Seqence number to catch updates: */
+@@ -1205,7 +1228,7 @@
+ 	struct mem_cgroup		*active_memcg;
+ #endif
+ 
+-#ifdef CONFIG_BLK_CGROUP
++#if defined(CONFIG_BLK_CGROUP) && !defined(CONFIG_GTBE19000AI_RESOURCE_ABI)
+ 	struct request_queue		*throttle_queue;
+ #endif
+ 
+@@ -1269,6 +1292,16 @@
+ 
+ 	/* Used by memcontrol for targeted memcg charge: */
+ 	struct mem_cgroup		*active_memcg;
++#endif
++
++#ifdef CONFIG_GTBE19000AI_RESOURCE_ABI
++#ifdef CONFIG_CPUSETS
++	/* Original task tail padding: 2672..2687. */
++	nodemask_t mems_allowed;
++#endif
++#ifdef CONFIG_BLK_CGROUP
++	struct request_queue *throttle_queue;
++#endif
+ #endif
+ 
+ 	/*
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/init/Kconfig b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/init/Kconfig
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/init/Kconfig
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/init/Kconfig
+@@ -771,7 +771,7 @@
+ 
+ config CGROUP_WRITEBACK
+ 	bool
+-	depends on MEMCG && BLK_CGROUP
++	depends on MEMCG && BLK_CGROUP && !GTBE19000AI_RESOURCE_ABI
+ 	default y
+ 
+ menuconfig CGROUP_SCHED
+@@ -945,6 +945,19 @@
+ 	  The be19000ai_trial_disk= boot argument selects a different disk
+ 	  for isolated loop-device verification. Never set it on the router.
+ 
++config GTBE19000AI_RESOURCE_ABI
++	bool "Preserve vendor layouts with CPU, cpuset and block controllers"
++	depends on ARM64 && BCM96813 && SMP && !SCHEDSTATS && !RT_GROUP_SCHED
++	default n
++	help
++	  Put additional task and fair scheduler fields in verified padding.
++	  Derive a scheduling entity's parent from its cfs_rq rather than
++	  storing a redundant pointer. Block queue and request allocations gain
++	  private trailers; bio uses an opaque handle in existing padding.
++	  Requires the existing cgroup and memory ABI guards, with the tested
++	  CPU, cpuset and block controllers enabled. Buffered writeback
++	  accounting, I/O latency and low-limit policies are excluded.
++
+ config GTBE19000AI_NETDEV_ABI
+ 	bool "Preserve GT-BE19000AI net_device layout with network namespaces"
+ 	depends on ARM64 && BCM96813 && NET_NS
+@@ -970,7 +983,7 @@
+ config GTBE98_CGROUP_ABI
+ 	bool "Preserve Leon GT-BE98 task layout for core cgroups"
+ 	depends on ARM64 && BCM96813 && SMP && CGROUP_PIDS
+-	depends on !CGROUP_SCHED && !CPUSETS && !BLK_CGROUP
++	depends on (!CGROUP_SCHED && !CPUSETS && !BLK_CGROUP) || GTBE19000AI_RESOURCE_ABI
+ 	depends on !MEMCG || GTBE98_MEMCG_ABI
+ 	depends on !CGROUP_BPF && !CGROUP_NET_PRIO && !CGROUP_NET_CLASSID
+ 	default n
+@@ -982,7 +995,7 @@
+ 
+ 	  Also permits devices, freezer, CPU accounting and seccomp.
+ 	  Memory accounting additionally requires GTBE98_MEMCG_ABI.
+-	  CPU scheduling and I/O controllers remain unsupported.
++	  CPU scheduling and I/O require GTBE19000AI_RESOURCE_ABI.
+ 
+ endif # CGROUPS
+ 
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/gtbe19000ai_block_abi.h b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/gtbe19000ai_block_abi.h
+new file mode 100644
+--- /dev/null
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/gtbe19000ai_block_abi.h
+@@ -0,0 +1,297 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Original 3006.102.9 / kernel #5 block layouts, checked by DWARF. */
++#ifdef CONFIG_GTBE19000AI_RESOURCE_ABI
++#include <linux/blkdev.h>
++static inline void gtbe19000ai_block_abi_check(void)
++{
++	BUILD_BUG_ON(sizeof(struct bio) != 112);
++	BUILD_BUG_ON(offsetof(struct bio, bi_next) != 0);
++	BUILD_BUG_ON(sizeof(((struct bio *)0)->bi_next) != 8);
++	BUILD_BUG_ON(offsetof(struct bio, bi_disk) != 8);
++	BUILD_BUG_ON(sizeof(((struct bio *)0)->bi_disk) != 8);
++	BUILD_BUG_ON(offsetof(struct bio, bi_opf) != 16);
++	BUILD_BUG_ON(sizeof(((struct bio *)0)->bi_opf) != 4);
++	BUILD_BUG_ON(offsetof(struct bio, bi_flags) != 20);
++	BUILD_BUG_ON(sizeof(((struct bio *)0)->bi_flags) != 2);
++	BUILD_BUG_ON(offsetof(struct bio, bi_ioprio) != 22);
++	BUILD_BUG_ON(sizeof(((struct bio *)0)->bi_ioprio) != 2);
++	BUILD_BUG_ON(offsetof(struct bio, bi_write_hint) != 24);
++	BUILD_BUG_ON(sizeof(((struct bio *)0)->bi_write_hint) != 2);
++	BUILD_BUG_ON(offsetof(struct bio, bi_status) != 26);
++	BUILD_BUG_ON(sizeof(((struct bio *)0)->bi_status) != 1);
++	BUILD_BUG_ON(offsetof(struct bio, bi_partno) != 27);
++	BUILD_BUG_ON(sizeof(((struct bio *)0)->bi_partno) != 1);
++	BUILD_BUG_ON(offsetof(struct bio, bi_phys_segments) != 28);
++	BUILD_BUG_ON(sizeof(((struct bio *)0)->bi_phys_segments) != 4);
++	BUILD_BUG_ON(offsetof(struct bio, bi_seg_front_size) != 32);
++	BUILD_BUG_ON(sizeof(((struct bio *)0)->bi_seg_front_size) != 4);
++	BUILD_BUG_ON(offsetof(struct bio, bi_seg_back_size) != 36);
++	BUILD_BUG_ON(sizeof(((struct bio *)0)->bi_seg_back_size) != 4);
++	BUILD_BUG_ON(offsetof(struct bio, bi_iter) != 40);
++	BUILD_BUG_ON(sizeof(((struct bio *)0)->bi_iter) != 24);
++	BUILD_BUG_ON(offsetof(struct bio, __bi_remaining) != 64);
++	BUILD_BUG_ON(sizeof(((struct bio *)0)->__bi_remaining) != 4);
++	BUILD_BUG_ON(offsetof(struct bio, bi_end_io) != 72);
++	BUILD_BUG_ON(sizeof(((struct bio *)0)->bi_end_io) != 8);
++	BUILD_BUG_ON(offsetof(struct bio, bi_private) != 80);
++	BUILD_BUG_ON(sizeof(((struct bio *)0)->bi_private) != 8);
++	BUILD_BUG_ON(offsetof(struct bio, bi_vcnt) != 88);
++	BUILD_BUG_ON(sizeof(((struct bio *)0)->bi_vcnt) != 2);
++	BUILD_BUG_ON(offsetof(struct bio, bi_max_vecs) != 90);
++	BUILD_BUG_ON(sizeof(((struct bio *)0)->bi_max_vecs) != 2);
++	BUILD_BUG_ON(offsetof(struct bio, __bi_cnt) != 92);
++	BUILD_BUG_ON(sizeof(((struct bio *)0)->__bi_cnt) != 4);
++	BUILD_BUG_ON(offsetof(struct bio, bi_io_vec) != 96);
++	BUILD_BUG_ON(sizeof(((struct bio *)0)->bi_io_vec) != 8);
++	BUILD_BUG_ON(offsetof(struct bio, bi_pool) != 104);
++	BUILD_BUG_ON(sizeof(((struct bio *)0)->bi_pool) != 8);
++	BUILD_BUG_ON(offsetof(struct bio, bi_inline_vecs) != 112);
++	BUILD_BUG_ON(sizeof(((struct bio *)0)->bi_inline_vecs) != 0);
++	BUILD_BUG_ON(sizeof(struct request) != 296);
++	BUILD_BUG_ON(offsetof(struct request, q) != 0);
++	BUILD_BUG_ON(sizeof(((struct request *)0)->q) != 8);
++	BUILD_BUG_ON(offsetof(struct request, mq_ctx) != 8);
++	BUILD_BUG_ON(sizeof(((struct request *)0)->mq_ctx) != 8);
++	BUILD_BUG_ON(offsetof(struct request, cpu) != 16);
++	BUILD_BUG_ON(sizeof(((struct request *)0)->cpu) != 4);
++	BUILD_BUG_ON(offsetof(struct request, cmd_flags) != 20);
++	BUILD_BUG_ON(sizeof(((struct request *)0)->cmd_flags) != 4);
++	BUILD_BUG_ON(offsetof(struct request, rq_flags) != 24);
++	BUILD_BUG_ON(sizeof(((struct request *)0)->rq_flags) != 4);
++	BUILD_BUG_ON(offsetof(struct request, internal_tag) != 28);
++	BUILD_BUG_ON(sizeof(((struct request *)0)->internal_tag) != 4);
++	BUILD_BUG_ON(offsetof(struct request, __data_len) != 32);
++	BUILD_BUG_ON(sizeof(((struct request *)0)->__data_len) != 4);
++	BUILD_BUG_ON(offsetof(struct request, tag) != 36);
++	BUILD_BUG_ON(sizeof(((struct request *)0)->tag) != 4);
++	BUILD_BUG_ON(offsetof(struct request, __sector) != 40);
++	BUILD_BUG_ON(sizeof(((struct request *)0)->__sector) != 8);
++	BUILD_BUG_ON(offsetof(struct request, bio) != 48);
++	BUILD_BUG_ON(sizeof(((struct request *)0)->bio) != 8);
++	BUILD_BUG_ON(offsetof(struct request, biotail) != 56);
++	BUILD_BUG_ON(sizeof(((struct request *)0)->biotail) != 8);
++	BUILD_BUG_ON(offsetof(struct request, queuelist) != 64);
++	BUILD_BUG_ON(sizeof(((struct request *)0)->queuelist) != 16);
++	BUILD_BUG_ON(offsetof(struct request, rq_disk) != 152);
++	BUILD_BUG_ON(sizeof(((struct request *)0)->rq_disk) != 8);
++	BUILD_BUG_ON(offsetof(struct request, part) != 160);
++	BUILD_BUG_ON(sizeof(((struct request *)0)->part) != 8);
++	BUILD_BUG_ON(offsetof(struct request, start_time_ns) != 168);
++	BUILD_BUG_ON(sizeof(((struct request *)0)->start_time_ns) != 8);
++	BUILD_BUG_ON(offsetof(struct request, io_start_time_ns) != 176);
++	BUILD_BUG_ON(sizeof(((struct request *)0)->io_start_time_ns) != 8);
++	BUILD_BUG_ON(offsetof(struct request, nr_phys_segments) != 184);
++	BUILD_BUG_ON(sizeof(((struct request *)0)->nr_phys_segments) != 2);
++	BUILD_BUG_ON(offsetof(struct request, write_hint) != 186);
++	BUILD_BUG_ON(sizeof(((struct request *)0)->write_hint) != 2);
++	BUILD_BUG_ON(offsetof(struct request, ioprio) != 188);
++	BUILD_BUG_ON(sizeof(((struct request *)0)->ioprio) != 2);
++	BUILD_BUG_ON(offsetof(struct request, special) != 192);
++	BUILD_BUG_ON(sizeof(((struct request *)0)->special) != 8);
++	BUILD_BUG_ON(offsetof(struct request, extra_len) != 200);
++	BUILD_BUG_ON(sizeof(((struct request *)0)->extra_len) != 4);
++	BUILD_BUG_ON(offsetof(struct request, state) != 204);
++	BUILD_BUG_ON(sizeof(((struct request *)0)->state) != 4);
++	BUILD_BUG_ON(offsetof(struct request, ref) != 208);
++	BUILD_BUG_ON(sizeof(((struct request *)0)->ref) != 4);
++	BUILD_BUG_ON(offsetof(struct request, timeout) != 212);
++	BUILD_BUG_ON(sizeof(((struct request *)0)->timeout) != 4);
++	BUILD_BUG_ON(offsetof(struct request, __deadline) != 216);
++	BUILD_BUG_ON(sizeof(((struct request *)0)->__deadline) != 8);
++	BUILD_BUG_ON(offsetof(struct request, timeout_list) != 224);
++	BUILD_BUG_ON(sizeof(((struct request *)0)->timeout_list) != 16);
++	BUILD_BUG_ON(offsetof(struct request, end_io) != 272);
++	BUILD_BUG_ON(sizeof(((struct request *)0)->end_io) != 8);
++	BUILD_BUG_ON(offsetof(struct request, end_io_data) != 280);
++	BUILD_BUG_ON(sizeof(((struct request *)0)->end_io_data) != 8);
++	BUILD_BUG_ON(offsetof(struct request, next_rq) != 288);
++	BUILD_BUG_ON(sizeof(((struct request *)0)->next_rq) != 8);
++	BUILD_BUG_ON(sizeof(struct request_list) != 88);
++	BUILD_BUG_ON(offsetof(struct request_list, q) != 0);
++	BUILD_BUG_ON(sizeof(((struct request_list *)0)->q) != 8);
++	BUILD_BUG_ON(offsetof(struct request_list, count) != 8);
++	BUILD_BUG_ON(sizeof(((struct request_list *)0)->count) != 8);
++	BUILD_BUG_ON(offsetof(struct request_list, starved) != 16);
++	BUILD_BUG_ON(sizeof(((struct request_list *)0)->starved) != 8);
++	BUILD_BUG_ON(offsetof(struct request_list, rq_pool) != 24);
++	BUILD_BUG_ON(sizeof(((struct request_list *)0)->rq_pool) != 8);
++	BUILD_BUG_ON(offsetof(struct request_list, wait) != 32);
++	BUILD_BUG_ON(sizeof(((struct request_list *)0)->wait) != 48);
++	BUILD_BUG_ON(offsetof(struct request_list, flags) != 80);
++	BUILD_BUG_ON(sizeof(((struct request_list *)0)->flags) != 4);
++	BUILD_BUG_ON(sizeof(struct request_queue) != 2184);
++	BUILD_BUG_ON(offsetof(struct request_queue, queue_head) != 0);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->queue_head) != 16);
++	BUILD_BUG_ON(offsetof(struct request_queue, last_merge) != 16);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->last_merge) != 8);
++	BUILD_BUG_ON(offsetof(struct request_queue, elevator) != 24);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->elevator) != 8);
++	BUILD_BUG_ON(offsetof(struct request_queue, nr_rqs) != 32);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->nr_rqs) != 8);
++	BUILD_BUG_ON(offsetof(struct request_queue, nr_rqs_elvpriv) != 40);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->nr_rqs_elvpriv) != 4);
++	BUILD_BUG_ON(offsetof(struct request_queue, stats) != 48);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->stats) != 8);
++	BUILD_BUG_ON(offsetof(struct request_queue, rq_qos) != 56);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->rq_qos) != 8);
++	BUILD_BUG_ON(offsetof(struct request_queue, root_rl) != 64);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->root_rl) != 88);
++	BUILD_BUG_ON(offsetof(struct request_queue, request_fn) != 152);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->request_fn) != 8);
++	BUILD_BUG_ON(offsetof(struct request_queue, make_request_fn) != 160);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->make_request_fn) != 8);
++	BUILD_BUG_ON(offsetof(struct request_queue, poll_fn) != 168);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->poll_fn) != 8);
++	BUILD_BUG_ON(offsetof(struct request_queue, prep_rq_fn) != 176);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->prep_rq_fn) != 8);
++	BUILD_BUG_ON(offsetof(struct request_queue, unprep_rq_fn) != 184);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->unprep_rq_fn) != 8);
++	BUILD_BUG_ON(offsetof(struct request_queue, softirq_done_fn) != 192);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->softirq_done_fn) != 8);
++	BUILD_BUG_ON(offsetof(struct request_queue, rq_timed_out_fn) != 200);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->rq_timed_out_fn) != 8);
++	BUILD_BUG_ON(offsetof(struct request_queue, dma_drain_needed) != 208);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->dma_drain_needed) != 8);
++	BUILD_BUG_ON(offsetof(struct request_queue, lld_busy_fn) != 216);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->lld_busy_fn) != 8);
++	BUILD_BUG_ON(offsetof(struct request_queue, init_rq_fn) != 224);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->init_rq_fn) != 8);
++	BUILD_BUG_ON(offsetof(struct request_queue, exit_rq_fn) != 232);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->exit_rq_fn) != 8);
++	BUILD_BUG_ON(offsetof(struct request_queue, initialize_rq_fn) != 240);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->initialize_rq_fn) != 8);
++	BUILD_BUG_ON(offsetof(struct request_queue, mq_ops) != 248);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->mq_ops) != 8);
++	BUILD_BUG_ON(offsetof(struct request_queue, mq_map) != 256);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->mq_map) != 8);
++	BUILD_BUG_ON(offsetof(struct request_queue, queue_ctx) != 264);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->queue_ctx) != 8);
++	BUILD_BUG_ON(offsetof(struct request_queue, nr_queues) != 272);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->nr_queues) != 4);
++	BUILD_BUG_ON(offsetof(struct request_queue, queue_depth) != 276);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->queue_depth) != 4);
++	BUILD_BUG_ON(offsetof(struct request_queue, queue_hw_ctx) != 280);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->queue_hw_ctx) != 8);
++	BUILD_BUG_ON(offsetof(struct request_queue, nr_hw_queues) != 288);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->nr_hw_queues) != 4);
++	BUILD_BUG_ON(offsetof(struct request_queue, end_sector) != 296);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->end_sector) != 8);
++	BUILD_BUG_ON(offsetof(struct request_queue, boundary_rq) != 304);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->boundary_rq) != 8);
++	BUILD_BUG_ON(offsetof(struct request_queue, delay_work) != 312);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->delay_work) != 88);
++	BUILD_BUG_ON(offsetof(struct request_queue, backing_dev_info) != 400);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->backing_dev_info) != 8);
++	BUILD_BUG_ON(offsetof(struct request_queue, queuedata) != 408);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->queuedata) != 8);
++	BUILD_BUG_ON(offsetof(struct request_queue, queue_flags) != 416);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->queue_flags) != 8);
++	BUILD_BUG_ON(offsetof(struct request_queue, pm_only) != 424);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->pm_only) != 4);
++	BUILD_BUG_ON(offsetof(struct request_queue, id) != 428);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->id) != 4);
++	BUILD_BUG_ON(offsetof(struct request_queue, bounce_gfp) != 432);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->bounce_gfp) != 4);
++	BUILD_BUG_ON(offsetof(struct request_queue, __queue_lock) != 436);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->__queue_lock) != 4);
++	BUILD_BUG_ON(offsetof(struct request_queue, queue_lock) != 440);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->queue_lock) != 8);
++	BUILD_BUG_ON(offsetof(struct request_queue, kobj) != 448);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->kobj) != 64);
++	BUILD_BUG_ON(offsetof(struct request_queue, mq_kobj) != 512);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->mq_kobj) != 64);
++	BUILD_BUG_ON(offsetof(struct request_queue, nr_requests) != 576);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->nr_requests) != 8);
++	BUILD_BUG_ON(offsetof(struct request_queue, nr_congestion_on) != 584);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->nr_congestion_on) != 4);
++	BUILD_BUG_ON(offsetof(struct request_queue, nr_congestion_off) != 588);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->nr_congestion_off) != 4);
++	BUILD_BUG_ON(offsetof(struct request_queue, nr_batching) != 592);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->nr_batching) != 4);
++	BUILD_BUG_ON(offsetof(struct request_queue, dma_drain_size) != 596);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->dma_drain_size) != 4);
++	BUILD_BUG_ON(offsetof(struct request_queue, dma_drain_buffer) != 600);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->dma_drain_buffer) != 8);
++	BUILD_BUG_ON(offsetof(struct request_queue, dma_pad_mask) != 608);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->dma_pad_mask) != 4);
++	BUILD_BUG_ON(offsetof(struct request_queue, dma_alignment) != 612);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->dma_alignment) != 4);
++	BUILD_BUG_ON(offsetof(struct request_queue, queue_tags) != 616);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->queue_tags) != 8);
++	BUILD_BUG_ON(offsetof(struct request_queue, nr_sorted) != 624);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->nr_sorted) != 4);
++	BUILD_BUG_ON(offsetof(struct request_queue, in_flight) != 628);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->in_flight) != 8);
++	BUILD_BUG_ON(offsetof(struct request_queue, request_fn_active) != 636);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->request_fn_active) != 4);
++	BUILD_BUG_ON(offsetof(struct request_queue, rq_timeout) != 640);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->rq_timeout) != 4);
++	BUILD_BUG_ON(offsetof(struct request_queue, poll_nsec) != 644);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->poll_nsec) != 4);
++	BUILD_BUG_ON(offsetof(struct request_queue, poll_cb) != 648);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->poll_cb) != 8);
++	BUILD_BUG_ON(offsetof(struct request_queue, poll_stat) != 656);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->poll_stat) != 640);
++	BUILD_BUG_ON(offsetof(struct request_queue, timeout) != 1296);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->timeout) != 40);
++	BUILD_BUG_ON(offsetof(struct request_queue, timeout_work) != 1336);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->timeout_work) != 32);
++	BUILD_BUG_ON(offsetof(struct request_queue, timeout_list) != 1368);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->timeout_list) != 16);
++	BUILD_BUG_ON(offsetof(struct request_queue, icq_list) != 1384);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->icq_list) != 16);
++	BUILD_BUG_ON(offsetof(struct request_queue, limits) != 1400);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->limits) != 104);
++	BUILD_BUG_ON(offsetof(struct request_queue, sg_timeout) != 1504);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->sg_timeout) != 4);
++	BUILD_BUG_ON(offsetof(struct request_queue, sg_reserved_size) != 1508);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->sg_reserved_size) != 4);
++	BUILD_BUG_ON(offsetof(struct request_queue, node) != 1512);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->node) != 4);
++	BUILD_BUG_ON(offsetof(struct request_queue, fq) != 1520);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->fq) != 8);
++	BUILD_BUG_ON(offsetof(struct request_queue, requeue_list) != 1528);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->requeue_list) != 16);
++	BUILD_BUG_ON(offsetof(struct request_queue, requeue_lock) != 1544);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->requeue_lock) != 4);
++	BUILD_BUG_ON(offsetof(struct request_queue, requeue_work) != 1552);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->requeue_work) != 88);
++	BUILD_BUG_ON(offsetof(struct request_queue, sysfs_lock) != 1640);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->sysfs_lock) != 32);
++	BUILD_BUG_ON(offsetof(struct request_queue, sysfs_dir_lock) != 1672);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->sysfs_dir_lock) != 32);
++	BUILD_BUG_ON(offsetof(struct request_queue, bypass_depth) != 1704);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->bypass_depth) != 4);
++	BUILD_BUG_ON(offsetof(struct request_queue, mq_freeze_depth) != 1708);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->mq_freeze_depth) != 4);
++	BUILD_BUG_ON(offsetof(struct request_queue, callback_head) != 1712);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->callback_head) != 16);
++	BUILD_BUG_ON(offsetof(struct request_queue, mq_freeze_wq) != 1728);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->mq_freeze_wq) != 24);
++	BUILD_BUG_ON(offsetof(struct request_queue, q_usage_counter) != 1752);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->q_usage_counter) != 56);
++	BUILD_BUG_ON(offsetof(struct request_queue, all_q_node) != 1808);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->all_q_node) != 16);
++	BUILD_BUG_ON(offsetof(struct request_queue, tag_set) != 1824);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->tag_set) != 8);
++	BUILD_BUG_ON(offsetof(struct request_queue, tag_set_list) != 1832);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->tag_set_list) != 16);
++	BUILD_BUG_ON(offsetof(struct request_queue, bio_split) != 1848);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->bio_split) != 224);
++	BUILD_BUG_ON(offsetof(struct request_queue, debugfs_dir) != 2072);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->debugfs_dir) != 8);
++	BUILD_BUG_ON(offsetof(struct request_queue, sched_debugfs_dir) != 2080);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->sched_debugfs_dir) != 8);
++	BUILD_BUG_ON(offsetof(struct request_queue, mq_sysfs_init_done) != 2088);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->mq_sysfs_init_done) != 1);
++	BUILD_BUG_ON(offsetof(struct request_queue, cmd_size) != 2096);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->cmd_size) != 8);
++	BUILD_BUG_ON(offsetof(struct request_queue, rq_alloc_data) != 2104);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->rq_alloc_data) != 8);
++	BUILD_BUG_ON(offsetof(struct request_queue, release_work) != 2112);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->release_work) != 32);
++	BUILD_BUG_ON(offsetof(struct request_queue, write_hints) != 2144);
++	BUILD_BUG_ON(sizeof(((struct request_queue *)0)->write_hints) != 40);
++	BUILD_BUG_ON(offsetof(struct bio, bi_abi_css_id) != 68);
++}
++#endif
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/gtbe98_cgroup_abi.h b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/gtbe98_cgroup_abi.h
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/gtbe98_cgroup_abi.h
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/gtbe98_cgroup_abi.h
+@@ -2,6 +2,7 @@
+ /* Checked against all 12 task_struct DWARF definitions in Leon #32. */
+ #ifndef _GTBE98_CGROUP_ABI_H
+ #define _GTBE98_CGROUP_ABI_H
++#include "gtbe19000ai_block_abi.h"
+ 
+ #ifdef CONFIG_GTBE98_MEMCG_ABI
+ #include <linux/slub_def.h>
+@@ -45,6 +46,19 @@
+ 
+ 	BUILD_BUG_ON(__alignof__(struct task_struct) != 64);
+ 	BUILD_BUG_ON(sizeof(struct sched_entity) != 192);
++#ifdef CONFIG_GTBE19000AI_RESOURCE_ABI
++	gtbe19000ai_block_abi_check();
++	BUILD_BUG_ON(offsetof(struct task_struct, throttle_queue) != 2680);
++	BUILD_BUG_ON(offsetof(struct sched_entity, depth) != 68);
++	BUILD_BUG_ON(offsetof(struct sched_entity, cfs_rq) != 112);
++	BUILD_BUG_ON(offsetof(struct sched_entity, my_q) != 120);
++	BUILD_BUG_ON(offsetof(struct sched_entity, avg) != 128);
++	BUILD_BUG_ON(offsetof(struct task_struct, sched_task_group) != 184);
++	BUILD_BUG_ON(offsetof(struct task_struct, mems_allowed_seq) != 60);
++	BUILD_BUG_ON(offsetof(struct task_struct, cpuset_mem_spread_rotor) != 84);
++	BUILD_BUG_ON(offsetof(struct task_struct, cpuset_slab_spread_rotor) != 132);
++	BUILD_BUG_ON(offsetof(struct task_struct, mems_allowed) != 2672);
++#endif
+ 	BUILD_BUG_ON(offsetof(struct task_struct, cgroups) != 144);
+ 	BUILD_BUG_ON(offsetof(struct task_struct, cg_list) != 152);
+ #ifdef CONFIG_SECCOMP
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/sched/fair.c b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/sched/fair.c
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/sched/fair.c
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/sched/fair.c
+@@ -261,9 +261,23 @@
+ 	return container_of(se, struct task_struct, se);
+ }
+ 
++/* The parent entity is determined by the runqueue's owning group.
++ * Avoid its redundant pointer so the vendor sched_entity stays 192 bytes.
++ * set_task_rq() and init_tg_cfs_entry() establish this same relationship.
++ */
++static inline struct sched_entity *parent_entity(struct sched_entity *se)
++{
++#ifdef CONFIG_GTBE19000AI_RESOURCE_ABI
++	struct cfs_rq *cfs_rq = se->cfs_rq;
++	return cfs_rq ? cfs_rq->tg->se[cpu_of(cfs_rq->rq)] : NULL;
++#else
++	return se->parent;
++#endif
++}
++
+ /* Walk up scheduling entities hierarchy */
+ #define for_each_sched_entity(se) \
+-		for (; se; se = se->parent)
++		for (; se; se = parent_entity(se))
+ 
+ static inline struct cfs_rq *task_cfs_rq(struct task_struct *p)
+ {
+@@ -390,10 +404,6 @@
+ 	return NULL;
+ }
+ 
+-static inline struct sched_entity *parent_entity(struct sched_entity *se)
+-{
+-	return se->parent;
+-}
+ 
+ static void
+ find_matching_se(struct sched_entity **se, struct sched_entity **pse)
+@@ -9951,7 +9961,7 @@
+ 	list_add_leaf_cfs_rq(cfs_rq_of(se));
+ 
+ 	/* Start to propagate at parent */
+-	se = se->parent;
++	se = parent_entity(se);
+ 
+ 	for_each_sched_entity(se) {
+ 		cfs_rq = cfs_rq_of(se);
+@@ -9990,7 +10000,7 @@
+ 	 * Since the real-depth could have been changed (only FAIR
+ 	 * class maintain depth value), reset depth properly.
+ 	 */
+-	se->depth = se->parent ? se->parent->depth + 1 : 0;
++	se->depth = parent_entity(se) ? parent_entity(se)->depth + 1 : 0;
+ #endif
+ 
+ 	/* Synchronize entity with its cfs_rq */
+@@ -10086,7 +10096,7 @@
+ 	struct sched_entity *se = &p->se;
+ 
+ 	set_task_rq(p, task_cpu(p));
+-	se->depth = se->parent ? se->parent->depth + 1 : 0;
++	se->depth = parent_entity(se) ? parent_entity(se)->depth + 1 : 0;
+ }
+ 
+ static void task_move_group_fair(struct task_struct *p)
+@@ -10243,7 +10253,11 @@
+ 	se->my_q = cfs_rq;
+ 	/* guarantee group entities always have weight */
+ 	update_load_set(&se->load, NICE_0_LOAD);
++#ifndef CONFIG_GTBE19000AI_RESOURCE_ABI
+ 	se->parent = parent;
++#else
++	WARN_ON_ONCE(parent_entity(se) != parent);
++#endif
+ }
+ 
+ static DEFINE_MUTEX(shares_mutex);
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/sched/sched.h b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/sched/sched.h
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/sched/sched.h
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/sched/sched.h
+@@ -1302,7 +1302,9 @@
+ #ifdef CONFIG_FAIR_GROUP_SCHED
+ 	set_task_rq_fair(&p->se, p->se.cfs_rq, tg->cfs_rq[cpu]);
+ 	p->se.cfs_rq = tg->cfs_rq[cpu];
++#ifndef CONFIG_GTBE19000AI_RESOURCE_ABI
+ 	p->se.parent = tg->se[cpu];
++#endif
+ #endif
+ 
+ #ifdef CONFIG_RT_GROUP_SCHED

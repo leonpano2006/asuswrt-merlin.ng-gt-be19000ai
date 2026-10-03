@@ -1,0 +1,18 @@
+{
+  "label": "resource6-trial-guard2",
+  "stop_reason": "qemu_exit",
+  "exit_code": 0,
+  "elapsed_seconds": 1.0,
+  "kernel_sha256": "807318115f76789e20d7d3ebfeff8cf22a5c19959ac1ecedf1d33dc96eff93ce",
+  "initramfs_sha256": "146d9759316806ed0cc63233a8557cee6cb880f23494d2fa0ea64e1048e42c18",
+  "log_sha256": "20f1d97c9b377d6dafafe2ccd90144b796bdc7aad1e878b473d14baecbaee525",
+  "init_reached": true,
+  "guest_complete": true,
+  "panic": false,
+  "lab_lines": [
+    "LAB_PASS stock_sysfs_block_layout",
+    "LAB_PASS metadata_writes_blocked",
+    "LAB_PASS ordinary_partition_writable",
+    "LAB_PASS explicit_operator_unlock"
+  ]
+}

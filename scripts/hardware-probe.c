@@ -18,7 +18,7 @@
 #include <errno.h>
 static void check(int ok,const char*s){if(!ok){perror(s);exit(1);}}
 static void put(const char*p,const char*v){int f=open(p,O_WRONLY);check(f>=0,p);check(write(f,v,strlen(v))==(ssize_t)strlen(v),p);close(f);}
-int main(void){struct utsname u;check(!uname(&u),"uname");check((strstr(u.version,"#4 ")||strstr(u.version,"#5 "))&&strstr(u.version,"Oct 3"),"kernel guard");char buf[512];int f=open("/proc/cmdline",O_RDONLY);check(f>=0,"cmdline");int n=read(f,buf,sizeof(buf)-1);check(n>0,"cmdline read");buf[n]=0;close(f);check(strstr(buf,"root=/dev/mmcblk0p4")!=NULL,"target guard");alarm(30);setbuf(stdout,NULL);
+int main(void){struct utsname u;check(!uname(&u),"uname");check((strstr(u.version,"#4 ")||strstr(u.version,"#5 ")||strstr(u.version,"#6 "))&&strstr(u.version,"Oct 3"),"kernel guard");char buf[512];int f=open("/proc/cmdline",O_RDONLY);check(f>=0,"cmdline");int n=read(f,buf,sizeof(buf)-1);check(n>0,"cmdline read");buf[n]=0;close(f);check(strstr(buf,"root=/dev/mmcblk0p4")!=NULL,"target guard");alarm(30);setbuf(stdout,NULL);
 check(!unshare(CLONE_NEWNS),"mount namespace");check(!mount(NULL,"/",NULL,MS_REC|MS_PRIVATE,NULL),"private propagation");
 const char*base="/tmp/leon-kernel4-probe";check(!chdir(base),"lab dir");check(!mkdir("memory",0700),"cg mount dir");check(!mount("none","memory","cgroup",0,"memory"),"memory cgroup mount");check(!mkdir("memory/leon-kernel4-probe",0700),"cg group");
 put("memory/leon-kernel4-probe/memory.limit_in_bytes","16777216");put("memory/leon-kernel4-probe/memory.memsw.limit_in_bytes","16777216");

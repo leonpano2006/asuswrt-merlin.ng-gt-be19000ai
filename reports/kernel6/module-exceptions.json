@@ -1,0 +1,712 @@
+[
+  {
+    "version": "stock",
+    "target": "bcm_bp3drv",
+    "status": "panic",
+    "module_results": [],
+    "panic": true,
+    "kernel_sha256": "aeca127a930a6c000de905382c6d58783b9002bcf11a1025b4b57131e75f3ca1",
+    "guest_complete": false
+  },
+  {
+    "version": "candidate",
+    "target": "bcm_bp3drv",
+    "status": "panic",
+    "module_results": [],
+    "panic": true,
+    "kernel_sha256": "807318115f76789e20d7d3ebfeff8cf22a5c19959ac1ecedf1d33dc96eff93ce",
+    "guest_complete": false
+  },
+  {
+    "version": "stock",
+    "target": "bcm_bpm",
+    "status": "dependency_error",
+    "module_results": [
+      [
+        "bcm_mpm",
+        "-1",
+        "1",
+        "Operation not permitted"
+      ]
+    ],
+    "panic": false,
+    "kernel_sha256": "aeca127a930a6c000de905382c6d58783b9002bcf11a1025b4b57131e75f3ca1",
+    "guest_complete": true
+  },
+  {
+    "version": "candidate",
+    "target": "bcm_bpm",
+    "status": "dependency_error",
+    "module_results": [
+      [
+        "bcm_mpm",
+        "-1",
+        "1",
+        "Operation not permitted"
+      ]
+    ],
+    "panic": false,
+    "kernel_sha256": "807318115f76789e20d7d3ebfeff8cf22a5c19959ac1ecedf1d33dc96eff93ce",
+    "guest_complete": true
+  },
+  {
+    "version": "stock",
+    "target": "bcm_mpm",
+    "status": "load_error",
+    "module_results": [
+      [
+        "bcm_mpm",
+        "-1",
+        "1",
+        "Operation not permitted"
+      ]
+    ],
+    "panic": false,
+    "kernel_sha256": "aeca127a930a6c000de905382c6d58783b9002bcf11a1025b4b57131e75f3ca1",
+    "guest_complete": true
+  },
+  {
+    "version": "candidate",
+    "target": "bcm_mpm",
+    "status": "load_error",
+    "module_results": [
+      [
+        "bcm_mpm",
+        "-1",
+        "1",
+        "Operation not permitted"
+      ]
+    ],
+    "panic": false,
+    "kernel_sha256": "807318115f76789e20d7d3ebfeff8cf22a5c19959ac1ecedf1d33dc96eff93ce",
+    "guest_complete": true
+  },
+  {
+    "version": "stock",
+    "target": "bcm_pcie_hcd",
+    "status": "timeout_or_early_exit",
+    "module_results": [
+      [
+        "bdmf",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "rdpa_gpl",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "bcmlibs",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "bcm_enet",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "bcm_knvram",
+        "0",
+        "0",
+        "Success"
+      ]
+    ],
+    "panic": false,
+    "kernel_sha256": "aeca127a930a6c000de905382c6d58783b9002bcf11a1025b4b57131e75f3ca1",
+    "guest_complete": false
+  },
+  {
+    "version": "candidate",
+    "target": "bcm_pcie_hcd",
+    "status": "timeout_or_early_exit",
+    "module_results": [
+      [
+        "bdmf",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "rdpa_gpl",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "bcmlibs",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "bcm_enet",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "bcm_knvram",
+        "0",
+        "0",
+        "Success"
+      ]
+    ],
+    "panic": false,
+    "kernel_sha256": "807318115f76789e20d7d3ebfeff8cf22a5c19959ac1ecedf1d33dc96eff93ce",
+    "guest_complete": false
+  },
+  {
+    "version": "stock",
+    "target": "dhd",
+    "status": "timeout_or_early_exit",
+    "module_results": [
+      [
+        "bdmf",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "bcm_knvram",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "hnd",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "firmware_class",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "cfg80211",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "wlshared",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "rdpa_gpl",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "bcmlibs",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "bcmmcast",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "wfd",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "emf",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "igs",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "bcm_enet",
+        "0",
+        "0",
+        "Success"
+      ]
+    ],
+    "panic": false,
+    "kernel_sha256": "aeca127a930a6c000de905382c6d58783b9002bcf11a1025b4b57131e75f3ca1",
+    "guest_complete": false
+  },
+  {
+    "version": "candidate",
+    "target": "dhd",
+    "status": "timeout_or_early_exit",
+    "module_results": [
+      [
+        "bdmf",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "rdpa_gpl",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "bcmlibs",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "bcm_enet",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "bcm_knvram",
+        "0",
+        "0",
+        "Success"
+      ]
+    ],
+    "panic": false,
+    "kernel_sha256": "807318115f76789e20d7d3ebfeff8cf22a5c19959ac1ecedf1d33dc96eff93ce",
+    "guest_complete": false
+  },
+  {
+    "version": "stock",
+    "target": "gdx",
+    "status": "panic",
+    "module_results": [
+      [
+        "bdmf",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "rdpa_gpl",
+        "0",
+        "0",
+        "Success"
+      ]
+    ],
+    "panic": true,
+    "kernel_sha256": "aeca127a930a6c000de905382c6d58783b9002bcf11a1025b4b57131e75f3ca1",
+    "guest_complete": false
+  },
+  {
+    "version": "candidate",
+    "target": "gdx",
+    "status": "panic",
+    "module_results": [
+      [
+        "bdmf",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "rdpa_gpl",
+        "0",
+        "0",
+        "Success"
+      ]
+    ],
+    "panic": true,
+    "kernel_sha256": "807318115f76789e20d7d3ebfeff8cf22a5c19959ac1ecedf1d33dc96eff93ce",
+    "guest_complete": false
+  },
+  {
+    "version": "candidate",
+    "target": "mtdoops",
+    "status": "load_error",
+    "module_results": [
+      [
+        "mtdoops",
+        "-1",
+        "22",
+        "Invalid argument"
+      ]
+    ],
+    "panic": false,
+    "kernel_sha256": "807318115f76789e20d7d3ebfeff8cf22a5c19959ac1ecedf1d33dc96eff93ce",
+    "guest_complete": true
+  },
+  {
+    "version": "stock",
+    "target": "nls_euc_jp",
+    "status": "load_error",
+    "module_results": [
+      [
+        "nls_euc_jp",
+        "-1",
+        "22",
+        "Invalid argument"
+      ]
+    ],
+    "panic": false,
+    "kernel_sha256": "aeca127a930a6c000de905382c6d58783b9002bcf11a1025b4b57131e75f3ca1",
+    "guest_complete": true
+  },
+  {
+    "version": "candidate",
+    "target": "nls_euc_jp",
+    "status": "load_error",
+    "module_results": [
+      [
+        "nls_euc_jp",
+        "-1",
+        "22",
+        "Invalid argument"
+      ]
+    ],
+    "panic": false,
+    "kernel_sha256": "807318115f76789e20d7d3ebfeff8cf22a5c19959ac1ecedf1d33dc96eff93ce",
+    "guest_complete": true
+  },
+  {
+    "version": "stock",
+    "target": "oops_mmc",
+    "status": "load_error",
+    "module_results": [
+      [
+        "oops_mmc",
+        "-1",
+        "22",
+        "Invalid argument"
+      ]
+    ],
+    "panic": false,
+    "kernel_sha256": "aeca127a930a6c000de905382c6d58783b9002bcf11a1025b4b57131e75f3ca1",
+    "guest_complete": true
+  },
+  {
+    "version": "candidate",
+    "target": "oops_mmc",
+    "status": "load_error",
+    "module_results": [
+      [
+        "oops_mmc",
+        "-1",
+        "22",
+        "Invalid argument"
+      ]
+    ],
+    "panic": false,
+    "kernel_sha256": "807318115f76789e20d7d3ebfeff8cf22a5c19959ac1ecedf1d33dc96eff93ce",
+    "guest_complete": true
+  },
+  {
+    "version": "stock",
+    "target": "pktrunner",
+    "status": "panic",
+    "module_results": [
+      [
+        "cmdlist",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "bdmf",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "rdpa_gpl",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "bcmlibs",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "pktflow",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "bcm_knvram",
+        "0",
+        "0",
+        "Success"
+      ]
+    ],
+    "panic": true,
+    "kernel_sha256": "aeca127a930a6c000de905382c6d58783b9002bcf11a1025b4b57131e75f3ca1",
+    "guest_complete": false
+  },
+  {
+    "version": "candidate",
+    "target": "pktrunner",
+    "status": "panic",
+    "module_results": [
+      [
+        "bcmlibs",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "pktflow",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "cmdlist",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "bcm_knvram",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "bdmf",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "rdpa_gpl",
+        "0",
+        "0",
+        "Success"
+      ]
+    ],
+    "panic": true,
+    "kernel_sha256": "807318115f76789e20d7d3ebfeff8cf22a5c19959ac1ecedf1d33dc96eff93ce",
+    "guest_complete": false
+  },
+  {
+    "version": "stock",
+    "target": "rdpa",
+    "status": "load_error",
+    "module_results": [
+      [
+        "bdmf",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "rdpa_gpl",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "rdpa",
+        "-1",
+        "2",
+        "No such file or directory"
+      ]
+    ],
+    "panic": false,
+    "kernel_sha256": "aeca127a930a6c000de905382c6d58783b9002bcf11a1025b4b57131e75f3ca1",
+    "guest_complete": true
+  },
+  {
+    "version": "candidate",
+    "target": "rdpa",
+    "status": "dependency_error",
+    "module_results": [
+      [
+        "bdmf",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "rdpa_gpl",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "bcmlibs",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "bcm_mpm",
+        "-1",
+        "1",
+        "Operation not permitted"
+      ]
+    ],
+    "panic": false,
+    "kernel_sha256": "807318115f76789e20d7d3ebfeff8cf22a5c19959ac1ecedf1d33dc96eff93ce",
+    "guest_complete": true
+  },
+  {
+    "version": "stock",
+    "target": "rdpa_cmd",
+    "status": "panic",
+    "module_results": [
+      [
+        "bdmf",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "rdpa_gpl",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "bcm_knvram",
+        "0",
+        "0",
+        "Success"
+      ]
+    ],
+    "panic": true,
+    "kernel_sha256": "aeca127a930a6c000de905382c6d58783b9002bcf11a1025b4b57131e75f3ca1",
+    "guest_complete": false
+  },
+  {
+    "version": "candidate",
+    "target": "rdpa_cmd",
+    "status": "panic",
+    "module_results": [
+      [
+        "bcm_ingqos",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "rdpa_gpl_ext",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "bcm_knvram",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "bdmf",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "rdpa_gpl",
+        "0",
+        "0",
+        "Success"
+      ]
+    ],
+    "panic": true,
+    "kernel_sha256": "807318115f76789e20d7d3ebfeff8cf22a5c19959ac1ecedf1d33dc96eff93ce",
+    "guest_complete": false
+  },
+  {
+    "version": "stock",
+    "target": "rdpa_mw",
+    "status": "panic",
+    "module_results": [
+      [
+        "bdmf",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "rdpa_gpl",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "bcm_knvram",
+        "0",
+        "0",
+        "Success"
+      ]
+    ],
+    "panic": true,
+    "kernel_sha256": "aeca127a930a6c000de905382c6d58783b9002bcf11a1025b4b57131e75f3ca1",
+    "guest_complete": false
+  },
+  {
+    "version": "candidate",
+    "target": "rdpa_mw",
+    "status": "panic",
+    "module_results": [
+      [
+        "bcm_knvram",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "bdmf",
+        "0",
+        "0",
+        "Success"
+      ],
+      [
+        "rdpa_gpl",
+        "0",
+        "0",
+        "Success"
+      ]
+    ],
+    "panic": true,
+    "kernel_sha256": "807318115f76789e20d7d3ebfeff8cf22a5c19959ac1ecedf1d33dc96eff93ce",
+    "guest_complete": false
+  },
+  {
+    "version": "stock",
+    "target": "rtl8372",
+    "status": "panic",
+    "module_results": [],
+    "panic": true,
+    "kernel_sha256": "aeca127a930a6c000de905382c6d58783b9002bcf11a1025b4b57131e75f3ca1",
+    "guest_complete": false
+  },
+  {
+    "version": "candidate",
+    "target": "rtl8372",
+    "status": "panic",
+    "module_results": [],
+    "panic": true,
+    "kernel_sha256": "807318115f76789e20d7d3ebfeff8cf22a5c19959ac1ecedf1d33dc96eff93ce",
+    "guest_complete": false
+  }
+]

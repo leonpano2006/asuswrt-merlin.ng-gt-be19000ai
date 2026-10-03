@@ -1,0 +1,71 @@
+[
+  {
+    "type": "structure css_set",
+    "old": 376,
+    "new": 448,
+    "members": [
+      "subsys",
+      "refcount",
+      "dom_cset",
+      "dfl_cgrp",
+      "nr_tasks",
+      "tasks",
+      "mg_tasks",
+      "dying_tasks",
+      "task_iters",
+      "e_cset_node",
+      "threaded_csets",
+      "threaded_csets_node",
+      "hlist",
+      "cgrp_links",
+      "mg_src_preload_node",
+      "mg_dst_preload_node",
+      "mg_node",
+      "mg_src_cgrp",
+      "mg_dst_cgrp",
+      "mg_dst_cset",
+      "dead",
+      "callback_head"
+    ]
+  },
+  {
+    "type": "structure cgroup",
+    "old": 784,
+    "new": 856,
+    "members": [
+      "subsys",
+      "root",
+      "cset_links",
+      "e_csets",
+      "dom_cgrp",
+      "old_dom_cgrp",
+      "rstat_cpu",
+      "rstat_css_list",
+      "pending_bstat",
+      "bstat",
+      "prev_cputime",
+      "pidlists",
+      "pidlist_mutex",
+      "offline_waitq",
+      "release_agent_work",
+      "bpf",
+      "congestion_count",
+      "ancestor_ids"
+    ]
+  },
+  {
+    "type": "structure cgroup_root",
+    "old": 5016,
+    "new": 5088,
+    "members": [
+      "cgrp",
+      "cgrp_ancestor_id_storage",
+      "nr_cgrps",
+      "root_list",
+      "flags",
+      "cgroup_idr",
+      "release_agent_path",
+      "name"
+    ]
+  }
+]

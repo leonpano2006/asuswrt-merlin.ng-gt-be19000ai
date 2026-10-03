@@ -1,0 +1,16 @@
+{
+  "label": "resource6-rootless5",
+  "stop_reason": "complete",
+  "exit_code": 0,
+  "elapsed_seconds": 15.03,
+  "kernel_sha256": "807318115f76789e20d7d3ebfeff8cf22a5c19959ac1ecedf1d33dc96eff93ce",
+  "initramfs_sha256": "6ca91ce5fe447546a030c9b80fcbaf2787823dd69df60e6aa8df71dd5eb6f20c",
+  "log_sha256": "6bf5f10e6c97592aae8ec51eed38a7d1a765094f8ff16ac39c1757aa954e351d",
+  "init_reached": true,
+  "guest_complete": true,
+  "panic": false,
+  "lab_lines": [
+    "LAB_ROOTLESS_UID 1000 1000",
+    "LAB_ROOTLESS_PASS actual_docker_daemon_uid1000_container_exec_and_write"
+  ]
+}

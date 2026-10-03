@@ -14,8 +14,11 @@ Ubuntu 26.04 and a Docker userspace installation are outside this build.
 
 The kernel feature baseline is the running GT-BE98 kernel #36: memory/swap cgroups,
 pids/devices/freezer/cpuacct, namespaces, seccomp, veth/macvlan, OverlayFS, Btrfs,
-XFS, modern Zstd, zswap/zsmalloc and zram. CPU quota/cpuset/blkio and unprivileged
-user namespaces remain disabled as on that baseline. BE19000AI stock features
+XFS, modern Zstd, zswap/zsmalloc and zram. Kernel #6 adds CFS CPU quota,
+cpuset, block read/write throttling and unprivileged user namespaces. Its task,
+scheduler and block layouts retain the existing vendor offsets; 142 block fields
+are also checked at compile time. Block queue/request private allocations and a
+bio handle keep vendor-facing structure sizes unchanged. BE19000AI stock features
 including ICP201XX, CRC8 and MMC oops are retained. Net-device field offsets used
 by proprietary drivers are protected separately; this is not a proof of every
 proprietary driver's internal ABI.
@@ -28,11 +31,11 @@ Git, squashfs-tools with Zstd, lzop and OpenSSL. Set `BSP_TOOLCHAIN` to the SDK'
 
 ```sh
 python3 scripts/prepare-source.py
-python3 scripts/build-kernel.py olddefconfig --label config --version 5
-python3 scripts/build-kernel.py Image --label image --version 5
+python3 scripts/build-kernel.py olddefconfig --label config --version 6
+python3 scripts/build-kernel.py Image --label image --version 6
 # Build each module directory, in this order:
 for d in lib crypto fs mm net drivers; do
-  python3 scripts/build-kernel.py modules --module-dir "$d" --label "modules-$d" --version 5
+  python3 scripts/build-kernel.py modules --module-dir "$d" --label "modules-$d" --version 6
 done
 ```
 
@@ -65,8 +68,45 @@ filesystem tests. Its live configuration matches the build exactly, PID 1 remain
 `/sbin/rc`, AiMesh is online, all three radios are up, and the AI API responds.
 Runner is enabled with nonzero hardware packet/byte counters; no throughput
 benchmark was performed. The Zstd/zsmalloc pool is created at boot as intended.
-Neither candidate has been permanently committed. The second slot remains the original committed firmware.
+All candidates remain uncommitted. The second slot remains the original committed firmware.
 No enclosure opening or serial connection is required by this workflow.
+
+Kernel #6 booted successfully in the first trial slot. Physical CPU quota,
+cpuset, direct block read/write throttling, unprivileged user namespaces,
+memcg/seccomp, Btrfs Zstd and OverlayFS tests passed. All three radios were up,
+the BE98 controller reported this node online, and the AI API returned HTTP 200.
+Hardware acceleration remains enabled; the sampled proc flow tables returned no
+rows, so no hardware traffic-counter or throughput result is claimed. Its live
+configuration exactly matches the build. Metadata partitions remain read-only,
+slot 1 remains uncommitted, and the next boot selects the original slot 2.
+
+## Kernel #6 resource validation
+
+QEMU passed actual CPU throttling, cpuset placement and fork inheritance, and
+4 MiB direct writes/reads at 1 MiB/s (approximately four seconds each), with
+byte-for-byte readback. Docker 29.8.0 also accepted and applied `--cpus`,
+`--cpuset-cpus`, `--device-read-bps` and `--device-write-bps`. Its memory/OOM,
+swap/zswap, Btrfs, overlay2 and original Tuxera module regression tests passed.
+The full #6 matrix ran 330 stock/candidate probes with no stock-loaded module
+regression. Tests requiring unavailable board hardware retain their documented
+QEMU exceptions. All 4,080 non-module rootfs entries are unchanged.
+
+An offline rootless Docker daemon ran as host UID 1000, reported rootless mode,
+and executed a container that wrote/read a file and verified memory. This test
+uses VFS storage and no networking, with UID mapping helpers and subordinate IDs
+provided only inside the disposable VM. The firmware userspace is unchanged;
+it does not yet install those helpers or manage a persistent rootless service.
+Rootless Docker resource flags additionally require cgroup v2/systemd delegation;
+that userspace integration is outside this kernel-only change. See
+[Docker rootless requirements](https://docs.docker.com/engine/security/rootless/)
+and [resource-limit support](https://docs.docker.com/engine/security/rootless/tips/).
+Buffered per-cgroup writeback and the I/O latency/low-limit policies remain off;
+the block bandwidth result above covers direct I/O.
+
+The new tests are in `scripts/resource-probe.c`, `prepare-resource-test.py`, and
+`prepare-rootless-test.py`. The hardware variant is explicitly guarded for
+kernel #6 and slot 1, runs in a private mount namespace and limits its block
+writes to an 8 MiB RAM-file-backed loop device. It does not target an eMMC volume.
 
 ## Validation and trial policy
 
@@ -95,19 +135,19 @@ actual radios, Ethernet/Runner, AI-board link and service stability.
 
 `reports/kernel3` preserves the initial build's historical matrix and manifest.
 `reports/kernel4` records the first successful hardware trial. `reports/kernel5`
-contains the final build's results; each QEMU result identifies the exact kernel
+preserves its results; `reports/kernel6` contains the resource-controller build; each QEMU result identifies the exact kernel
 and test initramfs hashes. Full device logs and backups are kept locally only.
 The initial trial did not leave a saved panic trace; the exact previous failure
 instruction is unknown. The confirmed sysfs incompatibility was corrected and
 hardware boot succeeded afterward.
 
 Recreate the final rootfs from the local original extraction with
-`python3 scripts/stage-rootfs.py --version 5`. This changes only `lib/modules`,
+`python3 scripts/stage-rootfs.py --version 6`. This changes only `lib/modules`,
 records the checksums, and produces the Zstd SquashFS. The original image expected
 by `pack-image.py` must match the SHA-256 in `UPSTREAM.json`. Never flash the
 currently active slot or overwrite the original committed fallback slot.
 
 The BE98 failure review and corresponding AI checks are recorded in
-[BE98 lessons](reports/be98-lessons.md). The downloadable kernel #5 TRIAL image
+[BE98 lessons](reports/be98-lessons.md). The downloadable kernel #6 TRIAL image
 is the exact readback-verified image tested on hardware. It is not approved for
 permanent boot-slot commitment.
