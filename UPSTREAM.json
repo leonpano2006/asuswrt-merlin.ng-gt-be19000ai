@@ -1,0 +1,9 @@
+{
+  "repository": "https://github.com/RMerl/asuswrt-merlin.ng.git",
+  "tag": "3006.102.9",
+  "commit": "69838e4a60564e5550e97f11d8a8cf2c6260c4f0",
+  "baseline_firmware_sha256": "e9ca880e4ded8b1fd47000179fffe14b9ac3406a25ee5656e80d29290a5ca09c",
+  "donor_repository": "https://github.com/leonpano2006/asuswrt-merlin.ng-gt-be98",
+  "donor_kernel": "Linux 4.19.294 #36, live BE98 configuration verified",
+  "upstream_history": "Preserved through the source submodule; feature changes recorded as reviewable patches in this repository."
+}

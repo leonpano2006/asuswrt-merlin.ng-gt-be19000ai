@@ -1,0 +1,66 @@
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/partition-generic.c b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/partition-generic.c
+index 871f528dc..3dacdcfdb 100644
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/partition-generic.c
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/partition-generic.c
+@@ -317,6 +317,19 @@ static DEVICE_ATTR(whole_disk, 0444, whole_disk_show, NULL);
+  * Must be called either with bd_mutex held, before a disk can be opened or
+  * after all disk users are gone.
+  */
++#ifdef CONFIG_GTBE19000AI_TRIAL_METADATA_RO
++static char be19000ai_trial_disk[DISK_NAME_LEN] = "mmcblk0";
++
++static int __init be19000ai_trial_disk_setup(char *name)
++{
++	if (!name || !*name || strlen(name) >= sizeof(be19000ai_trial_disk))
++		return 0;
++	strlcpy(be19000ai_trial_disk, name, sizeof(be19000ai_trial_disk));
++	return 1;
++}
++__setup("be19000ai_trial_disk=", be19000ai_trial_disk_setup);
++#endif
++
+ struct hd_struct *add_partition(struct gendisk *disk, int partno,
+ 				sector_t start, sector_t len, int flags,
+ 				struct partition_meta_info *info)
+@@ -357,6 +370,17 @@ struct hd_struct *add_partition(struct gendisk *disk, int partno,
+ 	p->nr_sects = len;
+ 	p->partno = partno;
+ 	p->policy = get_disk_ro(disk);
++#ifdef CONFIG_GTBE19000AI_TRIAL_METADATA_RO
++	/* Apply before publishing the partition, so PID 1 cannot race it. */
++	if (info && !strcmp(disk->disk_name, be19000ai_trial_disk) &&
++	    ((partno == 1 && !strcmp(info->volname, "metadata1")) ||
++	     (partno == 2 && !strcmp(info->volname, "metadata2")))) {
++		p->policy = 1;
++		pr_info("BE19000AI trial: %sp%d (%s) read-only; automatic commit blocked\n",
++			disk->disk_name, partno, info->volname);
++	}
++#endif
++
+ 
+ 	if (info) {
+ 		struct partition_meta_info *pinfo = alloc_part_info(disk);
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/init/Kconfig b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/init/Kconfig
+index 2518c992f..483d6f770 100644
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/init/Kconfig
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/init/Kconfig
+@@ -932,6 +932,19 @@ config SOCK_CGROUP_DATA
+ 	bool
+ 	default n
+ 
++config GTBE19000AI_TRIAL_METADATA_RO
++	bool "Make GT-BE19000AI trial boot metadata read-only"
++	depends on ARM64 && BCM96813
++	default n
++	help
++	  Trial kernels mark mmcblk0 partitions 1 and 2 read-only when their
++	  GPT names are metadata1 and metadata2. This prevents stock rc from
++	  committing a trial image through /dev/metadataN. It does not change
++	  the on-disk GPT, protect raw whole-disk writes, or modify userspace.
++	  An operator can deliberately unlock a partition with BLKROSET.
++	  The be19000ai_trial_disk= boot argument selects a different disk
++	  for isolated loop-device verification. Never set it on the router.
++
+ config GTBE19000AI_NETDEV_ABI
+ 	bool "Preserve GT-BE19000AI net_device layout with network namespaces"
+ 	depends on ARM64 && BCM96813 && NET_NS

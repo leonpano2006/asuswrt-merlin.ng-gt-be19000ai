@@ -1,0 +1,18 @@
+{
+  "size_before": 2112,
+  "size_after": 2112,
+  "nonempty_stock_members_preserved": true,
+  "lost_members": [],
+  "new_nd_net": {
+    "name": "nd_net",
+    "offset": 2080,
+    "bytes": 8,
+    "anonymous_members": [
+      {
+        "name": "net",
+        "offset": 0,
+        "bytes": 8
+      }
+    ]
+  }
+}

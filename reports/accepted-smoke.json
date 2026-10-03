@@ -1,0 +1,30 @@
+{
+  "label": "accepted-smoke",
+  "stop_reason": "complete",
+  "exit_code": 0,
+  "elapsed_seconds": 3.21,
+  "kernel_sha256": "cabfce76b1810ecb60b98beed8632ea60f729e87c10cc781d937cff15313753a",
+  "initramfs_sha256": "d6543d1841d1fbe0ed677c9eb0094416d2ab6b85b97af98bd74e366328a01047",
+  "log_sha256": "6bfe1d0eb18527c32ac5e93a47a9b829d5a981d8d4673e52546ffea88bb3e27a",
+  "init_reached": true,
+  "guest_complete": true,
+  "panic": false,
+  "lab_lines": [
+    "LAB_MEMCG_USAGE 8388608",
+    "LAB_MEMCG_PASS anon_charge_uncharge",
+    "LAB_MEMCG_MAX_USAGE 16781312",
+    "LAB_MEMCG_PASS limit_oom_kills_only_child_parent_survives",
+    "LAB_MEMCG_PASS combined_memory_swap_limit",
+    "LAB_MEMCG_PASS fork_exec_exit_40_cycles",
+    "LAB_MEMCG_PASS shared_mm_owner_exit_transfer",
+    "LAB_MEMCG_PASS cleanup",
+    "LAB_PASS seccomp_errno_and_fork_inheritance",
+    "LAB_PASS devices_deny_and_allow",
+    "LAB_PASS freezer_stop_and_resume",
+    "LAB_PASS cpuacct_usage ns=54695392",
+    "LAB_PASS pids_fork_thread_limit_and_release",
+    "LAB_PASS pids_hierarchical_limit",
+    "LAB_PASS cgroup_50_create_migrate_250_fork_remove_cycles",
+    "LAB_PASS uts_ipc_mount_net_pid_namespaces"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "counts": {
+    "stock": {
+      "loaded": 136,
+      "panic": 6,
+      "dependency_error": 1,
+      "load_error": 4,
+      "timeout_or_early_exit": 2
+    },
+    "candidate": {
+      "loaded": 168,
+      "panic": 6,
+      "dependency_error": 2,
+      "load_error": 4,
+      "timeout_or_early_exit": 2
+    }
+  },
+  "regressions": [],
+  "targets": 182,
+  "vm_runs": 331,
+  "hardware_not_emulated": true
+}

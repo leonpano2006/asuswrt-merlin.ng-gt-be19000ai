@@ -1,0 +1,66 @@
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/netdevice.h b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/netdevice.h
+index fc3f2edd1..b6f44aa81 100755
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/netdevice.h
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/netdevice.h
+@@ -2010,7 +2010,9 @@ struct net_device {
+ 	struct netpoll_info __rcu	*npinfo;
+ #endif
+ 
++#ifndef CONFIG_GTBE19000AI_NETDEV_ABI
+ 	possible_net_t			nd_net;
++#endif
+ 
+ 	/* mid-layer private */
+ 	union {
+@@ -2070,6 +2072,10 @@ struct net_device {
+ 	unsigned long           last_rx;
+ #endif
+ 
++#ifdef CONFIG_GTBE19000AI_NETDEV_ABI
++	/* Original layout ends at 2080, aligned to 2112 bytes. */
++	possible_net_t nd_net;
++#endif
+ };
+ #define to_net_dev(d) container_of(d, struct net_device, dev)
+ 
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/init/Kconfig b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/init/Kconfig
+index 1ad5295c6..2518c992f 100644
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/init/Kconfig
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/init/Kconfig
+@@ -932,6 +932,17 @@ config SOCK_CGROUP_DATA
+ 	bool
+ 	default n
+ 
++config GTBE19000AI_NETDEV_ABI
++	bool "Preserve GT-BE19000AI net_device layout with network namespaces"
++	depends on ARM64 && BCM96813 && NET_NS
++	default n
++	help
++	  The 3006.102.9 vendor modules were built with NET_NS disabled.
++	  Place nd_net in verified tail padding rather than shifting the
++	  embedded device, sysfs and PHY members. Compile-time checks and
++	  a stock-header comparison are required. This option protects only
++	  net_device, not all namespace-dependent structures.
++
+ config GTBE98_MEMCG_ABI
+ 	bool "Preserve Leon GT-BE98 layouts for userspace memory accounting"
+ 	depends on ARM64 && BCM96813 && SMP && SLUB && CGROUP_PIDS
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/net/core/dev.c b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/net/core/dev.c
+index aca36bb73..760d00fb0 100644
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/net/core/dev.c
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/net/core/dev.c
+@@ -9892,6 +9892,14 @@ static int __init net_dev_init(void)
+ {
+ 	int i, rc = -ENOMEM;
+ 
++#ifdef CONFIG_GTBE19000AI_NETDEV_ABI
++	BUILD_BUG_ON(sizeof(struct net_device) != 2112);
++	BUILD_BUG_ON(offsetof(struct net_device, dev) != 1384);
++	BUILD_BUG_ON(offsetof(struct net_device, phydev) != 2032);
++	BUILD_BUG_ON(offsetof(struct net_device, last_rx) != 2072);
++	BUILD_BUG_ON(offsetof(struct net_device, nd_net) != 2080);
++#endif
++
+ 	BUG_ON(!dev_boot_phase);
+ 
+ 	if (dev_proc_init())
