@@ -45,6 +45,16 @@ verifies the original signature and repacks only kernel/rootfs payloads using th
 SDK's publicly shipped demo signing key. Keys are not copied into this repository.
 Local images, backups and build outputs are excluded from Git.
 
+## Hardware status
+
+Kernel #3 passed the recorded QEMU tests. It was written to the inactive first
+slot and armed for one boot; every written payload matched its hash, and the
+original committed second slot was verified unchanged. After reboot, management
+connectivity did not return. Hardware acceptance has **not** passed; the cause
+is unknown without a boot log. A physical power cycle is needed to check fallback
+to the original slot and recover any saved panic log. Do not treat this image as
+a working hardware release.
+
 ## Validation and trial policy
 
 `reports/` contains results tied to exact kernel and rootfs SHA-256 hashes.

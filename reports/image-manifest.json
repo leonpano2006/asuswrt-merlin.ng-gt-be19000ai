@@ -404,5 +404,6 @@
       "bytes": 73023488,
       "offset": 12420484
     }
-  }
+  },
+  "hardware_trial": "started; management connectivity did not return; physical power-cycle requested"
 }

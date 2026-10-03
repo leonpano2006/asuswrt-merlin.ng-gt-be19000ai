@@ -1,0 +1,218 @@
+[
+  {
+    "version": "candidate",
+    "target": "bcm_bp3drv",
+    "status": "panic",
+    "panic": true,
+    "kernel_sha256": "cabfce76b1810ecb60b98beed8632ea60f729e87c10cc781d937cff15313753a",
+    "guest_complete": false
+  },
+  {
+    "version": "stock",
+    "target": "bcm_bp3drv",
+    "status": "panic",
+    "panic": true,
+    "kernel_sha256": "aeca127a930a6c000de905382c6d58783b9002bcf11a1025b4b57131e75f3ca1",
+    "guest_complete": false
+  },
+  {
+    "version": "candidate",
+    "target": "bcm_bpm",
+    "status": "dependency_error",
+    "panic": false,
+    "kernel_sha256": "cabfce76b1810ecb60b98beed8632ea60f729e87c10cc781d937cff15313753a",
+    "guest_complete": true
+  },
+  {
+    "version": "stock",
+    "target": "bcm_bpm",
+    "status": "dependency_error",
+    "panic": false,
+    "kernel_sha256": "aeca127a930a6c000de905382c6d58783b9002bcf11a1025b4b57131e75f3ca1",
+    "guest_complete": true
+  },
+  {
+    "version": "candidate",
+    "target": "bcm_mpm",
+    "status": "load_error",
+    "panic": false,
+    "kernel_sha256": "cabfce76b1810ecb60b98beed8632ea60f729e87c10cc781d937cff15313753a",
+    "guest_complete": true
+  },
+  {
+    "version": "stock",
+    "target": "bcm_mpm",
+    "status": "load_error",
+    "panic": false,
+    "kernel_sha256": "aeca127a930a6c000de905382c6d58783b9002bcf11a1025b4b57131e75f3ca1",
+    "guest_complete": true
+  },
+  {
+    "version": "candidate",
+    "target": "bcm_pcie_hcd",
+    "status": "timeout_or_early_exit",
+    "panic": false,
+    "kernel_sha256": "cabfce76b1810ecb60b98beed8632ea60f729e87c10cc781d937cff15313753a",
+    "guest_complete": false
+  },
+  {
+    "version": "stock",
+    "target": "bcm_pcie_hcd",
+    "status": "timeout_or_early_exit",
+    "panic": false,
+    "kernel_sha256": "aeca127a930a6c000de905382c6d58783b9002bcf11a1025b4b57131e75f3ca1",
+    "guest_complete": false
+  },
+  {
+    "version": "candidate",
+    "target": "dhd",
+    "status": "timeout_or_early_exit",
+    "panic": false,
+    "kernel_sha256": "cabfce76b1810ecb60b98beed8632ea60f729e87c10cc781d937cff15313753a",
+    "guest_complete": false
+  },
+  {
+    "version": "stock",
+    "target": "dhd",
+    "status": "timeout_or_early_exit",
+    "panic": false,
+    "kernel_sha256": "aeca127a930a6c000de905382c6d58783b9002bcf11a1025b4b57131e75f3ca1",
+    "guest_complete": false
+  },
+  {
+    "version": "candidate",
+    "target": "gdx",
+    "status": "panic",
+    "panic": true,
+    "kernel_sha256": "cabfce76b1810ecb60b98beed8632ea60f729e87c10cc781d937cff15313753a",
+    "guest_complete": false
+  },
+  {
+    "version": "stock",
+    "target": "gdx",
+    "status": "panic",
+    "panic": true,
+    "kernel_sha256": "aeca127a930a6c000de905382c6d58783b9002bcf11a1025b4b57131e75f3ca1",
+    "guest_complete": false
+  },
+  {
+    "version": "candidate",
+    "target": "mtdoops",
+    "status": "load_error",
+    "panic": false,
+    "kernel_sha256": "cabfce76b1810ecb60b98beed8632ea60f729e87c10cc781d937cff15313753a",
+    "guest_complete": true
+  },
+  {
+    "version": "candidate",
+    "target": "nls_euc_jp",
+    "status": "load_error",
+    "panic": false,
+    "kernel_sha256": "cabfce76b1810ecb60b98beed8632ea60f729e87c10cc781d937cff15313753a",
+    "guest_complete": true
+  },
+  {
+    "version": "stock",
+    "target": "nls_euc_jp",
+    "status": "load_error",
+    "panic": false,
+    "kernel_sha256": "aeca127a930a6c000de905382c6d58783b9002bcf11a1025b4b57131e75f3ca1",
+    "guest_complete": true
+  },
+  {
+    "version": "candidate",
+    "target": "oops_mmc",
+    "status": "load_error",
+    "panic": false,
+    "kernel_sha256": "cabfce76b1810ecb60b98beed8632ea60f729e87c10cc781d937cff15313753a",
+    "guest_complete": true
+  },
+  {
+    "version": "stock",
+    "target": "oops_mmc",
+    "status": "load_error",
+    "panic": false,
+    "kernel_sha256": "aeca127a930a6c000de905382c6d58783b9002bcf11a1025b4b57131e75f3ca1",
+    "guest_complete": true
+  },
+  {
+    "version": "candidate",
+    "target": "pktrunner",
+    "status": "panic",
+    "panic": true,
+    "kernel_sha256": "cabfce76b1810ecb60b98beed8632ea60f729e87c10cc781d937cff15313753a",
+    "guest_complete": false
+  },
+  {
+    "version": "stock",
+    "target": "pktrunner",
+    "status": "panic",
+    "panic": true,
+    "kernel_sha256": "aeca127a930a6c000de905382c6d58783b9002bcf11a1025b4b57131e75f3ca1",
+    "guest_complete": false
+  },
+  {
+    "version": "candidate",
+    "target": "rdpa",
+    "status": "dependency_error",
+    "panic": false,
+    "kernel_sha256": "cabfce76b1810ecb60b98beed8632ea60f729e87c10cc781d937cff15313753a",
+    "guest_complete": true
+  },
+  {
+    "version": "stock",
+    "target": "rdpa",
+    "status": "load_error",
+    "panic": false,
+    "kernel_sha256": "aeca127a930a6c000de905382c6d58783b9002bcf11a1025b4b57131e75f3ca1",
+    "guest_complete": true
+  },
+  {
+    "version": "candidate",
+    "target": "rdpa_cmd",
+    "status": "panic",
+    "panic": true,
+    "kernel_sha256": "cabfce76b1810ecb60b98beed8632ea60f729e87c10cc781d937cff15313753a",
+    "guest_complete": false
+  },
+  {
+    "version": "stock",
+    "target": "rdpa_cmd",
+    "status": "panic",
+    "panic": true,
+    "kernel_sha256": "aeca127a930a6c000de905382c6d58783b9002bcf11a1025b4b57131e75f3ca1",
+    "guest_complete": false
+  },
+  {
+    "version": "candidate",
+    "target": "rdpa_mw",
+    "status": "panic",
+    "panic": true,
+    "kernel_sha256": "cabfce76b1810ecb60b98beed8632ea60f729e87c10cc781d937cff15313753a",
+    "guest_complete": false
+  },
+  {
+    "version": "stock",
+    "target": "rdpa_mw",
+    "status": "panic",
+    "panic": true,
+    "kernel_sha256": "aeca127a930a6c000de905382c6d58783b9002bcf11a1025b4b57131e75f3ca1",
+    "guest_complete": false
+  },
+  {
+    "version": "candidate",
+    "target": "rtl8372",
+    "status": "panic",
+    "panic": true,
+    "kernel_sha256": "cabfce76b1810ecb60b98beed8632ea60f729e87c10cc781d937cff15313753a",
+    "guest_complete": false
+  },
+  {
+    "version": "stock",
+    "target": "rtl8372",
+    "status": "panic",
+    "panic": true,
+    "kernel_sha256": "aeca127a930a6c000de905382c6d58783b9002bcf11a1025b4b57131e75f3ca1",
+    "guest_complete": false
+  }
+]
