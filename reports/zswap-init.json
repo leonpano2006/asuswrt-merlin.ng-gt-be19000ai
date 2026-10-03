@@ -1,0 +1,7 @@
+{
+  "zsmalloc_builtin": true,
+  "pool_created_at_boot": true,
+  "kernel_default_enabled": false,
+  "qemu_swap_test_boot_option": "zswap.enabled=1",
+  "note": "Keep upstream opt-in policy; preparing a valid pool does not create or enable a physical swap device."
+}

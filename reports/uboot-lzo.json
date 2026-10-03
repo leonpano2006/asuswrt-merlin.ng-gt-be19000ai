@@ -1,0 +1,16 @@
+[
+  {
+    "name": "stock",
+    "decoder_return": 0,
+    "decoded_bytes": 11741192,
+    "exact_kernel_match": true,
+    "kernel_sha256": "aeca127a930a6c000de905382c6d58783b9002bcf11a1025b4b57131e75f3ca1"
+  },
+  {
+    "name": "candidate",
+    "decoder_return": 0,
+    "decoded_bytes": 12773384,
+    "exact_kernel_match": true,
+    "kernel_sha256": "ec1b6a0b5ccd1633da775ad40ae2783e12d3165e70fc4fd3472308e758a3b7fc"
+  }
+]

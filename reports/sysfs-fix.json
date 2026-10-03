@@ -1,0 +1,12 @@
+{
+  "confirmed_incompatibility": "CONFIG_SYSFS_DEPRECATED_V2=y removed /sys/class/block expected by stock AI eMMC library",
+  "stock_library_paths": [
+    "/sys/class/block/mmcblk0/size",
+    "/sys/class/block/mmcblk0boot0/size",
+    "/sys/class/block/mmcblk0boot1/size"
+  ],
+  "fix": "Restore stock CONFIG_SYSFS_DEPRECATED=n; retain container features",
+  "hardware_causality_proven": false,
+  "bootloader_lzo_decoder": "Exact stock and candidate kernels reproduced using BSP U-Boot decoder",
+  "original_trial_panic_record_found": false
+}

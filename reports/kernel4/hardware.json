@@ -1,0 +1,25 @@
+{
+  "kernel": "4.19.294 #4",
+  "running_config_matches": true,
+  "cfg_alive": 1,
+  "wired_backhaul_setting": 3100,
+  "radio_up": [
+    true,
+    true,
+    true
+  ],
+  "ai_internal_ping": true,
+  "ai_api_http_status": 200,
+  "ai_api_seconds": 0.092,
+  "active_slot": 1,
+  "committed_slot": 2,
+  "next_boot_slot": 2,
+  "metadata_readonly": [
+    true,
+    true
+  ],
+  "kernel_panic_observed": false,
+  "actual_oom_namespace_seccomp_probe": "pass",
+  "actual_btrfs_zstd_overlay_probe": "pass",
+  "limitation": "zswap initial pool unavailable because zsmalloc was a module; addressed in next kernel"
+}

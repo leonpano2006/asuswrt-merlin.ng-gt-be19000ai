@@ -1,0 +1,18 @@
+{
+  "label": "zpool5-guard",
+  "stop_reason": "qemu_exit",
+  "exit_code": 0,
+  "elapsed_seconds": 1.0,
+  "kernel_sha256": "ec1b6a0b5ccd1633da775ad40ae2783e12d3165e70fc4fd3472308e758a3b7fc",
+  "initramfs_sha256": "146d9759316806ed0cc63233a8557cee6cb880f23494d2fa0ea64e1048e42c18",
+  "log_sha256": "7a81b4fe39f660040ec32e8c1ffbff7de23d9a6b426670c73ba554e5929cc320",
+  "init_reached": true,
+  "guest_complete": true,
+  "panic": false,
+  "lab_lines": [
+    "LAB_PASS stock_sysfs_block_layout",
+    "LAB_PASS metadata_writes_blocked",
+    "LAB_PASS ordinary_partition_writable",
+    "LAB_PASS explicit_operator_unlock"
+  ]
+}

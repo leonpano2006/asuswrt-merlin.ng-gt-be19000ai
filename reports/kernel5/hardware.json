@@ -1,0 +1,45 @@
+{
+  "kernel": "4.19.294 #5",
+  "kernel_sha256": "ec1b6a0b5ccd1633da775ad40ae2783e12d3165e70fc4fd3472308e758a3b7fc",
+  "config_sha256": "ee35c8f5a85da17618df0284d17f793448c234f96530f9a3abd8e076be70582f",
+  "running_config_matches": true,
+  "pid1_executable": "/sbin/rc",
+  "cfg_alive": 1,
+  "radio_up": [
+    true,
+    true,
+    true
+  ],
+  "ai_internal_ping": true,
+  "ai_api_http_status": 200,
+  "ai_api_seconds": 0.083,
+  "active_slot": 1,
+  "committed_slot": 2,
+  "next_boot_slot": 2,
+  "trial_commit_flag": 0,
+  "metadata_readonly": [
+    true,
+    true
+  ],
+  "zswap_pool_created_at_boot": true,
+  "zswap_enabled": false,
+  "zswap_pool": "zstd/zsmalloc",
+  "actual_oom_namespace_seccomp_probe": "pass",
+  "actual_btrfs_zstd_overlay_probe": "pass",
+  "hardware_acceleration_enabled": true,
+  "acceleration_mode": "L3",
+  "runner_sample": {
+    "sample_rows": 73,
+    "flows_with_hw_hits": 32,
+    "hardware_total_hits": 99739,
+    "hardware_total_bytes": 147610693
+  },
+  "runner_activation_failures": 0,
+  "runner_l2_l3_mcast_errors": 0,
+  "runner_ipv6_address_delete_failures": 1,
+  "runner_note": "IPv6 address deletion counter 1 also appears in historical BE98 baseline; not represented as zero errors across every subsystem.",
+  "kernel_taint": 4097,
+  "kernel_panic_oops_warning_observed": false,
+  "observed_uptime_seconds": 561.99,
+  "limitation": "No throughput benchmark or extended soak; Docker runtime tested in QEMU only. Physical swap is not enabled."
+}

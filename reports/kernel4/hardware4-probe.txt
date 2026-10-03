@@ -1,0 +1,4 @@
+HARDWARE_PASS memory_limit_oom_child_only
+HARDWARE_PASS net_uts_ipc_namespaces
+HARDWARE_PASS seccomp_filter
+HARDWARE_PROBE_COMPLETE

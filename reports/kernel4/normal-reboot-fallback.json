@@ -1,0 +1,10 @@
+{
+  "from_kernel": "4.19.294 #4",
+  "from_slot": 1,
+  "to_kernel": "4.19.294 #1 original",
+  "to_slot": 2,
+  "ssh_observed_after_seconds": 162.4,
+  "committed_slot": 2,
+  "trial_commit_flag": 0,
+  "scope": "An ordinary reboot after a one-time trial returned to the original slot. This does not prove every early crash can trigger an automatic reset."
+}

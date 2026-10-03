@@ -1,0 +1,11 @@
+{
+  "checked_at_utc": "2026-10-03T12:17:51.728737+00:00",
+  "running_kernel": "4.19.294 #1 stock",
+  "root": "/dev/mmcblk0p6",
+  "booted_partition": 2,
+  "reboot_partition": 2,
+  "committed_partition": 2,
+  "trial_partition_commit_flag": 0,
+  "ai_both_ips_respond": true,
+  "automatic_reset_trigger_confirmed": false
+}

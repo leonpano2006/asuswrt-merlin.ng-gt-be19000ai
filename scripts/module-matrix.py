@@ -4,10 +4,11 @@ from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor,as_completed
 from collections import Counter
 from elftools.elf.elffile import ELFFile
-import gzip,hashlib,json,stat,subprocess,re,sys
+import gzip,hashlib,json,stat,subprocess,re,sys,argparse
+p=argparse.ArgumentParser();p.add_argument('--version',type=int,default=5);p.add_argument('targets',nargs='*');a=p.parse_args()
 r=Path(__file__).resolve().parents[1];out=r/'build/module-matrix';out.mkdir(exist_ok=True)
-roots={'stock':r/'build/stock-rootfs','candidate':r/'build/candidate-rootfs'}
-kernels={'stock':r/'inputs/stock-Image','candidate':r/'build/Image-v3'}
+roots={'stock':r/'build/stock-rootfs','candidate':r/f'build/candidate-rootfs-v{a.version}'}
+kernels={'stock':r/'inputs/stock-Image','candidate':r/f'build/Image-v{a.version}'}
 init=b'''#!/bin/busybox sh
 export PATH=/bin
 /bin/busybox --install -s /bin
@@ -59,9 +60,9 @@ for version,root in roots.items():
  (out/(version+'.cpio.gz')).write_bytes(gzip.compress(buf,compresslevel=1,mtime=0))
  (out/(version+'-manifest.json')).write_text(json.dumps({n:{'sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'load_plan':plans[version][n]} for n,p in modules.items()},indent=2)+'\n')
 # Both original modules and added container/storage modules, one fresh VM per target.
-targets=sys.argv[1:] or sorted(set(paths['stock'])|set(paths['candidate']))
+targets=a.targets or sorted(set(paths['stock'])|set(paths['candidate']))
 def run(v,n):
- label='matrix-v4-'+v+'-'+n
+ label=f'matrix-kernel{a.version}-'+v+'-'+n
  subprocess.run(['python3',str(r/'scripts/run-qemu.py'),'--label',label,'--kernel',str(kernels[v]),'--initrd',str(out/(v+'.cpio.gz')),'--target',n,'--timeout','20','--complete-marker','QEMU_MODULE_TEST_COMPLETE'],stdout=subprocess.DEVNULL)
  result=json.loads((r/'build/qemu'/label/'result.json').read_text());log=(r/'build/qemu'/label/'serial.log').read_text(errors='replace')
  matches=re.findall(r'LAB_MODULE_END (\S+) rc=(-?\d+) errno=(\d+) message=(.*)',log)

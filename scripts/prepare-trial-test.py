@@ -17,6 +17,11 @@ mount -t devtmpfs devtmpfs /dev
 losetup /dev/loop0 /gpt.img
 blockdev --rereadpt /dev/loop0
 cat /proc/partitions
+for p in 1 2 3; do
+ test -e /sys/class/block/loop0p$p/dev
+ test -e /sys/class/block/loop0p$p/partition
+done
+echo LAB_PASS stock_sysfs_block_layout
 for p in 1 2; do
  test "$(blockdev --getro /dev/loop0p$p)" = 1
  before=$(sha256sum /dev/loop0p$p)

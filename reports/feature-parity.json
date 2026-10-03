@@ -1,0 +1,10 @@
+{
+  "stock_features_lost": [],
+  "be98_features_missing": [],
+  "intentional_interface_exceptions": [
+    "CONFIG_SYSFS_DEPRECATED",
+    "CONFIG_SYSFS_DEPRECATED_V2"
+  ],
+  "sysfs_matches_stock": true,
+  "zsmalloc_builtin": true
+}

@@ -1,0 +1,18 @@
+{
+  "label": "sysfs4-guard",
+  "stop_reason": "qemu_exit",
+  "exit_code": 0,
+  "elapsed_seconds": 1.2,
+  "kernel_sha256": "6805aeecb3f4cc1de288fd0b421b7ce3303fad70bd9e2ba3cc377d2850d561ec",
+  "initramfs_sha256": "146d9759316806ed0cc63233a8557cee6cb880f23494d2fa0ea64e1048e42c18",
+  "log_sha256": "0a59bdc543022e9f8cf04ccf105cd505a994fd0c69a54e9e31a6c5d8074bb122",
+  "init_reached": true,
+  "guest_complete": true,
+  "panic": false,
+  "lab_lines": [
+    "LAB_PASS stock_sysfs_block_layout",
+    "LAB_PASS metadata_writes_blocked",
+    "LAB_PASS ordinary_partition_writable",
+    "LAB_PASS explicit_operator_unlock"
+  ]
+}

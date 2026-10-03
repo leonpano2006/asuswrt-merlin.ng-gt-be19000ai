@@ -1,0 +1,30 @@
+{
+  "label": "sysfs4-smoke",
+  "stop_reason": "qemu_exit",
+  "exit_code": 0,
+  "elapsed_seconds": 3.21,
+  "kernel_sha256": "6805aeecb3f4cc1de288fd0b421b7ce3303fad70bd9e2ba3cc377d2850d561ec",
+  "initramfs_sha256": "d6543d1841d1fbe0ed677c9eb0094416d2ab6b85b97af98bd74e366328a01047",
+  "log_sha256": "95bbbd14f1911e32f6a5cda16f504b6311076f278a090c927cf4dfe2f17ffd41",
+  "init_reached": true,
+  "guest_complete": true,
+  "panic": false,
+  "lab_lines": [
+    "LAB_MEMCG_USAGE 8388608",
+    "LAB_MEMCG_PASS anon_charge_uncharge",
+    "LAB_MEMCG_MAX_USAGE 16781312",
+    "LAB_MEMCG_PASS limit_oom_kills_only_child_parent_survives",
+    "LAB_MEMCG_PASS combined_memory_swap_limit",
+    "LAB_MEMCG_PASS fork_exec_exit_40_cycles",
+    "LAB_MEMCG_PASS shared_mm_owner_exit_transfer",
+    "LAB_MEMCG_PASS cleanup",
+    "LAB_PASS seccomp_errno_and_fork_inheritance",
+    "LAB_PASS devices_deny_and_allow",
+    "LAB_PASS freezer_stop_and_resume",
+    "LAB_PASS cpuacct_usage ns=55912240",
+    "LAB_PASS pids_fork_thread_limit_and_release",
+    "LAB_PASS pids_hierarchical_limit",
+    "LAB_PASS cgroup_50_create_migrate_250_fork_remove_cycles",
+    "LAB_PASS uts_ipc_mount_net_pid_namespaces"
+  ]
+}

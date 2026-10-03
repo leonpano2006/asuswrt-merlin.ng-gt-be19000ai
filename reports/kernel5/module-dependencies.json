@@ -1,0 +1,14 @@
+{
+  "counts": {
+    "stock": {
+      "loaded": 1
+    },
+    "candidate": {
+      "loaded": 3
+    }
+  },
+  "regressions": [],
+  "targets": 3,
+  "vm_runs": 4,
+  "hardware_not_emulated": true
+}
