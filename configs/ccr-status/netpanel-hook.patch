@@ -1,0 +1,10 @@
+--- a/usr/bin/netpanel-collector
++++ b/usr/bin/netpanel-collector
+@@ -362,6 +362,7 @@
+             band:([$s.wifi.radios[]|select(.r==$sta.radio)|.band]|.[0])}]|.[0]//null))
+     | .schema=2
+   ' > "$TMP" && mv "$TMP" "$CACHE"
++  [ ! -x "$LIBDIR/ccr-status/netpanel-source.sh" ] || "$LIBDIR/ccr-status/netpanel-source.sh"
+   [ "$NETPANEL_ONCE" = 1 ] && break
+   EL=$(( $(date +%s) - T0 ))
+   [ $EL -lt 15 ] && sleep $((15 - EL))

@@ -1,0 +1,253 @@
+{
+  "audited_at_utc": "2026-10-04T10:59:47.477623+00:00",
+  "scope": "Local read-only independent flash-plan audit. No SSH, no runtime changes, no script edits, no secret or credential file access. Deployment itself remains with the root agent.",
+  "status": "plan_reviewed_live_preconditions_must_be_rechecked",
+  "source_hashes": {
+    "build/rc1-flash.sh": "d92b2f6e1d2e7117bdfc6337e43923f09c41639fc984fff744f224e739578d8d",
+    "build/rc1-ensure.sh": "38cad6313bafeb635848ba9dc8775616fc53aab1d322c245d6f325d6d21167f9",
+    "build/rc1-services-start": "81a2cca1c6088bfc06052d833aae75158ecb4a17b565850e74a87086a3ab6e54",
+    "build/resource6/flash-guarded.sh": "d987b2386f80ad89bab4a7d63b43979567a252bde21fdf3e3e2811f2cb08b7df",
+    "scripts/watch-trial.py": "2902d1553e0406195f8ff4c51b182dbe547b0baa6d31a3b5c6c4bd92d55c246e",
+    "scripts/pack-image.py": "da3e9eb704ba858ec9dee78b553c4153ada12f1ad1c65917d6d5f22460b34851",
+    "scripts/port-trial-guard.py": "ae608b0f0feb8aed354658f7788426df9beedc4184d62a5f4fccd009367f0a04",
+    "scripts/prepare-trial-test.py": "0784de234a82bad61d07a51d1b6b4779db2aab6520201a0b0a2a304f6a338475",
+    "scripts/stage-integrated-candidate.py": "c1f90b5b88847a13426423e7b0b2a82a2276c21e8ef9d3a852083d1fa7470720",
+    "configs/node-web-fix/apply.sh": "e262f959b3dd77e2e659ca817fbced875929365fd50b4bb43e710c10ba77e442",
+    "configs/node-history/history.sh": "fc6838509fb04b1f63f3b53608934039a84486171be21efbcb2d01b40d8226d6",
+    "configs/ccr-status/collect.sh": "78495cd63573a4a91dd0260c01b8639f73fd457ad8fc8425b20331f70de27e7c",
+    "reports/releases/kernel6-ui1.json": "fd6175a7294da83687c0fda6c67608608c871f23baa014978fe36310e74978dc",
+    "reports/kernel5/hardware.json": "49d5f99319434246a43a559d64a2ffebe21c1b249a13d8d2184fdd53158e1ea5",
+    "reports/kernel6/hardware.json": "86e5b213089c1e384be848a7d5a2f1a96149d19ca8253a7eb23a0573879a3fe8",
+    "reports/kernel6/flash-readback.json": "1e7332018b72812d3eb12f81a77f872be8ab0c5311e6ee2016eb7663106acb41",
+    "reports/kernel6/resource6-trial-guard2.json": "2dba0d33c1a6d114ffbc1f4cabe1206170c4258a133136c95ddb9148ef54e779",
+    "reports/kernel8/candidate.json": "6461676ecf914d01cbaaa89ada54e276d41c4fe1db92abc8cbefd0d21b564400",
+    "configs/kernel8.config": "1c495c39d80319246f26a38192eb481b54860ea938d46bbc8156b4fa676a8216"
+  },
+  "last_recorded_state": {
+    "source": "reports/releases/kernel6-ui1.json",
+    "record_time": "2026-10-04T10:08:10.217272+00:00",
+    "active_slot": 1,
+    "committed_slot": 2,
+    "next_boot_slot": 2,
+    "slot1_commit_flag": 0,
+    "slot2_commit_flag": 1,
+    "metadata_partitions_read_only": true,
+    "not_a_live_observation": true
+  },
+  "partition_map": {
+    "metadata1": {
+      "device": "/dev/mmcblk0p1",
+      "bytes": 262144
+    },
+    "metadata2": {
+      "device": "/dev/mmcblk0p2",
+      "bytes": 262144
+    },
+    "bootfs1": {
+      "device": "/dev/mmcblk0p3",
+      "bytes": 52428800
+    },
+    "rootfs1": {
+      "device": "/dev/mmcblk0p4",
+      "bytes": 209715200
+    },
+    "bootfs2": {
+      "device": "/dev/mmcblk0p5",
+      "bytes": 52428800
+    },
+    "rootfs2": {
+      "device": "/dev/mmcblk0p6",
+      "bytes": 209715200
+    }
+  },
+  "immutable_fallback": {
+    "bootfs2_full_sha256": "ecda0c1ad0dab3fbe28ef93ab9500e713e19b2b238a055d1fd3971ede03a0256",
+    "rootfs2_full_sha256": "51128dda31033fb34ef315e25b767f1b4557967bb1168bbdb8636c1e79b76465",
+    "known_local_backup_files": [
+      "inputs/backup-bootfs2.bin",
+      "inputs/backup-rootfs2.bin"
+    ],
+    "audit_checked_backup_sizes_only": true,
+    "deployment_must_verify_existing_backup_checksums": true
+  },
+  "hook_audit": [
+    {
+      "path": "/jffs/scripts/services-start",
+      "last_recorded_sha256": "81a2cca1c6088bfc06052d833aae75158ecb4a17b565850e74a87086a3ab6e54",
+      "current_integrated_entry": "/usr/libexec/be19000ai-candidate/start-services.sh",
+      "trusted_kernel6_ui1_entry_sha256": "c16a57064b3e6ac549720ac9594dc8eb76e72e0aeee01e3e8e7ba6d1f5dee90c",
+      "required_change": "If kernel8 entry content changes, e.g. release logger text, calculate its final SHA after staging and extend/update the exact allow-list. Never keep a stale single hash and assume firmware collectors will run. Keeping both reviewed old/new entry hashes preserves downgrade behavior.",
+      "preserve_fallback": "If no trusted integrated entry is present, execute /jffs/ledg-node-fix/ensure.sh and /jffs/node-web-fix/apply.sh exactly as before; stock slot2 uses that path.",
+      "deployment_gate": "Back up current hook and compare against the recorded hash before replacing. If live content differs, inspect the delta rather than blindly overwriting."
+    },
+    {
+      "path": "/jffs/ledg-node-fix/ensure.sh",
+      "last_recorded_sha256": "38cad6313bafeb635848ba9dc8775616fc53aab1d322c245d6f325d6d21167f9",
+      "stock_rc_sha256": "9d31d5f2c3a97dd38e69ac7978dedc9a86089708d5083d994a693483a7a62814",
+      "patched_ledg_rc_sha256": "630bf99efe7d014b55dda7e337bf43d80cd5d1f93514c30115b170a96d6e9567",
+      "required_change": "None solely because the kernel changes. Existing logic already recognizes /usr/libexec/ledg-node/rc by exact patched SHA. Change the allow-list only if a separately reviewed executable really changes; keep model, role, stock rc and payload checks."
+    },
+    {
+      "path": "/jffs/scripts/service-event-end",
+      "required_change": "None if it continues calling the same reviewed RGB ensure hook. Preserve existing contents and execute mode."
+    },
+    {
+      "path": "/jffs/node-web-fix/apply.sh plus files.tsv",
+      "required_change": "No kernel-number gate exists. It accepts each existing web file only when its SHA is stock or the reviewed patched SHA. Integrated UI assets must retain those exact hashes unless intentionally updated with matching manifest. Fallback path starts JFFS collectors."
+    },
+    {
+      "path": "Firmware /usr/libexec/node-history/history.sh and /usr/libexec/ccr-status/collect.sh",
+      "required_change": "Their hardware/role guards depend on stock /sbin/rc SHA, not kernel version. Preserve that executable. Preserve integrated CCR configuration path /jffs/ccr-status/curl.conf and disable-file semantics; no credential belongs in the image."
+    }
+  ],
+  "packaging_gates": [
+    {
+      "gate": "Integrate the existing UI/RGB/collectors before packaging",
+      "detail": "At audit time build/candidate-rootfs-v8 and rootfs-v8.zstd.squashfs are kernel/modules plus stock userspace only (0 non-module differences); they are not replacements for the kernel6-ui1 integrated rootfs. Copy the reviewed non-module integration and rebuilt kernel8 modules, then verify a deliberate change manifest."
+    },
+    {
+      "gate": "Test exact integrated rootfs/kernel/modules in QEMU",
+      "detail": "Do not substitute the bare kernel8 rootfs or only the previous UI image. Record final kernel, bootfs, rootfs and package SHA/lengths plus asset hashes and startup entry SHA."
+    },
+    {
+      "gate": "Signing and non-kernel boot preservation",
+      "detail": "pack-image.py verifies the known original FIT SHA and old PSS signature, replaces only inner kernel, signs/verifies new header, asserts all non-kernel boot payloads identical and no loader update. Preserve those checks; use the final integrated rootfs as the actual rootfs payload, not a stale build/rootfs.zstd.squashfs."
+    },
+    {
+      "gate": "Partition capacity",
+      "detail": "bootfs payload <50MiB and rootfs payload <200MiB. Assert model GT-BE19000AI, exact package SHA, bootfs/rootfs extracted lengths and hashes."
+    },
+    {
+      "gate": "New kernel metadata guard",
+      "detail": "CONFIG_GTBE19000AI_TRIAL_METADATA_RO=y is present in configs/kernel8.config. Run existing trial-guard.cpio.gz with Image-v8 and complete QEMU-only arguments loop.max_part=8 be19000ai_trial_disk=loop0; marker QEMU_TRIAL_GUARD_COMPLETE. Never include the disk override on hardware.",
+      "required_qemu_extra_append": "loop.max_part=8 be19000ai_trial_disk=loop0",
+      "initial_setup_failure": "The first kernel8 guard invocation omitted loop.max_part=8; blockdev --rereadpt failed and init exited before guard assertions. Kernel6 successful command had this argument. This is a fixture setup failure, not evidence of a kernel metadata-guard regression.",
+      "corrected_rerun_label": "kernel8-ui1-trial-guard2",
+      "corrected_rerun": {
+        "guest_complete": true,
+        "panic": false,
+        "exit_code": 0,
+        "kernel_sha256": "bd866bd952a79092126e31a15e123d6286f6e10b92ddf3b1e81d553ccb790234",
+        "initramfs_sha256": "146d9759316806ed0cc63233a8557cee6cb880f23494d2fa0ea64e1048e42c18",
+        "lab_lines": [
+          "LAB_PASS stock_sysfs_block_layout",
+          "LAB_PASS metadata_writes_blocked",
+          "LAB_PASS ordinary_partition_writable",
+          "LAB_PASS explicit_operator_unlock"
+        ]
+      }
+    }
+  ],
+  "deployment_sequence": [
+    {
+      "step": 1,
+      "action": "Capture fresh state before any mutation",
+      "checks": [
+        "productid GT-BE19000AI",
+        "uname, boot_id and /proc/cmdline",
+        "bcm_bootstate active, next, committed, both commit flags",
+        "/dev/{metadata,bootfs,rootfs} symlink mapping and partition sizes",
+        "full stock slot2 hashes",
+        "current JFFS hook hashes and sufficient RAM/JFFS free space"
+      ]
+    },
+    {
+      "step": 2,
+      "action": "Refresh and verify recovery backups",
+      "checks": [
+        "Current metadata1/metadata2 (256KiB each), GPT/partition map and boot-state text",
+        "Private current JFFS tree and NVRAM settings backup with restricted permissions; never print/include credentials",
+        "Original bootfs2/rootfs2 verified by full hashes; preserve existing known-good backups",
+        "Current trial bootfs1/rootfs1 if retaining a rollback to kernel6-ui1 is desired; original slot2 remains mandatory fallback",
+        "Keep backups out of Git/package; private data remains private"
+      ]
+    },
+    {
+      "step": 3,
+      "action": "If active slot is still trial1, reboot back to the already selected stock2",
+      "checks": [
+        "Require recorded next boot=Second and slot2 committed before reboot",
+        "No metadata unlock or boot-state mutation is needed for the normal trial1\u2192stock2 reboot",
+        "Wait for new boot_id; require root=/dev/mmcblk0p6, Booted Partition Second and slot2 commit1",
+        "Verify full stock2 hashes and management/network return; stop if state differs",
+        "Never flash slot1 while it is active; never let inactive-slot selection target committed slot2"
+      ]
+    },
+    {
+      "step": 4,
+      "action": "Stage final package and exact-hash persistent hook changes while on stock2",
+      "checks": [
+        "Upload under an explicit unique .pkgtb basename, never /tmp/linux.trx (historic flasher live-update branch)",
+        "Verify remote package hash equals final local package hash",
+        "Verify bcm_flasher SHA c029cd3d59a42d23c0bc4508eb8f04b82781c0eb097644f57e5de075c53f570d",
+        "Validate updated hooks with sh -n, ownership/executable mode, atomic replacement and previous-hash precondition",
+        "Retain original JFFS fallback assets and do not change AiMesh role, hostname, SL1680 or credentials"
+      ]
+    },
+    {
+      "step": 5,
+      "action": "Use a new kernel8-specific guarded flash wrapper from stock2",
+      "checks": [
+        "Derive all package/payload hashes and exact lengths from the final manifest; rc1-flash.sh values are obsolete",
+        "Require active Second/root p6, committed2, first commit0, second commit1 and expected next Second",
+        "Write inactive slot1 only through the reviewed bcm_flasher path; capture return status/log and sync",
+        "Hash exact-length prefixes of bootfs1/rootfs1 and compare with extracted payload hashes",
+        "Hash entire bootfs2/rootfs2 again and require unchanged originals",
+        "Require first commit0/second commit1 and next Second after write; do not arm a failed readback"
+      ]
+    },
+    {
+      "step": 6,
+      "action": "Arm exactly one boot of slot1 only after successful readback",
+      "checks": [
+        "Existing utility syntax: bcm_bootstate 6 (BOOT_SET_PART1_IMAGE_ONCE)",
+        "Read back Booted Second, Reboot First, slot1 commit0, slot2 commit1",
+        "Back up resulting boot-state/metadata evidence, sync, capture previous boot_id and reboot once",
+        "Do not use +1, permanent PART1 state5, or any uncommit of slot2"
+      ]
+    },
+    {
+      "step": 7,
+      "action": "Validate physical kernel8 trial before accepting it",
+      "checks": [
+        "New boot_id plus uname #8 and root=/dev/mmcblk0p4; watcher SSH reconnect alone is insufficient",
+        "Live /proc/config.gz hash matches configs/kernel8.config",
+        "Booted First, slot1 commit0, slot2 commit1, next boot Second",
+        "mmcblk0p1/ro and p2/ro both1; expected trial guard messages in dmesg",
+        "Check PSI system and cgroup statistics/monitor availability with bounded read-only probes",
+        "Verify three radios, BE98 controller AiMesh state/wired backhaul, Ethernet/Runner, AI internal link",
+        "Verify exact integrated web assets, no unintended /www bind overlays, RGB process executable, firmware collectors, fresh panel telemetry",
+        "Record unexpected diagnostics separately from the previously observed Serdes warning; no blanket warning-free claim",
+        "Leave slot1 uncommitted; preserve automatic next-reset fallback to original2"
+      ]
+    }
+  ],
+  "automatic_commit_guard": {
+    "mechanism": "Partition policies are set read-only before metadata1/metadata2 are published, blocking vendor rc metadata writes during trial boot.",
+    "not_a_security_boundary": "An operator can explicitly clear BLKROSET or write the raw disk; do neither during this deployment.",
+    "recovery_semantics": "One-time selection reverts the following boot choice to committed slot2. It does not by itself guarantee a hung kernel triggers a timely reset; a reset is still needed for fallback to execute.",
+    "no_permanent_commit": true
+  },
+  "watcher_limitations": [
+    "watch-trial.py --version only chooses evidence file names; it does not assert uname/config/rootfs match kernel8.",
+    "It stops after first newly booted authenticated SSH session, which could be original fallback; inspect returned boot identity.",
+    "Timeout writes observations but is not an acceptance failure exit code; deployment needs an explicit success/failure gate.",
+    "AI SSH-open is only port reachability, not container/service or internal-link health."
+  ],
+  "changes_made_by_this_audit": [
+    "reports/kernel8/flash-plan-audit.json"
+  ],
+  "audit_followup_at_utc": "2026-10-04T11:00:23.899943+00:00",
+  "deployment_state_relayed_by_root": {
+    "source": "Root agent deployment observation; this audit did not SSH",
+    "kernel": "kernel6",
+    "active_slot": 1,
+    "committed_slot": 2,
+    "next_boot_slot": 2,
+    "metadata_readonly": [
+      true,
+      true
+    ],
+    "backup_progress": "bootfs1/rootfs1 backup in progress"
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "source_sha256": "9d31d5f2c3a97dd38e69ac7978dedc9a86089708d5083d994a693483a7a62814",
+  "candidate_sha256": "630bf99efe7d014b55dda7e337bf43d80cd5d1f93514c30115b170a96d6e9567",
+  "changed_bytes": 20,
+  "same_size": true,
+  "changes": [
+    {
+      "virtual_address": "0x255190",
+      "file_offset": 2380176,
+      "before": "0xebffff8f",
+      "after": "0xe3a00000",
+      "reason": "Allow user RGB palette selection"
+    },
+    {
+      "virtual_address": "0x2569c8",
+      "file_offset": 2386376,
+      "before": "0xebf72dda",
+      "after": "0xe3a00000",
+      "reason": "Keep selected animation instead of forcing steady color"
+    },
+    {
+      "virtual_address": "0x25701c",
+      "file_offset": 2387996,
+      "before": "0xebf72c45",
+      "after": "0xe3a00000",
+      "reason": "Keep selected channel brightness"
+    },
+    {
+      "virtual_address": "0x257080",
+      "file_offset": 2388096,
+      "before": "0xebf72c2c",
+      "after": "0xe3a00000",
+      "reason": "Keep selected pattern channel brightness"
+    },
+    {
+      "virtual_address": "0x2579d4",
+      "file_offset": 2390484,
+      "before": "0xebfff57e",
+      "after": "0xe3a00000",
+      "reason": "Allow animation timer on a node"
+    }
+  ],
+  "deployment": "Separate RAM-only ledg process; no firmware or persistent startup changes."
+}

@@ -1,0 +1,176 @@
+{
+  "updated_at": "2026-10-03T19:45:56.907020+00:00",
+  "scope": "Third web repair batch; no firmware image build, flash or firmware-slot commit",
+  "findings": [
+    {
+      "id": "native-history-empty",
+      "evidence": [
+        "evidence/ui-audit/round3/database-schema.json",
+        "evidence/ui-audit/round3/collector-debug.json"
+      ],
+      "observed": "conn_diag and amas_ssd_cd run, but queried local historical databases have zero bytes; BE98 requests diagnostic mode 2. The original chart represents missing history as zero.",
+      "resolution": "Add an independent passive local sampler; do not change role, controller diagnostic policy or radio configuration."
+    },
+    {
+      "id": "missing-raw-route",
+      "observed": "UI calls get_diag_raw_data.cgi but stock httpd has no route. Existing get_diag_content_data raw branch uses ts=0, duration=0, point=0 for libcodb last-24h query.",
+      "resolution": "Compatibility adapter filters actual raw results by requested time and sorts chronologically; no sampled averages substituted. Native event collection remains incomplete on this node."
+    },
+    {
+      "id": "null-api-crash",
+      "observed": "First raw query containing SQL NULL triggered a httpds exit; watchdog restarted HTTPS (PID 4060 -> 15731). libcodb passes SQL NULL directly to json_object_new_string.",
+      "resolution": "History schema enforces non-NULL sentinel values; frontend renders sentinels as missing data. Future source patch adds three NULL guards.",
+      "evidence": [
+        "evidence/ui-audit/round3/api-failure-state.json",
+        "evidence/ui-audit/round3/api-fault-context.json",
+        "evidence/ui-audit/round3/history-api-verified.json"
+      ],
+      "impact": "One HTTPS service restart during testing. Same device boot ID, hostapd 9278 and cfg_client 6858 throughout; no router reboot or Wi-Fi service restart."
+    }
+  ],
+  "delivered": [
+    "Dashboard and Traffic Monitor show per-interface receive/transmit rates, including bond0 and internal AI-board eth.ai without summing bond members",
+    "Per-band authorized link history; MLO links are not claimed to be unique physical devices",
+    "WiFi Insight passive busy/OBSS/NOPKT history, measured noise and observed channel/bandwidth changes",
+    "30-minute, 6-hour and 24-hour display ranges; samples continue when page is closed",
+    "NULL, counter-reset, interface-replacement, outage and disabled-radio handling",
+    "Fourteen persistent version-locked web overlays; history start/stop integrated with existing apply/rollback scripts"
+  ],
+  "collector": {
+    "location": "/jffs/node-history",
+    "database": "/tmp/.diag/node_stats.db",
+    "sample_seconds": 60,
+    "retention_seconds": 86400,
+    "max_rows": 90000,
+    "max_database_bytes_per_writer_connection": 33554432,
+    "stored_identifiers": "interface names only; no client MAC addresses or SSIDs stored in the history database",
+    "no_flash_history": true,
+    "reboot_clears_history": true,
+    "network_listener": false,
+    "api": "Existing ASUS authenticated get_diag_content_data.cgi"
+  },
+  "validation": {
+    "counter_fixture": "scripts/verify-node-history.py passed first sample, real delta, interface replacement, counter reset, long gap, radio disable, NULL-free API, and 24h pruning",
+    "source_patch": "patch --dry-run passed against pinned upstream libcodb source; not compiled",
+    "browser": "Native Chrome verified real curves, traffic interface switching to eth.ai, 24h range selection, 6GHz selection and independent Traffic Monitor entry. Router-origin JavaScript errors were not observed in inspected logs.",
+    "persistent": "evidence/ui-audit/round3/persistent.json",
+    "health": "evidence/ui-audit/round3/persistent-health.json",
+    "reboot_tested": false,
+    "full_day_soak_tested": false,
+    "javascript": {
+      "syntax": [
+        "node-history.js syntax",
+        "node-insight.js syntax",
+        "dashboard-clients.js syntax",
+        "wireless-snapshot.js syntax"
+      ],
+      "realApiRows": 30,
+      "missingSentinelsBecomeNull": true,
+      "validZeroPreserved": true,
+      "outageGap": true
+    },
+    "final_health": "evidence/ui-audit/round3/final-health.json"
+  },
+  "limits": [
+    "Full FFT spectrum/classified interference remains unimplemented; AirIQ stock startup requests 3+1 PHY scan mode and may restart 2.4GHz on scan failure. Passive chanim reads do not do this.",
+    "NOPKT is undecoded energy occupancy, not identified non-WiFi interferer proof.",
+    "Traffic is kernel interface counters; hardware offload coverage depends on the driver and is not billing-grade WAN traffic.",
+    "Channel changes are inferred between minute samples; changes within the interval and vendor DFS/change reasons are not reconstructed.",
+    "Startup configuration is persistent, but no router reboot was performed to test it."
+  ],
+  "firmware": {
+    "packaged": false,
+    "flashed": false,
+    "git_commit_created": false,
+    "slot_commit_changed": false
+  },
+  "manifest": {
+    "files": [
+      {
+        "path": "index.html",
+        "source_sha256": "71d16b822f86a7d0cd060292b778952722362958bb66d075bc60a43eaa5bae40",
+        "patched_sha256": "f83245b3253e6bad74d9b9593120b32f4943b18f0c1923a01ae03615d47227d5",
+        "size": 10638
+      },
+      {
+        "path": "js/basic.js",
+        "source_sha256": "b2d73bab83b1c0df7029047174218a3eaef962d2aa669d957ecaefac016f504b",
+        "patched_sha256": "2771501c2be0e7d350bb5eba8e376c5e447c4c501557c2ea9f684a661b66db40",
+        "size": 70292
+      },
+      {
+        "path": "state.js",
+        "source_sha256": "752d1e38748c6ab101ee9586fac2d05a8199b7a68910c4b1eb0f277bdb3b498a",
+        "patched_sha256": "4d31fe429cc51bcfd882bcaa9bb9ff79e7ff79f666ceef12ce485f9e491aa90e",
+        "size": 192906
+      },
+      {
+        "path": "SDN/sdn.html",
+        "source_sha256": "a5d3f44b0060195f62c05f6489749fea126765e5a43256f8437698f05b527f62",
+        "patched_sha256": "a5796b4520c1f76a102dd87c17a8b07699edcdbaa1e8c05176040a8c8b8e76a4",
+        "size": 12794
+      },
+      {
+        "path": "css/architecture.css",
+        "source_sha256": "ec8da371d66bb261edd9be3c4c7942d49f599e532799e8867cc5a028df0f1c41",
+        "patched_sha256": "554c2e90945bad0c358bbd7fe375f55ffb46b8c35fe850781e8d17ad06bf6c5b",
+        "size": 36834
+      },
+      {
+        "path": "pages/aiboard.html",
+        "source_sha256": "e680a0946500edd9f8f5c0047fd3a24458aa369774d7188c90f26bb84a056611",
+        "patched_sha256": "99f5f2a42579d5bedf7731643e98e4a99bc07e5f5da926ecf21694085d172414",
+        "size": 62187
+      },
+      {
+        "path": "pages/sdn.html",
+        "source_sha256": "3d239df3c582aa14d5a604990a95d2da492b2ba5bdd6c80f69f5c94b02f7df8c",
+        "patched_sha256": "2a313cfe5c5780baca951a3bed79e2e9b699da5d6195b321ad0d917a44b3008d",
+        "size": 3927
+      },
+      {
+        "path": "js/dashboard.module.js",
+        "source_sha256": "8747bc29f7c51bcb1a944cba68e53c5aff2869357b459805d0d3dd228faef018",
+        "patched_sha256": "2a9b0be742691cf67620dd49fa268b09a65f332171e7af2c1a66951ab1e67adb",
+        "size": 105659
+      },
+      {
+        "path": "pages/dashboard.html",
+        "source_sha256": "fd5dbc05c14d8b13cf98131c13c7e7b39af0a58a673dc964e433047b16084ddc",
+        "patched_sha256": "a1388f474a500dc61ccfe732263538b36e0802a8eef01c9b157e788bfeef8a8d",
+        "size": 130743
+      },
+      {
+        "path": "pages/trafficmonitor.html",
+        "source_sha256": "2464a8589080d9d217d64ad8d294e2fd80112eeba16ccd4e3b0986060e683d45",
+        "patched_sha256": "5c0051eb28f162a5a8db9201327b1df57026ca52ae29e0528d4ee1084eb8d0f6",
+        "size": 17445
+      },
+      {
+        "path": "Advanced_SwitchCtrl_Content.asp",
+        "source_sha256": "5f9e23dc93b0d51dd1722a7ff702fc44a2f6982adba481c8fc2a91f021d421ba",
+        "patched_sha256": "b9d7a4438221c7ad50fb19084875a16b4f8eaa75551ef098e71b21362928b926",
+        "size": 34945
+      },
+      {
+        "path": "APP_Installation.asp",
+        "source_sha256": "88b0c269b1696c2b47907ba6a1ea2aee673d10bbd5c6a68a681ba226b34fa28b",
+        "patched_sha256": "fb9541d5e1150a7b80d1136bf866cb23103b2c673e8bd024317d20e613cefb50",
+        "size": 42181
+      },
+      {
+        "path": "Advanced_OperationMode_Content.asp",
+        "source_sha256": "7ac3ef45390dbfc6b2e6001b62b42f06c1aefef97194761f10f89601940af309",
+        "patched_sha256": "8270db12bcad777cabe47ec34fa4f1ebf2dd30e46892f3ad24dfea7f7c555182",
+        "size": 34490
+      },
+      {
+        "path": "Main_WStatus_Content.asp",
+        "source_sha256": "d8e2ba668ed1b996bf6e448b32fc2cc522c1131a6ed76932750b67b548c6539c",
+        "patched_sha256": "cee432e42517f6f593d4200caec888fd2574cb6fe447ca07e1ba87bf3838749e",
+        "size": 21212
+      }
+    ],
+    "scope": "Authenticated local node web UI; no network-role or authentication changes"
+  }
+}

@@ -1,0 +1,431 @@
+{
+  "summary": {
+    "counts": {
+      "stock": {
+        "loaded": 11
+      },
+      "candidate": {
+        "loaded": 11
+      }
+    },
+    "regressions": [],
+    "targets": 11,
+    "vm_runs": 22,
+    "hardware_not_emulated": true
+  },
+  "records": {
+    "candidate-br_netfilter": {
+      "version": "candidate",
+      "target": "br_netfilter",
+      "status": "loaded",
+      "module_results": [
+        [
+          "br_netfilter",
+          "0",
+          "0",
+          "Success"
+        ]
+      ],
+      "panic": false,
+      "kernel_sha256": "9819ebd69792190a9d178fd802782fe4de4a9866c411949f24e15fd1724187c3",
+      "guest_complete": true
+    },
+    "candidate-cfg80211": {
+      "version": "candidate",
+      "target": "cfg80211",
+      "status": "loaded",
+      "module_results": [
+        [
+          "firmware_class",
+          "0",
+          "0",
+          "Success"
+        ],
+        [
+          "cfg80211",
+          "0",
+          "0",
+          "Success"
+        ]
+      ],
+      "panic": false,
+      "kernel_sha256": "9819ebd69792190a9d178fd802782fe4de4a9866c411949f24e15fd1724187c3",
+      "guest_complete": true
+    },
+    "candidate-nf_tables": {
+      "version": "candidate",
+      "target": "nf_tables",
+      "status": "loaded",
+      "module_results": [
+        [
+          "nf_tables",
+          "0",
+          "0",
+          "Success"
+        ]
+      ],
+      "panic": false,
+      "kernel_sha256": "9819ebd69792190a9d178fd802782fe4de4a9866c411949f24e15fd1724187c3",
+      "guest_complete": true
+    },
+    "candidate-sch_hfsc": {
+      "version": "candidate",
+      "target": "sch_hfsc",
+      "status": "loaded",
+      "module_results": [
+        [
+          "sch_hfsc",
+          "0",
+          "0",
+          "Success"
+        ]
+      ],
+      "panic": false,
+      "kernel_sha256": "9819ebd69792190a9d178fd802782fe4de4a9866c411949f24e15fd1724187c3",
+      "guest_complete": true
+    },
+    "candidate-sd_mod": {
+      "version": "candidate",
+      "target": "sd_mod",
+      "status": "loaded",
+      "module_results": [
+        [
+          "scsi_mod",
+          "0",
+          "0",
+          "Success"
+        ],
+        [
+          "sd_mod",
+          "0",
+          "0",
+          "Success"
+        ]
+      ],
+      "panic": false,
+      "kernel_sha256": "9819ebd69792190a9d178fd802782fe4de4a9866c411949f24e15fd1724187c3",
+      "guest_complete": true
+    },
+    "candidate-tfat": {
+      "version": "candidate",
+      "target": "tfat",
+      "status": "loaded",
+      "module_results": [
+        [
+          "tfat",
+          "0",
+          "0",
+          "Success"
+        ]
+      ],
+      "panic": false,
+      "kernel_sha256": "9819ebd69792190a9d178fd802782fe4de4a9866c411949f24e15fd1724187c3",
+      "guest_complete": true
+    },
+    "candidate-thfsplus": {
+      "version": "candidate",
+      "target": "thfsplus",
+      "status": "loaded",
+      "module_results": [
+        [
+          "thfsplus",
+          "0",
+          "0",
+          "Success"
+        ]
+      ],
+      "panic": false,
+      "kernel_sha256": "9819ebd69792190a9d178fd802782fe4de4a9866c411949f24e15fd1724187c3",
+      "guest_complete": true
+    },
+    "candidate-tntfs": {
+      "version": "candidate",
+      "target": "tntfs",
+      "status": "loaded",
+      "module_results": [
+        [
+          "tntfs",
+          "0",
+          "0",
+          "Success"
+        ]
+      ],
+      "panic": false,
+      "kernel_sha256": "9819ebd69792190a9d178fd802782fe4de4a9866c411949f24e15fd1724187c3",
+      "guest_complete": true
+    },
+    "candidate-tun": {
+      "version": "candidate",
+      "target": "tun",
+      "status": "loaded",
+      "module_results": [
+        [
+          "tun",
+          "0",
+          "0",
+          "Success"
+        ]
+      ],
+      "panic": false,
+      "kernel_sha256": "9819ebd69792190a9d178fd802782fe4de4a9866c411949f24e15fd1724187c3",
+      "guest_complete": true
+    },
+    "candidate-usb_storage": {
+      "version": "candidate",
+      "target": "usb_storage",
+      "status": "loaded",
+      "module_results": [
+        [
+          "usb_common",
+          "0",
+          "0",
+          "Success"
+        ],
+        [
+          "usbcore",
+          "0",
+          "0",
+          "Success"
+        ],
+        [
+          "scsi_mod",
+          "0",
+          "0",
+          "Success"
+        ],
+        [
+          "usb_storage",
+          "0",
+          "0",
+          "Success"
+        ]
+      ],
+      "panic": false,
+      "kernel_sha256": "9819ebd69792190a9d178fd802782fe4de4a9866c411949f24e15fd1724187c3",
+      "guest_complete": true
+    },
+    "candidate-wireguard": {
+      "version": "candidate",
+      "target": "wireguard",
+      "status": "loaded",
+      "module_results": [
+        [
+          "wireguard",
+          "0",
+          "0",
+          "Success"
+        ]
+      ],
+      "panic": false,
+      "kernel_sha256": "9819ebd69792190a9d178fd802782fe4de4a9866c411949f24e15fd1724187c3",
+      "guest_complete": true
+    },
+    "stock-br_netfilter": {
+      "version": "stock",
+      "target": "br_netfilter",
+      "status": "loaded",
+      "module_results": [
+        [
+          "br_netfilter",
+          "0",
+          "0",
+          "Success"
+        ]
+      ],
+      "panic": false,
+      "kernel_sha256": "aeca127a930a6c000de905382c6d58783b9002bcf11a1025b4b57131e75f3ca1",
+      "guest_complete": true
+    },
+    "stock-cfg80211": {
+      "version": "stock",
+      "target": "cfg80211",
+      "status": "loaded",
+      "module_results": [
+        [
+          "firmware_class",
+          "0",
+          "0",
+          "Success"
+        ],
+        [
+          "cfg80211",
+          "0",
+          "0",
+          "Successcfg80211: failed to load regulatory.db"
+        ]
+      ],
+      "panic": false,
+      "kernel_sha256": "aeca127a930a6c000de905382c6d58783b9002bcf11a1025b4b57131e75f3ca1",
+      "guest_complete": true
+    },
+    "stock-nf_tables": {
+      "version": "stock",
+      "target": "nf_tables",
+      "status": "loaded",
+      "module_results": [
+        [
+          "nf_tables",
+          "0",
+          "0",
+          "Success"
+        ]
+      ],
+      "panic": false,
+      "kernel_sha256": "aeca127a930a6c000de905382c6d58783b9002bcf11a1025b4b57131e75f3ca1",
+      "guest_complete": true
+    },
+    "stock-sch_hfsc": {
+      "version": "stock",
+      "target": "sch_hfsc",
+      "status": "loaded",
+      "module_results": [
+        [
+          "sch_hfsc",
+          "0",
+          "0",
+          "Success"
+        ]
+      ],
+      "panic": false,
+      "kernel_sha256": "aeca127a930a6c000de905382c6d58783b9002bcf11a1025b4b57131e75f3ca1",
+      "guest_complete": true
+    },
+    "stock-sd_mod": {
+      "version": "stock",
+      "target": "sd_mod",
+      "status": "loaded",
+      "module_results": [
+        [
+          "scsi_mod",
+          "0",
+          "0",
+          "Success"
+        ],
+        [
+          "sd_mod",
+          "0",
+          "0",
+          "Success"
+        ]
+      ],
+      "panic": false,
+      "kernel_sha256": "aeca127a930a6c000de905382c6d58783b9002bcf11a1025b4b57131e75f3ca1",
+      "guest_complete": true
+    },
+    "stock-tfat": {
+      "version": "stock",
+      "target": "tfat",
+      "status": "loaded",
+      "module_results": [
+        [
+          "tfat",
+          "0",
+          "0",
+          "Success"
+        ]
+      ],
+      "panic": false,
+      "kernel_sha256": "aeca127a930a6c000de905382c6d58783b9002bcf11a1025b4b57131e75f3ca1",
+      "guest_complete": true
+    },
+    "stock-thfsplus": {
+      "version": "stock",
+      "target": "thfsplus",
+      "status": "loaded",
+      "module_results": [
+        [
+          "thfsplus",
+          "0",
+          "0",
+          "Success"
+        ]
+      ],
+      "panic": false,
+      "kernel_sha256": "aeca127a930a6c000de905382c6d58783b9002bcf11a1025b4b57131e75f3ca1",
+      "guest_complete": true
+    },
+    "stock-tntfs": {
+      "version": "stock",
+      "target": "tntfs",
+      "status": "loaded",
+      "module_results": [
+        [
+          "tntfs",
+          "0",
+          "0",
+          "Success"
+        ]
+      ],
+      "panic": false,
+      "kernel_sha256": "aeca127a930a6c000de905382c6d58783b9002bcf11a1025b4b57131e75f3ca1",
+      "guest_complete": true
+    },
+    "stock-tun": {
+      "version": "stock",
+      "target": "tun",
+      "status": "loaded",
+      "module_results": [
+        [
+          "tun",
+          "0",
+          "0",
+          "Success"
+        ]
+      ],
+      "panic": false,
+      "kernel_sha256": "aeca127a930a6c000de905382c6d58783b9002bcf11a1025b4b57131e75f3ca1",
+      "guest_complete": true
+    },
+    "stock-usb_storage": {
+      "version": "stock",
+      "target": "usb_storage",
+      "status": "loaded",
+      "module_results": [
+        [
+          "scsi_mod",
+          "0",
+          "0",
+          "Success"
+        ],
+        [
+          "usb_common",
+          "0",
+          "0",
+          "Success"
+        ],
+        [
+          "usbcore",
+          "0",
+          "0",
+          "Success"
+        ],
+        [
+          "usb_storage",
+          "0",
+          "0",
+          "Success"
+        ]
+      ],
+      "panic": false,
+      "kernel_sha256": "aeca127a930a6c000de905382c6d58783b9002bcf11a1025b4b57131e75f3ca1",
+      "guest_complete": true
+    },
+    "stock-wireguard": {
+      "version": "stock",
+      "target": "wireguard",
+      "status": "loaded",
+      "module_results": [
+        [
+          "wireguard",
+          "0",
+          "0",
+          "Success"
+        ]
+      ],
+      "panic": false,
+      "kernel_sha256": "aeca127a930a6c000de905382c6d58783b9002bcf11a1025b4b57131e75f3ca1",
+      "guest_complete": true
+    }
+  },
+  "scope": "Focused 11 targets /22 VMs; not a repeat of kernel6 complete matrix. Board hardware is not emulated."
+}

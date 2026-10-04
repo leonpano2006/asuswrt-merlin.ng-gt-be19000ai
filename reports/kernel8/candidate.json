@@ -1,0 +1,152 @@
+{
+  "updated_at": "2026-10-04T11:21:40.715205+00:00",
+  "target": "GT-BE19000AI BCM6813",
+  "candidate": "kernel8-psi-workingset",
+  "status": "FLASHED_TRIAL_BOOT_ACCEPTED_AS_KERNEL8_UI1",
+  "kernel": "Linux 4.19.294 #8",
+  "previous_candidate": "reports/kernel7/candidate.json",
+  "historical_reason": {
+    "report": "reports/psi/history-audit.json",
+    "commit": "574cafe29c47efbdefaa9b476bba5d2fd2c5ca0b",
+    "url": "https://github.com/leonpano2006/asuswrt-merlin.ng-gt-be98/commit/574cafe29c47efbdefaa9b476bba5d2fd2c5ca0b",
+    "finding": "Original Claude co-authored backport explicitly omitted filemap PSI because upstream insertion of PG_workingset would renumber vendor page flags. Kernel7 improved cgroup/trigger coverage but did not close that historical MM omission."
+  },
+  "image": {
+    "path": "build/Image-v8",
+    "sha256": "bd866bd952a79092126e31a15e123d6286f6e10b92ddf3b1e81d553ccb790234"
+  },
+  "config": {
+    "path": "configs/kernel8.config",
+    "sha256": "1c495c39d80319246f26a38192eb481b54860ea938d46bbc8156b4fa676a8216",
+    "delta_from_kernel7": []
+  },
+  "patch": {
+    "path": "patches/0006-psi-workingset-refault-abi.patch",
+    "sha256": "6e2b2a186b16944c8204be4b148c1691f960a05a33daa8ff5970ab021e1c3c9b",
+    "changed_files": 13
+  },
+  "added_features": [
+    "File-cache historical-active/workingset classification through deactivation, eviction shadows and eligible refault",
+    "Memory PSI while waiting for workingset file pages to become uptodate",
+    "Working-set read BIO submission PSI and memory-related blkcg throttle annotation",
+    "Preserve working-set flag through page migration and compound-page split; clear it at reuse"
+  ],
+  "inherited_features": "All kernel7 system/cgroup CPU/memory/IO statistics, quota/full accounting, thresholds and poll/epoll lifetime fixes",
+  "abi": {
+    "report": "reports/psi8/kernel8-abi.json",
+    "new_page_bit": 21,
+    "new_bio_bit": 12,
+    "bvec_pool_offset": 13,
+    "old_page_and_bio_values_unchanged": true,
+    "old_vm_stat_counts_unchanged": true,
+    "page_bio_and_eight_other_aggregate_layouts_unchanged": true,
+    "page_flags_count_change": [
+      21,
+      22
+    ],
+    "scope": "Compiled headers with preserved kernel7 baseline; not proof of all proprietary runtime accesses."
+  },
+  "qemu": [
+    {
+      "label": "psi8-functional",
+      "report": "reports/kernel8/psi8-functional.json",
+      "unexpected_diagnostics": [],
+      "expected_userspace_warnings": []
+    },
+    {
+      "label": "psi8-disabled",
+      "report": "reports/kernel8/psi8-disabled.json",
+      "unexpected_diagnostics": [],
+      "expected_userspace_warnings": []
+    },
+    {
+      "label": "psi8-lifetime",
+      "report": "reports/kernel8/psi8-lifetime.json",
+      "unexpected_diagnostics": [],
+      "expected_userspace_warnings": []
+    },
+    {
+      "label": "psi8-resource",
+      "report": "reports/kernel8/psi8-resource.json",
+      "unexpected_diagnostics": [],
+      "expected_userspace_warnings": []
+    },
+    {
+      "label": "psi8-io",
+      "report": "reports/kernel8/psi8-io.json",
+      "unexpected_diagnostics": [],
+      "expected_userspace_warnings": []
+    },
+    {
+      "label": "psi8-docker",
+      "report": "reports/kernel8/psi8-docker.json",
+      "unexpected_diagnostics": [],
+      "expected_userspace_warnings": [
+        "WARNING: Support for cgroup v1 is deprecated and planned to be removed by no later than May 2029 (https://github.com/moby/moby/issues/51111)",
+        "WARNING: IPv4 forwarding is disabled"
+      ]
+    },
+    {
+      "label": "psi8-refault-hooks",
+      "report": "reports/kernel8/psi8-refault-hooks.json",
+      "unexpected_diagnostics": [],
+      "expected_userspace_warnings": []
+    }
+  ],
+  "refault_ab": {
+    "report": "reports/psi/refault-test-review.json",
+    "same_probe_and_filesystem_image": true,
+    "kernel7_hot_memory_stall_us": 0,
+    "kernel8_hot_memory_stall_us": 3476059,
+    "both_cold_memory_stall_us": 0,
+    "during_measurement_pgscan_pgsteal_max_event_delta": 0,
+    "kernel8_hot_poll_flags": "POLLPRI without ERR/HUP"
+  },
+  "io_and_migration": {
+    "report": "reports/kernel8/psi8-io.json",
+    "actual_io_some_full_notifications_and_rearm": true,
+    "qualified_cross_cpu_stalled_wakeups": 8,
+    "cgroup_migration_while_blocked": true
+  },
+  "module_regression": {
+    "report": "reports/kernel8/module-matrix.json",
+    "vm_runs": 330,
+    "stock_loaded": 136,
+    "candidate_loaded": 167,
+    "stock_loaded_regressions": [],
+    "exceptions": "reports/kernel8/module-exceptions.json"
+  },
+  "rootfs": {
+    "path": "build/rootfs-v8.zstd.squashfs",
+    "report": "reports/kernel8/rootfs.json",
+    "nonmodule_differences": 0,
+    "purpose": "Kernel/module test rootfs from stock userspace, not an integrated replacement for kernel6-ui1 UI/RGB/collectors."
+  },
+  "limits": [
+    "Anonymous/swap workingset classification, cold/hot swapin-specific PSI and modern reclaim-root LRU behavior are not part of this file-cache stage; full dependencies documented in reports/psi8/mm-feasibility.json.",
+    "The optional workingset_restore VM statistic is intentionally not added, preserving vendor VM-stat array layouts; PSI does not depend on this diagnostic counter.",
+    "As in selected upstream, legacy direct IO using an already-hot file-backed user buffer may inherit its workingset mark; asynchronous downstream cloned submissions are not separately instrumented.",
+    "The use_memdelay block-policy branch is compiled/reviewed; disabled io.latency policy means it is not exercised by these tests.",
+    "No IRQ pressure, later average-based unprivileged monitor mode, per-cgroup PSI on/off, userspace oomd policy or SL1680 changes.",
+    "Physical kernel8 one-time boot accepted; no radios/Runner throughput benchmark or long soak claimed."
+  ],
+  "deployment": {
+    "hardware_changed": true,
+    "flashed": true,
+    "firmware_package_created": true,
+    "git_commit_created": false,
+    "sl1680_changed": false,
+    "prior_release_record": "reports/releases/kernel6-ui1.json",
+    "release_report": "reports/releases/kernel8-ui1.json"
+  },
+  "audits": [
+    "reports/psi/history-audit.json",
+    "reports/psi8/mm-port.json",
+    "reports/psi8/block-port.json",
+    "reports/psi8/block-review.json",
+    "reports/psi8/mm-feasibility.json",
+    "reports/psi8/kernel8-abi.json",
+    "reports/psi/refault-test-review.json",
+    "reports/psi/io-test-review.json"
+  ]
+}

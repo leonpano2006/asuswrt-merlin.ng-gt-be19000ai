@@ -1,0 +1,38 @@
+{
+  "isolation": "Bubblewrap unshare-all, read-only rootfs, no router access; hardware/NVRAM/timer calls mocked.",
+  "cases": [
+    {
+      "scheme": 0,
+      "patched_node_matches_stock_controller": true
+    },
+    {
+      "scheme": 1,
+      "patched_node_matches_stock_controller": true
+    },
+    {
+      "scheme": 2,
+      "patched_node_matches_stock_controller": true
+    },
+    {
+      "scheme": 3,
+      "patched_node_matches_stock_controller": true
+    },
+    {
+      "scheme": 4,
+      "patched_node_matches_stock_controller": true
+    },
+    {
+      "scheme": 5,
+      "patched_node_matches_stock_controller": true
+    },
+    {
+      "scheme": 6,
+      "patched_node_matches_stock_controller": true
+    },
+    {
+      "scheme": 7,
+      "patched_node_matches_stock_controller": true
+    }
+  ],
+  "limitation": "Validates initial hardware command sequence and timer request, not physical LED output or long-running animation."
+}

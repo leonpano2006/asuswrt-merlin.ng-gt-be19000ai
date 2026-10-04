@@ -1,0 +1,223 @@
+{
+  "audit_date": "2026-10-04",
+  "scope": "Read-only upstream/source audit and isolated input preparation; no hardware access, no live kernel edits, no Git commit.",
+  "recommendation": {
+    "base_tag": "v5.15.222",
+    "base_commit": "a051a4bf909f76f470ccb3761ee0cf6e2395616e",
+    "primary_source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tag/?h=v5.15.222",
+    "mirror_used": "https://github.com/gregkh/linux/tree/a051a4bf909f76f470ccb3761ee0cf6e2395616e",
+    "reason": "The final 5.4.302 PSI implementation has global and cgroup reading/threshold interfaces but still misses CPU quota/competing-cgroup accounting and multiple post-5.4 correctness/lifetime fixes. Pin 5.15.222 functionality and explicitly adapt subsequent applicable fixes; neither old stable branch is a complete security answer on its own.",
+    "5_4_audit": {
+      "version": "5.4.302",
+      "psi_last_commit": "7caeb5457bd01ccba0df1d6f4872f20d28e50b38",
+      "missing_sync_poll_uaf_fix": true,
+      "missing_write_release_race_fix": true,
+      "cpu_some_old_rule": "NR_RUNNING > 1",
+      "cpu_full_supported": false
+    }
+  },
+  "artifacts": {
+    "directory": "inputs/psi-selected",
+    "original_hashes": "inputs/psi-selected/source-manifest.json",
+    "adapted_hashes": "inputs/psi-selected/adaptation-manifest.json",
+    "write_reference": "inputs/psi-selected/cgroup-pressure-write-reference.c",
+    "validation": "Source review only. Compile, QEMU stress and ABI gates belong to root integration."
+  },
+  "upstream_commits": [
+    {
+      "commit": "b05e75d611380881e73edc58a20fd8c6bb71720b",
+      "title": "CPU pressure for cpu.max and competing cgroups",
+      "status": "included in 5.15.222",
+      "reason": "Track TSK_ONCPU at schedule switch; NR_RUNNING>1 alone misses external competition and quota stalls.",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=b05e75d611380881e73edc58a20fd8c6bb71720b"
+    },
+    {
+      "commit": "e7fcd762282332f765af2035a9568fb126fa3c01",
+      "title": "PSI_CPU_FULL",
+      "status": "included in 5.15.222",
+      "reason": "Per-cgroup CPU full; does not imply meaningful system CPU full.",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=e7fcd762282332f765af2035a9568fb126fa3c01"
+    },
+    {
+      "commit": "d583d360a620e6229422b3455d0be082b8255f5e",
+      "title": "Schedule/cgroup move state corruption",
+      "status": "included in 5.15.222",
+      "reason": "Move recorded task->psi_flags under rq lock; do not reconstruct state from task_on_rq_queued after deferred dequeues.",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=d583d360a620e6229422b3455d0be082b8255f5e"
+    },
+    {
+      "commit": "8f91efd870ea5d8bc10b0fcc9740db51cd4c0c83",
+      "title": "Trigger create/destroy timer race",
+      "status": "included in 5.15.222",
+      "reason": "Initialize timer/waitqueue once in group_init, not on each newly created polling worker.",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=8f91efd870ea5d8bc10b0fcc9740db51cd4c0c83"
+    },
+    {
+      "commit": "cb0e52b7748737b2cf6481fdd9b920ce7e1ebbdf",
+      "title": "MEM_FULL while reclaiming",
+      "status": "included in 5.15.222 as stable backport",
+      "reason": "NR_MEMSTALL_RUNNING distinguishes productive runnable work from runnable reclaim.",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=cb0e52b7748737b2cf6481fdd9b920ce7e1ebbdf"
+    },
+    {
+      "commit": "890d550d7dbac7a31ecaa78732aa22be282bb6b8",
+      "title": "System CPU full zero compatibility",
+      "status": "included in 5.15.222 as stable backport",
+      "reason": "Host CPU full line must remain zero; cgroup CPU full remains measured.",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=890d550d7dbac7a31ecaa78732aa22be282bb6b8"
+    },
+    {
+      "commit": "a06247c6804f1a7c86a2e5398a4c1f1db1471848",
+      "title": "Trigger replacement UAF",
+      "status": "included in 5.15.222 as stable backport",
+      "reason": "One trigger per open file; repeat write returns EBUSY; acquire/release publication and seq lock for proc writes.",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=a06247c6804f1a7c86a2e5398a4c1f1db1471848"
+    },
+    {
+      "commit": "aff037078ecaecf34a7c2afab1341815f90fba5e",
+      "title": "Kernfs-backed polling lifetime",
+      "status": "adapted in inputs/psi-selected",
+      "reason": "CVE-2023-54019. wake_up_pollfree alone does not protect synchronous poll/select; use kernfs_generic_poll/kernfs_notify for cgroup files.",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=aff037078ecaecf34a7c2afab1341815f90fba5e"
+    },
+    {
+      "commit": "e6df4ead85d9da1b07dd40bd4c6d2182f3e210c4",
+      "title": "Remember ratelimited pending events",
+      "status": "adapted in inputs/psi-selected",
+      "reason": "Retain threshold breach until allowed to signal even if no further stall occurs.",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=e6df4ead85d9da1b07dd40bd4c6d2182f3e210c4"
+    },
+    {
+      "commit": "e38f89af6a13e895805febd3a329a13ab7e66fa4",
+      "title": "Do not lose pending events after subsequent growth",
+      "status": "adapted in inputs/psi-selected",
+      "reason": "Already pending notification must not be skipped when a later window growth is below threshold.",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=e38f89af6a13e895805febd3a329a13ab7e66fa4"
+    },
+    {
+      "commit": "915a087e4c47334a2f7ba2a4092c4bade0873769",
+      "title": "New monitor initial false firing",
+      "status": "adapted in inputs/psi-selected",
+      "reason": "Initialize from current group total; staged adaptation captures it under trigger_lock.",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=915a087e4c47334a2f7ba2a4092c4bade0873769"
+    },
+    {
+      "commit": "2fcd7bbae90a6d844da8660a9d27079281dfbba2",
+      "title": "Average worker rearm decision",
+      "status": "adapted in inputs/psi-selected",
+      "reason": "Distinguish own average worker CPU from useful nonidle activity.",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=2fcd7bbae90a6d844da8660a9d27079281dfbba2"
+    },
+    {
+      "commit": "710ffe671e014d5ccbcff225130a178b088ef090",
+      "title": "Polling work scheduling atomicity",
+      "status": "adapted in inputs/psi-selected",
+      "reason": "Use poll_scheduled atomic plus ordering rather than timer_pending as synchronization.",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=710ffe671e014d5ccbcff225130a178b088ef090"
+    },
+    {
+      "commit": "3840cbe24cf060ea05a585ca497814609f5d47d1",
+      "title": "Bogus total spikes from accounting race",
+      "status": "adapted in inputs/psi-selected",
+      "reason": "Read state-change cpu_clock inside seqcount. 5.15 includes problematic df774306 optimization.",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=3840cbe24cf060ea05a585ca497814609f5d47d1"
+    },
+    {
+      "commit": "94a4acfec14615e971eb2c9e1fa6c992c85ff6c6",
+      "title": "Clear released cgroup file private state",
+      "status": "required in caller integration",
+      "reason": "Set of->priv=NULL after release, prerequisite for revalidation around dropped cgroup mutex.",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=94a4acfec14615e971eb2c9e1fa6c992c85ff6c6"
+    },
+    {
+      "commit": "a5b98009f16d8a5fb4a8ff9a193f5735515c38fa",
+      "title": "Pressure write versus release race",
+      "status": "reference function staged; caller must integrate",
+      "reason": "CVE-2026-52991. Read/revalidate/publish ctx only while cgroup_mutex held; lock_live alone then unlock-before-use is insufficient.",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=a5b98009f16d8a5fb4a8ff9a193f5735515c38fa"
+    },
+    {
+      "commit": "fadeedd7cfc5d73d33fa3d7ac54b9b27aabd09d2",
+      "title": "Fork psimon outside cgroup mutex and active protection",
+      "status": "adapted in PSI copy; cgroup reference supplied",
+      "reason": "Register trigger first, drop only cgroup_mutex while retaining cgrp reference and broken kernfs active protection, create worker, re-lock and recheck of->priv, then publish.",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=fadeedd7cfc5d73d33fa3d7ac54b9b27aabd09d2"
+    },
+    {
+      "commit": "5457025fa8ca3c0d2732109513de839e3e797190",
+      "title": "Shutdown polling timer before freeing group",
+      "status": "included in 5.15.222 as 894a9300d7fb",
+      "reason": "On dying 4.19 groups, cancel avgs_work; assert poll_task=NULL and poll_states=0; synchronize_rcu; del_timer_sync; free per-CPU memory. This is valid only after all tasks/creators are excluded and final trigger destroy has unpublished poll_task, waited RCU and stopped psimon. Callback only wakes and never rearms.",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=5457025fa8ca3c0d2732109513de839e3e797190"
+    },
+    {
+      "commit": "3c9ba2777d6c86025e1ba4186dc5cd930e40ec5f",
+      "title": "Reject released kernfs open files after node reactivation",
+      "status": "required if adding per-cgroup disable/re-enable; review generic adapter",
+      "reason": "Bug-triggering cgroup.pressure disable/re-enable was added in 6.1 and is absent from 5.15 baseline. Existing 4.19 kernfs has of->released, so generic guard can be adapted without changing struct layout.",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=3c9ba2777d6c86025e1ba4186dc5cd930e40ec5f"
+    },
+    {
+      "commit": "d82caa273565b45fcf103148950549af76c314b0",
+      "title": "Unprivileged N*2-second monitoring",
+      "status": "not in staged baseline",
+      "reason": "Provides low-overhead N*2s monitoring without dedicated RT workers. In upstream 5.15 only /proc writable open is capability-gated; writable delegated cgroup pressure files can create RT triggers. Do not describe CAP_SYS_RESOURCE as universally required.",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=d82caa273565b45fcf103148950549af76c314b0"
+    },
+    {
+      "commit": "c530a3c716b963625e43aa915e0de6b4d1ce8ad9",
+      "title": "Stop average worker rearming itself on sleep",
+      "status": "adapted in inputs/psi-selected",
+      "reason": "5.15 defers sleep processing to psi_task_switch, so move its own-worker suppression from psi_task_change to that switch path.",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=c530a3c716b963625e43aa915e0de6b4d1ce8ad9"
+    }
+  ],
+  "integration_hooks": [
+    "Keep CONFIG_PSI=y, enabled by default; accept psi= boot option through static key. Do not claim cgroup files alone imply measured pressure.",
+    "Scheduler: psi_init, enqueue/dequeue, ttwu migration cleanup, psi_sched_switch in __schedule while rq lock held; use complete 5.15 PSI-specific stats helpers together.",
+    "Task lifetime: clear inherited psi_flags and memstall state at fork; preserve original vendor task_struct offsets. Replace new in_memstall storage with existing PF_MEMSTALL only after verifying all accesses and fork clearing.",
+    "Cgroups: allocate per-cgroup per-CPU PSI storage; free average work/timer/poll machinery before per-CPU storage and parent; route root cgroup reads to psi_system; move tasks with cgroup_move_task under rq lock.",
+    "Expose io.pressure, memory.pressure, cpu.pressure through cgroup v2 base files, including root; show/write/poll/release lifetime must be wired. Preserve vendor cftype/kernfs_ops offsets via checked wrapper dispatch if necessary.",
+    "Existing direct reclaim and compaction enter/leave hooks must remain paired. 5.15 ONCPU-based memstall full accounting replaces the old psi_memstall_tick/psi_task_tick approach.",
+    "proc_ops must be adapted to 4.19 file_operations; sched_set_fifo_low may be replaced by existing sched_setscheduler_nocheck priority 1 with equivalent behavior.",
+    "Per-cgroup private PSI tail storage requires aligned allocation for every dynamic cgroup, allocation failure cleanup, root handling before tail access, and ABI sizeof/offsetof proof."
+  ],
+  "locking_review": {
+    "rejected_shortcut": "Avoid saying holding kernfs active across psimon fork is equivalent to the latest upstream fix. Although it blocks immediate release UAF, rmdir drains active references under cgroup_mutex and fork has broad lock dependencies.",
+    "recommended": "Use staged two-phase trigger/worker plus reference cgroup write routine based on a5b980+fadeedd7; set of->priv=NULL at release.",
+    "poll_lifetime": "Cgroup event waiters attach to kernfs open-node waitqueue. proc pressure waiters can keep trigger-owned waitqueue because trigger lifetime follows final file release.",
+    "no_silent_abi_shift": "Do not insert new cftype/kernfs/task fields without checking all vendor module layout consumers."
+  },
+  "cpu_full_semantics": {
+    "system": "Undefined; expose compatibility line fixed to zero, never interpret as missing support.",
+    "cgroup": "Measured loss of execution when runnable tasks have no ONCPU task, including throttling/external competition.",
+    "source": "https://docs.kernel.org/accounting/psi.html"
+  },
+  "systemd_oomd": {
+    "source": "https://github.com/systemd/systemd/blob/main/man/systemd-oomd.service.xml",
+    "requirements": [
+      "Systemd as manager with full unified cgroup v2 hierarchy",
+      "MemoryAccounting enabled for monitored units",
+      "PSI available and actual cgroup memory pressure readings",
+      "Swap highly recommended for reaction time, but not a strict requirement"
+    ],
+    "poll_distinction": "systemd-oomd periodically reads statistics; kernel threshold poll/epoll is a distinct capability used by other pressure consumers. Completing PSI does not itself install/start systemd-oomd or change PID1.",
+    "safety_scope": "Do not enable automatic OOM killing or tune live thresholds as part of this source-only backport."
+  },
+  "recommended_tests": [
+    "System and cgroup cpu/memory/io some/full format; finite 0-100 averages and monotonic totals",
+    "Single task CPU quota and cross-cgroup competing workload show CPU pressure; system CPU full remains zero",
+    "Memory direct reclaim/compaction pressure versus productive workers; no PSI state-underflow warnings",
+    "poll/select/epoll threshold wakeups on system and cgroup; idle no false events; second write EBUSY; zero/invalid windows EINVAL",
+    "Delete cgroup while poll/select/epoll and reads/writes race; close/reopen and concurrent last-trigger destroy/new-trigger create; no UAF or hang",
+    "Fork/exit and repeated cgroup migration under load; CPU affinity migrations; no underflow or counter spikes",
+    "Let polling window expire then cause new stall; deferred event after ratelimit; read pressure at high rate for seqcount race",
+    "Group teardown ensures average work/timer/worker stop; KASAN/lockdep QEMU when feasible",
+    "If unprivileged avg monitoring is later added, test N*2s accepted, invalid windows rejected, no new privileged RT worker for ordinary user"
+  ],
+  "privilege_detail": {
+    "proc": "5.15 psi_open rejects FMODE_WRITE without CAP_SYS_RESOURCE.",
+    "cgroup": "Upstream 5.15 cgroup pressure write has no equivalent capability gate; file permissions/delegation determine reachability.",
+    "modern_extension": "d82caa uses opener credentials to route unprivileged N*2s windows to existing average work, reducing RT-thread resource exposure."
+  }
+}

@@ -1,0 +1,269 @@
+{
+  "audit_date": "2026-10-04",
+  "scope": "Read-only audit of vendor Linux 4.19 MM pressure instrumentation after the 5.15 PSI scheduler/cgroup/trigger backport. This report does not modify firmware or source.",
+  "decision": {
+    "selected": "Do not add standalone swap_readpage instrumentation commit 937790699be9 in this version.",
+    "reason": "The isolated hook has known cold-swapin over-accounting on zram/zswap. Its correctness fix depends on PageWorkingset, which the current tree does not implement. Avoid adding a known semantic error merely to broaden hook coverage.",
+    "current_version_scope": "Complete cgroup hierarchy pressure interfaces, trigger/poll lifetime and delivery, CPU quota/competition accounting, and validated existing reclaim/compaction memory accounting.",
+    "explicit_limitation": "The scheduler PSI implementation is newer than the surrounding 4.19 MM instrumentation. Do not claim complete modern memory PSI/refault/swap coverage.",
+    "follow_up": "Backport a coherent working-set/refault/swap series with all prerequisites and correctness fixes, then re-run ABI, QEMU pressure, cold/hot page-cache and swap backend comparisons."
+  },
+  "source_tree": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19",
+  "source_hashes": [
+    {
+      "path": "mm/filemap.c",
+      "sha256": "4fe979551c61dcbf765c45f3a702a36535308f5b6a84458ab2948d0cf6fc5ff7"
+    },
+    {
+      "path": "mm/vmscan.c",
+      "sha256": "50c9f40a7436ce7421a6fc9c7e583f82dd60142e5d7308cab86a28b5a3a1f8e5"
+    },
+    {
+      "path": "mm/page_alloc.c",
+      "sha256": "a010be4d91c3719beb9cc0c446957b7faea7e8e3986332952009f76e58b19555"
+    },
+    {
+      "path": "mm/memcontrol.c",
+      "sha256": "ef14f4d968638a22feced4e5e709adb2ffea2b43487b8766e29f860e506ee0b5"
+    },
+    {
+      "path": "mm/compaction.c",
+      "sha256": "4d954bc07f1ca2351154d3f2ca6b8f130d277beb14304b2d7eae6197fc14d03d"
+    },
+    {
+      "path": "mm/page_io.c",
+      "sha256": "691a102e081b1cab91e9e51c56aaba5e9a494a43b421db15cb3a095210e2f726"
+    },
+    {
+      "path": "mm/swap_state.c",
+      "sha256": "82d6a89f1888eb4763d16d9c30bc22127df44643f8c3b84297ccd7193a33d1d3"
+    },
+    {
+      "path": "mm/swapfile.c",
+      "sha256": "96dafe91494e5d0b59bf32e534b3cf5b2f54dedee5bd4917038cdde1d07ed4e0"
+    },
+    {
+      "path": "mm/workingset.c",
+      "sha256": "e06ce88d0fe9dc8969639c490084adc2f8d314bbcd4135315a17d78ac8f1c672"
+    },
+    {
+      "path": "block/blk-cgroup.c",
+      "sha256": "892997f335ed05f8c9cba2ee867cff38d9e4dac6330723634126037001653063"
+    },
+    {
+      "path": "block/blk-core.c",
+      "sha256": "06ba020a41c2692bfa36a6425ebfe01a1a110d1789f22f1e621022d885a2869e"
+    },
+    {
+      "path": "include/linux/page-flags.h",
+      "sha256": "951c7e7859b59dc2aa5258c84a54d32d0222efb006504316a21f4ea7f7e13105"
+    },
+    {
+      "path": "include/linux/blk_types.h",
+      "sha256": "134a785cf667549d2857ebfb9c84f610a8f0932db60a5ba06ae45dc5bd997455"
+    },
+    {
+      "path": "include/linux/tracehook.h",
+      "sha256": "5489b954fda9e50d247c1fdc3dbdac160348473633796526a33432e9e94abf3a"
+    },
+    {
+      "path": "arch/arm64/kernel/signal.c",
+      "sha256": "7760300abf7191105e60b2ae67687ca90c5bab9520d724267e96595ed179a2a0"
+    },
+    {
+      "path": "kernel/sched/psi.c",
+      "sha256": "5699e00fe70a674d142f8944664da653890174f98f3d28d23f9d9e91b1d62a9d"
+    },
+    {
+      "path": "kernel/sched/stats.h",
+      "sha256": "e526707f9a35948700fbf580f6976bff4c79f0eaf8decae3b77107a2ec267c13"
+    },
+    {
+      "path": "kernel/fork.c",
+      "sha256": "1ec86dbef5bb09016b0cf3f5a9323e97a5bb38194ecd4b9b5c1b60534ee7e683"
+    },
+    {
+      "path": ".config",
+      "sha256": "1c495c39d80319246f26a38192eb481b54860ea938d46bbc8156b4fa676a8216"
+    }
+  ],
+  "existing_memory_hooks": [
+    {
+      "path": "mm/page_alloc.c",
+      "enter_lines": [
+        3590,
+        3826
+      ],
+      "leave_lines": [
+        3597,
+        3838
+      ],
+      "verified_pairs": 2,
+      "functions": [
+        "__alloc_pages_direct_compact",
+        "__perform_reclaim"
+      ]
+    },
+    {
+      "path": "mm/vmscan.c",
+      "enter_lines": [
+        3335,
+        3517
+      ],
+      "leave_lines": [
+        3341,
+        3619
+      ],
+      "verified_pairs": 2,
+      "functions": [
+        "try_to_free_mem_cgroup_pages",
+        "balance_pgdat"
+      ]
+    },
+    {
+      "path": "mm/compaction.c",
+      "enter_lines": [
+        2069
+      ],
+      "leave_lines": [
+        2071
+      ],
+      "verified_pairs": 1,
+      "functions": [
+        "kcompactd"
+      ]
+    }
+  ],
+  "state_storage_compatibility": {
+    "verified": "No MM/block source directly accesses old PF_MEMSTALL or new in_memstall; instrumentation uses the stable enter/leave API. All currently present MM enter/leave pairs were reviewed for normal/error-path pairing.",
+    "new_state_initialization": {
+      "file": "kernel/fork.c",
+      "line": 1834
+    },
+    "nested_sections": "Caller-local unsigned long pflags stores the previous state through the API; changing PSI internal storage does not require changing existing MM callers."
+  },
+  "memory_high": {
+    "synchronous_path": [
+      "try_charge schedules current->memcg_nr_pages_over_high and notify_resume",
+      "ARM64 do_notify_resume calls tracehook_notify_resume",
+      "tracehook_notify_resume calls mem_cgroup_handle_over_high",
+      "mem_cgroup_handle_over_high calls reclaim_high",
+      "reclaim_high calls try_to_free_mem_cgroup_pages",
+      "vmscan wraps do_try_to_free_pages with psi_memstall_enter/leave"
+    ],
+    "coverage": "Actual synchronous memory.high reclaim interval is measured, including sleeps and reclaim CPU time. The task/group performing the stall is the PSI owner. Small bookkeeping outside the reclaim call is not characterized as memory stall.",
+    "tracehook_line": 195,
+    "arm64_notify_line": 938,
+    "reclaim_call_line": 2165,
+    "modern_penalty_sleep": "Absent in this 4.19 implementation; do not misdescribe absence of the later 5.15 penalty-sleep hook as a lost current code path.",
+    "interrupt_path": "Charges made in interrupt context schedule high_work instead of penalizing a random interrupted task. Resulting reclaim pressure belongs to the worker/system, not directly to the target memory-charge cgroup. This follows task-stall semantics.",
+    "verdict": "No mandatory MM-source change was identified solely to keep current memory.high reclaim working with the new PSI state machine."
+  },
+  "omissions": [
+    {
+      "path": "mm/filemap.c",
+      "function": "wait_on_page_bit_common",
+      "line": 1097,
+      "observed": "Calls io_schedule while waiting but has no working-set-sensitive psi_memstall markers.",
+      "effect": "Refault I/O waits contribute to I/O pressure where in_iowait is set, but cannot be fully attributed to memory pressure.",
+      "priority": "Required before claiming full refault/thrashing memory PSI; coherent future series, not a state-storage migration defect."
+    },
+    {
+      "path": "mm/page_io.c",
+      "function": "swap_readpage",
+      "line": 297,
+      "observed": "No psi_memstall annotation around frontswap_load, rw_page, or submission.",
+      "effect": "Zswap decompression/zram synchronous loading and swap submission stalls are not explicitly memory pressure. Async completion waits also need filemap-side instrumentation.",
+      "priority": "Deferred together with working-set correctness prerequisites; standalone 937790 deliberately rejected."
+    },
+    {
+      "path": "block/blk-cgroup.c",
+      "function": "blkcg_maybe_throttle_blkg",
+      "line": 1710,
+      "observed": "Existing TODO says use_memdelay needs psi_memstall_enter/leave. io_schedule_prepare/finish is present.",
+      "effect": "A memory-related blkcg throttle delay is represented as I/O pressure but lacks the additional memory-pressure classification.",
+      "priority": "A bounded conditional enter/leave enhancement is possible, but not applied by this audit; evaluate reachable policy paths and test separately."
+    },
+    {
+      "path": "include/linux/page-flags.h",
+      "observed": "No PG_workingset/PageWorkingset support.",
+      "effect": "Cannot safely apply upstream hot/cold page classification by copying a guard or tagging every page.",
+      "priority": "Fundamental prerequisite requiring page-flag ABI/bit-layout audit."
+    },
+    {
+      "path": "include/linux/blk_types.h",
+      "observed": "No BIO_WORKINGSET flag.",
+      "effect": "Cannot currently distinguish working-set read submission in generic block paths.",
+      "priority": "Requires propagation and bit-number audit; do not shift vendor-visible existing flag values."
+    }
+  ],
+  "upstream_reference": {
+    "tag": "v5.15.222",
+    "commit": "a051a4bf909f76f470ccb3761ee0cf6e2395616e",
+    "source": "https://github.com/gregkh/linux/tree/a051a4bf909f76f470ccb3761ee0cf6e2395616e/mm",
+    "note": "Pinned upstream used to compare code paths, not to assert complete 5.15 MM behavior in this 4.19 kernel."
+  },
+  "upstream_commits": [
+    {
+      "commit": "937790699be9c8100e5358625e7dfa8b32bd33f2",
+      "title": "mm/page_io.c: annotate refault stalls from swap_readpage",
+      "purpose": "Not selected alone: counts all swapin submission/decompression overhead, including cold swapins.",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=937790699be9c8100e5358625e7dfa8b32bd33f2"
+    },
+    {
+      "commit": "d8c47cc7bf602ef73384a00869a70148146c1191",
+      "title": "mm: page_io: fix psi memory pressure error on cold swapins",
+      "purpose": "Required correctness partner after workingset detection exists: restrict swap pressure to PageWorkingset pages.",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=d8c47cc7bf602ef73384a00869a70148146c1191"
+    },
+    {
+      "commit": "1899ad18c6072d689896badafb81267b0a1092a4",
+      "title": "mm: workingset: tell cache transitions from workingset thrashing",
+      "purpose": "Foundational page flag / shadow-entry distinction needed to identify actual file-cache thrashing.",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=1899ad18c6072d689896badafb81267b0a1092a4"
+    },
+    {
+      "commit": "95f9ab2d596e8cbb388315e78c82b9a131bf2928",
+      "title": "mm: workingset: do not drop refault information prematurely",
+      "purpose": "Working-set shadow retention prerequisite; complete dependency series must be audited before importing.",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=95f9ab2d596e8cbb388315e78c82b9a131bf2928"
+    },
+    {
+      "commit": "eb414681d5a07d28d2ff90dc05f69ec6b232ebd2",
+      "title": "psi: pressure stall information for CPU, memory, and IO",
+      "purpose": "Original PSI integration includes working-set-sensitive MM hooks; current vendor backport retained only reclaim/compaction instrumentation.",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=eb414681d5a07d28d2ff90dc05f69ec6b232ebd2"
+    },
+    {
+      "commit": "b8e24a9300b0836a9d39f6b20746766b3b81f1bd",
+      "title": "block: annotate refault stalls from IO submission",
+      "purpose": "Requires BIO_WORKINGSET propagation and PageWorkingset; annotates contended/throttled submission for working-set reads.",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=b8e24a9300b0836a9d39f6b20746766b3b81f1bd"
+    },
+    {
+      "commit": "aae466b0052e1888edd1d7f473d4310d64936196",
+      "title": "mm/swap: implement workingset detection for anonymous LRU",
+      "purpose": "Requires earlier swap shadow infrastructure; spans swap.h, memory.c, swap_state.c, vmscan.c, workingset.c.",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=aae466b0052e1888edd1d7f473d4310d64936196"
+    },
+    {
+      "commit": "cad8320b4b395702e49578580c70026c8271ea88",
+      "title": "mm/swap: do not SetPageWorkingset unconditionally during swapin",
+      "purpose": "Removes false classification after anonymous working-set detection is available.",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=cad8320b4b395702e49578580c70026c8271ea88"
+    }
+  ],
+  "necessary_now": [
+    "Keep enter/leave API and nesting semantics coherent with the selected PSI state representation.",
+    "Preserve fork clearing, scheduler memstall-running accounting and cgroup migration accounting; verified in the inspected candidate.",
+    "Exercise memory.high reclaim and pressure thresholds in QEMU; verify pressure totals increase without PSI task-state underflow.",
+    "Disclose the MM coverage limits; do not imply that newer psi.c alone modernizes every MM call site."
+  ],
+  "future_validation": [
+    "Compare hot refault thrashing with ordinary cold file reads; cold I/O should not be indiscriminately memory pressure.",
+    "Compare hot and cold swapins on physical swap, zram and zswap so backend implementation does not produce misleading pressure classification.",
+    "Cover sync and async swap read paths, frontswap hits, rw_page hits, swap-file reads, allocation failure and all early returns.",
+    "Audit PG_workingset and BIO_WORKINGSET numeric encoding against proprietary module expectations; preserve existing bit values.",
+    "Exercise nested reclaim plus swap/refault markers to avoid double-entry state corruption or leaked memstall state."
+  ]
+}

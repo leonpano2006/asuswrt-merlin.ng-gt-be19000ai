@@ -5,8 +5,8 @@ from concurrent.futures import ThreadPoolExecutor,as_completed
 from collections import Counter
 from elftools.elf.elffile import ELFFile
 import gzip,hashlib,json,stat,subprocess,re,sys,argparse
-p=argparse.ArgumentParser();p.add_argument('--version',type=int,default=5);p.add_argument('targets',nargs='*');a=p.parse_args()
-r=Path(__file__).resolve().parents[1];out=r/'build/module-matrix';out.mkdir(exist_ok=True)
+p=argparse.ArgumentParser();p.add_argument('--version',type=int,default=5);p.add_argument('--output-dir',type=Path);p.add_argument('targets',nargs='*');a=p.parse_args()
+r=Path(__file__).resolve().parents[1];out=a.output_dir or r/'build/module-matrix';out.mkdir(parents=True,exist_ok=True)
 roots={'stock':r/'build/stock-rootfs','candidate':r/f'build/candidate-rootfs-v{a.version}'}
 kernels={'stock':r/'inputs/stock-Image','candidate':r/f'build/Image-v{a.version}'}
 init=b'''#!/bin/busybox sh

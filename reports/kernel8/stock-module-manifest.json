@@ -1,0 +1,1062 @@
+{
+  "bcm_bca_usb": {
+    "sha256": "45251a122169c61ef850084ea8ab8d0f58fbb7c0722cfb273411b609b060f617",
+    "load_plan": [
+      "bcm_bca_usb"
+    ]
+  },
+  "bcm_bp3drv": {
+    "sha256": "1b0358022a743009ca09a7613e898de31c1f57440c85ae5babb6e0c95e0c1d18",
+    "load_plan": [
+      "bcm_bp3drv"
+    ]
+  },
+  "bcm_bpm": {
+    "sha256": "4210544576e5a9b262de67f6678d0dc7086493e5bd33f0fed8ba86311f20fd2f",
+    "load_plan": [
+      "bcm_mpm",
+      "bcm_bpm"
+    ]
+  },
+  "bcm_enet": {
+    "sha256": "316db2192cdf97a6b00ccac89cee4012f5b6983401f75988c4125d717fe0af0c",
+    "load_plan": [
+      "bdmf",
+      "rdpa_gpl",
+      "bcmlibs",
+      "bcm_enet"
+    ]
+  },
+  "bcm_ingqos": {
+    "sha256": "385b075ed20a7c6c8da71cc62215a85567f9097fa8bc32fae7bbaa71924a7cd2",
+    "load_plan": [
+      "bcm_ingqos"
+    ]
+  },
+  "bcm_knvram": {
+    "sha256": "302cda26fa6be36b5052b21e0a95c34db299300bdb74299eb8234f10763a28ea",
+    "load_plan": [
+      "bcm_knvram"
+    ]
+  },
+  "bcm_mpm": {
+    "sha256": "455a0b7187851c907f1d59c0b17f2db2e33a48aa2bad97783a3e09744c01c48b",
+    "load_plan": [
+      "bcm_mpm"
+    ]
+  },
+  "bcm_pcie_hcd": {
+    "sha256": "3386e76e99751433c04eab60f3182ede1178916db727889f92851cc8ddacb6ad",
+    "load_plan": [
+      "bdmf",
+      "rdpa_gpl",
+      "bcmlibs",
+      "bcm_enet",
+      "bcm_knvram",
+      "bcm_pcie_hcd"
+    ]
+  },
+  "bcm_pondrv": {
+    "sha256": "ed02ba9131da9dfbfa84ffc7e366601e38dbcbbd47e948727d7ff7f68a58264f",
+    "load_plan": [
+      "bdmf",
+      "bcmlibs",
+      "bcm_pondrv"
+    ]
+  },
+  "bcm_thermal": {
+    "sha256": "6d1f8782f53c6b118c3e0acec048c4ec4764192ffae3d9900ddd2120a79f93f1",
+    "load_plan": [
+      "bcm_thermal"
+    ]
+  },
+  "bcmflex": {
+    "sha256": "a46c58a7b7d1ef8906fa036481ef641315d896b5186d67f797f2979fd0c319e5",
+    "load_plan": [
+      "bdmf",
+      "rdpa_gpl",
+      "bcmflex"
+    ]
+  },
+  "bcmlibs": {
+    "sha256": "b63afa61242e9c29938c05591ae50de9a9049e45fa7ac4ae2d739d985a6fbfa1",
+    "load_plan": [
+      "bcmlibs"
+    ]
+  },
+  "bcmmcast": {
+    "sha256": "c5519dc861305ef715d4b46199a07c912c56a5b5c7a692d6a9ec08dc2dc92a7e",
+    "load_plan": [
+      "bcmmcast"
+    ]
+  },
+  "bcmspu": {
+    "sha256": "f55183d2e713a34f8225a84353d0d884ae7cb40148ecc039f07eec5729962ff8",
+    "load_plan": [
+      "bdmf",
+      "rdpa_gpl",
+      "bcmflex",
+      "bcmspu"
+    ]
+  },
+  "bcmvlan": {
+    "sha256": "0ec61ee7fea01c42cbb549bcbfcc88cde807f696e2fa08d18e763e96c8c76a87",
+    "load_plan": [
+      "bcmvlan"
+    ]
+  },
+  "bdmf": {
+    "sha256": "b34acedd5c1d5da436d25b7a0f83071b26a4ac3109fbddd47b0ee5e6ab74c8d9",
+    "load_plan": [
+      "bdmf"
+    ]
+  },
+  "cmdlist": {
+    "sha256": "fc413b1428b0f475b6ff685f1f639fcfdc9256008f4f501db26a24412f3e3aff",
+    "load_plan": [
+      "cmdlist"
+    ]
+  },
+  "dhd": {
+    "sha256": "af77543e47c80c0aa6b400c8267e50f77126493a9d9ef01aa4ffe4e095cab2e6",
+    "load_plan": [
+      "bdmf",
+      "bcm_knvram",
+      "hnd",
+      "firmware_class",
+      "cfg80211",
+      "wlshared",
+      "rdpa_gpl",
+      "bcmlibs",
+      "bcmmcast",
+      "wfd",
+      "emf",
+      "igs",
+      "bcm_enet",
+      "bcm_pcie_hcd",
+      "dhd"
+    ]
+  },
+  "emf": {
+    "sha256": "d8c20737d825cc3a2d05a6ea38e3d2920fc323070215663dca75fcb6d05f1850",
+    "load_plan": [
+      "bcm_knvram",
+      "hnd",
+      "bcmmcast",
+      "emf"
+    ]
+  },
+  "gdx": {
+    "sha256": "9563363484cd3affb683f06083ad698876d8c5aaddd00c73d3db41e88f4c9c2f",
+    "load_plan": [
+      "bdmf",
+      "rdpa_gpl",
+      "gdx"
+    ]
+  },
+  "hnd": {
+    "sha256": "9f79110d7f6f8a3eef08623261b2de4233dd8165702ad54f3c9780285f9669e6",
+    "load_plan": [
+      "bcm_knvram",
+      "hnd"
+    ]
+  },
+  "hs_uart_drv": {
+    "sha256": "8fff163c0476cb54bd5777eff5ffd450d64a462efacb37814ce3820b9c923e8e",
+    "load_plan": [
+      "hs_uart_drv"
+    ]
+  },
+  "igs": {
+    "sha256": "7b7aae57d7017c35b59e6cfa09bd1ffaa477334b35c1113975109284c097b24f",
+    "load_plan": [
+      "bcm_knvram",
+      "hnd",
+      "bcmmcast",
+      "emf",
+      "igs"
+    ]
+  },
+  "nat46": {
+    "sha256": "bcb2fd61edeb4efe4d429de59ede891e88ee0f3cd99b46095e18f4f8f38572ed",
+    "load_plan": [
+      "nat46"
+    ]
+  },
+  "pcap": {
+    "sha256": "e4f62696dd874221b7914395eb141874bc3059575a0efcd66922d8b24bb0d85c",
+    "load_plan": [
+      "pcap"
+    ]
+  },
+  "pktflow": {
+    "sha256": "4a1aef36117adea3c202427fce9470e97d6f349e7ef334c4c00d702b17f74ad1",
+    "load_plan": [
+      "bcmlibs",
+      "pktflow"
+    ]
+  },
+  "pktrunner": {
+    "sha256": "bdb7794f7d1005c9e8cba3cfb9de657a343bdbae23a0304e383f46c9cede41e0",
+    "load_plan": [
+      "cmdlist",
+      "bdmf",
+      "rdpa_gpl",
+      "bcmlibs",
+      "pktflow",
+      "bcm_knvram",
+      "rdpa_mw",
+      "pktrunner"
+    ]
+  },
+  "rdpa": {
+    "sha256": "ac28b6ec7b10c110e238f2164378d8f06b5a8a188f8233f962691831439f90a5",
+    "load_plan": [
+      "bdmf",
+      "rdpa_gpl",
+      "rdpa"
+    ]
+  },
+  "rdpa_cmd": {
+    "sha256": "5f4105716a1ec62835c6195d2edd27ce6da779d79052dfe63a31664d37b22fc7",
+    "load_plan": [
+      "bdmf",
+      "rdpa_gpl",
+      "bcm_knvram",
+      "rdpa_mw",
+      "bcm_ingqos",
+      "rdpa_gpl_ext",
+      "rdpa_cmd"
+    ]
+  },
+  "rdpa_gpl": {
+    "sha256": "176c9d5343ba49d1f86c240c51517cd6bf099e6baddeafc1dc7b6b704bdd9b9d",
+    "load_plan": [
+      "bdmf",
+      "rdpa_gpl"
+    ]
+  },
+  "rdpa_gpl_ext": {
+    "sha256": "9cf20e2f817e449a19ebf1be95b59121ac7927c74a30725283d3b34aeba67c6d",
+    "load_plan": [
+      "rdpa_gpl_ext"
+    ]
+  },
+  "rdpa_mw": {
+    "sha256": "39d2f67ab25f9237397ddb6025d996d2f809d35e0131d7fd405f3ac704667c15",
+    "load_plan": [
+      "bdmf",
+      "rdpa_gpl",
+      "bcm_knvram",
+      "rdpa_mw"
+    ]
+  },
+  "rdpa_usr": {
+    "sha256": "62d08a3618ee81b83f2744c29fddcd44841b11fad260b316266e5e61bc556016",
+    "load_plan": [
+      "bdmf",
+      "rdpa_gpl",
+      "rdpa_usr"
+    ]
+  },
+  "sw_gso": {
+    "sha256": "7fba345b7959ab34f7a0d39cafb572d1b8ecd58dc2f1cf8d2ee040e2ac8aeb52",
+    "load_plan": [
+      "sw_gso"
+    ]
+  },
+  "wfd": {
+    "sha256": "b431c83ca674273adfa9c548b3f1bc329365f222b3b98753d47940b64ee1143a",
+    "load_plan": [
+      "bdmf",
+      "rdpa_gpl",
+      "bcmlibs",
+      "bcmmcast",
+      "wfd"
+    ]
+  },
+  "wlshared": {
+    "sha256": "e6f519d9bd248dbaba9a3ae2db348fbbf8cd62df4b0bf599c714fb6b28499b76",
+    "load_plan": [
+      "wlshared"
+    ]
+  },
+  "nf_conntrack_rtsp": {
+    "sha256": "b2e5c25b54b2d8aece8b368d574eda146c44f4e8d597f67124e89bde15ce5604",
+    "load_plan": [
+      "nf_conntrack_rtsp"
+    ]
+  },
+  "nf_dyndscp": {
+    "sha256": "1d9b6018af6cada9371a4901d744f6a557ab4f9e7547cbe79ba10a3cef4fe9e9",
+    "load_plan": [
+      "nf_dyndscp"
+    ]
+  },
+  "nf_nat_pt": {
+    "sha256": "5a8b88575f1095b44cacd2f57529ffd4661e0f67a6bdb7415650af67a7018211",
+    "load_plan": [
+      "nf_nat_pt"
+    ]
+  },
+  "nf_nat_rtsp": {
+    "sha256": "760550d10c2c0f13418707bbb3c171abd19b3b77ed7905471b96f87df641c05e",
+    "load_plan": [
+      "nf_conntrack_rtsp",
+      "nf_nat_rtsp"
+    ]
+  },
+  "xt_SKIPLOG": {
+    "sha256": "7cd290cf47b4c98d2677a8a21d53d1c561e2007a31aa016d0ee71a80470ef45d",
+    "load_plan": [
+      "xt_SKIPLOG"
+    ]
+  },
+  "xt_blog": {
+    "sha256": "b23fc182500c4919cab899a566a77f76ed7807f7391356e27d2de3507677182a",
+    "load_plan": [
+      "xt_blog"
+    ]
+  },
+  "xt_flowlabel": {
+    "sha256": "4117ae58240361fdbb23eef5259c96ca3c9b2c99f7d0f3d55ee97b5172dfd274",
+    "load_plan": [
+      "xt_flowlabel"
+    ]
+  },
+  "xt_mscs": {
+    "sha256": "17300f4f18e72f733842582c84bd4412deb9faa547f3d1382f3227d6a01bc36f",
+    "load_plan": [
+      "xt_mscs"
+    ]
+  },
+  "xt_scs": {
+    "sha256": "88f8ff4cd2dc862f5b6e13d260c8386763cd27d4e527eb8dfda59e7cd791b903",
+    "load_plan": [
+      "xt_scs"
+    ]
+  },
+  "tfat": {
+    "sha256": "22ceae7596398efbdde7119c667fce3c18f94ac3fd6ae1159a5bad6b3f121ce6",
+    "load_plan": [
+      "tfat"
+    ]
+  },
+  "thfsplus": {
+    "sha256": "1b08b2dbd6f02bafefd485d16fb0ef96690f6e6488c1262b598e110b853c111b",
+    "load_plan": [
+      "thfsplus"
+    ]
+  },
+  "tntfs": {
+    "sha256": "3e07d980687533ad0986daeb59e40300dd6e767f6b99c7d6497cbf255c7985eb",
+    "load_plan": [
+      "tntfs"
+    ]
+  },
+  "cdrom": {
+    "sha256": "786af523d4e3b503e1bb1f2dfbd0dfb2fe19cd4f3d305d127ef0335da1f24acd",
+    "load_plan": [
+      "cdrom"
+    ]
+  },
+  "mii": {
+    "sha256": "a5a8d11dff58fa891c52855b259212f7b41ea5d663722a464117f2a24dc8dee0",
+    "load_plan": [
+      "mii"
+    ]
+  },
+  "tun": {
+    "sha256": "d97111776e58e2afd54a45c75be36d5868a2c57699f8878a8ac32b97043c1612",
+    "load_plan": [
+      "tun"
+    ]
+  },
+  "scsi_mod": {
+    "sha256": "1e0cacf6a0d29ff5779cec70bd818678c1ca51e78f7b5392b17b73dc78bd54b7",
+    "load_plan": [
+      "scsi_mod"
+    ]
+  },
+  "sd_mod": {
+    "sha256": "28edb28d0c6907c1e9b8ed5de59ffa0250945917a4419d4df3316ac10c0bdb78",
+    "load_plan": [
+      "scsi_mod",
+      "sd_mod"
+    ]
+  },
+  "sg": {
+    "sha256": "44ac401675ec858b8b7fd83e70f8ded7c7875ce843d1908b544ebfc6d2b127d9",
+    "load_plan": [
+      "scsi_mod",
+      "sg"
+    ]
+  },
+  "sr_mod": {
+    "sha256": "a93ec32779d371622bbdaeb22649a081ad226fec08d27a343fcb73379750776a",
+    "load_plan": [
+      "cdrom",
+      "scsi_mod",
+      "sr_mod"
+    ]
+  },
+  "firmware_class": {
+    "sha256": "a4364176b4d2f7ee6aebd555f18d671ae3477ce4f56fb2ee78fbad0dc8d129a4",
+    "load_plan": [
+      "firmware_class"
+    ]
+  },
+  "rtl8372": {
+    "sha256": "f61ec390c3cf340816935823aca29c0d6aa1c24aef0d839e9b42070310beb94a",
+    "load_plan": [
+      "rtl8372"
+    ]
+  },
+  "usbhid": {
+    "sha256": "512a8494c5ec2db35ecffc4bd574c7735bcf4caa629e1f5c134e8306949c3cbc",
+    "load_plan": [
+      "usb_common",
+      "usbcore",
+      "usbhid"
+    ]
+  },
+  "oops_mmc": {
+    "sha256": "b839641a49b8cfd510d7f7c1eebf443f81f6a92b3a4cd308045d7803090876cb",
+    "load_plan": [
+      "oops_mmc"
+    ]
+  },
+  "bonding": {
+    "sha256": "6c4f7f821c6dd01129035c7a01a60c5d28b644358e32e3e3094b5070f0027121",
+    "load_plan": [
+      "bonding"
+    ]
+  },
+  "asix": {
+    "sha256": "6d87a072cc4b2c2e1f23d7a22942216c941e91b1d216dacf2f48065ec0a538aa",
+    "load_plan": [
+      "mii",
+      "usb_common",
+      "usbcore",
+      "usbnet",
+      "asix"
+    ]
+  },
+  "ax88179_178a": {
+    "sha256": "04b7d32d86a97edf40c166b689287d335407dee5bef056d7ecbf6a4062109ed3",
+    "load_plan": [
+      "mii",
+      "usb_common",
+      "usbcore",
+      "usbnet",
+      "ax88179_178a"
+    ]
+  },
+  "cdc_ether": {
+    "sha256": "6df2de47cc2ea9ae447d83ada9f6fbf32069052e4810c5fe147f0566e7db5c73",
+    "load_plan": [
+      "mii",
+      "usb_common",
+      "usbcore",
+      "usbnet",
+      "cdc_ether"
+    ]
+  },
+  "cdc_ncm": {
+    "sha256": "8903101de9737561f8f9fe4365b10de224e35a610f7367fc35da7f409e0ab0a1",
+    "load_plan": [
+      "mii",
+      "usb_common",
+      "usbcore",
+      "usbnet",
+      "cdc_ncm"
+    ]
+  },
+  "ipheth": {
+    "sha256": "a7d382c0b11bacda2a1aff69e2ca0a1029c7b0bcfb9789543d398a960df1290a",
+    "load_plan": [
+      "usb_common",
+      "usbcore",
+      "ipheth"
+    ]
+  },
+  "qmi_wwan": {
+    "sha256": "d44c744a98126fd512ef508231111ad6565b8c0ad1fe7fe76f20ba12fd6be07e",
+    "load_plan": [
+      "mii",
+      "usb_common",
+      "usbcore",
+      "usbnet",
+      "cdc_wdm",
+      "qmi_wwan"
+    ]
+  },
+  "rndis_host": {
+    "sha256": "8794319685930b14abe42827af78720f8e9592675c3b7efc8c01ee624fdbb976",
+    "load_plan": [
+      "mii",
+      "usb_common",
+      "usbcore",
+      "usbnet",
+      "cdc_ether",
+      "rndis_host"
+    ]
+  },
+  "usbnet": {
+    "sha256": "0ebbd17b9ada90a5c0cc09ff3359036804beb270b3d27e77e1e0739d64242537",
+    "load_plan": [
+      "mii",
+      "usb_common",
+      "usbcore",
+      "usbnet"
+    ]
+  },
+  "cdc_acm": {
+    "sha256": "84e5e922b0676ca0368b42b90dbeefd03878909b361c58c9812328b614da7f0d",
+    "load_plan": [
+      "usb_common",
+      "usbcore",
+      "cdc_acm"
+    ]
+  },
+  "cdc_wdm": {
+    "sha256": "755ed399e12c76bed7a003e6c8da6791f665b8de802310d9c59f4c29a2f531bb",
+    "load_plan": [
+      "usb_common",
+      "usbcore",
+      "cdc_wdm"
+    ]
+  },
+  "usblp": {
+    "sha256": "f99906d53f4742bc869af824269e341276e29d05e4b3f2a714c4d116301e739a",
+    "load_plan": [
+      "usb_common",
+      "usbcore",
+      "usblp"
+    ]
+  },
+  "usb_common": {
+    "sha256": "8ef76ee77e4bc076874ad7bce877fe9ae55ece4d3012c624e0cc8b64ee8ca71e",
+    "load_plan": [
+      "usb_common"
+    ]
+  },
+  "ledtrig_usbport": {
+    "sha256": "e07963c2249e38d59735ff3a5b224cc02e421d16f264492ebdbc48731229e185",
+    "load_plan": [
+      "usb_common",
+      "usbcore",
+      "ledtrig_usbport"
+    ]
+  },
+  "usbcore": {
+    "sha256": "622f3d0f129043315fca6419ce74592203eaf69cb7d9bfad72abb8b9329ad46d",
+    "load_plan": [
+      "usb_common",
+      "usbcore"
+    ]
+  },
+  "ehci_hcd": {
+    "sha256": "78fd28b9a655fcfc700eea951e464d8852027995cbf280d700cde72dfb799df1",
+    "load_plan": [
+      "usb_common",
+      "usbcore",
+      "ehci_hcd"
+    ]
+  },
+  "ehci_pci": {
+    "sha256": "f3e145adf3987625c723243d14bcca90f48e10e13c810e14bb90c108f9dd5232",
+    "load_plan": [
+      "usb_common",
+      "usbcore",
+      "ehci_hcd",
+      "ehci_pci"
+    ]
+  },
+  "ehci_platform": {
+    "sha256": "ac4cb461e0a0d347165612cbfa1121096b0078588d70942cb106cab0ad17390d",
+    "load_plan": [
+      "usb_common",
+      "usbcore",
+      "ehci_hcd",
+      "ehci_platform"
+    ]
+  },
+  "ohci_hcd": {
+    "sha256": "f64d2b024b81d1e532719719b7b5360f57c761d997801992dbc840963d2bb4a1",
+    "load_plan": [
+      "usb_common",
+      "usbcore",
+      "ohci_hcd"
+    ]
+  },
+  "ohci_pci": {
+    "sha256": "d268494341e6a633b676b1777249581c18a0817ecdd23a1a7127118b3fd2b8e0",
+    "load_plan": [
+      "usb_common",
+      "usbcore",
+      "ohci_hcd",
+      "ohci_pci"
+    ]
+  },
+  "ohci_platform": {
+    "sha256": "4821f5cf71cf8110f07ffd63b08a645ef543d9ac584082632d4ad2acbe54293c",
+    "load_plan": [
+      "usb_common",
+      "usbcore",
+      "ohci_hcd",
+      "ohci_platform"
+    ]
+  },
+  "xhci_hcd": {
+    "sha256": "54cd554df66554c13d2df6f993bf733e0be7cd62dee94826067921969decb74a",
+    "load_plan": [
+      "usb_common",
+      "usbcore",
+      "xhci_hcd"
+    ]
+  },
+  "xhci_pci": {
+    "sha256": "d28a34e72e271c4d18d715234752f9d1b1eac661119ce8428bfbe8aa112402ed",
+    "load_plan": [
+      "usb_common",
+      "usbcore",
+      "xhci_hcd",
+      "xhci_pci"
+    ]
+  },
+  "xhci_plat_hcd": {
+    "sha256": "485eb94e84dc3b6066d0a3698b8abdd1e93806718ad281e7190e10b045bf2256",
+    "load_plan": [
+      "usb_common",
+      "usbcore",
+      "xhci_hcd",
+      "xhci_plat_hcd"
+    ]
+  },
+  "usbmon": {
+    "sha256": "bd5d332516d65f998d3bebdfa824169af2a92128ea80199242e081ed023e3364",
+    "load_plan": [
+      "usb_common",
+      "usbcore",
+      "usbmon"
+    ]
+  },
+  "option": {
+    "sha256": "638037016e027d5922512295cdfb9a52daa07bebe37dba73fd25da1e1dd22122",
+    "load_plan": [
+      "usb_common",
+      "usbcore",
+      "usbserial",
+      "usb_wwan",
+      "option"
+    ]
+  },
+  "usb_wwan": {
+    "sha256": "0fa00d9086788d5979a0c8093ad3abdc3249100d5925720686517068ece597dd",
+    "load_plan": [
+      "usb_common",
+      "usbcore",
+      "usbserial",
+      "usb_wwan"
+    ]
+  },
+  "usbserial": {
+    "sha256": "9164824d174a6d60d01b89e224336ce50668e26be94880cdee974dd9092f03be",
+    "load_plan": [
+      "usb_common",
+      "usbcore",
+      "usbserial"
+    ]
+  },
+  "uas": {
+    "sha256": "99ee45f8bdb6ab258777b87223f0610e2f37281856fa5a1e84229d426f5de1f4",
+    "load_plan": [
+      "scsi_mod",
+      "usb_common",
+      "usbcore",
+      "usb_storage",
+      "uas"
+    ]
+  },
+  "usb_storage": {
+    "sha256": "9903dca7e87c43ce1aa037d7cdbae19b4e7850bfe1a9107fb648914b1ad8a701",
+    "load_plan": [
+      "scsi_mod",
+      "usb_common",
+      "usbcore",
+      "usb_storage"
+    ]
+  },
+  "cifs": {
+    "sha256": "73458b79d993a9aee6157df9822549eb8172309c38b45f05a2c2d34a5228fee6",
+    "load_plan": [
+      "cifs"
+    ]
+  },
+  "nls_cp437": {
+    "sha256": "d1a2fc8a5bc4c7b54fff9dc06715415040e4c433227298bb88e09e6695a3a060",
+    "load_plan": [
+      "nls_cp437"
+    ]
+  },
+  "nls_cp850": {
+    "sha256": "c1d0db19df5f9bf61cc6016003653f4779ab452eff892c4d3651896789404d2b",
+    "load_plan": [
+      "nls_cp850"
+    ]
+  },
+  "nls_cp852": {
+    "sha256": "f6b02cc637ea13f5d04cab98112ba4c4969c60213f0bfc414ef3624dc0d9f8d6",
+    "load_plan": [
+      "nls_cp852"
+    ]
+  },
+  "nls_cp866": {
+    "sha256": "2da8e667143877a41d9c4997e075ed0cfd069741841bf827b6c1899b9f987171",
+    "load_plan": [
+      "nls_cp866"
+    ]
+  },
+  "nls_cp932": {
+    "sha256": "d3385d68ab30c11bbb13f407bdc7340ddd820a94bfc58cacc9e55f5a0dcc9e95",
+    "load_plan": [
+      "nls_cp932"
+    ]
+  },
+  "nls_cp936": {
+    "sha256": "5e10a26f163304e29bfd52a937b5240ebf8c2706195b19d2cc8908c9bfa0da3a",
+    "load_plan": [
+      "nls_cp936"
+    ]
+  },
+  "nls_cp949": {
+    "sha256": "333f6ecd35b14943d6ce7496909c07162d989338b5299df965eaecc824e06f4e",
+    "load_plan": [
+      "nls_cp949"
+    ]
+  },
+  "nls_cp950": {
+    "sha256": "6bb9f3ca7de757d1cd871cc2c0aa2dbd8d235457440c30c9c1b1a85c3aece246",
+    "load_plan": [
+      "nls_cp950"
+    ]
+  },
+  "nls_euc_jp": {
+    "sha256": "b7b59c1507b0ab0a394e65410b26a4a41227c238385bfb46a8052b05838aaa65",
+    "load_plan": [
+      "nls_euc_jp"
+    ]
+  },
+  "br_netfilter": {
+    "sha256": "5d48fe0c0939ab29e02628d031e42ffb015ac1fca3a8a082e3142a31680a5cca",
+    "load_plan": [
+      "br_netfilter"
+    ]
+  },
+  "dns_resolver": {
+    "sha256": "613357ab48e0e12e7420448730bfb4faaa5037364d17a525b5f58bd253f3a0e1",
+    "load_plan": [
+      "dns_resolver"
+    ]
+  },
+  "ah4": {
+    "sha256": "bad1467b7482960ebee1ffd38733813320c97968f96d7590a7e5de3f1dee6264",
+    "load_plan": [
+      "ah4"
+    ]
+  },
+  "esp4": {
+    "sha256": "b545fb37dc094d1bd50507b8c1acba8b69857ecc7769050dad02be61b63799bd",
+    "load_plan": [
+      "esp4"
+    ]
+  },
+  "ipcomp": {
+    "sha256": "c36d85f4051d97519143e02526b96d56a0629b144a79e31d09dfd26f2a2e8ef8",
+    "load_plan": [
+      "ipcomp"
+    ]
+  },
+  "xfrm4_tunnel": {
+    "sha256": "111faa046a3763cdb166c3bf75898c072cc9865e53e15e2939aaf072a83aef49",
+    "load_plan": [
+      "xfrm4_tunnel"
+    ]
+  },
+  "nf_conntrack_ftp": {
+    "sha256": "b1f8bf7f20209f31e7299727f65803242ec4fe0d5c2d6eb25555f154c8b0f609",
+    "load_plan": [
+      "nf_conntrack_ftp"
+    ]
+  },
+  "nf_conntrack_h323": {
+    "sha256": "1c4645de27c042861207c7744108959df69e7f550fb1562859590dc3f4df0211",
+    "load_plan": [
+      "nf_conntrack_h323"
+    ]
+  },
+  "nf_conntrack_sip": {
+    "sha256": "838c17832455a6e542a887a82d4dbf98fe07e848dccad5f47de6f21205bf2fc5",
+    "load_plan": [
+      "nf_conntrack_sip"
+    ]
+  },
+  "nf_conntrack_tftp": {
+    "sha256": "f766846e95ff8dca63e3cddf5009151d4da8cc9c741f23874ba8221869f50d2e",
+    "load_plan": [
+      "nf_conntrack_tftp"
+    ]
+  },
+  "nf_nat_ftp": {
+    "sha256": "c908b2b63e1d6bdb6a03ca0d135734aef55dfe824afbea2dd53c413e8fb5ca5a",
+    "load_plan": [
+      "nf_conntrack_ftp",
+      "nf_nat_ftp"
+    ]
+  },
+  "nf_nat_sip": {
+    "sha256": "c8d47ce774fac4dffac836e35f7d0fe04218ed1cb923d2cce8e9a694bd2d73de",
+    "load_plan": [
+      "nf_conntrack_sip",
+      "nf_nat_sip"
+    ]
+  },
+  "nf_nat_tftp": {
+    "sha256": "22c96433d0738d2208d7ef51531da8df005d51bbebeef5c839a99eb4b5fec1fb",
+    "load_plan": [
+      "nf_conntrack_tftp",
+      "nf_nat_tftp"
+    ]
+  },
+  "nf_tables": {
+    "sha256": "459bb01f215ef801a4d16eb8ba6443c87633a7c34858612de79061266a5d203f",
+    "load_plan": [
+      "nf_tables"
+    ]
+  },
+  "xt_HL": {
+    "sha256": "5b5739fa4c0c799e60dbb99928bb40e72ca7e444b6111ecd266f5e34fee15df1",
+    "load_plan": [
+      "xt_HL"
+    ]
+  },
+  "xt_TEE": {
+    "sha256": "5a992205e52896be99c72fc2c728ada1a4c3d15acccf1433c645740c3bb96c40",
+    "load_plan": [
+      "nf_dup_ipv4",
+      "nf_dup_ipv6",
+      "xt_TEE"
+    ]
+  },
+  "xt_TPROXY": {
+    "sha256": "2c002e76c8e415e45df16b77a3480d8d19ff8bb89dce7f28b9e97e42ab07ef29",
+    "load_plan": [
+      "nf_tproxy_ipv6",
+      "nf_tproxy_ipv4",
+      "xt_TPROXY"
+    ]
+  },
+  "xt_comment": {
+    "sha256": "2bcc542e259ae6dfca5b2e48abbd0ce2b80a19d891de8a697b6e294b2f442999",
+    "load_plan": [
+      "xt_comment"
+    ]
+  },
+  "xt_condition": {
+    "sha256": "822d963f08093340229f5c81c4eb59794942947009a5850ef1afc29f4a56fc65",
+    "load_plan": [
+      "xt_condition"
+    ]
+  },
+  "xt_geoip": {
+    "sha256": "2fed845fea89572ade5f3b57bf392067cdbe9e60c5df3069941446c423610cd1",
+    "load_plan": [
+      "xt_geoip"
+    ]
+  },
+  "xt_hashlimit": {
+    "sha256": "0bc93568ac88aabae5086783381c167e1bb1b13b2bd2c5a33256a8dd53b640a9",
+    "load_plan": [
+      "xt_hashlimit"
+    ]
+  },
+  "xt_hl": {
+    "sha256": "b7bafb23250814643397c5992f686438f4106f20210b0745b8dd9db613431f5e",
+    "load_plan": [
+      "xt_hl"
+    ]
+  },
+  "xt_length": {
+    "sha256": "e5139e5cee4befa105389032aced3dd6f612c6537c4dee7682e761e0d85f609a",
+    "load_plan": [
+      "xt_length"
+    ]
+  },
+  "xt_pkttype": {
+    "sha256": "750f5faf7fa381dd5b156ceb591f519f1434e6712208051d8765c5800f68e5b6",
+    "load_plan": [
+      "xt_pkttype"
+    ]
+  },
+  "xt_quota": {
+    "sha256": "49c386ff3f0485a07d001fdbb5841d2e19992ef8f51a10673b46a8e3afb166fc",
+    "load_plan": [
+      "xt_quota"
+    ]
+  },
+  "xt_sctp": {
+    "sha256": "9062e0847ae9572eef295b9ca6f0ee44037b470b210e4472f171fa6d0cc842c8",
+    "load_plan": [
+      "xt_sctp"
+    ]
+  },
+  "xt_socket": {
+    "sha256": "d2baabdeb9bcac6cc774d6bde3418f45f05601846a38541829bafe2836286960",
+    "load_plan": [
+      "nf_socket_ipv6",
+      "nf_socket_ipv4",
+      "xt_socket"
+    ]
+  },
+  "em_cmp": {
+    "sha256": "2dd71be0d31020318ffb84c72843684375eb8912a4b0576b0e64b30907f1ca87",
+    "load_plan": [
+      "em_cmp"
+    ]
+  },
+  "em_ipset": {
+    "sha256": "35b490f0cb89b87df385c7b6d1976551bde967176f422c700c666f4e1c9fe53b",
+    "load_plan": [
+      "em_ipset"
+    ]
+  },
+  "em_ipt": {
+    "sha256": "e24f940ed6e6486d8cdbade03fcb337a46ed78941bb5ef99648c920cd5c6036f",
+    "load_plan": [
+      "em_ipt"
+    ]
+  },
+  "em_meta": {
+    "sha256": "df67844083094278bdf38f36f4400b997c41e12bdd152c3d5bee86e2eb8f6474",
+    "load_plan": [
+      "em_meta"
+    ]
+  },
+  "em_nbyte": {
+    "sha256": "7c2b5da414c3c1e5516aec2071e7fc6f727fa0bad8372e03909f4e0d3a01fba4",
+    "load_plan": [
+      "em_nbyte"
+    ]
+  },
+  "em_text": {
+    "sha256": "70b1f199cea3ea4b544f516f5b6b9ae19d55d7a5109dbb606b2eacbd53b6f13d",
+    "load_plan": [
+      "em_text"
+    ]
+  },
+  "em_u32": {
+    "sha256": "1b028014f2f2739fe9f2274134e66959cd5b008856a27d7f899b4a04875450c3",
+    "load_plan": [
+      "em_u32"
+    ]
+  },
+  "sch_hfsc": {
+    "sha256": "c7d5ae65027ce55493cb5755dff5e833765c39e701bf2d66cf7687c9753f18f7",
+    "load_plan": [
+      "sch_hfsc"
+    ]
+  },
+  "wireguard": {
+    "sha256": "dc4c8aa58227b6932e5923839feeb3d19489a578d80016c814b2def36581bb16",
+    "load_plan": [
+      "wireguard"
+    ]
+  },
+  "cfg80211": {
+    "sha256": "4a0403c1f3280195b8db3e848efcd339b232e66bee6fbd3187e7156652024eb3",
+    "load_plan": [
+      "firmware_class",
+      "cfg80211"
+    ]
+  },
+  "xfrm_user": {
+    "sha256": "c3236dd8d9714a9662f7afe4e3550a5e3ef8997a3429686351ca92aeb3d68093",
+    "load_plan": [
+      "xfrm_user"
+    ]
+  },
+  "ipt_TOS": {
+    "sha256": "f34bdbef854d9381e574c0b5a2b01524fa5b8d96065dbdfc10926029f6ed38ed",
+    "load_plan": [
+      "ipt_TOS"
+    ]
+  },
+  "ipt_ipp2p": {
+    "sha256": "ef0018b05ee181bbda1d5bd63cb36b1e77363dd8a4154c0bfb9ffa549a2f43df",
+    "load_plan": [
+      "ipt_ipp2p"
+    ]
+  },
+  "ipt_tos": {
+    "sha256": "a2d92f338b58dfee3194c837f10b7243755e74a3f0384d708ec03a459c42467e",
+    "load_plan": [
+      "ipt_tos"
+    ]
+  },
+  "ipt_web": {
+    "sha256": "410b7f9f9c58748c0e3ae41ea42b327ed428683396328ff42bb110121630aabb",
+    "load_plan": [
+      "ipt_web"
+    ]
+  },
+  "ipt_webmon": {
+    "sha256": "94e1069114f4d3d444d80bd0008476854ee651dee95adbd955f0a43864662d48",
+    "load_plan": [
+      "ipt_webmon"
+    ]
+  },
+  "nf_dup_ipv4": {
+    "sha256": "edd918a2007d56e1317102582e90d15cc714a6b0bc5455123f36a83f3874f4af",
+    "load_plan": [
+      "nf_dup_ipv4"
+    ]
+  },
+  "nf_nat_h323": {
+    "sha256": "31c9430d0646d124fcba707a15c5f48b922dc964fb68877bf180d134dd1b53e1",
+    "load_plan": [
+      "nf_conntrack_h323",
+      "nf_nat_h323"
+    ]
+  },
+  "nf_socket_ipv4": {
+    "sha256": "0da57a4aaf50ae7ef17614caa6ef0a56164a9f41bae31e248074d139a7a2258b",
+    "load_plan": [
+      "nf_socket_ipv4"
+    ]
+  },
+  "nf_tproxy_ipv4": {
+    "sha256": "8f4fe025a7227cb112dbf59fba317f16904f69b0e7336f3e01bf4a09d23efff7",
+    "load_plan": [
+      "nf_tproxy_ipv4"
+    ]
+  },
+  "nf_dup_ipv6": {
+    "sha256": "99bb7ef9b1408004dced9588d03475dc42837422e5131c2c9ff5880c2a602c65",
+    "load_plan": [
+      "nf_dup_ipv6"
+    ]
+  },
+  "nf_socket_ipv6": {
+    "sha256": "5fba6fbcb61bd90cd80b41da082e5e97782b3021e318a2592e6e4f9d975d020f",
+    "load_plan": [
+      "nf_socket_ipv6"
+    ]
+  },
+  "nf_tproxy_ipv6": {
+    "sha256": "8720b2bdfd30c7357a70dafff0f3430dac0cb83eb996553b2180907d140ecc95",
+    "load_plan": [
+      "nf_tproxy_ipv6"
+    ]
+  }
+}

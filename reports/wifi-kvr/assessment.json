@@ -1,0 +1,241 @@
+{
+  "assessed_at": "2026-10-03T17:00:57.512012+00:00",
+  "scope": "Read-only router runtime audit plus external host Wi-Fi scan; no configuration writes or service restarts.",
+  "scan_method": {
+    "interface": "wlP9s9",
+    "trigger": "nmcli device wifi rescan ifname wlP9s9",
+    "readout": "iw dev wlP9s9 scan dump",
+    "note": "NetworkManager-triggered scan; passive-only scan was not available without local sudo authentication."
+  },
+  "conclusion": {
+    "802.11k": "Enabled: Neighbor Report and passive/active beacon measurement capabilities.",
+    "802.11v": "Enabled: BSS Transition Management.",
+    "802.11r": "Disabled on inspected client-facing BSSs."
+  },
+  "runtime_client_bss": [
+    {
+      "device": "BE98",
+      "interface": "wl0.1",
+      "band": "5 GHz-1",
+      "bssid": "02:00:00:f0:00:0b",
+      "rrm": "0x32",
+      "wnm": "0x1",
+      "fbt": 0,
+      "external_scan_observed": true
+    },
+    {
+      "device": "BE98",
+      "interface": "wl1.1",
+      "band": "5 GHz-2",
+      "bssid": "02:00:00:f0:00:06",
+      "rrm": "0x32",
+      "wnm": "0x1",
+      "fbt": 0,
+      "external_scan_observed": true
+    },
+    {
+      "device": "BE98",
+      "interface": "wl2.1",
+      "band": "6 GHz",
+      "bssid": "02:00:00:f0:00:04",
+      "rrm": "0x32",
+      "wnm": "0x1",
+      "fbt": 0,
+      "external_scan_observed": false
+    },
+    {
+      "device": "BE98",
+      "interface": "wl3.1",
+      "band": "2.4 GHz",
+      "bssid": "02:00:00:f0:00:09",
+      "rrm": "0x32",
+      "wnm": "0x1",
+      "fbt": 0,
+      "external_scan_observed": true
+    },
+    {
+      "device": "BE98",
+      "interface": "wl3.2",
+      "band": "2.4 GHz IoT",
+      "bssid": "02:00:00:f0:00:0a",
+      "rrm": "0x32",
+      "wnm": "0x1",
+      "fbt": 0,
+      "external_scan_observed": true
+    },
+    {
+      "device": "BE19000AI",
+      "interface": "wl0.2",
+      "band": "2.4 GHz",
+      "bssid": "02:00:00:f0:00:07",
+      "rrm": "0x32",
+      "wnm": "0x1",
+      "fbt": 0,
+      "external_scan_observed": true
+    },
+    {
+      "device": "BE19000AI",
+      "interface": "wl1.2",
+      "band": "5 GHz",
+      "bssid": "02:00:00:f0:00:08",
+      "rrm": "0x32",
+      "wnm": "0x1",
+      "fbt": 0,
+      "external_scan_observed": true
+    },
+    {
+      "device": "BE19000AI",
+      "interface": "wl2.2",
+      "band": "6 GHz",
+      "bssid": "02:00:00:f0:00:05",
+      "rrm": "0x32",
+      "wnm": "0x1",
+      "fbt": 0,
+      "external_scan_observed": true
+    }
+  ],
+  "external_scan_client_bss": [
+    {
+      "device": "BE98",
+      "interface": "wl3.1",
+      "band": "2.4 GHz",
+      "bssid": "02:00:00:f0:00:09",
+      "ssid": "MastermixStudios",
+      "frequency_mhz": 2432.0,
+      "signal_dbm": -53.0,
+      "authentication_suites": "PSK SAE",
+      "neighbor_report_advertised": true,
+      "beacon_passive_measurement_advertised": true,
+      "beacon_active_measurement_advertised": true,
+      "bss_transition_advertised": true,
+      "mobility_domain_decoded": false,
+      "ft_akm_decoded": false
+    },
+    {
+      "device": "BE19000AI",
+      "interface": "wl0.2",
+      "band": "2.4 GHz",
+      "bssid": "02:00:00:f0:00:07",
+      "ssid": "MastermixStudios",
+      "frequency_mhz": 2432.0,
+      "signal_dbm": -29.0,
+      "authentication_suites": "PSK SAE",
+      "neighbor_report_advertised": true,
+      "beacon_passive_measurement_advertised": true,
+      "beacon_active_measurement_advertised": true,
+      "bss_transition_advertised": true,
+      "mobility_domain_decoded": false,
+      "ft_akm_decoded": false
+    },
+    {
+      "device": "BE98",
+      "interface": "wl3.2",
+      "band": "2.4 GHz IoT",
+      "bssid": "02:00:00:f0:00:0a",
+      "ssid": "MastermixStudios-IOT",
+      "frequency_mhz": 2432.0,
+      "signal_dbm": -55.0,
+      "authentication_suites": "PSK SAE",
+      "neighbor_report_advertised": true,
+      "beacon_passive_measurement_advertised": true,
+      "beacon_active_measurement_advertised": true,
+      "bss_transition_advertised": true,
+      "mobility_domain_decoded": false,
+      "ft_akm_decoded": false
+    },
+    {
+      "device": "BE98",
+      "interface": "wl0.1",
+      "band": "5 GHz-1",
+      "bssid": "02:00:00:f0:00:0b",
+      "ssid": "MastermixStudios",
+      "frequency_mhz": 5180.0,
+      "signal_dbm": -69.0,
+      "authentication_suites": "PSK SAE",
+      "neighbor_report_advertised": true,
+      "beacon_passive_measurement_advertised": true,
+      "beacon_active_measurement_advertised": true,
+      "bss_transition_advertised": true,
+      "mobility_domain_decoded": false,
+      "ft_akm_decoded": false
+    },
+    {
+      "device": "BE98",
+      "interface": "wl1.1",
+      "band": "5 GHz-2",
+      "bssid": "02:00:00:f0:00:06",
+      "ssid": "MastermixStudios",
+      "frequency_mhz": 5500.0,
+      "signal_dbm": -63.0,
+      "authentication_suites": "PSK SAE",
+      "neighbor_report_advertised": true,
+      "beacon_passive_measurement_advertised": true,
+      "beacon_active_measurement_advertised": true,
+      "bss_transition_advertised": true,
+      "mobility_domain_decoded": false,
+      "ft_akm_decoded": false
+    },
+    {
+      "device": "BE19000AI",
+      "interface": "wl1.2",
+      "band": "5 GHz",
+      "bssid": "02:00:00:f0:00:08",
+      "ssid": "MastermixStudios",
+      "frequency_mhz": 5500.0,
+      "signal_dbm": -26.0,
+      "authentication_suites": "PSK",
+      "neighbor_report_advertised": true,
+      "beacon_passive_measurement_advertised": true,
+      "beacon_active_measurement_advertised": true,
+      "bss_transition_advertised": true,
+      "mobility_domain_decoded": false,
+      "ft_akm_decoded": false
+    },
+    {
+      "device": "BE19000AI",
+      "interface": "wl2.2",
+      "band": "6 GHz",
+      "bssid": "02:00:00:f0:00:05",
+      "ssid": "MastermixStudios",
+      "frequency_mhz": 5975.0,
+      "signal_dbm": -33.0,
+      "authentication_suites": "SAE",
+      "neighbor_report_advertised": true,
+      "beacon_passive_measurement_advertised": true,
+      "beacon_active_measurement_advertised": true,
+      "bss_transition_advertised": true,
+      "mobility_domain_decoded": false,
+      "ft_akm_decoded": false
+    }
+  ],
+  "security_difference": {
+    "ssid": "MastermixStudios",
+    "BE98_5GHz": "WPA2-PSK + WPA3-SAE, PMF optional (hostapd ieee80211w=1).",
+    "BE19000AI_5GHz": "WPA2-PSK only, PMF disabled (hostapd ieee80211w=0).",
+    "evidence": "Both generated hostapd configuration and external scan authentication suites.",
+    "cause": "Not determined; no roaming failure attributed to this difference in this audit."
+  },
+  "limitations": [
+    "BE98 6 GHz client BSS did not appear in this scan; its conclusion is based on router runtime only.",
+    "Capability advertisement and driver state were checked. Client roaming latency, Neighbor Report response contents, and actual BTM exchanges were not tested.",
+    "Absence of 802.11r does not mean ordinary roaming is unavailable.",
+    "This scan does not establish why historical independent node web login was possible."
+  ],
+  "evidence": [
+    {
+      "path": "evidence/wifi-kvr/be98-runtime.txt",
+      "sha256": "d724152a16ebe3178080e6d91065e135831744c51a8105d7fe1a843382983363",
+      "saved_at": "2026-10-03T16:57:12.411223+00:00"
+    },
+    {
+      "path": "evidence/wifi-kvr/be19000ai-runtime.txt",
+      "sha256": "85859937067e900e840ae22f35c1fc21b025fa2885c8b45b963720b13600c498",
+      "saved_at": "2026-10-03T16:57:13.376812+00:00"
+    },
+    {
+      "path": "evidence/wifi-kvr/host-scan-dump.txt",
+      "sha256": "e418c08ae93bf1410a2c69a5077d7ca7645c236ffe1ad3da246196f61346b47a",
+      "saved_at": "2026-10-03T16:58:00.727233+00:00"
+    }
+  ]
+}

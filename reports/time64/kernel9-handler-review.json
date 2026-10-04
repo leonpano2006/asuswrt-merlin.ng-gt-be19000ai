@@ -1,0 +1,490 @@
+{
+  "schema_version": 1,
+  "scope": "Bounded implementation of fs/select.c and fs/aio.c time64 compat handlers, read-only review of parent-owned dispatch/time/futex/signal/net changes, and isolated compile-only validation of the disabled AIO translation unit. No full kernel build, SSH or hardware operations by this agent.",
+  "verdict": "No blocking ABI/marshalling problem found in the reviewed source. 19 newly wired compat time64 calls have enabled subsystems; io_pgetevents_time64 has a correct source handler but remains ENOSYS with CONFIG_AIO=n. Runtime tests and final build verification belong to separate evidence.",
+  "owned_implementation": [
+    {
+      "path": "fs/select.c",
+      "old_prefix_identical": true,
+      "append_only_inside_existing_CONFIG_COMPAT": true,
+      "added_lines": 121
+    },
+    {
+      "path": "fs/aio.c",
+      "old_prefix_identical": true,
+      "append_only_inside_existing_CONFIG_COMPAT": true,
+      "added_lines": 53
+    }
+  ],
+  "handler_names": [
+    "compat_sys_pselect6_time64",
+    "compat_sys_ppoll_time64",
+    "compat_sys_io_pgetevents_time64"
+  ],
+  "dispatch": [
+    {
+      "number": 403,
+      "name": "clock_gettime64",
+      "handler": "sys_clock_gettime",
+      "line": 829
+    },
+    {
+      "number": 404,
+      "name": "clock_settime64",
+      "handler": "sys_clock_settime",
+      "line": 831
+    },
+    {
+      "number": 405,
+      "name": "clock_adjtime64",
+      "handler": "sys_clock_adjtime",
+      "line": 833
+    },
+    {
+      "number": 406,
+      "name": "clock_getres_time64",
+      "handler": "sys_clock_getres",
+      "line": 835
+    },
+    {
+      "number": 407,
+      "name": "clock_nanosleep_time64",
+      "handler": "sys_clock_nanosleep",
+      "line": 837
+    },
+    {
+      "number": 408,
+      "name": "timer_gettime64",
+      "handler": "sys_timer_gettime",
+      "line": 839
+    },
+    {
+      "number": 409,
+      "name": "timer_settime64",
+      "handler": "sys_timer_settime",
+      "line": 841
+    },
+    {
+      "number": 410,
+      "name": "timerfd_gettime64",
+      "handler": "sys_timerfd_gettime",
+      "line": 843
+    },
+    {
+      "number": 411,
+      "name": "timerfd_settime64",
+      "handler": "sys_timerfd_settime",
+      "line": 845
+    },
+    {
+      "number": 412,
+      "name": "utimensat_time64",
+      "handler": "sys_utimensat",
+      "line": 847
+    },
+    {
+      "number": 413,
+      "name": "pselect6_time64",
+      "handler": "compat_sys_pselect6_time64",
+      "line": 849
+    },
+    {
+      "number": 414,
+      "name": "ppoll_time64",
+      "handler": "compat_sys_ppoll_time64",
+      "line": 851
+    },
+    {
+      "number": 416,
+      "name": "io_pgetevents_time64",
+      "handler": "compat_sys_io_pgetevents_time64",
+      "line": 853
+    },
+    {
+      "number": 417,
+      "name": "recvmmsg_time64",
+      "handler": "compat_sys_recvmmsg_time64",
+      "line": 855
+    },
+    {
+      "number": 418,
+      "name": "mq_timedsend_time64",
+      "handler": "sys_mq_timedsend",
+      "line": 857
+    },
+    {
+      "number": 419,
+      "name": "mq_timedreceive_time64",
+      "handler": "sys_mq_timedreceive",
+      "line": 859
+    },
+    {
+      "number": 420,
+      "name": "semtimedop_time64",
+      "handler": "sys_semtimedop",
+      "line": 861
+    },
+    {
+      "number": 421,
+      "name": "rt_sigtimedwait_time64",
+      "handler": "compat_sys_rt_sigtimedwait_time64",
+      "line": 863
+    },
+    {
+      "number": 422,
+      "name": "futex_time64",
+      "handler": "sys_futex",
+      "line": 865
+    },
+    {
+      "number": 423,
+      "name": "sched_rr_get_interval_time64",
+      "handler": "sys_sched_rr_get_interval",
+      "line": 867
+    }
+  ],
+  "native_handler_reuse": {
+    "reviewed_numbers": [
+      403,
+      404,
+      405,
+      406,
+      407,
+      408,
+      409,
+      410,
+      411,
+      412,
+      418,
+      419,
+      420,
+      422,
+      423
+    ],
+    "assumptions": [
+      "This is a CONFIG_ARM64=y, CONFIG_64BIT=y kernel, not a generic native 32-bit kernel backport.",
+      "The native timespec/itimerspec representations have 64-bit seconds; the supplied clock_adjtime64 __kernel_timex layout is confirmed separately by the ABI agent against native struct timex.",
+      "The syscall scalar arguments and simple pointed-to data have compatible widths; do not extend this reasoning to compound pointer/size structures."
+    ],
+    "details": {
+      "403_404_406": "Use existing get_timespec64/put_timespec64 and native k_clock operations.",
+      "405": "Native timex is suitable only because its full layout matches the fixed-width time64 timex; ordinary ARM32 struct timex is not suitable. No native struct timex redesign was made.",
+      "407": "New time64 clock_nanosleep deliberately uses TT_NATIVE and the 16-byte put_timespec64 restart copyout. Legacy clock_nanosleep keeps TT_COMPAT and the old 8-byte copyout.",
+      "408_411": "The timer and timerfd native paths use 64-bit itimerspec fields; timer IDs, descriptors and flags are fixed-width.",
+      "412": "The native utimensat array advances by 16-byte native timespec and uses get_timespec64 for both timestamps, including UTIME_NOW/OMIT handling.",
+      "418_419": "Message byte buffers have no pointer-bearing structure, msg_prio is unsigned int/u32, and the timeout uses the native64 helper. No mq_attr or sigevent is passed to these two calls.",
+      "420": "sembuf is a fixed-width element and the timeout goes through get_timespec64.",
+      "422": "The shared native futex entry now parses with get_timespec64, validates timespec64 and converts using timespec64_to_ktime. Old compat futex remains separate; changing only its table without this parser update would mishandle nanosecond padding.",
+      "423": "The native scheduler interval uses put_timespec64; pid is fixed-width."
+    }
+  },
+  "required_compat_marshalling": [
+    {
+      "number": 413,
+      "reason": "AArch32 fd_set words are 32-bit; sixth argument is exactly {u32 sigset_pointer, u32 sigsetsize}, not a pair of native 64-bit values.",
+      "implementation": "Reuses compat_core_sys_select and get_compat_sigset; only timeout parsing/copyback uses get_timespec64 and poll_select_copy_remaining. The embedded pointer is expanded with compat_ptr.",
+      "signal_semantics": "Preserves existing 4.19 saved_sigmask/ERESTARTNOHAND sequence and STICKY_TIMEOUTS/read-only timeout behavior, with no task_struct or restart_block layout change."
+    },
+    {
+      "number": 414,
+      "reason": "pollfd is width-stable, but the signal set must retain compat ordering and sigsetsize validation.",
+      "implementation": "Uses do_sys_poll and get_compat_sigset; 16-byte timeout read/write through native64 helpers. Existing 4.19 delayed mask restore on interruption is retained."
+    },
+    {
+      "number": 416,
+      "reason": "The usig descriptor contains a 32-bit pointer and 32-bit size, and min_nr/nr are signed 32-bit arguments. A native table entry loses signed extension and can read the wrong descriptor.",
+      "implementation": "New private struct __compat_aio_sigset_time64 has compat_uptr_t and compat_size_t; zero initialized, copied as 8 bytes and pointer passed through compat_ptr. get_compat_sigset plus local saved-mask handling mirror existing 4.19 semantics. Legacy buggy descriptor/handler is unchanged because this task preserves existing ABI and no old io_pgetevents entry is exposed in this arm64 table.",
+      "limitation": "CONFIG_AIO remains disabled; the conditional syscall stub correctly returns ENOSYS. The implementation is not claimed runtime-tested under enabled AIO."
+    },
+    {
+      "number": 417,
+      "reason": "mmsghdr, iovec and ancillary cmsghdr retain AArch32 layout even though timeout becomes time64.",
+      "implementation": "Parent wrapper reads get_timespec64, converts to native kernel struct timespec without narrowing on arm64, and sets MSG_CMSG_COMPAT before calling the existing __sys_recvmmsg. Remaining timeout is copied as 16 bytes only when ret>0, matching existing semantics.",
+      "limitation": "This does not add SO_TIMESTAMP_NEW/NS_NEW/ING_NEW; old compat ancillary timestamp fields remain time32."
+    },
+    {
+      "number": 421,
+      "reason": "siginfo output layout and signal-set word representation remain AArch32.",
+      "implementation": "Parent wrapper uses get_compat_sigset and copy_siginfo_to_user32 with a time64 timeout. timespec64_to_timespec is lossless on this 64-bit kernel, and the existing do_sigtimedwait validates timeout."
+    }
+  ],
+  "global_helpers": {
+    "get_timespec64": "The parent removes the ineffective CONFIG_64BIT_TIME guard for in_compat_syscall, so the upper 32 bits of tv_nsec padding are ignored for the new AArch32 ABI. Low 32-bit invalid nsec values still fail range checks at syscall use sites.",
+    "unchanged_legacy_contracts": [
+      "COMPAT_USE_64BIT_TIME remains zero; compat_get_timespec64 and compat_put_timespec64 keep old 32-bit seconds.",
+      "CONFIG_COMPAT_32BIT_TIME is retained.",
+      "The old syscall numbers and handlers are unchanged.",
+      "No page/task/bio/driver-visible structure is enlarged.",
+      "Native syscall numbers do not change; compat limit grows to 424, leaving 399-402 and 415 unimplemented."
+    ]
+  },
+  "review_evidence": [
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/fs/select.c",
+      "lines": [
+        1478,
+        1497
+      ],
+      "sha256": "f5bd9ca381546f85c9c2ede3e33e10c38884a21a54a186ef5fc68c5740f4926d"
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/fs/aio.c",
+      "lines": [
+        2351,
+        2356,
+        2362,
+        2364
+      ],
+      "sha256": "4c7b89b82d828037e1f925cd787e26426f9e9bc43fa2171158d34a2ce49d06d5"
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/time/time.c",
+      "lines": [
+        870,
+        871
+      ],
+      "sha256": "59ac09fd7df95e2b4f41830eaf6ba85eb9a9e75435b3110e9525827e7802264b"
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/futex.c",
+      "lines": [
+        3918,
+        3932,
+        4110
+      ],
+      "sha256": "0f5f9ac16a107c2f476ddbd6d33e1cd6ef30c0a36fc2b8b5974c80fe8830fcc4"
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/signal.c",
+      "lines": [
+        3271
+      ],
+      "sha256": "b4603085688f433433a6e687b162a5cf0736ad89ceedfd77ba542d8de2ad1368"
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/net/compat.c",
+      "lines": [
+        847
+      ],
+      "sha256": "0e3b3b960c544bcce226f4ba214cc7bf29544517342f9c44557951e683cb4ab0"
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/time/posix-timers.c",
+      "lines": [
+        1234,
+        1262
+      ],
+      "sha256": "4797b181f8c5342125739c1eb098398f2d00e37c509732536dcef1e96ca28f7a"
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/time/hrtimer.c",
+      "lines": [
+        1729,
+        1734
+      ],
+      "sha256": "b655759d9adb525de2bd0cff597e23e3f169f8d1dcd4becdd2ad1a841faab6bb"
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/sys_ni.c",
+      "lines": [
+        49,
+        290
+      ],
+      "sha256": "e9de93a595d4379e9dfe111d223fa36c8473513ec88f54e39a6acdbcb185294d"
+    }
+  ],
+  "source_changes": [
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/asm/unistd32.h",
+      "baseline_path": "build/time64-kernel9/baseline/arch/arm64/include/asm/unistd32.h",
+      "before_sha256": "769187a264e5eaf387ac5c5ade614e987c6cd482de316cf892562c6a2c1d2db1",
+      "after_sha256": "247a2212c5fb16ad233e7e63f4cb465712ae1fccc0f482b50b1af3cd91f3167b"
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/asm/unistd.h",
+      "baseline_path": "build/time64-kernel9/baseline/arch/arm64/include/asm/unistd.h",
+      "before_sha256": "f92b26c85a5c562301f1281a8106741a77bae41dd29e3f44927e3b9eab900c9f",
+      "after_sha256": "b99f42b8adcb7c2e66c9397bf4f1fb50a7946f04a46751e8ebf735425fcd4881"
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/time/time.c",
+      "baseline_path": "build/time64-kernel9/baseline/kernel/time/time.c",
+      "before_sha256": "3a247ddac0c3ef5ce4490845877229c7e18a7c3c3b38b83f7d05edcb1a960ff6",
+      "after_sha256": "59ac09fd7df95e2b4f41830eaf6ba85eb9a9e75435b3110e9525827e7802264b"
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/futex.c",
+      "baseline_path": "build/time64-kernel9/baseline/kernel/futex.c",
+      "before_sha256": "1d5d37b86ee9f4666d6bd9169c966d769dd9f73c2481738f35142b4f9dd982e0",
+      "after_sha256": "0f5f9ac16a107c2f476ddbd6d33e1cd6ef30c0a36fc2b8b5974c80fe8830fcc4"
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/signal.c",
+      "baseline_path": "build/time64-kernel9/baseline/kernel/signal.c",
+      "before_sha256": "8e88405e09797a460dc6a517e24887634e3f2767fef7e3812fd5d79cd50dd6a2",
+      "after_sha256": "b4603085688f433433a6e687b162a5cf0736ad89ceedfd77ba542d8de2ad1368"
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/net/compat.c",
+      "baseline_path": "build/time64-kernel9/baseline/net/compat.c",
+      "before_sha256": "55ad37103ec4f05c21f99098fd2398621237580c472b25b5ca234e07807363b1",
+      "after_sha256": "0e3b3b960c544bcce226f4ba214cc7bf29544517342f9c44557951e683cb4ab0"
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/fs/select.c",
+      "baseline_path": "build/time64-kernel9/baseline/fs/select.c",
+      "before_sha256": "16bb151df5366ff7e4225c0a39138e895ffd5f85f43d9517bc1771dbee0f9f07",
+      "after_sha256": "f5bd9ca381546f85c9c2ede3e33e10c38884a21a54a186ef5fc68c5740f4926d"
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/fs/aio.c",
+      "baseline_path": "build/time64-kernel9/baseline/fs/aio.c",
+      "before_sha256": "dbcc3705393c52b2335c512672765aa34b5c44201f5cb16489187de148e6d55e",
+      "after_sha256": "4c7b89b82d828037e1f925cd787e26426f9e9bc43fa2171158d34a2ce49d06d5"
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/sys_ni.c",
+      "baseline_path": "build/time64-kernel9/baseline/kernel/sys_ni.c",
+      "before_sha256": "f65799a46ebfb9b50ac320907d42e170244bf34f0caf65253c3e4c705ab16272",
+      "after_sha256": "e9de93a595d4379e9dfe111d223fa36c8473513ec88f54e39a6acdbcb185294d"
+    }
+  ],
+  "primary_upstream_sources": [
+    {
+      "path": "arch/arm64/include/asm/unistd32.h",
+      "url": "https://raw.githubusercontent.com/torvalds/linux/v5.1/arch/arm64/include/asm/unistd32.h",
+      "bytes": 30674,
+      "sha256": "fdb733eeb183e412a5c8772d1e304f4c5125ed6ee125fe2a50231ed5f4608532"
+    },
+    {
+      "path": "include/uapi/asm-generic/unistd.h",
+      "url": "https://raw.githubusercontent.com/torvalds/linux/v5.1/include/uapi/asm-generic/unistd.h",
+      "bytes": 29826,
+      "sha256": "6492f2e73d55d4eed1b52a3daa24f8bbd925f37d39b13fab45f9b3f1161d47a2"
+    },
+    {
+      "path": "fs/select.c",
+      "url": "https://raw.githubusercontent.com/torvalds/linux/v5.1/fs/select.c",
+      "bytes": 36139,
+      "sha256": "3190522a78c4db78da90647d123c94f20065d50883a36ae9e40ecb3144dc4205"
+    },
+    {
+      "path": "net/compat.c",
+      "url": "https://raw.githubusercontent.com/torvalds/linux/v5.1/net/compat.c",
+      "bytes": 24432,
+      "sha256": "ce56a6ee5057fb2bff19f5f54d82a12b1d5d46831e6f0cd065c7c85911f629ae"
+    },
+    {
+      "path": "net/socket.c",
+      "url": "https://raw.githubusercontent.com/torvalds/linux/v5.1/net/socket.c",
+      "bytes": 94052,
+      "sha256": "9ea5e877ce58a0eff2b5b327b34f70316e03801e7022afd60bc276b175c267a8"
+    },
+    {
+      "path": "fs/aio.c",
+      "url": "https://raw.githubusercontent.com/torvalds/linux/v5.1/fs/aio.c",
+      "bytes": 57440,
+      "sha256": "ce62aedf91fa20908f29467f011dc7120cedbfb4469ce36c5c407773ca00d1be"
+    },
+    {
+      "path": "kernel/signal.c",
+      "url": "https://raw.githubusercontent.com/torvalds/linux/v5.1/kernel/signal.c",
+      "bytes": 116286,
+      "sha256": "03341b44c99d1f2fe5cc6de9b2d768d1fab1d7283d526e503bd7f33ccd4da743"
+    },
+    {
+      "path": "kernel/time/posix-timers.c",
+      "url": "https://raw.githubusercontent.com/torvalds/linux/v5.1/kernel/time/posix-timers.c",
+      "bytes": 35746,
+      "sha256": "c85a84968703b6d1dabd4ef3a7a3bf1f1e7ba4d56717cb83236a16142ee1ff24"
+    },
+    {
+      "path": "kernel/time/time.c",
+      "url": "https://raw.githubusercontent.com/torvalds/linux/v5.1/kernel/time/time.c",
+      "bytes": 25236,
+      "sha256": "306979c175d5c08bf93e86c84ba012999967a8b8aa7d26a5571ca5370fbc41e3"
+    },
+    {
+      "path": "include/uapi/linux/timex.h",
+      "url": "https://raw.githubusercontent.com/torvalds/linux/v5.1/include/uapi/linux/timex.h",
+      "bytes": 7858,
+      "sha256": "9aeb1fcfac4ac692da7efcc32e0babc8b8f1c7f82aa75b0be5da9ad99fef9244"
+    },
+    {
+      "path": "ipc/mqueue.c",
+      "url": "https://raw.githubusercontent.com/torvalds/linux/v5.1/ipc/mqueue.c",
+      "bytes": 41050,
+      "sha256": "46b425abe5fdf75b37d1beec5da74bed517020230aec5c5edb0e901316f079f9"
+    },
+    {
+      "path": "include/linux/compat.h",
+      "url": "https://raw.githubusercontent.com/torvalds/linux/v5.1/include/linux/compat.h",
+      "bytes": 32379,
+      "sha256": "ecd46d1af3a47b956b1f3e0a33e979f5b1d20933874a9d6ed60755bd81e0bef3"
+    },
+    {
+      "path": "include/linux/time64.h",
+      "url": "https://raw.githubusercontent.com/torvalds/linux/v5.1/include/linux/time64.h",
+      "bytes": 3826,
+      "sha256": "fba191fefd01c461adc34743e0b36660110075b3b760fa2a58326d17e8da8b43"
+    },
+    {
+      "path": "kernel/futex.c",
+      "url": "https://raw.githubusercontent.com/torvalds/linux/v5.1/kernel/futex.c",
+      "bytes": 106625,
+      "sha256": "0f2b9b060b6214c6a189dbdaa9233eb0d6999bf8b7235ef9ea339cf15f0daec4"
+    },
+    {
+      "path": "include/uapi/linux/time_types.h",
+      "url": "https://raw.githubusercontent.com/torvalds/linux/v5.1/include/uapi/linux/time_types.h",
+      "bytes": 1011,
+      "sha256": "b49d7cd412b59713a0fef580461fa51c097ed8d9789520574d45674473cb36df"
+    }
+  ],
+  "correctness_fixes_beyond_v5_1": [
+    {
+      "commit": "97eba80fcca754856d09e048f469db22773bec68",
+      "url": "https://github.com/torvalds/linux/commit/97eba80fcca754856d09e048f469db22773bec68",
+      "title": "aio: Fix io_pgetevents() struct __compat_aio_sigset layout",
+      "application": "New time64 descriptor uses compat_uptr_t+compat_size_t and compat_ptr, rather than copying the old native-pointer definition."
+    },
+    {
+      "commit": "d3882564a77c21eb746ba5364f3fa89b88de3d61",
+      "url": "https://github.com/torvalds/linux/commit/d3882564a77c21eb746ba5364f3fa89b88de3d61",
+      "title": "syscalls: fix compat_sys_io_pgetevents_time64 usage",
+      "stable_primary_reference": "https://kernel.googlesource.com/pub/scm/linux/kernel/git/stable/stable-queue/+/refs/tags/v6.12.41/releases/5.15.162/syscalls-fix-compat_sys_io_pgetevents_time64-usage.patch",
+      "application": "Number 416 maps to compat_sys_io_pgetevents_time64. Initial v5.1 and v5.15 release tables incorrectly used sys_io_pgetevents; this later upstream correction is intentionally included."
+    }
+  ],
+  "test_handoff": [
+    "Guard-page tests for a 4-byte ARM32 fd_set and 8-byte pselect sig descriptor.",
+    "High signal-set bit and process-local interruption tests with original signal mask restored.",
+    "16-byte remaining timeout copyback and legacy 8-byte time32 behavior.",
+    "AIO=n must return ENOSYS; do not label the optional disabled subsystem operational.",
+    "Future enabled-AIO validation must include 8-byte usig guard, negative min_nr/nr sign extension and interrupted mask restoration."
+  ],
+  "not_done": [
+    "No full kernel build or live test performed by this subagent; the AIO translation unit was compiled separately without linking.",
+    "No source edits after parent started compilation.",
+    "No conversion of old socket timestamp options, filesystem formats, libc ABI or unrelated 64-bit layouts."
+  ],
+  "aio_compile_only": {
+    "exit_code": 0,
+    "config_sha256_before": "1c495c39d80319246f26a38192eb481b54860ea938d46bbc8156b4fa676a8216",
+    "config_sha256_after": "1c495c39d80319246f26a38192eb481b54860ea938d46bbc8156b4fa676a8216",
+    "source_sha256": "4c7b89b82d828037e1f925cd787e26426f9e9bc43fa2171158d34a2ce49d06d5",
+    "object_sha256": "4604592e00346d2f8333935a7907f46e3132dcaae87d664622784afe5d24c733",
+    "runtime_tested": false,
+    "linked_into_deployed_image": false,
+    "log": "build/time64-kernel9/aio-compile/compile.log",
+    "new_handler_symbols": [
+      "206: 0000000000004ea0   444 FUNC    GLOBAL DEFAULT    1 __arm64_compat_sys_io_pgetevents_time64"
+    ],
+    "command_path": "build/time64-kernel9/aio-compile/command.json",
+    "evidence_sha256": {
+      "build/time64-kernel9/aio-compile/command.json": "2d23d9024d24147d9dcfb4f4f6502430e1eecf3ecbd3d23eb4367e25197b5e4c",
+      "build/time64-kernel9/aio-compile/compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "build/time64-kernel9/aio-compile/result.json": "426f5f28b85d9f1d82222e47b65535d86acc9a9f35b3dd3abcc772578c393139"
+    }
+  }
+}

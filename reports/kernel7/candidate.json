@@ -1,0 +1,105 @@
+{
+  "updated_at": "2026-10-04T10:42:06.748424+00:00",
+  "target": "GT-BE19000AI BCM6813",
+  "candidate": "kernel7-psi",
+  "status": "QEMU_VALIDATED_KERNEL_CANDIDATE_NOT_FLASHED",
+  "kernel": "Linux 4.19.294 #7",
+  "base": "kernel6; PSI state machine from v5.15.222 plus targeted upstream fixes",
+  "image": {
+    "path": "build/Image-v7",
+    "sha256": "9819ebd69792190a9d178fd802782fe4de4a9866c411949f24e15fd1724187c3"
+  },
+  "config": {
+    "path": "configs/kernel7.config",
+    "sha256": "1c495c39d80319246f26a38192eb481b54860ea938d46bbc8156b4fa676a8216",
+    "delta_from_kernel6": [
+      "CONFIG_PSI_DEFAULT_DISABLED=n; CONFIG_PSI=y remains enabled"
+    ]
+  },
+  "patch": {
+    "path": "patches/0005-psi-cgroup-monitoring-abi.patch",
+    "sha256": "e2ee130ef931ba8d5737edcf9d4a3a265dbccdf81bb7fb4aae74644f9ba73737",
+    "changed_files": 15
+  },
+  "features": [
+    "System and cgroup v2 CPU/memory/IO pressure readings",
+    "Per-cgroup CPU some/full includes quota throttling and inter-cgroup competition",
+    "Threshold write plus poll/epoll notification, rearm, error and lifetime handling",
+    "Hierarchy and task cgroup migration accounting",
+    "psi=0 boot-time disable"
+  ],
+  "abi": {
+    "report": "reports/psi/current-layout.json",
+    "approach": [
+      "Existing task bitfield space for in_memstall",
+      "Private psi_group storage after cgroup ancestor IDs; root uses psi_system",
+      "Private last-work-function word after allocated worker; struct worker unchanged",
+      "Kernfs dispatch keyed by existing open callback; kernfs_ops/cftype unchanged"
+    ],
+    "evidence": "491 shared complete DWARF types have unchanged old members and sizes; supplemental header probes cover additional critical types. Not a proof of every proprietary module ABI. No complete kernel6 rq baseline."
+  },
+  "qemu": [
+    {
+      "label": "psi7-functional-strict",
+      "report": "reports/kernel7/psi7-functional-strict.json",
+      "unexpected_diagnostics": [],
+      "expected_userspace_warnings": []
+    },
+    {
+      "label": "psi7-disabled-strict",
+      "report": "reports/kernel7/psi7-disabled-strict.json",
+      "unexpected_diagnostics": [],
+      "expected_userspace_warnings": []
+    },
+    {
+      "label": "psi7-lifetime",
+      "report": "reports/kernel7/psi7-lifetime.json",
+      "unexpected_diagnostics": [],
+      "expected_userspace_warnings": []
+    },
+    {
+      "label": "psi7-resource",
+      "report": "reports/kernel7/psi7-resource.json",
+      "unexpected_diagnostics": [],
+      "expected_userspace_warnings": []
+    },
+    {
+      "label": "psi7-docker",
+      "report": "reports/kernel7/psi7-docker.json",
+      "unexpected_diagnostics": [],
+      "expected_userspace_warnings": [
+        "WARNING: Support for cgroup v1 is deprecated and planned to be removed by no later than May 2029 (https://github.com/moby/moby/issues/51111)",
+        "WARNING: IPv4 forwarding is disabled"
+      ]
+    }
+  ],
+  "module_regression": "reports/kernel7/module-matrix.json",
+  "rootfs": {
+    "path": "build/rootfs-v7.zstd.squashfs",
+    "report": "reports/kernel7/rootfs.json",
+    "purpose": "Kernel/module test rootfs from stock userspace; not a complete replacement for integrated kernel6-ui1 firmware. Preserve UI/RGB/collector changes during later integration."
+  },
+  "limits": [
+    "Memory PSI retains 4.19 reclaim/compaction coverage; complete file-refault/swap workingset classification is not backported.",
+    "I/O threshold registration, format and lifetime are tested; actual I/O pressure event generation is not tested.",
+    "Cgroup migration is tested; no dedicated cross-CPU stalled-task wake migration stress test.",
+    "No IRQ pressure, per-cgroup pressure on/off or later unprivileged average-based monitoring mode.",
+    "No systemd/oomd userspace installation or policy; /proc writes require CAP_SYS_RESOURCE, delegated cgroup writes follow cgroup file permissions.",
+    "No physical boot, radio/Runner tests, throughput benchmark or long soak for kernel7."
+  ],
+  "deployment": {
+    "hardware_changed": false,
+    "flashed": false,
+    "firmware_package_created": false,
+    "git_commit_created": false,
+    "sl1680_changed": false,
+    "prior_release_record": "reports/releases/kernel6-ui1.json",
+    "next_integration": "Combine kernel7 and its rebuilt modules with previously reviewed UI/RGB/collectors, update exact-hash trial hooks and packaging gates, then QEMU-check the exact integrated image before a hardware trial."
+  },
+  "audits": [
+    "reports/psi/upstream-audit.json",
+    "reports/psi/integration-review.json",
+    "reports/psi/mm-coverage.json",
+    "reports/psi/test-review.json"
+  ]
+}

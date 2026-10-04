@@ -1,0 +1,229 @@
+{
+  "schema_version": 1,
+  "scope": "Bounded read-only comparison of saved kernel8 final dmesg, stock/Merlin #1 fallback boot, and earlier custom #6 boot. No SSH, device operations, or source changes.",
+  "verdict": "No newly introduced fatal kernel fault found in these captures. The requested AP/BP3/regulatory error families already occur in the stock fallback. This is not a warning-free boot, and successful radio-up state does not validate every virtual BSS.",
+  "sources": {
+    "kernel8": {
+      "path": "evidence/kernel8-ui1/dmesg-final.txt",
+      "sha256": "cd0cb4e9b821bf83a835cf879e37657bea30a8a149f94b9392c45995cfe7a194",
+      "bytes": 89172,
+      "linux_version": "Linux version 4.19.294 (leon@be19000ai) (gcc version 10.3.0 (Buildroot 2021.02.4)) #8 SMP PREEMPT Sat Oct 3 12:00:00 UTC 2026"
+    },
+    "stock_fallback": {
+      "path": "evidence/trial78-first-ssh.txt",
+      "sha256": "7277c61ef6957e8982779c481d53ae258724160781ed13f76281f9a4674c8e79",
+      "bytes": 89835,
+      "linux_version": "Linux version 4.19.294 (merlin@ubuntu-dev2) (gcc version 10.3.0 (Buildroot 2021.02.4)) #1 SMP PREEMPT Wed Sep 23 15:47:28 EDT 2026"
+    },
+    "kernel6": {
+      "path": "evidence/trial601-first-ssh.txt",
+      "sha256": "0a9fa88bd467feb5b4adbbb5c232fa30232306dd2a4127ab3772a620b167c37a",
+      "bytes": 89999,
+      "linux_version": "Linux version 4.19.294 (leon@be19000ai) (gcc version 10.3.0 (Buildroot 2021.02.4)) #6 SMP PREEMPT Sat Oct 3 12:00:00 UTC 2026"
+    }
+  },
+  "supplemental_sources": [
+    {
+      "path": "evidence/kernel8-ui1/health-final.txt",
+      "sha256": "c0dcbec59bd6ed470d5a72cb9e8a365475916685d75a232b95f715197b2b7e6b",
+      "bytes": 5560
+    },
+    {
+      "path": "evidence/kernel8-ui1/network-first.txt",
+      "sha256": "f3a542cfb6b7e754fdcecdd781dbf3e43aff74b1f9ce2283060fe9301e7b6951",
+      "bytes": 3615
+    }
+  ],
+  "findings": [
+    {
+      "id": "virtual_bss_bringup",
+      "classification": "pre_existing_in_stock_fallback; absent_in_this_kernel6_capture",
+      "evidence_lines": {
+        "kernel8": [
+          1511,
+          1533,
+          1543,
+          1562
+        ],
+        "stock_fallback": [
+          1562,
+          1584,
+          1594,
+          1613
+        ],
+        "kernel6": []
+      },
+      "counts_by_bssidx": {
+        "kernel8": {
+          "1": 2,
+          "2": 2
+        },
+        "stock_fallback": {
+          "1": 2,
+          "2": 2
+        },
+        "kernel6": {}
+      },
+      "observation": "Both kernel8 and the stock fallback contain exactly four AP Bring up failed messages: bssidx 1 twice and bssidx 2 twice, each following bss-up return -1. The sequence appears during virtual interface initialization. The earlier kernel6 capture has none.",
+      "assessment": "The stock reproduction prevents attributing this error to the kernel8 PSI changes. Kernel6 absence alone does not isolate a cause because these are separate boots and captures, not a controlled configuration/timing comparison.",
+      "remaining_concern": "A failed virtual BSS is a real unresolved signal even when all three physical radios report up. These captures do not map each bssidx to the configured Guest/IoT SSID or prove its eventual recovery. Check per-BSS enabled/up/beacon/client status if a specific SSID is missing; do not claim all virtual networks are verified."
+    },
+    {
+      "id": "regulatory_database",
+      "classification": "common_to_all_three",
+      "evidence_lines": {
+        "kernel8": [
+          965,
+          966
+        ],
+        "stock_fallback": [
+          1016,
+          1017
+        ],
+        "kernel6": [
+          1022,
+          1023
+        ]
+      },
+      "observation": "All three contain Direct firmware load for regulatory.db failed with error -2, followed by cfg80211 failed to load regulatory.db.",
+      "assessment": "This missing cfg80211 database is not newly introduced by kernel8. The logs alone do not establish the effective proprietary firmware country/channel policy or prove correct operation on every legal channel; do not describe the missing file as fixed or categorically harmless."
+    },
+    {
+      "id": "bp3_licensing",
+      "classification": "common_to_all_three_with_successful_provisioning",
+      "error_lines": {
+        "kernel8": [
+          408,
+          409,
+          410,
+          411,
+          412
+        ],
+        "stock_fallback": [
+          459,
+          460,
+          461,
+          462,
+          463
+        ],
+        "kernel6": [
+          464,
+          465,
+          466,
+          467,
+          468
+        ]
+      },
+      "error_counts": {
+        "kernel8": 5,
+        "stock_fallback": 5,
+        "kernel6": 5
+      },
+      "success_lines": {
+        "kernel8": [
+          413,
+          414,
+          415,
+          461,
+          476
+        ],
+        "stock_fallback": [
+          464,
+          465,
+          466,
+          512,
+          527
+        ],
+        "kernel6": [
+          469,
+          470,
+          471,
+          517,
+          532
+        ]
+      },
+      "observation": "Each capture has Cannot open /etc/licenses, Failed to load default development license, and three OUI mismatch messages. Each then loads licenses 1119 and 1212, reports BP3 status - provisioned, and reports HTOA license present twice.",
+      "assessment": "The default-license/OUI messages are pre-existing failed candidate-loading paths followed by positive provisioning evidence, not evidence that kernel8 lost the active BP3/HTOA license. This is a log-based conclusion, not a complete acceleration benchmark."
+    },
+    {
+      "id": "other_wireless_messages",
+      "classification": "same_error_families_in_baselines",
+      "counts": {
+        "Get event_msgs error": {
+          "kernel8": 3,
+          "stock_fallback": 3,
+          "kernel6": 3
+        },
+        "failed to set WLC_E_CAC_STATE_CHANGE bit": {
+          "kernel8": 3,
+          "stock_fallback": 3,
+          "kernel6": 3
+        },
+        "ocv_cap unsupported": {
+          "kernel8": 8,
+          "stock_fallback": 8,
+          "kernel6": 8
+        },
+        "IGMP Query send failed": {
+          "kernel8": 8,
+          "stock_fallback": 8,
+          "kernel6": 8
+        },
+        "scan abort  failed": {
+          "kernel8": 4,
+          "stock_fallback": 3,
+          "kernel6": 2
+        },
+        "WLC_SCB_DEAUTHORIZE error": {
+          "kernel8": 1,
+          "stock_fallback": 0,
+          "kernel6": 2
+        }
+      },
+      "observation": "Event-buffer/CAC setup failures, unsupported OCV, IGMP send failures and scan/deauthorize messages have baseline examples. CFG80211-ERROR prefixes also wrap informational-looking Enter, connection and supplied-MAC messages, so prefix counts alone overstate failed operations.",
+      "new_exact_text_check": "Only two exact CFG80211 header-plus-next-line blocks in kernel8 were absent from the union of these two baseline captures: connection channel=36 for a previously seen peer, and a disconnect event on wl1 rather than the kernel6 wl2. The operation/error families themselves are present in baseline; peer/channel/interface variation does not establish a new kernel defect.",
+      "remaining_concern": "The final log contains an AiMesh peer disconnect and eth0 bridge disable/reenable transitions. Later saved state reports link UP, but this short boot capture is not a long-run proof against intermittent link or client issues."
+    },
+    {
+      "id": "serdes",
+      "classification": "seen_in_kernel6_only_in_these_captures",
+      "evidence_lines": {
+        "kernel8": [],
+        "stock_fallback": [],
+        "kernel6": [
+          1589
+        ]
+      },
+      "assessment": "The kernel6-only external copper PHY/Serdes link-up warning is absent from the current kernel8 and fallback captures. No inference that kernel8 fixed an intermittent PHY condition is justified."
+    },
+    {
+      "id": "fatal_kernel_faults",
+      "classification": "none_observed",
+      "search_expression": "Kernel panic|\\bOops:|\\bBUG:|WARNING: CPU:|Unable to handle kernel|Call trace:|soft lockup|hard LOCKUP|rcu.*stall|INFO: task.*blocked for more than",
+      "matches": {
+        "kernel8": [],
+        "stock_fallback": [],
+        "kernel6": []
+      },
+      "assessment": "No panic, real Oops, BUG, CPU warning backtrace, kernel access fault, call trace or explicit lockup/stall marker matched. oops_mmc is the crash-capture module name, not an Oops report. Proprietary/out-of-tree module taint lines are present and must not be conflated with crashes."
+    }
+  ],
+  "positive_live_evidence": {
+    "health_final_uptime_seconds": 287.77,
+    "physical_radio_states": {
+      "wl0": 1,
+      "wl1": 1,
+      "wl2": 1
+    },
+    "ai_link": "eth.ai UP/LOWER_UP and 2/2 successful ping responses to the internal AI board",
+    "aimesh_agent": "cfg_client running; RE_MODE=1 and configured master retained",
+    "wired": "network-first shows eth0 UP/LOWER_UP and a two-member 802.3ad bond, both members up with zero recorded link failures",
+    "browser_observation": "Parent separately reported real link rates and one 6 GHz client in Chrome. Not independently inspected by this saved-log audit; do not use as proof for all virtual BSSs."
+  },
+  "limitations": [
+    "Different boot capture lengths and configuration/timing may affect message counts.",
+    "All three radios up is a radio-level check; per-SSID success remains unverified by these files.",
+    "No long-duration load or roaming test is implied."
+  ],
+  "recommended_summary": "Kernel8 is running and no new fatal kernel fault was found. Stock also emits the same AP bring-up, regulatory.db and BP3 messages; BP3 then provisions successfully. Retain a separate investigation for virtual Guest/IoT BSS startup instead of calling the log warning-free."
+}

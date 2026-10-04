@@ -1,0 +1,29 @@
+{
+  "auto_missing_falls_back": {
+    "requested": "auto",
+    "enabled": false,
+    "reason": "ccache executable not found; using the SDK compiler directly"
+  },
+  "on_missing_error": "ccache executable not found; using the SDK compiler directly (install it locally or use --ccache-bin)",
+  "off_disables_wrapper_cache": {
+    "requested": "off",
+    "enabled": false,
+    "reason": "disabled explicitly"
+  },
+  "auto_finds_local_binary": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/tools/ccache/bin/ccache",
+  "inherited_ccache_environment_scrubbed": true,
+  "makeoverrides_preserves_cc_spaces_and_cross_compile": true,
+  "make_command": [
+    "make",
+    "--no-print-directory",
+    "-f",
+    "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/ccache-verification/parent.mk",
+    "CC=/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/tools/ccache/bin/ccache /home/leonpano/br-sdk/br-aarch64/output/host/bin/aarch64-buildroot-linux-gnu-gcc",
+    "CROSS_COMPILE=/home/leonpano/br-sdk/br-aarch64/output/host/bin/aarch64-buildroot-linux-gnu-",
+    "HOSTCC=/usr/bin/gcc",
+    "RECORD=/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/ccache-verification/make-variables.txt"
+  ],
+  "make_stdout": "make -f /home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/ccache-verification/child.mk RECORD=/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/ccache-verification/make-variables.txt HOSTCC=/usr/bin/gcc CROSS_COMPILE=/home/leonpano/br-sdk/br-aarch64/output/host/bin/aarch64-buildroot-linux-gnu- CC=/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/tools/ccache/bin/ccache\\ /home/leonpano/br-sdk/br-aarch64/output/host/bin/aarch64-buildroot-linux-gnu-gcc check\n",
+  "pass": true,
+  "official_make_invoked": false
+}

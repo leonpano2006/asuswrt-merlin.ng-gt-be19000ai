@@ -1,0 +1,29 @@
+--- a/release/src/router/libcodb/codb_utils.c
++++ b/release/src/router/libcodb/codb_utils.c
+@@ -524,7 +524,7 @@
+                 int start_index = columns_count + i * columns_count;
+                 int array_index = start_index + j;
+                 char *column_value = result[array_index];
+-                json_object *new_obj = json_object_new_string(column_value);
++                json_object *new_obj = column_value ? json_object_new_string(column_value) : NULL;
+                 json_object_array_add(fieldValueArrayObj, new_obj);
+             }
+ 
+@@ -1016,7 +1016,7 @@
+                 start_index = columns_count + i*columns_count;
+                 array_index = start_index + j;
+                 column_value = result[array_index];
+-                json_object *new_obj = json_object_new_string(column_value);
++                json_object *new_obj = column_value ? json_object_new_string(column_value) : NULL;
+                 json_object_array_add(fieldValueArrayObj, new_obj);
+             }
+ 
+@@ -1071,7 +1071,7 @@
+                     start_index = columns_count + i*columns_count;
+                     array_index = start_index + j;
+                     column_value = result[array_index];
+-                    json_object *new_obj = json_object_new_string(column_value);
++                    json_object *new_obj = column_value ? json_object_new_string(column_value) : NULL;
+                     json_object_array_add(fieldValueArrayObj, new_obj);
+                 }
+ 

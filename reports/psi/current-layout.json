@@ -1,0 +1,152 @@
+{
+  "kernel": "4.19.294 #7",
+  "baseline": {
+    "path": "build/resource6/guard.json",
+    "object_sha256": "7ae7b0c11773eda71ac9e0c3396654e9010cbfb4e1f12270895cdde1eabc2b76",
+    "kind": "kernel6 compile-only header layout probe, not a full kernel6 vmlinux"
+  },
+  "final_vmlinux": {
+    "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/vmlinux",
+    "sha256": "391ed6898001b323c35ab0645cfac63055857f295ca74d11039ede7c842a37af",
+    "kernel_image_sha256": "9819ebd69792190a9d178fd802782fe4de4a9866c411949f24e15fd1724187c3",
+    "config_sha256": "1c495c39d80319246f26a38192eb481b54860ea938d46bbc8156b4fa676a8216",
+    "complete_types": 543,
+    "conflicting_types": [],
+    "shared_with_baseline": 491,
+    "old_member_or_size_differences": [],
+    "coverage": "CONFIG_DEBUG_INFO=n; surviving DWARF comes from BSP compilation units. Missing types are not validated through vmlinux.",
+    "full_dwarf": "build/psi7-abi/vmlinux-layout-full.json"
+  },
+  "supplemental_header_probe": {
+    "object": "build/psi7-abi/current-layout.o",
+    "sha256": "2852bedb4689535a33ddc03e66536e93888f4317d8fdb5c72a8c88d59c71dfe9",
+    "compile_returncode": 0,
+    "full_dwarf": "build/psi7-abi/current-layout-full.json",
+    "private_type_differences": [
+      {
+        "type": "structure psi_group_cpu",
+        "old_bytes": 128,
+        "new_bytes": 128,
+        "changed_members": [
+          "tasks",
+          "times",
+          "state_start",
+          "times_prev"
+        ]
+      },
+      {
+        "type": "structure psi_group",
+        "old_bytes": 344,
+        "new_bytes": 664,
+        "changed_members": [
+          "stat_lock",
+          "total_prev",
+          "last_update",
+          "next_update",
+          "clock_work",
+          "total",
+          "avg"
+        ]
+      }
+    ]
+  },
+  "types": {
+    "structure task_struct": {
+      "bytes": 2688,
+      "baseline_bytes": 2688,
+      "old_members_unchanged": true,
+      "evidence": "final_vmlinux"
+    },
+    "structure sched_entity": {
+      "bytes": 192,
+      "baseline_bytes": 192,
+      "old_members_unchanged": true,
+      "evidence": "final_vmlinux"
+    },
+    "structure cgroup": {
+      "bytes": 856,
+      "baseline_bytes": 856,
+      "old_members_unchanged": true,
+      "evidence": "final_vmlinux"
+    },
+    "structure cgroup_root": {
+      "bytes": 5088,
+      "baseline_bytes": 5088,
+      "old_members_unchanged": true,
+      "evidence": "final_vmlinux"
+    },
+    "structure css_set": {
+      "bytes": 448,
+      "baseline_bytes": 448,
+      "old_members_unchanged": true,
+      "evidence": "final_vmlinux"
+    },
+    "structure cftype": {
+      "bytes": 208,
+      "baseline_bytes": 208,
+      "old_members_unchanged": true,
+      "evidence": "final_vmlinux"
+    },
+    "structure kernfs_ops": {
+      "bytes": 88,
+      "baseline_bytes": 88,
+      "old_members_unchanged": true,
+      "evidence": "final_vmlinux"
+    },
+    "structure kernfs_open_file": {
+      "bytes": 152,
+      "baseline_bytes": 152,
+      "old_members_unchanged": true,
+      "evidence": "final_vmlinux"
+    },
+    "structure kernfs_node": {
+      "bytes": 128,
+      "baseline_bytes": 128,
+      "old_members_unchanged": true,
+      "evidence": "final_vmlinux"
+    },
+    "structure bio": {
+      "bytes": 112,
+      "baseline_bytes": 112,
+      "old_members_unchanged": true,
+      "evidence": "supplemental_header_probe"
+    },
+    "structure request": {
+      "bytes": 296,
+      "baseline_bytes": 296,
+      "old_members_unchanged": true,
+      "evidence": "supplemental_header_probe"
+    },
+    "structure request_queue": {
+      "bytes": 2184,
+      "baseline_bytes": 2184,
+      "old_members_unchanged": true,
+      "evidence": "supplemental_header_probe"
+    },
+    "structure rq": {
+      "bytes": 2944,
+      "baseline_bytes": null,
+      "old_members_unchanged": null,
+      "evidence": "supplemental_header_probe"
+    },
+    "structure psi_group": {
+      "bytes": 664,
+      "baseline_bytes": 344,
+      "old_members_unchanged": false,
+      "evidence": "supplemental_header_probe"
+    },
+    "structure psi_group_cpu": {
+      "bytes": 128,
+      "baseline_bytes": 128,
+      "old_members_unchanged": false,
+      "evidence": "supplemental_header_probe"
+    }
+  },
+  "new_task_bit": {
+    "name": "in_memstall",
+    "storage_byte": 936,
+    "lsb_bit": 5,
+    "verified_in": "final vmlinux DWARF, all 12 task_struct definitions identical"
+  },
+  "rq_baseline_note": "Final vmlinux has no complete rq DWARF; supplemental header probe reports2944 bytes. Stored kernel6 baseline has no complete rq. No numerical rq layout equivalence is claimed."
+}

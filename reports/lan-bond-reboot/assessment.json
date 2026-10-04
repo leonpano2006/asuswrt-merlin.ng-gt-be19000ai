@@ -1,0 +1,147 @@
+{
+  "date": "2026-10-03",
+  "device": "GT-BE19000AI / 192.168.100.15",
+  "status": "Userspace reboot requests confirmed; exact cause of different historical BE98/AXE16000 behavior unresolved; no fix deployed",
+  "trigger": "User enabled LAN1 + LAN2 link aggregation on the AiMesh node",
+  "timeline_router_local_time": [
+    {
+      "time": "17:54:42",
+      "event": "httpds explicitly requested reboot",
+      "evidence": "httpds 3992:notify_rc reboot"
+    },
+    {
+      "time": "after first reboot",
+      "event": "Fallback original kernel #1 booted from slot 2 and created bond0 with eth1/eth2",
+      "evidence": "bond0 logs and first SSH cmdline /dev/mmcblk0p6"
+    },
+    {
+      "time": "17:57:16",
+      "event": "AiMesh cfg_client explicitly requested restart_wireless;reboot",
+      "evidence": "cfg_client 5675:notify_rc restart_wireless;reboot"
+    },
+    {
+      "time": "17:57:26",
+      "event": "Bonding reported disabled",
+      "evidence": "BONDING: option disabled"
+    },
+    {
+      "time": "18:02:40",
+      "event": "Second distinct boot ID observed, still original slot 2; lacp_enabled=0"
+    },
+    {
+      "time": "18:05:08",
+      "event": "Same boot ID as 18:02:40; node SSH accessible and AI board 169.254.0.2 replied"
+    },
+    {
+      "time": "18:08:02",
+      "event": "Additional cfg_client notify_rc reboot; latest observed boot ID 00000000-0000-4000-8000-000000000003; node lacp_enabled=1 and BONDING successfully",
+      "evidence": "evidence/reboot-lan-bond-20261003/be19000ai-apply-comparison.json"
+    }
+  ],
+  "boot_ids": {
+    "first_observed": "00000000-0000-4000-8000-000000000037",
+    "second_and_latest_observed": "00000000-0000-4000-8000-000000000010",
+    "third_observed": "00000000-0000-4000-8000-000000000003"
+  },
+  "current_state": {
+    "kernel": "4.19.294 #1 ASUSWRT-Merlin 3006.102.9_0",
+    "root_partition": "/dev/mmcblk0p6",
+    "active_slot": 2,
+    "committed_slot": 2,
+    "next_boot_slot": 2,
+    "trial_slot1_commit_flag": 0,
+    "lacp_enabled": 1,
+    "bond0_present": "not rechecked in latest follow-up; startup log BONDING successfully",
+    "ai_internal_ping": "passed previous audit, not retested in follow-up",
+    "config_master": 0,
+    "re_mode": 1
+  },
+  "controller_state": {
+    "device": "GT-BE98",
+    "ip": "192.168.100.10",
+    "lacp_enabled": 0,
+    "config_master": 1,
+    "re_mode": 0
+  },
+  "ccr_readonly_observation": {
+    "port": "sfp28-3",
+    "rate": "10Gbps",
+    "link": "up",
+    "bridge_forwarding": true,
+    "dhcp_reserved_ip": "192.168.100.15",
+    "ping_received": 2,
+    "ping_sent": 2,
+    "asusbond_on_ccr": "No ASUS-facing bond configured; listed bond is Cisco C1000 Po1 on sfp28-11/12"
+  },
+  "source_evidence": [
+    {
+      "path": "build/stock-rootfs/www/Advanced_SwitchCtrl_Content.asp",
+      "live_file_sha256": "5f9e23dc93b0d51dd1722a7ff702fc44a2f6982adba481c8fc2a91f021d421ba",
+      "lines": [
+        456,
+        527,
+        693
+      ],
+      "finding": "Changing lacp_enabled marks setting_changed; default action_script is reboot. Only policy-only changes take restart_net_and_phy."
+    },
+    {
+      "path": "build/lan-bond-audit/source/cfg_param.h",
+      "lines": [
+        164,
+        3393
+      ],
+      "finding": "lacp_enabled belongs to FT_LINK_AGGREGATION; its service mapping is REBOOT."
+    },
+    {
+      "path": "build/lan-bond-audit/source/services.c",
+      "lines": [
+        17446
+      ],
+      "finding": "Existing net_and_phy dispatcher stops network services and LAN, then calls config_lacp and starts LAN/services; not yet tested as an enable/disable replacement on this board."
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/runtime-dirs-20260915/rootfs/www/Advanced_SwitchCtrl_Content.asp",
+      "lines": [
+        433,
+        494,
+        659
+      ],
+      "finding": "Archived BE98 page also uses reboot for LACP enable/disable and network restart for policy-only changes; this audit does not establish when the behavior was introduced."
+    }
+  ],
+  "interpretation": {
+    "verified": "Both observed reboots were explicitly requested by userspace services. The page hash matches the unchanged stock firmware userspace.",
+    "cfgsync_inference": "Superseded: the master own lacp_enabled=0 does not establish the value it manages for a particular node. AiMesh UI provides per-node LACP via config_changed with re_mac. A second reboot did disable bonding, but the exact config payload and origin were not captured. Later cfg_client requested another reboot, after which node LACP was enabled while master own LACP remained 0.",
+    "fallback": "Returning to original slot 2 follows the intentionally uncommitted one-time trial policy; no permanent boot-slot change was made during this diagnosis."
+  },
+  "repair_requirements": [
+    "Establish correct per-node configuration ownership and source of each update; do not assume the controller own LACP setting should match the node. Existing UI uses per-node config_changed/re_mac.",
+    "Route only validated LAN aggregation changes to a network reconfiguration action; retain real reboots for independent settings that require them.",
+    "Update both UI action selection and cfgsync feature handling; changing only the UI does not prevent the second reboot.",
+    "Verify bond create/remove, bridge membership, Broadcom acceleration, AiMesh reconnection and AI-board access; assert boot ID unchanged during apply.",
+    "The existing restart_net_and_phy action still interrupts LAN/Wi-Fi/services and is not equivalent to a zero-disruption bond-only update.",
+    "Keep any userspace repair separate from the kernel-only firmware baseline."
+  ],
+  "changes_performed": "Read-only router/CCR diagnostics plus local source extraction and reports. No nvram set/commit, service restart, flash, reboot, firmware commitment or device file modification.",
+  "raw_evidence_directory": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/evidence/reboot-lan-bond-20261003",
+  "followup_comparison": {
+    "user_observation": "User reports both LACP enable/disable and other settings did not generally require whole-device reboot on BE98 and prior AXE16000. Do not reinterpret this as policy-only changes.",
+    "be98_live": "Kernel #36, PID1 systemd, sw_mode=3, re_mode=0, cfg_master=1, lacp_enabled=0, uptime >20 hours",
+    "be19000ai_live": "Kernel #1, PID1 rc, sw_mode=3, re_mode=1, cfg_master=0, lacp_enabled=1 after additional reboot",
+    "live_pages": {
+      "be98": {
+        "sha256": "088f3400a27f73e6c6c3eacfff3221e53e2f786b141a992c5c93a8d62b890036",
+        "behavior": "LACP enabled value change marks setting_changed; default reboot retained for Broadcom path. Policy-only change chooses restart_net_and_phy."
+      },
+      "be19000ai": {
+        "sha256": "5f9e23dc93b0d51dd1722a7ff702fc44a2f6982adba481c8fc2a91f021d421ba",
+        "behavior": "LACP enabled value change marks setting_changed; default reboot retained for Broadcom path. Policy-only change chooses restart_net_and_phy."
+      }
+    },
+    "systemd_semantics": "Existing BE98 rc init loop sees g_reboot after handle_notifications and enters SIGTERM path; rc-client and broker forward reboot to systemctl reboot. No general suppression or conversion of reboot into network restart found.",
+    "axe16000_historical_evidence": "2026-09-17 result.json confirms service restart_wireless recovered radios without whole-device reboot. This is not a recorded LACP toggle test.",
+    "per_node_lacp": "aimesh/aimesh_topology.html:3150-3153 builds data.lacp_enabled, sends to manage_set_config(data,node.mac); lines4698-4720 read node.config.link_aggregation and submit action_mode=config_changed with re_mac.",
+    "remaining_gap": "No contemporaneous request/action trace of BE98 or AXE16000 LACP enable/disable without reboot. Static page defaults alone cannot explain the reported difference.",
+    "mutations": "Local report updates only. No router settings or services changed."
+  }
+}

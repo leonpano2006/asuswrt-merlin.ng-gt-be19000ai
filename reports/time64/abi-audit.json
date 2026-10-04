@@ -1,0 +1,85 @@
+{
+  "scope": "BCM6813 ARM64 kernel with ARM EABI compat syscall ABI; kernel8 baseline to candidate9",
+  "baseline_saved": "build/time64-abi/kernel8-baseline/fingerprints.json",
+  "baseline_vmlinux_sha256": "76778f142fae0e3c68908718b19b6ade234ac726aef035076c41214e21a4dabe",
+  "candidate_vmlinux_sha256": "b319c7880df88a4f0ab879201ba054655b1770b7d5d7a8dc3b58f6209008aa05",
+  "candidate_abi_result": "reports/time64/abi-candidate.json",
+  "timex_proof": "reports/time64/timex-layout.json",
+  "vendor_layout_assessment": {
+    "complete_dwarf_aggregates_compared": 543,
+    "differences": 0,
+    "task_struct_bytes": 2688,
+    "task_restart_block_offset": 952,
+    "restart_block_bytes": 48,
+    "native_timespec_bytes": 16,
+    "legacy_compat_timespec_bytes": 8,
+    "native_timex_bytes": 208,
+    "candidate_config_byte_identical": true,
+    "actual_vmlinux_exports_compared": 7998,
+    "export_differences": 0,
+    "crc_proof": "Not available: CONFIG_MODVERSIONS=n and neither actual ELF contains __crc_* symbols; Module.symvers is not a freshly built CRC proof."
+  },
+  "syscall_wrapper_assessment": {
+    "native_entries_unchanged": 294,
+    "legacy_compat_entries_unchanged": 399,
+    "candidate_compat_table_entries": 424,
+    "new_time64_entries": 20,
+    "intentionally_unavailable": "416 io_pgetevents_time64 follows existing CONFIG_AIO=n and resolves to sys_ni_syscall via its compat alias.",
+    "reserved_slots": [
+      399,
+      400,
+      401,
+      402,
+      415
+    ],
+    "calling_convention": "arm64 table entries must point to pt_regs wrappers (__arm64_sys_* or __arm64_compat_sys_*), not underlying C implementations.",
+    "pointer_and_scalar_note": "ARM EABI registers supply 32-bit arguments. Native time64 handlers are reused only where argument scalars and pointed layouts match; pselect/ppoll/io_pgetevents/recvmmsg/rt_sigtimedwait need compat compound translation.",
+    "exact_dispatch_check": "Resolves R_AARCH64_RELATIVE relocations before matching every new handler; both direct and wrapper NI addresses are recognized."
+  },
+  "source_checks": {
+    "compat_upper_nsec_ignores_64bit_time_config": true,
+    "futex_uses_timespec64_converter": true,
+    "legacy_compat_time_mode_unchanged": true,
+    "restart_block_header_unchanged": true,
+    "native_timex_uapi_unchanged": true,
+    "legacy_compat_timespec_header_unchanged": true
+  },
+  "identified_hazards": [
+    {
+      "issue": "Existing get_timespec64 nsec-high-word mask was gated by absent CONFIG_64BIT_TIME, so new ARM32 calls could reject valid ABI padding.",
+      "resolution": "Mask in_compat_syscall unconditionally, while retaining native64 validation."
+    },
+    {
+      "issue": "Native futex copied a raw struct timespec, bypassing compat time64 upper-word handling.",
+      "resolution": "Use get_timespec64 and timespec64 validation; preserve old compat futex handler."
+    },
+    {
+      "issue": "Changing COMPAT_USE_64BIT_TIME globally would reinterpret existing ASUS 8-byte old-timespec buffers as 16 bytes.",
+      "resolution": "Keep legacy helper mode and original entries unchanged."
+    },
+    {
+      "issue": "New 405 expects __kernel_timex, not legacy compat_timex.",
+      "resolution": "Syntax-only AArch64 assertions prove native timex matches upstream v5.1 __kernel_timex size208 and every named field; reuse native handler."
+    },
+    {
+      "issue": "Appending time64 slots alone does not translate 32-bit fdsets, sigsets, siginfo, iovec/msghdr or optional AIO masks.",
+      "resolution": "Separate compat handlers; behavioral QEMU tests are still needed in addition to layout/dispatch checks."
+    }
+  ],
+  "regression_requirements": [
+    "Direct ARM32 old-time ABI controls plus soft-float and hard-float time64 execution, without qemu-user interception.",
+    "Past/zero timeout and future2100 timerfd/utimensat roundtrip with output canaries.",
+    "Dirty ARM32 tv_nsec upper32 accepted where ABI padding; same native64 input rejected with EINVAL.",
+    "Interrupted nanosleep/futex restart and pselect/ppoll timeout copyback preserve 16-byte time64 outputs and existing restart_block layout.",
+    "Compat pselect fdsets, masks, received siginfo and recvmmsg metadata remain 32-bit layouts.",
+    "Existing native64, PSI, container/resource, and representative vendor module regressions remain required."
+  ],
+  "limitations": [
+    "ABI evidence covers surviving complete DWARF types plus exact dispatch and exports, not all undisclosed blob assumptions.",
+    "All20 slots wired does not enable CONFIG_AIO; its NI behavior is intentional and must be reported.",
+    "This audit does not claim the rest of the 32-bit socket timestamp/ioctl/filesystem time ABI is Y2038-complete."
+  ],
+  "kernel_source_edited_by_auditor": false,
+  "main_make_invoked_by_auditor": false,
+  "pass": true
+}

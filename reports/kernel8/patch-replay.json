@@ -1,0 +1,5 @@
+{
+  "returncode": 0,
+  "output": "Verified patch prefix 6/6 across 133 source files",
+  "meaning": "All six patches unwind current touched source to pinned upstream HEAD."
+}

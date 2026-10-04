@@ -1,0 +1,172 @@
+{
+  "scope": "BCM kernel7 PSI backport ABI review; no hardware actions, SL1680 changes or commits",
+  "baseline": {
+    "kernel": "4.19.294 #6",
+    "config": "configs/kernel6.config",
+    "config_sha256": "6343cfb8c8de0338bd4361cc5b9f3a4e4b8cbe134e615050a11a7d4fccb2c4ed",
+    "stock_config_has_cgroups": false,
+    "stock_layout_evidence": {
+      "path": "evidence/stock-layout.json",
+      "object": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/stock-layout/layout.o",
+      "object_sha256": "da757728bdc34d9a40cb1ccb84d3f87259f62de77f177e0933e2d2242a46c6ff",
+      "provenance": "Compile-only layout object built from stock config/headers, not debug info from proprietary blobs"
+    },
+    "kernel6_layout": "build/resource6/guard.json",
+    "existing_abi_differences": "reports/kernel6/abi-differences.json"
+  },
+  "existing_layouts": {
+    "task_struct": 2688,
+    "sched_entity": 192,
+    "cgroup": 856,
+    "css_set": 448,
+    "cgroup_root": 5088,
+    "cftype": 208,
+    "rq": "No full rq in stored header-probe DWARF; preserve source structure or add a scheduler-specific probe"
+  },
+  "task_abi": {
+    "psi_flags": {
+      "offset": 1908,
+      "bytes": 4,
+      "placement": "Existing alignment hole between pagefault_disabled at1904 and oom_reaper_list at1912; keep unchanged"
+    },
+    "sched_psi_wake_requeue": {
+      "storage_offset": 932,
+      "lsb_bit": 4
+    },
+    "current_bit_word": {
+      "offset": 936,
+      "in_execve": 0,
+      "in_iowait": 1,
+      "no_cgroup_migration": 2,
+      "in_user_fault": 3,
+      "use_memdelay": 4
+    },
+    "recommended_in_memstall": "Append after all existing fields in this word under CONFIG_PSI (bit5 with tested config); never insert at the upstream in_iowait location. Compare DWARF bit_offset/bit_size, as offsetof cannot inspect C bitfields.",
+    "compile_guards": [
+      "CONFIG_GTBE19000AI_RESOURCE_ABI + CONFIG_GTBE98_CGROUP_ABI + CONFIG_GTBE98_MEMCG_ABI remain enabled",
+      "BUILD_BUG_ON(sizeof(struct task_struct) != 2688)",
+      "BUILD_BUG_ON(__alignof__(struct task_struct) != 64)",
+      "BUILD_BUG_ON(offsetof(struct task_struct, psi_flags) != 1908)",
+      "BUILD_BUG_ON(offsetof(struct task_struct, atomic_flags) != 944)",
+      "Existing kernel/gtbe98_cgroup_abi.h validates old non-bitfield task members and scheduler/block layouts"
+    ]
+  },
+  "cgroup_abi": {
+    "stock_cgroup_size_evidence": null,
+    "reason": "Stock CONFIG_CGROUPS is disabled; saved stock-config probe has no complete cgroup/cftype. Kernel6 already changed cgroup/css_set/cgroup_root relative to kernel5 by adding controllers.",
+    "recommended_design": "Keep struct cgroup unchanged; allocate aligned psi_group storage after the dynamically sized ancestor_ids tail. A constant-time helper derives its address. Preserve 856-byte cgroup base and every old member offset.",
+    "allocation_requirements": [
+      "Use identical ALIGN expression for allocator and accessor; include level+1 ancestor IDs and overflow-safe size arithmetic",
+      "Set cgrp->level before any accessor/psi_cgroup_alloc",
+      "Root cgroups are embedded in cgroup_root; return psi_system for supported root PSI instead of computing a tail address into cgroup_root fields",
+      "Keep PSI alloc/free error unwinding and per-CPU/worker lifetime matched; free all pressure triggers before freeing group storage"
+    ],
+    "compile_guards": [
+      "sizeof(struct cgroup) ==856",
+      "offsetof(struct cgroup, ancestor_ids)==852",
+      "sizeof(struct cgroup_root)==5088",
+      "sizeof(struct css_set)==448",
+      "sizeof(struct cftype)==208"
+    ],
+    "unchanged_prefix_offsets": {
+      "self": 0,
+      "flags": 240,
+      "id": 248,
+      "level": 252,
+      "max_depth": 256,
+      "nr_descendants": 260,
+      "nr_dying_descendants": 264,
+      "max_descendants": 268,
+      "nr_populated_csets": 272,
+      "nr_populated_domain_children": 276,
+      "nr_populated_threaded_children": 280,
+      "nr_threaded_children": 284,
+      "kn": 288,
+      "procs_file": 296,
+      "events_file": 352,
+      "subtree_control": 408,
+      "subtree_ss_mask": 410,
+      "old_subtree_control": 412,
+      "old_subtree_ss_mask": 414,
+      "subsys": 416,
+      "root": 480,
+      "cset_links": 488,
+      "e_csets": 504,
+      "dom_cgrp": 632,
+      "old_dom_cgrp": 640,
+      "rstat_cpu": 648,
+      "rstat_css_list": 656,
+      "pending_bstat": 672,
+      "bstat": 696,
+      "prev_cputime": 720,
+      "pidlists": 744,
+      "pidlist_mutex": 760,
+      "offline_waitq": 792,
+      "release_agent_work": 816,
+      "bpf": 848,
+      "congestion_count": 848,
+      "ancestor_ids": 852
+    }
+  },
+  "implemented_kernfs_poll": {
+    "files": [
+      "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/kernfs.h",
+      "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/fs/kernfs/file.c"
+    ],
+    "baseline_directory": "build/psi7-baseline",
+    "design": "Init-only single poll hook identified by the existing ops->open function. No struct expansion. Copied cgroup ops match because kmemdup preserves open. Function pointers are read-only after init; APIs are not exported to modules.",
+    "registration": "kernfs_register_poll(cgroup_file_open, cgroup_file_poll) in cgroup_init before publishing files; caller must check return",
+    "callback_signature": "__poll_t cgroup_file_poll(struct kernfs_open_file *of, struct poll_table_struct *wait)",
+    "generic_poll": "kernfs_generic_poll(of, wait) uses the kernfs open-node waitqueue whose lifetime matches the file, avoiding cgroup PSI trigger waitqueue lifetime mismatch",
+    "locking": "fop_poll locks of->mutex before active reference, mirroring read/write lock ordering. All existing of-based active-acquisition paths now reject already-released files after acquiring active, excluding concurrent drain.",
+    "compile_returncode": 0,
+    "compile_command": "build/psi7-abi/kernfs-command.json",
+    "compile_log": "build/psi7-abi/kernfs-compile.log",
+    "layout_command": "python3 scripts/dwarf-layouts.py build/psi7-abi/kernfs-file.o build/psi7-abi/kernfs-layout.json",
+    "stock_config_layout_comparison": [
+      {
+        "type": "structure kernfs_ops",
+        "bytes": 88,
+        "stock_layout_identical": true
+      },
+      {
+        "type": "structure kernfs_open_file",
+        "bytes": 152,
+        "stock_layout_identical": true
+      },
+      {
+        "type": "structure kernfs_node",
+        "bytes": 128,
+        "stock_layout_identical": true
+      },
+      {
+        "type": "structure kernfs_root",
+        "bytes": 96,
+        "stock_layout_identical": true
+      },
+      {
+        "type": "structure kernfs_elem_attr",
+        "bytes": 32,
+        "stock_layout_identical": true
+      },
+      {
+        "type": "structure kernfs_syscall_ops",
+        "bytes": 48,
+        "stock_layout_identical": true
+      }
+    ],
+    "hardware_tested": false,
+    "qemu_tested": false,
+    "source_hashes": {
+      "include/linux/kernfs.h": "fec3915c6f9db04377384f71c2526c6c3d424b99e53a765c2a59dbe023f9137b",
+      "fs/kernfs/file.c": "5092b7407da2ba179c233b099a04d9e4fd17e44ee55d274f6c9fabc429e4cc1b"
+    }
+  },
+  "reproduce_abi": {
+    "compiler_argv": "build/candidate-layout/command.json; replace input and output with unique PSI probe/object paths; retain -g -gdwarf-4 -fno-eliminate-unused-debug-types",
+    "probe": "build/resource6/probe.c includes task/mm/network/block/user namespace definitions; append kernel/gtbe98_cgroup_abi.h and call its guard for compile-time checks",
+    "extract": "python3 scripts/dwarf-layouts.py NEW-PROBE.o NEW-LAYOUT.json",
+    "comparison": "Compare every baseline member by name, offset, bytes, bit_size and bit_offset, plus aggregate size; added private PSI types are allowed but old kernfs/task/network/block fields must not move."
+  },
+  "remaining_gate": "Main agent must integrate fixed upstream PSI, compile whole kernel, run live cgroup migration/pressure/trigger/close/delete/regression QEMU tests, and retain no-commit trial policy for any later hardware test."
+}

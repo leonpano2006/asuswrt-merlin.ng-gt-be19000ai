@@ -1,0 +1,105 @@
+{
+  "read_only_review": true,
+  "reviewed_files": [
+    "include/linux/cgroup.h",
+    "kernel/cgroup/cgroup.c",
+    "kernel/sched/core.c",
+    "kernel/sched/stats.h",
+    "kernel/sched/psi.c",
+    "include/linux/sched.h",
+    "kernel/fork.c",
+    "kernel/workqueue.c"
+  ],
+  "findings": [
+    {
+      "severity": "high",
+      "area": "scheduler wake migration PSI accounting",
+      "file": "kernel/sched/core.c",
+      "function": "enqueue_task",
+      "problem": "Old call passed ENQUEUE_WAKEUP even when ENQUEUE_MIGRATED. New stats.h no longer uses sched_psi_wake_requeue; psi_ttwu_dequeue clears the old CPU PSI flags. Treating destination enqueue as same-CPU wakeup can clear already-cleared TSK_IOWAIT and omit restoring TSK_MEMSTALL.",
+      "required_fix": "psi_enqueue(p, (flags & ENQUEUE_WAKEUP) && !(flags & ENQUEUE_MIGRATED))",
+      "status": "Main agent applied; re-read confirms fixed"
+    }
+  ],
+  "checks": {
+    "cgroup_tail": "Current allocator/accessor use the same aligned base formula, leave all ancestor_ids and struct members unchanged, and assign cgrp->level before psi_cgroup_alloc. Root level0 returns psi_system, avoiding embedded cgroup_root corruption.",
+    "cgroup_migration": "css_set_move_task is the sole runtime css_set replacement path. RCU_INIT_POINTER calls are boot initialization and not-yet-runnable fork setup; cgroup_exit keeps the original css_set through final dequeue. Replacing the assignment in css_set_move_task is sufficient for these sources.",
+    "cgroup_lifetime": "PSI allocation failure unwinds ID/rstat/ref state. Successful group free cancels PSI work before releasing its allocation. Two-phase worker creation keeps cgroup pinned while dropping cgroup_mutex, re-fetches of->priv before publication, and frees the unpublished trigger on release/race.",
+    "cgroup_poll": "cftype release callback identifies only pressure files; other files use generic kernfs poll. per-open trigger wait registration uses kernfs open-node waitqueue rather than a short-lived PSI trigger waitqueue.",
+    "task_bitfields": "in_memstall at storage byte936 bit5; all pre-existing task members and bit positions match kernel6. fork resets psi_flags and in_memstall before runnable publication.",
+    "workqueue_tail": "alloc_worker is used by both ordinary worker and rescuer allocation; it reserves the private last-function tail word. No struct worker field was added.",
+    "layout": "Final vmlinux surviving DWARF:491 shared complete types vs kernel6 header probe, zero old-member/size differences. Full debug info is disabled. Missing types retain explicit supplemental-probe provenance; neither final-vmlinux rq layout nor kernel6 rq equivalence is claimed."
+  },
+  "remaining_validation": "Physical hardware trial, real I/O-pressure event generation, dedicated cross-CPU stalled-task wake migration stress and long soak are not covered.",
+  "source_hashes": {
+    "include/linux/cgroup.h": "3a4617fdd26c106537dd34c0a6b77a821bc24f57c0501ad644bf8a29d9ef5b7e",
+    "kernel/cgroup/cgroup.c": "be10247a9353f6fc2f18c205ac022d193737d0e5ad84e899c2da09a43e30dd17",
+    "kernel/sched/core.c": "10824701ac69321fe466afe4998f03b42d91a08d53d91a86e1f244171e08a0ed",
+    "kernel/sched/stats.h": "e526707f9a35948700fbf580f6976bff4c79f0eaf8decae3b77107a2ec267c13",
+    "kernel/sched/psi.c": "5699e00fe70a674d142f8944664da653890174f98f3d28d23f9d9e91b1d62a9d",
+    "include/linux/sched.h": "4655dc681052de94312e0de6b05431735437cb3fba3aa0ca6a3254ec82266241",
+    "kernel/fork.c": "1ec86dbef5bb09016b0cf3f5a9323e97a5bb38194ecd4b9b5c1b60534ee7e683",
+    "kernel/workqueue.c": "4d2280bef784c2e512882356195b0bc33532fec224582691ec84122d5b852d37"
+  },
+  "final_artifacts": {
+    "vmlinux_sha256": "391ed6898001b323c35ab0645cfac63055857f295ca74d11039ede7c842a37af",
+    "kernel_image_sha256": "9819ebd69792190a9d178fd802782fe4de4a9866c411949f24e15fd1724187c3",
+    "config_sha256": "1c495c39d80319246f26a38192eb481b54860ea938d46bbc8156b4fa676a8216",
+    "build_result": "build/psi7-image3/result.json",
+    "build_returncode": 0
+  },
+  "qemu_validation": {
+    "psi7-functional-strict": {
+      "report": "reports/kernel7/psi7-functional-strict.json",
+      "kernel_sha256": "9819ebd69792190a9d178fd802782fe4de4a9866c411949f24e15fd1724187c3",
+      "guest_complete": true,
+      "panic": false,
+      "exit_code": 0,
+      "log_sha256": "281d20d756a09365b3fc8f8fdaab2fea2e61efd66a0f7696b0b8829fa54d13ba"
+    },
+    "psi7-disabled-strict": {
+      "report": "reports/kernel7/psi7-disabled-strict.json",
+      "kernel_sha256": "9819ebd69792190a9d178fd802782fe4de4a9866c411949f24e15fd1724187c3",
+      "guest_complete": true,
+      "panic": false,
+      "exit_code": 0,
+      "log_sha256": "fd4250e78a7ccd9408eaf4726a6c0447904a716ec429b22511689f3eafe906a0"
+    },
+    "psi7-lifetime": {
+      "report": "reports/kernel7/psi7-lifetime.json",
+      "kernel_sha256": "9819ebd69792190a9d178fd802782fe4de4a9866c411949f24e15fd1724187c3",
+      "guest_complete": true,
+      "panic": false,
+      "exit_code": 0,
+      "log_sha256": "b9d0b676db9b55aabb6e855510d0f74497493ab225c4101b94d7db75bd13111d"
+    }
+  },
+  "module_probe_recommendation": {
+    "command": "python3 scripts/module-matrix.py --version 7 tntfs thfsplus tfat cfg80211 usb_storage sd_mod nf_tables br_netfilter tun wireguard sch_hfsc",
+    "expected_vm_runs": 22,
+    "prerequisites": [
+      "build/Image-v7",
+      "build/candidate-rootfs-v7 with staged kernel7 modules and regenerated modules.dep"
+    ],
+    "reason": "All eleven targets previously loaded on stock in offline QEMU. Covers proprietary Tuxera filesystems, storage/block/USB, cfg80211 core, netfilter, virtual networking, crypto/WireGuard and traffic scheduler without board NIC or radio hardware.",
+    "exclusions": [
+      "wl",
+      "dhd",
+      "rdpa",
+      "pktrunner",
+      "wfd",
+      "ethsw",
+      "rtl8372"
+    ],
+    "evidence": "Existing build/module-matrix/stock-<target>.json and stock-manifest.json",
+    "not_executed_by_this_review": true,
+    "artifact_note": "module-matrix reuses build/module-matrix output names; preserve or version results when recording this run."
+  },
+  "module_probe_result": {
+    "report": "reports/kernel7/module-matrix.json",
+    "stock_loaded": 11,
+    "candidate_loaded": 11,
+    "vm_runs": 22,
+    "regressions": []
+  }
+}

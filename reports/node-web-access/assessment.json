@@ -1,0 +1,95 @@
+{
+  "date": "2026-10-03T16:32:44.042122+00:00",
+  "status": "原因已定位：AiMesh 節點 Web UI 政策封鎖；HTTP/HTTPS 正常。未更改模式、例外旗標或服務。",
+  "live": {
+    "device": "GT-BE19000AI",
+    "address": "192.168.100.15",
+    "sw_mode": "3",
+    "re_mode": "1",
+    "cfg_master": "0",
+    "re_upgrade": "unset/empty; nvram_get_int interprets as 0",
+    "disable_ui": "unset/empty",
+    "http_enable": "2",
+    "http_ports": [
+      80,
+      8443
+    ],
+    "https_443": "connection refused",
+    "boot_id": "00000000-0000-4000-8000-000000000003"
+  },
+  "http_observations": [
+    {
+      "path": "/ and /index.asp",
+      "result": "HTTP 200, 86-byte meta refresh to message.htm"
+    },
+    {
+      "path": "/message.htm",
+      "result": "AiMesh router detect; Detecting AiMesh router"
+    },
+    {
+      "path": "/Main_Login.asp",
+      "result": "login page accessible"
+    },
+    {
+      "path": "/Advanced_SwitchCtrl_Content.asp",
+      "result": "normal login redirect; whitelisted local page"
+    },
+    {
+      "path": "/Advanced_Wireless_Content.asp",
+      "result": "blocked by same message.htm gate"
+    },
+    {
+      "path": "/AiMesh_Node_FirmwareUpgrade.asp",
+      "result": "normal login redirect; whitelisted local page"
+    }
+  ],
+  "source": [
+    {
+      "file": "build/service-scope-audit/source/httpd/httpd.c",
+      "line": 1671,
+      "condition": "!fromapp && (re_mode==1 || disable_ui==1) && re_upgrade==0 && !check_AiMesh_whitelist(file)",
+      "action": "send message.htm meta refresh before regular authentication branch"
+    },
+    {
+      "file": "build/service-scope-audit/source/httpd/web.c",
+      "line": 43451,
+      "finding": "Whitelist includes Main_Login.asp, Advanced_SwitchCtrl_Content.asp, firmware and selected USB/service pages; ordinary index/Wireless page excluded."
+    },
+    {
+      "file": "build/service-scope-audit/source/shared/shared.h",
+      "line": 2034,
+      "finding": "aimesh_re_node is sw_mode==SW_MODE_AP and re_mode==1"
+    },
+    {
+      "file": "build/stock-rootfs/www/state.js",
+      "line": 289,
+      "finding": "Legacy front-end mode variable translates sw_mode=3,wlc_psta=2 to sw_mode=2; displayed extender-like mode can differ from underlying AP+AiMesh flags. Current/old wlc_psta not captured in this audit."
+    }
+  ],
+  "axe16000_historical": {
+    "date": "2026-09-17",
+    "firmware": "3.0.0.6.102.8_2",
+    "sw_mode": "3",
+    "re_mode": "1",
+    "cfg_master": "0",
+    "evidence": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/axe16000-wifi-20260917/evidence/axe-before.txt",
+    "limit": "同樣是 AP 基礎加 AiMesh node；歷史紀錄未保留 re_upgrade/disable_ui/wlc_psta 或當次可登入的頁面/請求，不能確定之前完整網頁可用的具體原因。"
+  },
+  "repair_direction": "保留 AiMesh node 與有線回程；為經過認證的 LAN 管理者加入明確的節點本機管理政策，區分節點本機與由主控管理的設定；套用動作沿用局部變更範圍，不切換網路模式來取得 UI。",
+  "not_applied": "未設定 re_upgrade，未停用認證，未切換 sw_mode/re_mode，未登入 Web session 或提交設定，未重啟任何服务。",
+  "verification_limit": "GET probes prove gate/login-entry behavior, not successful authentication or full page operation after login.",
+  "axe16000_mode_label_followup": {
+    "checked_version": "3006.102.8_2, matching recorded AXE16000 firmware",
+    "upstream_url": "https://github.com/RMerl/asuswrt-merlin.ng/blob/3006.102.8_2/release/src/router/httpd/web.c#L42319",
+    "function": "ej_get_operation_mode",
+    "finding": "此版本 UI 模式函式不讀 re_mode。一般分支 sw_mode=3,wlc_psta=2,wlc_express=0 回傳 rp；因此可同時被 AiMesh 識別為節點，頁面卻顯示 Repeater mode。",
+    "historical_limit": "歷史確認 sw_mode=3/re_mode=1；未保存當時 wlc_psta/wlc_express，故此為已驗證可產生現象的程式機制，未能完全還原當次所有輸入值。",
+    "correction": "僅憑 sw_mode=3 就說不是 repeater 顯示過於簡化，UI 還會依 wlc_psta 等欄位分類。",
+    "separate_issue": "Repeater 字樣不證明當时正在使用無線回程；也不能單靠此字樣解釋為何當時能登入完整首頁，httpd AiMesh 閘門屬另一套判斷。"
+  },
+  "followup_enabled": {
+    "date": "2026-10-03T17:25:51.108157+00:00",
+    "report": "reports/node-local-web-enable/assessment.json",
+    "status": "Enabled and saved to NVRAM after explicit user approval; authenticated node GUI verified in the user Chrome browser."
+  }
+}

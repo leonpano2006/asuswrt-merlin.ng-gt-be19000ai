@@ -1,0 +1,63 @@
+{
+  "label": "time64-kernel9-confirmed",
+  "command": [
+    "qemu-system-aarch64",
+    "-machine",
+    "virt-8.2,gic-version=2",
+    "-accel",
+    "tcg,thread=multi",
+    "-cpu",
+    "cortex-a53",
+    "-smp",
+    "2",
+    "-m",
+    "1024",
+    "-nodefaults",
+    "-nic",
+    "none",
+    "-display",
+    "none",
+    "-monitor",
+    "none",
+    "-serial",
+    "stdio",
+    "-no-reboot",
+    "-sandbox",
+    "on,obsolete=deny,elevateprivileges=deny,spawn=deny,resourcecontrol=deny",
+    "-kernel",
+    "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/Image-v9",
+    "-initrd",
+    "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/time64-kernel9/time64-test.cpio.gz",
+    "-append",
+    "console=ttyAMA0 earlycon=pl011,mmio32,0x09000000 rdinit=/init panic=0 oops=panic nokaslr loglevel=8 initcall_debug initcall_blacklist=bcm_pmc_drv_reg,bcm_ubus_drv_init,pmc_xrdp_init,pmc_wan_initcall,bcmbca_vreg_sync_drv_reg "
+  ],
+  "stop_reason": "complete",
+  "exit_code": 0,
+  "elapsed_seconds": 1.41,
+  "kernel_sha256": "cf4f036d1ff03cb4d13e6f41aedb1b31665d6921a0dd93ff0b8fc951ae18e073",
+  "initramfs_sha256": "c822f771d35443f5de70e48fc8036c19ea3bcb0323c5e0c4a9bfcf8f955b66d6",
+  "log_sha256": "1a79182750e249976af0cf6801eee70486c24574e4fa7813d3cd4fa425f459b4",
+  "init_reached": true,
+  "guest_complete": true,
+  "panic": false,
+  "lab_lines": [
+    "LAB_TIME64_ABI_PASS abi=aarch64-native64",
+    "LAB_TIME64_ABI_PASS abi=arm32-softfloat-direct-time64",
+    "LAB_TIME64_ABI_PASS abi=arm32-hardfloat-direct-time64",
+    "LAB_TIME64_GLIBC_PASS abi=armel",
+    "LAB_TIME64_GLIBC_PASS abi=armhf"
+  ],
+  "unexpected_diagnostics": [],
+  "expected_userspace_warnings": [],
+  "raw_summaries": [
+    "TIME64_SUMMARY abi=aarch64-native64 available=17 ENOSYS=0 behavior_pass=11 failures=0 clock_writes=guest_only_restored",
+    "TIME64_SUMMARY abi=arm32-softfloat-direct-time64 available=17 ENOSYS=0 behavior_pass=11 failures=0 clock_writes=guest_only_restored",
+    "TIME64_SUMMARY abi=arm32-hardfloat-direct-time64 available=17 ENOSYS=0 behavior_pass=11 failures=0 clock_writes=guest_only_restored"
+  ],
+  "semantic_pass_counts_by_abi": {
+    "aarch64-native64": 60,
+    "arm32-softfloat-direct-time64": 65,
+    "arm32-hardfloat-direct-time64": 65
+  },
+  "scope": "Offline system emulation only; VM clock temporarily set to 2100 and restored, no host/router clock changes."
+}

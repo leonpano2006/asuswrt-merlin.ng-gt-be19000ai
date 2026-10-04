@@ -1,0 +1,42 @@
+{
+  "image": {
+    "returncode": 0,
+    "seconds": 5.15,
+    "config_sha256": "1c495c39d80319246f26a38192eb481b54860ea938d46bbc8156b4fa676a8216"
+  },
+  "modules": {
+    "lib": {
+      "returncode": 0,
+      "seconds": 1.48,
+      "config_sha256": "1c495c39d80319246f26a38192eb481b54860ea938d46bbc8156b4fa676a8216"
+    },
+    "crypto": {
+      "returncode": 0,
+      "seconds": 1.31,
+      "config_sha256": "1c495c39d80319246f26a38192eb481b54860ea938d46bbc8156b4fa676a8216"
+    },
+    "fs": {
+      "returncode": 0,
+      "seconds": 7.28,
+      "config_sha256": "1c495c39d80319246f26a38192eb481b54860ea938d46bbc8156b4fa676a8216"
+    },
+    "mm": {
+      "returncode": 0,
+      "seconds": 1.03,
+      "config_sha256": "1c495c39d80319246f26a38192eb481b54860ea938d46bbc8156b4fa676a8216"
+    },
+    "net": {
+      "returncode": 0,
+      "seconds": 4.63,
+      "config_sha256": "1c495c39d80319246f26a38192eb481b54860ea938d46bbc8156b4fa676a8216"
+    },
+    "drivers": {
+      "returncode": 0,
+      "seconds": 4.38,
+      "config_sha256": "1c495c39d80319246f26a38192eb481b54860ea938d46bbc8156b4fa676a8216"
+    }
+  },
+  "image_sha256": "9819ebd69792190a9d178fd802782fe4de4a9866c411949f24e15fd1724187c3",
+  "vmlinux_sha256": "391ed6898001b323c35ab0645cfac63055857f295ca74d11039ede7c842a37af",
+  "config_sha256": "1c495c39d80319246f26a38192eb481b54860ea938d46bbc8156b4fa676a8216"
+}

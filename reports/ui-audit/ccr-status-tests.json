@@ -1,0 +1,15 @@
+{
+  "passed": 10,
+  "checks": [
+    "first sample has unknown rates",
+    "active default route identifies WAN",
+    "30 second rates convert bytes to Mbps",
+    "router reboot invalidates deltas",
+    "sampler outage invalidates deltas",
+    "counter reset does not become negative throughput",
+    "missing data is partial and not zero",
+    "stock API columns contain no SQL NULL",
+    "Unicode and quote-safe payload round trip",
+    "snapshot is bounded"
+  ]
+}

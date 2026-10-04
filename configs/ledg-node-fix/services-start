@@ -1,0 +1,3 @@
+#!/bin/sh
+# Install only when no user hook exists; the deployment tool enforces this.
+/jffs/ledg-node-fix/ensure.sh &

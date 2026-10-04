@@ -1,0 +1,1574 @@
+{
+  "schema_version": 1,
+  "scope": "Read-only source and existing vmlinux audit of BE19000AI kernel8; no source/build changes, no SSH, and no live syscall execution in this audit.",
+  "verdict": {
+    "native_aarch64": "Ordinary native clock/timer/futex/etc. interfaces already use 64-bit seconds. They do not need or use the AArch32 403-423 numbers. This is not a claim that every file format, driver ioctl or socket option has complete Y2038 coverage.",
+    "aarch32_compat": "None of the 20 assigned time64 syscall numbers in 403-423 are wired. The table has 399 entries, numbered 0-398. Number 415 is reserved, not an omitted implementation.",
+    "configuration": "CONFIG_COMPAT_32BIT_TIME=y preserves the OLD 32-bit time_t compat ABI; it does not enable the new time64 syscalls. CONFIG_64BIT_TIME and CONFIG_ARCH_HAS_64BIT_TIME are not enabled in this configuration.",
+    "provenance": "The inspected syscall tables, dispatch, time helpers and principal clock implementation are byte-identical to the checked-out source base; none of the six recorded local patches adds the missing time64 syscall series."
+  },
+  "source_root": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/source/release/src-rt-5.04behnd.4916/kernel/linux-4.19",
+  "config_binding": {
+    "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/.config",
+    "sha256": "1c495c39d80319246f26a38192eb481b54860ea938d46bbc8156b4fa676a8216",
+    "matches_saved_live_CONFIG_SHA256": true,
+    "live_evidence": "evidence/kernel8-ui1/health-final.txt",
+    "live_evidence_sha256": "c0dcbec59bd6ed470d5a72cb9e8a365475916685d75a232b95f715197b2b7e6b",
+    "selected_options": {
+      "CONFIG_ARM64": "y",
+      "CONFIG_64BIT": "y",
+      "CONFIG_COMPAT": "y",
+      "CONFIG_COMPAT_32BIT_TIME": "y",
+      "CONFIG_64BIT_TIME": "not enabled",
+      "CONFIG_ARCH_HAS_64BIT_TIME": "not enabled",
+      "CONFIG_POSIX_TIMERS": "y",
+      "CONFIG_FUTEX": "y",
+      "CONFIG_TIMERFD": "y",
+      "CONFIG_AIO": "not enabled",
+      "CONFIG_POSIX_MQUEUE": "y",
+      "CONFIG_SYSVIPC": "y"
+    }
+  },
+  "dispatch_proof": [
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/asm/unistd.h",
+      "lines": [
+        29,
+        48
+      ],
+      "excerpt": "/*\n * Compat syscall numbers used by the AArch64 kernel.\n */\n#define __NR_compat_restart_syscall\t0\n#define __NR_compat_exit\t\t1\n#define __NR_compat_read\t\t3\n#define __NR_compat_write\t\t4\n#define __NR_compat_sigreturn\t\t119\n#define __NR_compat_rt_sigreturn\t173\n\n/*\n * The following SVCs are ARM private.\n */\n#define __ARM_NR_COMPAT_BASE\t\t0x0f0000\n#define __ARM_NR_compat_cacheflush\t(__ARM_NR_COMPAT_BASE + 2)\n#define __ARM_NR_compat_set_tls\t\t(__ARM_NR_COMPAT_BASE + 5)\n#define __ARM_NR_COMPAT_END\t\t(__ARM_NR_COMPAT_BASE + 0x800)\n\n#define __NR_compat_syscalls\t\t399\n#endif"
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/asm/unistd32.h",
+      "lines": [
+        818,
+        826
+      ],
+      "excerpt": "#define __NR_statx 397\n__SYSCALL(__NR_statx, sys_statx)\n#define __NR_rseq 398\n__SYSCALL(__NR_rseq, sys_rseq)\n\n/*\n * Please add new compat syscalls above this comment and update\n * __NR_compat_syscalls in asm/unistd.h.\n */"
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/kernel/sys32.c",
+      "lines": [
+        136,
+        146
+      ],
+      "excerpt": "#undef __SYSCALL\n#define __SYSCALL(nr, sym)\tasmlinkage long __arm64_##sym(const struct pt_regs *);\n#include <asm/unistd32.h>\n\n#undef __SYSCALL\n#define __SYSCALL(nr, sym)\t[nr] = __arm64_##sym,\n\nconst syscall_fn_t compat_sys_call_table[__NR_compat_syscalls] = {\n\t[0 ... __NR_compat_syscalls - 1] = __arm64_sys_ni_syscall,\n#include <asm/unistd32.h>\n};"
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/uapi/asm-generic/unistd.h",
+      "lines": [
+        735,
+        741
+      ],
+      "excerpt": "#define __NR_io_pgetevents 292\n__SC_COMP(__NR_io_pgetevents, sys_io_pgetevents, compat_sys_io_pgetevents)\n#define __NR_rseq 293\n__SYSCALL(__NR_rseq, sys_rseq)\n\n#undef __NR_syscalls\n#define __NR_syscalls 294"
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/kernel/sys.c",
+      "lines": [
+        62,
+        72
+      ],
+      "excerpt": "#undef __SYSCALL\n#define __SYSCALL(nr, sym)\tasmlinkage long __arm64_##sym(const struct pt_regs *);\n#include <asm/unistd.h>\n\n#undef __SYSCALL\n#define __SYSCALL(nr, sym)\t[nr] = __arm64_##sym,\n\nconst syscall_fn_t sys_call_table[__NR_syscalls] = {\n\t[0 ... __NR_syscalls - 1] = __arm64_sys_ni_syscall,\n#include <asm/unistd.h>\n};"
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/kernel/syscall.c",
+      "lines": [
+        20,
+        32
+      ],
+      "excerpt": "static long do_ni_syscall(struct pt_regs *regs, int scno)\n{\n#ifdef CONFIG_COMPAT\n\tlong ret;\n\tif (is_compat_task()) {\n\t\tret = compat_arm_syscall(regs, scno);\n\t\tif (ret != -ENOSYS)\n\t\t\treturn ret;\n\t}\n#endif\n\n\treturn sys_ni_syscall();\n}"
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/kernel/syscall.c",
+      "lines": [
+        39,
+        56
+      ],
+      "excerpt": "static void invoke_syscall(struct pt_regs *regs, unsigned int scno,\n\t\t\t   unsigned int sc_nr,\n\t\t\t   const syscall_fn_t syscall_table[])\n{\n\tlong ret;\n\n\tif (scno < sc_nr) {\n\t\tsyscall_fn_t syscall_fn;\n\t\tsyscall_fn = syscall_table[array_index_nospec(scno, sc_nr)];\n\t\tret = __invoke_syscall(regs, syscall_fn);\n\t} else {\n\t\tret = do_ni_syscall(regs, scno);\n\t}\n\n\tif (is_compat_task())\n\t\tret = lower_32_bits(ret);\n\n\tregs->regs[0] = ret;"
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/kernel/syscall.c",
+      "lines": [
+        160,
+        171
+      ],
+      "excerpt": "asmlinkage void el0_svc_handler(struct pt_regs *regs)\n{\n\tsve_user_discard();\n\tel0_svc_common(regs, regs->regs[8], __NR_syscalls, sys_call_table);\n}\n\n#ifdef CONFIG_COMPAT\nasmlinkage void el0_svc_compat_handler(struct pt_regs *regs)\n{\n\tel0_svc_common(regs, regs->regs[7], __NR_compat_syscalls,\n\t\t       compat_sys_call_table);\n}"
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/kernel/sys_compat.c",
+      "lines": [
+        113,
+        122
+      ],
+      "excerpt": "\tdefault:\n\t\t/*\n\t\t * Calls 0xf0xxx..0xf07ff are defined to return -ENOSYS\n\t\t * if not implemented, rather than raising SIGILL. This\n\t\t * way the calling program can gracefully determine whether\n\t\t * a feature is supported.\n\t\t */\n\t\tif (scno < __ARM_NR_COMPAT_END)\n\t\t\treturn -ENOSYS;\n\t\tbreak;"
+    }
+  ],
+  "compiled_proof": {
+    "vmlinux_path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/vmlinux",
+    "vmlinux_sha256": "76778f142fae0e3c68908718b19b6ade234ac726aef035076c41214e21a4dabe",
+    "command": "readelf --wide --syms <existing vmlinux>",
+    "selected_symbol_lines": [
+      "64907: ffffff8008a81570  2352 OBJECT  GLOBAL DEFAULT    3 sys_call_table",
+      "68661: ffffff80082ae0d0   220 FUNC    GLOBAL DEFAULT    2 __arm64_sys_clock_gettime",
+      "75504: ffffff800825b6b0     8 FUNC    WEAK   DEFAULT    2 __arm64_sys_io_pgetevents",
+      "78100: ffffff80082ae3a0   220 FUNC    GLOBAL DEFAULT    2 __arm64_compat_sys_clock_gettime",
+      "78393: ffffff8008a84b48  3192 OBJECT  GLOBAL DEFAULT    3 compat_sys_call_table"
+    ],
+    "compat_table_bytes": 3192,
+    "compat_table_entries": 399,
+    "native_table_bytes": 2352,
+    "native_table_entries": 294,
+    "pointer_bytes": 8
+  },
+  "abi_type_proof": [
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/uapi/asm/bitsperlong.h",
+      "lines": [
+        20,
+        22
+      ],
+      "excerpt": "#define __BITS_PER_LONG 64\n\n#include <asm-generic/bitsperlong.h>"
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/uapi/asm-generic/posix_types.h",
+      "lines": [
+        87,
+        93
+      ],
+      "excerpt": "typedef __kernel_long_t\t__kernel_off_t;\ntypedef long long\t__kernel_loff_t;\ntypedef __kernel_long_t\t__kernel_time_t;\ntypedef long long __kernel_time64_t;\ntypedef __kernel_long_t\t__kernel_clock_t;\ntypedef int\t\t__kernel_timer_t;\ntypedef int\t\t__kernel_clockid_t;"
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/time64.h",
+      "lines": [
+        7,
+        22
+      ],
+      "excerpt": "typedef __s64 time64_t;\ntypedef __u64 timeu64_t;\n\n/* CONFIG_64BIT_TIME enables new 64 bit time_t syscalls in the compat path\n * and 32-bit emulation.\n */\n#ifndef CONFIG_64BIT_TIME\n#define __kernel_timespec timespec\n#define __kernel_itimerspec itimerspec\n#endif\n\n#include <uapi/linux/time.h>\n\nstruct timespec64 {\n\ttime64_t\ttv_sec;\t\t\t/* seconds */\n\tlong\t\ttv_nsec;\t\t/* nanoseconds */"
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/uapi/linux/time.h",
+      "lines": [
+        8,
+        19
+      ],
+      "excerpt": "#ifndef _STRUCT_TIMESPEC\n#define _STRUCT_TIMESPEC\nstruct timespec {\n\t__kernel_time_t\ttv_sec;\t\t\t/* seconds */\n\tlong\t\ttv_nsec;\t\t/* nanoseconds */\n};\n#endif\n\nstruct timeval {\n\t__kernel_time_t\t\ttv_sec;\t\t/* seconds */\n\t__kernel_suseconds_t\ttv_usec;\t/* microseconds */\n};"
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/uapi/linux/time.h",
+      "lines": [
+        45,
+        56
+      ],
+      "excerpt": "#ifndef __kernel_timespec\nstruct __kernel_timespec {\n\t__kernel_time64_t       tv_sec;                 /* seconds */\n\tlong long               tv_nsec;                /* nanoseconds */\n};\n#endif\n\n#ifndef __kernel_itimerspec\nstruct __kernel_itimerspec {\n\tstruct __kernel_timespec it_interval;    /* timer period */\n\tstruct __kernel_timespec it_value;       /* timer expiration */\n};"
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/compat_time.h",
+      "lines": [
+        8,
+        23
+      ],
+      "excerpt": "typedef s32\t\tcompat_time_t;\n\nstruct compat_timespec {\n\tcompat_time_t\ttv_sec;\n\ts32\t\ttv_nsec;\n};\n\nstruct compat_timeval {\n\tcompat_time_t\ttv_sec;\n\ts32\t\ttv_usec;\n};\n\nstruct compat_itimerspec {\n\tstruct compat_timespec it_interval;\n\tstruct compat_timespec it_value;\n};"
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/compat.h",
+      "lines": [
+        40,
+        42
+      ],
+      "excerpt": "#ifndef COMPAT_USE_64BIT_TIME\n#define COMPAT_USE_64BIT_TIME 0\n#endif"
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/asm/compat.h",
+      "lines": [
+        58,
+        64
+      ],
+      "excerpt": "typedef s16\t\tcompat_short_t;\ntypedef s32\t\tcompat_int_t;\ntypedef s32\t\tcompat_long_t;\ntypedef s64\t\tcompat_s64;\ntypedef u16\t\tcompat_ushort_t;\ntypedef u32\t\tcompat_uint_t;\ntypedef u32\t\tcompat_ulong_t;"
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/Kconfig",
+      "lines": [
+        741,
+        754
+      ],
+      "excerpt": "config 64BIT_TIME\n\tdef_bool ARCH_HAS_64BIT_TIME\n\thelp\n\t  This should be selected by all architectures that need to support\n\t  new system calls with a 64-bit time_t. This is relevant on all 32-bit\n\t  architectures, and 64-bit architectures as part of compat syscall\n\t  handling.\n\nconfig COMPAT_32BIT_TIME\n\tdef_bool (!64BIT && 64BIT_TIME) || COMPAT\n\thelp\n\t  This enables 32 bit time_t support in addition to 64 bit time_t support.\n\t  This is relevant on all 32-bit architectures, and 64-bit architectures\n\t  as part of compat syscall handling."
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/time/time.c",
+      "lines": [
+        856,
+        874
+      ],
+      "excerpt": "int get_timespec64(struct timespec64 *ts,\n\t\t   const struct __kernel_timespec __user *uts)\n{\n\tstruct __kernel_timespec kts;\n\tint ret;\n\n\tret = copy_from_user(&kts, uts, sizeof(kts));\n\tif (ret)\n\t\treturn -EFAULT;\n\n\tts->tv_sec = kts.tv_sec;\n\n\t/* Zero out the padding for 32 bit systems or in compat mode */\n\tif (IS_ENABLED(CONFIG_64BIT_TIME) && (!IS_ENABLED(CONFIG_64BIT) || in_compat_syscall()))\n\t\tkts.tv_nsec &= 0xFFFFFFFFUL;\n\n\tts->tv_nsec = kts.tv_nsec;\n\n\treturn 0;"
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/time/time.c",
+      "lines": [
+        890,
+        932
+      ],
+      "excerpt": "int __compat_get_timespec64(struct timespec64 *ts64,\n\t\t\t\t   const struct compat_timespec __user *cts)\n{\n\tstruct compat_timespec ts;\n\tint ret;\n\n\tret = copy_from_user(&ts, cts, sizeof(ts));\n\tif (ret)\n\t\treturn -EFAULT;\n\n\tts64->tv_sec = ts.tv_sec;\n\tts64->tv_nsec = ts.tv_nsec;\n\n\treturn 0;\n}\n\nint __compat_put_timespec64(const struct timespec64 *ts64,\n\t\t\t\t   struct compat_timespec __user *cts)\n{\n\tstruct compat_timespec ts = {\n\t\t.tv_sec = ts64->tv_sec,\n\t\t.tv_nsec = ts64->tv_nsec\n\t};\n\treturn copy_to_user(cts, &ts, sizeof(ts)) ? -EFAULT : 0;\n}\n\nint compat_get_timespec64(struct timespec64 *ts, const void __user *uts)\n{\n\tif (COMPAT_USE_64BIT_TIME)\n\t\treturn copy_from_user(ts, uts, sizeof(*ts)) ? -EFAULT : 0;\n\telse\n\t\treturn __compat_get_timespec64(ts, uts);\n}\nEXPORT_SYMBOL_GPL(compat_get_timespec64);\n\nint compat_put_timespec64(const struct timespec64 *ts, void __user *uts)\n{\n\tif (COMPAT_USE_64BIT_TIME)\n\t\treturn copy_to_user(uts, ts, sizeof(*ts)) ? -EFAULT : 0;\n\telse\n\t\treturn __compat_put_timespec64(ts, uts);\n}\nEXPORT_SYMBOL_GPL(compat_put_timespec64);"
+    }
+  ],
+  "syscalls": [
+    {
+      "aarch32_time64_number": 403,
+      "aarch32_time64_name": "clock_gettime64",
+      "aarch32_time64_status": "missing: outside compat_sys_call_table[399]; expected ENOSYS absent tracing/emulation",
+      "aarch64_equivalent": {
+        "name": "clock_gettime",
+        "table_entry": {
+          "number": 113,
+          "source": {
+            "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/uapi/asm-generic/unistd.h",
+            "lines": [
+              352,
+              354
+            ],
+            "excerpt": "#define __NR_clock_gettime 113\n__SC_COMP(__NR_clock_gettime, sys_clock_gettime, compat_sys_clock_gettime)\n#define __NR_clock_getres 114"
+          }
+        },
+        "status": "mapped to native implementation; 64-bit time-related ABI fields",
+        "implementation": {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/time/posix-timers.c",
+          "lines": [
+            1058,
+            1061
+          ],
+          "excerpt": "SYSCALL_DEFINE2(clock_gettime, const clockid_t, which_clock,\n\t\tstruct __kernel_timespec __user *, tp)\n{\n\tconst struct k_clock *kc = clockid_to_kclock(which_clock);"
+        }
+      },
+      "existing_aarch32_time32_entry": {
+        "number": 263,
+        "source": {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/asm/unistd32.h",
+          "lines": [
+            550,
+            552
+          ],
+          "excerpt": "#define __NR_clock_gettime 263\n__SYSCALL(__NR_clock_gettime, compat_sys_clock_gettime)\n#define __NR_clock_getres 264"
+        }
+      },
+      "existing_aarch32_implementation": {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/time/posix-timers.c",
+        "lines": [
+          1134,
+          1137
+        ],
+        "excerpt": "COMPAT_SYSCALL_DEFINE2(clock_gettime, clockid_t, which_clock,\n\t\t       struct compat_timespec __user *, tp)\n{\n\tconst struct k_clock *kc = clockid_to_kclock(which_clock);"
+      }
+    },
+    {
+      "aarch32_time64_number": 404,
+      "aarch32_time64_name": "clock_settime64",
+      "aarch32_time64_status": "missing: outside compat_sys_call_table[399]; expected ENOSYS absent tracing/emulation",
+      "aarch64_equivalent": {
+        "name": "clock_settime",
+        "table_entry": {
+          "number": 112,
+          "source": {
+            "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/uapi/asm-generic/unistd.h",
+            "lines": [
+              350,
+              352
+            ],
+            "excerpt": "#define __NR_clock_settime 112\n__SC_COMP(__NR_clock_settime, sys_clock_settime, compat_sys_clock_settime)\n#define __NR_clock_gettime 113"
+          }
+        },
+        "status": "mapped to native implementation; 64-bit time-related ABI fields",
+        "implementation": {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/time/posix-timers.c",
+          "lines": [
+            1043,
+            1046
+          ],
+          "excerpt": "SYSCALL_DEFINE2(clock_settime, const clockid_t, which_clock,\n\t\tconst struct __kernel_timespec __user *, tp)\n{\n\tconst struct k_clock *kc = clockid_to_kclock(which_clock);"
+        }
+      },
+      "existing_aarch32_time32_entry": {
+        "number": 262,
+        "source": {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/asm/unistd32.h",
+          "lines": [
+            548,
+            550
+          ],
+          "excerpt": "#define __NR_clock_settime 262\n__SYSCALL(__NR_clock_settime, compat_sys_clock_settime)\n#define __NR_clock_gettime 263"
+        }
+      },
+      "existing_aarch32_implementation": {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/time/posix-timers.c",
+        "lines": [
+          1119,
+          1122
+        ],
+        "excerpt": "COMPAT_SYSCALL_DEFINE2(clock_settime, clockid_t, which_clock,\n\t\t       struct compat_timespec __user *, tp)\n{\n\tconst struct k_clock *kc = clockid_to_kclock(which_clock);"
+      }
+    },
+    {
+      "aarch32_time64_number": 405,
+      "aarch32_time64_name": "clock_adjtime64",
+      "aarch32_time64_status": "missing: outside compat_sys_call_table[399]; expected ENOSYS absent tracing/emulation",
+      "aarch64_equivalent": {
+        "name": "clock_adjtime",
+        "table_entry": {
+          "number": 266,
+          "source": {
+            "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/uapi/asm-generic/unistd.h",
+            "lines": [
+              681,
+              683
+            ],
+            "excerpt": "#define __NR_clock_adjtime 266\n__SC_COMP(__NR_clock_adjtime, sys_clock_adjtime, compat_sys_clock_adjtime)\n#define __NR_syncfs 267"
+          }
+        },
+        "status": "mapped to native implementation; 64-bit time-related ABI fields",
+        "implementation": {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/time/posix-timers.c",
+          "lines": [
+            1076,
+            1079
+          ],
+          "excerpt": "SYSCALL_DEFINE2(clock_adjtime, const clockid_t, which_clock,\n\t\tstruct timex __user *, utx)\n{\n\tconst struct k_clock *kc = clockid_to_kclock(which_clock);"
+        }
+      },
+      "existing_aarch32_time32_entry": {
+        "number": 372,
+        "source": {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/asm/unistd32.h",
+          "lines": [
+            768,
+            770
+          ],
+          "excerpt": "#define __NR_clock_adjtime 372\n__SYSCALL(__NR_clock_adjtime, compat_sys_clock_adjtime)\n#define __NR_syncfs 373"
+        }
+      },
+      "existing_aarch32_implementation": {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/time/posix-timers.c",
+        "lines": [
+          1156,
+          1159
+        ],
+        "excerpt": "COMPAT_SYSCALL_DEFINE2(clock_adjtime, clockid_t, which_clock,\n\t\t       struct compat_timex __user *, utp)\n{\n\tconst struct k_clock *kc = clockid_to_kclock(which_clock);"
+      }
+    },
+    {
+      "aarch32_time64_number": 406,
+      "aarch32_time64_name": "clock_getres_time64",
+      "aarch32_time64_status": "missing: outside compat_sys_call_table[399]; expected ENOSYS absent tracing/emulation",
+      "aarch64_equivalent": {
+        "name": "clock_getres",
+        "table_entry": {
+          "number": 114,
+          "source": {
+            "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/uapi/asm-generic/unistd.h",
+            "lines": [
+              354,
+              356
+            ],
+            "excerpt": "#define __NR_clock_getres 114\n__SC_COMP(__NR_clock_getres, sys_clock_getres, compat_sys_clock_getres)\n#define __NR_clock_nanosleep 115"
+          }
+        },
+        "status": "mapped to native implementation; 64-bit time-related ABI fields",
+        "implementation": {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/time/posix-timers.c",
+          "lines": [
+            1099,
+            1102
+          ],
+          "excerpt": "SYSCALL_DEFINE2(clock_getres, const clockid_t, which_clock,\n\t\tstruct __kernel_timespec __user *, tp)\n{\n\tconst struct k_clock *kc = clockid_to_kclock(which_clock);"
+        }
+      },
+      "existing_aarch32_time32_entry": {
+        "number": 264,
+        "source": {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/asm/unistd32.h",
+          "lines": [
+            552,
+            554
+          ],
+          "excerpt": "#define __NR_clock_getres 264\n__SYSCALL(__NR_clock_getres, compat_sys_clock_getres)\n#define __NR_clock_nanosleep 265"
+        }
+      },
+      "existing_aarch32_implementation": {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/time/posix-timers.c",
+        "lines": [
+          1184,
+          1187
+        ],
+        "excerpt": "COMPAT_SYSCALL_DEFINE2(clock_getres, clockid_t, which_clock,\n\t\t       struct compat_timespec __user *, tp)\n{\n\tconst struct k_clock *kc = clockid_to_kclock(which_clock);"
+      }
+    },
+    {
+      "aarch32_time64_number": 407,
+      "aarch32_time64_name": "clock_nanosleep_time64",
+      "aarch32_time64_status": "missing: outside compat_sys_call_table[399]; expected ENOSYS absent tracing/emulation",
+      "aarch64_equivalent": {
+        "name": "clock_nanosleep",
+        "table_entry": {
+          "number": 115,
+          "source": {
+            "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/uapi/asm-generic/unistd.h",
+            "lines": [
+              356,
+              358
+            ],
+            "excerpt": "#define __NR_clock_nanosleep 115\n__SC_COMP(__NR_clock_nanosleep, sys_clock_nanosleep, \\\n\t  compat_sys_clock_nanosleep)"
+          }
+        },
+        "status": "mapped to native implementation; 64-bit time-related ABI fields",
+        "implementation": {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/time/posix-timers.c",
+          "lines": [
+            1214,
+            1217
+          ],
+          "excerpt": "SYSCALL_DEFINE4(clock_nanosleep, const clockid_t, which_clock, int, flags,\n\t\tconst struct __kernel_timespec __user *, rqtp,\n\t\tstruct __kernel_timespec __user *, rmtp)\n{"
+        }
+      },
+      "existing_aarch32_time32_entry": {
+        "number": 265,
+        "source": {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/asm/unistd32.h",
+          "lines": [
+            554,
+            556
+          ],
+          "excerpt": "#define __NR_clock_nanosleep 265\n__SYSCALL(__NR_clock_nanosleep, compat_sys_clock_nanosleep)\n#define __NR_statfs64 266"
+        }
+      },
+      "existing_aarch32_implementation": {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/time/posix-timers.c",
+        "lines": [
+          1242,
+          1245
+        ],
+        "excerpt": "COMPAT_SYSCALL_DEFINE4(clock_nanosleep, clockid_t, which_clock, int, flags,\n\t\t       struct compat_timespec __user *, rqtp,\n\t\t       struct compat_timespec __user *, rmtp)\n{"
+      }
+    },
+    {
+      "aarch32_time64_number": 408,
+      "aarch32_time64_name": "timer_gettime64",
+      "aarch32_time64_status": "missing: outside compat_sys_call_table[399]; expected ENOSYS absent tracing/emulation",
+      "aarch64_equivalent": {
+        "name": "timer_gettime",
+        "table_entry": {
+          "number": 108,
+          "source": {
+            "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/uapi/asm-generic/unistd.h",
+            "lines": [
+              342,
+              344
+            ],
+            "excerpt": "#define __NR_timer_gettime 108\n__SC_COMP(__NR_timer_gettime, sys_timer_gettime, compat_sys_timer_gettime)\n#define __NR_timer_getoverrun 109"
+          }
+        },
+        "status": "mapped to native implementation; 64-bit time-related ABI fields",
+        "implementation": {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/time/posix-timers.c",
+          "lines": [
+            744,
+            747
+          ],
+          "excerpt": "SYSCALL_DEFINE2(timer_gettime, timer_t, timer_id,\n\t\tstruct __kernel_itimerspec __user *, setting)\n{\n\tstruct itimerspec64 cur_setting;"
+        }
+      },
+      "existing_aarch32_time32_entry": {
+        "number": 259,
+        "source": {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/asm/unistd32.h",
+          "lines": [
+            542,
+            544
+          ],
+          "excerpt": "#define __NR_timer_gettime 259\n__SYSCALL(__NR_timer_gettime, compat_sys_timer_gettime)\n#define __NR_timer_getoverrun 260"
+        }
+      },
+      "existing_aarch32_implementation": {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/time/posix-timers.c",
+        "lines": [
+          759,
+          762
+        ],
+        "excerpt": "COMPAT_SYSCALL_DEFINE2(timer_gettime, timer_t, timer_id,\n\t\t       struct compat_itimerspec __user *, setting)\n{\n\tstruct itimerspec64 cur_setting;"
+      }
+    },
+    {
+      "aarch32_time64_number": 409,
+      "aarch32_time64_name": "timer_settime64",
+      "aarch32_time64_status": "missing: outside compat_sys_call_table[399]; expected ENOSYS absent tracing/emulation",
+      "aarch64_equivalent": {
+        "name": "timer_settime",
+        "table_entry": {
+          "number": 110,
+          "source": {
+            "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/uapi/asm-generic/unistd.h",
+            "lines": [
+              346,
+              348
+            ],
+            "excerpt": "#define __NR_timer_settime 110\n__SC_COMP(__NR_timer_settime, sys_timer_settime, compat_sys_timer_settime)\n#define __NR_timer_delete 111"
+          }
+        },
+        "status": "mapped to native implementation; 64-bit time-related ABI fields",
+        "implementation": {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/time/posix-timers.c",
+          "lines": [
+            909,
+            912
+          ],
+          "excerpt": "SYSCALL_DEFINE4(timer_settime, timer_t, timer_id, int, flags,\n\t\tconst struct __kernel_itimerspec __user *, new_setting,\n\t\tstruct __kernel_itimerspec __user *, old_setting)\n{"
+        }
+      },
+      "existing_aarch32_time32_entry": {
+        "number": 258,
+        "source": {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/asm/unistd32.h",
+          "lines": [
+            540,
+            542
+          ],
+          "excerpt": "#define __NR_timer_settime 258\n__SYSCALL(__NR_timer_settime, compat_sys_timer_settime)\n#define __NR_timer_gettime 259"
+        }
+      },
+      "existing_aarch32_implementation": {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/time/posix-timers.c",
+        "lines": [
+          932,
+          935
+        ],
+        "excerpt": "COMPAT_SYSCALL_DEFINE4(timer_settime, timer_t, timer_id, int, flags,\n\t\t       struct compat_itimerspec __user *, new,\n\t\t       struct compat_itimerspec __user *, old)\n{"
+      }
+    },
+    {
+      "aarch32_time64_number": 410,
+      "aarch32_time64_name": "timerfd_gettime64",
+      "aarch32_time64_status": "missing: outside compat_sys_call_table[399]; expected ENOSYS absent tracing/emulation",
+      "aarch64_equivalent": {
+        "name": "timerfd_gettime",
+        "table_entry": {
+          "number": 87,
+          "source": {
+            "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/uapi/asm-generic/unistd.h",
+            "lines": [
+              273,
+              275
+            ],
+            "excerpt": "#define __NR_timerfd_gettime 87\n__SC_COMP(__NR_timerfd_gettime, sys_timerfd_gettime, \\\n\t  compat_sys_timerfd_gettime)"
+          }
+        },
+        "status": "mapped to native implementation; 64-bit time-related ABI fields",
+        "implementation": {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/fs/timerfd.c",
+          "lines": [
+            553,
+            556
+          ],
+          "excerpt": "SYSCALL_DEFINE2(timerfd_gettime, int, ufd, struct __kernel_itimerspec __user *, otmr)\n{\n\tstruct itimerspec64 kotmr;\n\tint ret = do_timerfd_gettime(ufd, &kotmr);"
+        }
+      },
+      "existing_aarch32_time32_entry": {
+        "number": 354,
+        "source": {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/asm/unistd32.h",
+          "lines": [
+            732,
+            734
+          ],
+          "excerpt": "#define __NR_timerfd_gettime 354\n__SYSCALL(__NR_timerfd_gettime, compat_sys_timerfd_gettime)\n#define __NR_signalfd4 355"
+        }
+      },
+      "existing_aarch32_implementation": {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/fs/timerfd.c",
+        "lines": [
+          580,
+          583
+        ],
+        "excerpt": "COMPAT_SYSCALL_DEFINE2(timerfd_gettime, int, ufd,\n\t\tstruct compat_itimerspec __user *, otmr)\n{\n\tstruct itimerspec64 kotmr;"
+      }
+    },
+    {
+      "aarch32_time64_number": 411,
+      "aarch32_time64_name": "timerfd_settime64",
+      "aarch32_time64_status": "missing: outside compat_sys_call_table[399]; expected ENOSYS absent tracing/emulation",
+      "aarch64_equivalent": {
+        "name": "timerfd_settime",
+        "table_entry": {
+          "number": 86,
+          "source": {
+            "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/uapi/asm-generic/unistd.h",
+            "lines": [
+              270,
+              272
+            ],
+            "excerpt": "#define __NR_timerfd_settime 86\n__SC_COMP(__NR_timerfd_settime, sys_timerfd_settime, \\\n\t  compat_sys_timerfd_settime)"
+          }
+        },
+        "status": "mapped to native implementation; 64-bit time-related ABI fields",
+        "implementation": {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/fs/timerfd.c",
+          "lines": [
+            535,
+            538
+          ],
+          "excerpt": "SYSCALL_DEFINE4(timerfd_settime, int, ufd, int, flags,\n\t\tconst struct __kernel_itimerspec __user *, utmr,\n\t\tstruct __kernel_itimerspec __user *, otmr)\n{"
+        }
+      },
+      "existing_aarch32_time32_entry": {
+        "number": 353,
+        "source": {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/asm/unistd32.h",
+          "lines": [
+            730,
+            732
+          ],
+          "excerpt": "#define __NR_timerfd_settime 353\n__SYSCALL(__NR_timerfd_settime, compat_sys_timerfd_settime)\n#define __NR_timerfd_gettime 354"
+        }
+      },
+      "existing_aarch32_implementation": {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/fs/timerfd.c",
+        "lines": [
+          563,
+          566
+        ],
+        "excerpt": "COMPAT_SYSCALL_DEFINE4(timerfd_settime, int, ufd, int, flags,\n\t\tconst struct compat_itimerspec __user *, utmr,\n\t\tstruct compat_itimerspec __user *, otmr)\n{"
+      }
+    },
+    {
+      "aarch32_time64_number": 412,
+      "aarch32_time64_name": "utimensat_time64",
+      "aarch32_time64_status": "missing: outside compat_sys_call_table[399]; expected ENOSYS absent tracing/emulation",
+      "aarch64_equivalent": {
+        "name": "utimensat",
+        "table_entry": {
+          "number": 88,
+          "source": {
+            "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/uapi/asm-generic/unistd.h",
+            "lines": [
+              278,
+              280
+            ],
+            "excerpt": "#define __NR_utimensat 88\n__SC_COMP(__NR_utimensat, sys_utimensat, compat_sys_utimensat)\n"
+          }
+        },
+        "status": "mapped to native implementation; 64-bit time-related ABI fields",
+        "implementation": {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/fs/utimes.c",
+          "lines": [
+            168,
+            171
+          ],
+          "excerpt": "SYSCALL_DEFINE4(utimensat, int, dfd, const char __user *, filename,\n\t\tstruct timespec __user *, utimes, int, flags)\n{\n\tstruct timespec64 tstimes[2];"
+        }
+      },
+      "existing_aarch32_time32_entry": {
+        "number": 348,
+        "source": {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/asm/unistd32.h",
+          "lines": [
+            720,
+            722
+          ],
+          "excerpt": "#define __NR_utimensat 348\n__SYSCALL(__NR_utimensat, compat_sys_utimensat)\n#define __NR_signalfd 349"
+        }
+      },
+      "existing_aarch32_implementation": {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/fs/utimes.c",
+        "lines": [
+          248,
+          251
+        ],
+        "excerpt": "COMPAT_SYSCALL_DEFINE4(utimensat, unsigned int, dfd, const char __user *, filename, struct compat_timespec __user *, t, int, flags)\n{\n\tstruct timespec64 tv[2];\n"
+      }
+    },
+    {
+      "aarch32_time64_number": 413,
+      "aarch32_time64_name": "pselect6_time64",
+      "aarch32_time64_status": "missing: outside compat_sys_call_table[399]; expected ENOSYS absent tracing/emulation",
+      "aarch64_equivalent": {
+        "name": "pselect6",
+        "table_entry": {
+          "number": 72,
+          "source": {
+            "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/uapi/asm-generic/unistd.h",
+            "lines": [
+              225,
+              227
+            ],
+            "excerpt": "#define __NR_pselect6 72\n__SC_COMP(__NR_pselect6, sys_pselect6, compat_sys_pselect6)\n#define __NR_ppoll 73"
+          }
+        },
+        "status": "mapped to native implementation; 64-bit time-related ABI fields",
+        "implementation": {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/fs/select.c",
+          "lines": [
+            760,
+            763
+          ],
+          "excerpt": "SYSCALL_DEFINE6(pselect6, int, n, fd_set __user *, inp, fd_set __user *, outp,\n\t\tfd_set __user *, exp, struct timespec __user *, tsp,\n\t\tvoid __user *, sig)\n{"
+        }
+      },
+      "existing_aarch32_time32_entry": {
+        "number": 335,
+        "source": {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/asm/unistd32.h",
+          "lines": [
+            694,
+            696
+          ],
+          "excerpt": "#define __NR_pselect6 335\n__SYSCALL(__NR_pselect6, compat_sys_pselect6)\n#define __NR_ppoll 336"
+        }
+      },
+      "existing_aarch32_implementation": {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/fs/select.c",
+        "lines": [
+          1357,
+          1360
+        ],
+        "excerpt": "COMPAT_SYSCALL_DEFINE6(pselect6, int, n, compat_ulong_t __user *, inp,\n\tcompat_ulong_t __user *, outp, compat_ulong_t __user *, exp,\n\tstruct compat_timespec __user *, tsp, void __user *, sig)\n{"
+      }
+    },
+    {
+      "aarch32_time64_number": 414,
+      "aarch32_time64_name": "ppoll_time64",
+      "aarch32_time64_status": "missing: outside compat_sys_call_table[399]; expected ENOSYS absent tracing/emulation",
+      "aarch64_equivalent": {
+        "name": "ppoll",
+        "table_entry": {
+          "number": 73,
+          "source": {
+            "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/uapi/asm-generic/unistd.h",
+            "lines": [
+              227,
+              229
+            ],
+            "excerpt": "#define __NR_ppoll 73\n__SC_COMP(__NR_ppoll, sys_ppoll, compat_sys_ppoll)\n"
+          }
+        },
+        "status": "mapped to native implementation; 64-bit time-related ABI fields",
+        "implementation": {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/fs/select.c",
+          "lines": [
+            1048,
+            1051
+          ],
+          "excerpt": "SYSCALL_DEFINE5(ppoll, struct pollfd __user *, ufds, unsigned int, nfds,\n\t\tstruct timespec __user *, tsp, const sigset_t __user *, sigmask,\n\t\tsize_t, sigsetsize)\n{"
+        }
+      },
+      "existing_aarch32_time32_entry": {
+        "number": 336,
+        "source": {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/asm/unistd32.h",
+          "lines": [
+            696,
+            698
+          ],
+          "excerpt": "#define __NR_ppoll 336\n__SYSCALL(__NR_ppoll, compat_sys_ppoll)\n#define __NR_unshare 337"
+        }
+      },
+      "existing_aarch32_implementation": {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/fs/select.c",
+        "lines": [
+          1376,
+          1379
+        ],
+        "excerpt": "COMPAT_SYSCALL_DEFINE5(ppoll, struct pollfd __user *, ufds,\n\tunsigned int,  nfds, struct compat_timespec __user *, tsp,\n\tconst compat_sigset_t __user *, sigmask, compat_size_t, sigsetsize)\n{"
+      }
+    },
+    {
+      "aarch32_time64_number": 416,
+      "aarch32_time64_name": "io_pgetevents_time64",
+      "aarch32_time64_status": "missing: outside compat_sys_call_table[399]; expected ENOSYS absent tracing/emulation",
+      "aarch64_equivalent": {
+        "name": "io_pgetevents",
+        "table_entry": {
+          "number": 292,
+          "source": {
+            "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/uapi/asm-generic/unistd.h",
+            "lines": [
+              735,
+              737
+            ],
+            "excerpt": "#define __NR_io_pgetevents 292\n__SC_COMP(__NR_io_pgetevents, sys_io_pgetevents, compat_sys_io_pgetevents)\n#define __NR_rseq 293"
+          }
+        },
+        "status": "unavailable: CONFIG_AIO=n; weak ENOSYS implementation",
+        "implementation": {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/fs/aio.c",
+          "lines": [
+            2233,
+            2236
+          ],
+          "excerpt": "SYSCALL_DEFINE6(io_pgetevents,\n\t\taio_context_t, ctx_id,\n\t\tlong, min_nr,\n\t\tlong, nr,"
+        }
+      },
+      "existing_aarch32_time32_entry": null,
+      "existing_aarch32_implementation": {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/fs/aio.c",
+        "lines": [
+          2303,
+          2306
+        ],
+        "excerpt": "COMPAT_SYSCALL_DEFINE6(io_pgetevents,\n\t\tcompat_aio_context_t, ctx_id,\n\t\tcompat_long_t, min_nr,\n\t\tcompat_long_t, nr,"
+      }
+    },
+    {
+      "aarch32_time64_number": 417,
+      "aarch32_time64_name": "recvmmsg_time64",
+      "aarch32_time64_status": "missing: outside compat_sys_call_table[399]; expected ENOSYS absent tracing/emulation",
+      "aarch64_equivalent": {
+        "name": "recvmmsg",
+        "table_entry": {
+          "number": 243,
+          "source": {
+            "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/uapi/asm-generic/unistd.h",
+            "lines": [
+              659,
+              661
+            ],
+            "excerpt": "#define __NR_recvmmsg 243\n__SC_COMP(__NR_recvmmsg, sys_recvmmsg, compat_sys_recvmmsg)\n"
+          }
+        },
+        "status": "mapped to native implementation; 64-bit time-related ABI fields",
+        "implementation": {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/net/socket.c",
+          "lines": [
+            2591,
+            2594
+          ],
+          "excerpt": "SYSCALL_DEFINE5(recvmmsg, int, fd, struct mmsghdr __user *, mmsg,\n\t\tunsigned int, vlen, unsigned int, flags,\n\t\tstruct timespec __user *, timeout)\n{"
+        }
+      },
+      "existing_aarch32_time32_entry": {
+        "number": 365,
+        "source": {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/asm/unistd32.h",
+          "lines": [
+            754,
+            756
+          ],
+          "excerpt": "#define __NR_recvmmsg 365\n__SYSCALL(__NR_recvmmsg, compat_sys_recvmmsg)\n#define __NR_accept4 366"
+        }
+      },
+      "existing_aarch32_implementation": {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/net/compat.c",
+        "lines": [
+          839,
+          842
+        ],
+        "excerpt": "COMPAT_SYSCALL_DEFINE5(recvmmsg, int, fd, struct compat_mmsghdr __user *, mmsg,\n\t\t       unsigned int, vlen, unsigned int, flags,\n\t\t       struct compat_timespec __user *, timeout)\n{"
+      }
+    },
+    {
+      "aarch32_time64_number": 418,
+      "aarch32_time64_name": "mq_timedsend_time64",
+      "aarch32_time64_status": "missing: outside compat_sys_call_table[399]; expected ENOSYS absent tracing/emulation",
+      "aarch64_equivalent": {
+        "name": "mq_timedsend",
+        "table_entry": {
+          "number": 182,
+          "source": {
+            "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/uapi/asm-generic/unistd.h",
+            "lines": [
+              512,
+              514
+            ],
+            "excerpt": "#define __NR_mq_timedsend 182\n__SC_COMP(__NR_mq_timedsend, sys_mq_timedsend, compat_sys_mq_timedsend)\n#define __NR_mq_timedreceive 183"
+          }
+        },
+        "status": "mapped to native implementation; 64-bit time-related ABI fields",
+        "implementation": {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/ipc/mqueue.c",
+          "lines": [
+            1153,
+            1156
+          ],
+          "excerpt": "SYSCALL_DEFINE5(mq_timedsend, mqd_t, mqdes, const char __user *, u_msg_ptr,\n\t\tsize_t, msg_len, unsigned int, msg_prio,\n\t\tconst struct __kernel_timespec __user *, u_abs_timeout)\n{"
+        }
+      },
+      "existing_aarch32_time32_entry": {
+        "number": 276,
+        "source": {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/asm/unistd32.h",
+          "lines": [
+            576,
+            578
+          ],
+          "excerpt": "#define __NR_mq_timedsend 276\n__SYSCALL(__NR_mq_timedsend, compat_sys_mq_timedsend)\n#define __NR_mq_timedreceive 277"
+        }
+      },
+      "existing_aarch32_implementation": {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/ipc/mqueue.c",
+        "lines": [
+          1499,
+          1502
+        ],
+        "excerpt": "COMPAT_SYSCALL_DEFINE5(mq_timedsend, mqd_t, mqdes,\n\t\t       const char __user *, u_msg_ptr,\n\t\t       compat_size_t, msg_len, unsigned int, msg_prio,\n\t\t       const struct compat_timespec __user *, u_abs_timeout)"
+      }
+    },
+    {
+      "aarch32_time64_number": 419,
+      "aarch32_time64_name": "mq_timedreceive_time64",
+      "aarch32_time64_status": "missing: outside compat_sys_call_table[399]; expected ENOSYS absent tracing/emulation",
+      "aarch64_equivalent": {
+        "name": "mq_timedreceive",
+        "table_entry": {
+          "number": 183,
+          "source": {
+            "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/uapi/asm-generic/unistd.h",
+            "lines": [
+              514,
+              516
+            ],
+            "excerpt": "#define __NR_mq_timedreceive 183\n__SC_COMP(__NR_mq_timedreceive, sys_mq_timedreceive, \\\n\t  compat_sys_mq_timedreceive)"
+          }
+        },
+        "status": "mapped to native implementation; 64-bit time-related ABI fields",
+        "implementation": {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/ipc/mqueue.c",
+          "lines": [
+            1167,
+            1170
+          ],
+          "excerpt": "SYSCALL_DEFINE5(mq_timedreceive, mqd_t, mqdes, char __user *, u_msg_ptr,\n\t\tsize_t, msg_len, unsigned int __user *, u_msg_prio,\n\t\tconst struct __kernel_timespec __user *, u_abs_timeout)\n{"
+        }
+      },
+      "existing_aarch32_time32_entry": {
+        "number": 277,
+        "source": {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/asm/unistd32.h",
+          "lines": [
+            578,
+            580
+          ],
+          "excerpt": "#define __NR_mq_timedreceive 277\n__SYSCALL(__NR_mq_timedreceive, compat_sys_mq_timedreceive)\n#define __NR_mq_notify 278"
+        }
+      },
+      "existing_aarch32_implementation": {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/ipc/mqueue.c",
+        "lines": [
+          1514,
+          1517
+        ],
+        "excerpt": "COMPAT_SYSCALL_DEFINE5(mq_timedreceive, mqd_t, mqdes,\n\t\t       char __user *, u_msg_ptr,\n\t\t       compat_size_t, msg_len, unsigned int __user *, u_msg_prio,\n\t\t       const struct compat_timespec __user *, u_abs_timeout)"
+      }
+    },
+    {
+      "aarch32_time64_number": 420,
+      "aarch32_time64_name": "semtimedop_time64",
+      "aarch32_time64_status": "missing: outside compat_sys_call_table[399]; expected ENOSYS absent tracing/emulation",
+      "aarch64_equivalent": {
+        "name": "semtimedop",
+        "table_entry": {
+          "number": 192,
+          "source": {
+            "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/uapi/asm-generic/unistd.h",
+            "lines": [
+              537,
+              539
+            ],
+            "excerpt": "#define __NR_semtimedop 192\n__SC_COMP(__NR_semtimedop, sys_semtimedop, compat_sys_semtimedop)\n#define __NR_semop 193"
+          }
+        },
+        "status": "mapped to native implementation; 64-bit time-related ABI fields",
+        "implementation": {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/ipc/sem.c",
+          "lines": [
+            2209,
+            2212
+          ],
+          "excerpt": "SYSCALL_DEFINE4(semtimedop, int, semid, struct sembuf __user *, tsops,\n\t\tunsigned int, nsops, const struct __kernel_timespec __user *, timeout)\n{\n\treturn ksys_semtimedop(semid, tsops, nsops, timeout);"
+        }
+      },
+      "existing_aarch32_time32_entry": {
+        "number": 312,
+        "source": {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/asm/unistd32.h",
+          "lines": [
+            648,
+            650
+          ],
+          "excerpt": "#define __NR_semtimedop 312\n__SYSCALL(__NR_semtimedop, compat_sys_semtimedop)\n#define __NR_vserver 313"
+        }
+      },
+      "existing_aarch32_implementation": {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/ipc/sem.c",
+        "lines": [
+          2229,
+          2232
+        ],
+        "excerpt": "COMPAT_SYSCALL_DEFINE4(semtimedop, int, semid, struct sembuf __user *, tsems,\n\t\t       unsigned int, nsops,\n\t\t       const struct compat_timespec __user *, timeout)\n{"
+      }
+    },
+    {
+      "aarch32_time64_number": 421,
+      "aarch32_time64_name": "rt_sigtimedwait_time64",
+      "aarch32_time64_status": "missing: outside compat_sys_call_table[399]; expected ENOSYS absent tracing/emulation",
+      "aarch64_equivalent": {
+        "name": "rt_sigtimedwait",
+        "table_entry": {
+          "number": 137,
+          "source": {
+            "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/uapi/asm-generic/unistd.h",
+            "lines": [
+              412,
+              414
+            ],
+            "excerpt": "#define __NR_rt_sigtimedwait 137\n__SC_COMP(__NR_rt_sigtimedwait, sys_rt_sigtimedwait, \\\n\t  compat_sys_rt_sigtimedwait)"
+          }
+        },
+        "status": "mapped to native implementation; 64-bit time-related ABI fields",
+        "implementation": {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/signal.c",
+          "lines": [
+            3208,
+            3211
+          ],
+          "excerpt": "SYSCALL_DEFINE4(rt_sigtimedwait, const sigset_t __user *, uthese,\n\t\tsiginfo_t __user *, uinfo, const struct timespec __user *, uts,\n\t\tsize_t, sigsetsize)\n{"
+        }
+      },
+      "existing_aarch32_time32_entry": {
+        "number": 177,
+        "source": {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/asm/unistd32.h",
+          "lines": [
+            378,
+            380
+          ],
+          "excerpt": "#define __NR_rt_sigtimedwait 177\n__SYSCALL(__NR_rt_sigtimedwait, compat_sys_rt_sigtimedwait)\n#define __NR_rt_sigqueueinfo 178"
+        }
+      },
+      "existing_aarch32_implementation": {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/signal.c",
+        "lines": [
+          3240,
+          3243
+        ],
+        "excerpt": "COMPAT_SYSCALL_DEFINE4(rt_sigtimedwait, compat_sigset_t __user *, uthese,\n\t\tstruct compat_siginfo __user *, uinfo,\n\t\tstruct compat_timespec __user *, uts, compat_size_t, sigsetsize)\n{"
+      }
+    },
+    {
+      "aarch32_time64_number": 422,
+      "aarch32_time64_name": "futex_time64",
+      "aarch32_time64_status": "missing: outside compat_sys_call_table[399]; expected ENOSYS absent tracing/emulation",
+      "aarch64_equivalent": {
+        "name": "futex",
+        "table_entry": {
+          "number": 98,
+          "source": {
+            "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/uapi/asm-generic/unistd.h",
+            "lines": [
+              310,
+              312
+            ],
+            "excerpt": "#define __NR_futex 98\n__SC_COMP(__NR_futex, sys_futex, compat_sys_futex)\n#define __NR_set_robust_list 99"
+          }
+        },
+        "status": "mapped to native implementation; 64-bit time-related ABI fields",
+        "implementation": {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/futex.c",
+          "lines": [
+            3918,
+            3921
+          ],
+          "excerpt": "SYSCALL_DEFINE6(futex, u32 __user *, uaddr, int, op, u32, val,\n\t\tstruct timespec __user *, utime, u32 __user *, uaddr2,\n\t\tu32, val3)\n{"
+        }
+      },
+      "existing_aarch32_time32_entry": {
+        "number": 240,
+        "source": {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/asm/unistd32.h",
+          "lines": [
+            504,
+            506
+          ],
+          "excerpt": "#define __NR_futex 240\n__SYSCALL(__NR_futex, compat_sys_futex)\n#define __NR_sched_setaffinity 241"
+        }
+      },
+      "existing_aarch32_implementation": {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/futex.c",
+        "lines": [
+          4110,
+          4113
+        ],
+        "excerpt": "COMPAT_SYSCALL_DEFINE6(futex, u32 __user *, uaddr, int, op, u32, val,\n\t\tstruct old_timespec32 __user *, utime, u32 __user *, uaddr2,\n\t\tu32, val3)\n{"
+      }
+    },
+    {
+      "aarch32_time64_number": 423,
+      "aarch32_time64_name": "sched_rr_get_interval_time64",
+      "aarch32_time64_status": "missing: outside compat_sys_call_table[399]; expected ENOSYS absent tracing/emulation",
+      "aarch64_equivalent": {
+        "name": "sched_rr_get_interval",
+        "table_entry": {
+          "number": 127,
+          "source": {
+            "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/uapi/asm-generic/unistd.h",
+            "lines": [
+              389,
+              391
+            ],
+            "excerpt": "#define __NR_sched_rr_get_interval 127\n__SC_COMP(__NR_sched_rr_get_interval, sys_sched_rr_get_interval, \\\n\t  compat_sys_sched_rr_get_interval)"
+          }
+        },
+        "status": "mapped to native implementation; 64-bit time-related ABI fields",
+        "implementation": {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/sched/core.c",
+          "lines": [
+            5429,
+            5432
+          ],
+          "excerpt": "SYSCALL_DEFINE2(sched_rr_get_interval, pid_t, pid,\n\t\tstruct timespec __user *, interval)\n{\n\tstruct timespec64 t;"
+        }
+      },
+      "existing_aarch32_time32_entry": {
+        "number": 161,
+        "source": {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/asm/unistd32.h",
+          "lines": [
+            346,
+            348
+          ],
+          "excerpt": "#define __NR_sched_rr_get_interval 161\n__SYSCALL(__NR_sched_rr_get_interval, compat_sys_sched_rr_get_interval)\n#define __NR_nanosleep 162"
+        }
+      },
+      "existing_aarch32_implementation": {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/sched/core.c",
+        "lines": [
+          5442,
+          5445
+        ],
+        "excerpt": "COMPAT_SYSCALL_DEFINE2(sched_rr_get_interval,\n\t\t       compat_pid_t, pid,\n\t\t       struct compat_timespec __user *, interval)\n{"
+      }
+    }
+  ],
+  "aio_caveat": {
+    "source": [
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/fs/Makefile",
+        "lines": [
+          32,
+          32
+        ],
+        "excerpt": "obj-$(CONFIG_AIO)               += aio.o"
+      },
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/sys_ni.c",
+        "lines": [
+          40,
+          49
+        ],
+        "excerpt": "COND_SYSCALL_COMPAT(io_setup);\nCOND_SYSCALL(io_destroy);\nCOND_SYSCALL(io_submit);\nCOND_SYSCALL_COMPAT(io_submit);\nCOND_SYSCALL(io_cancel);\nCOND_SYSCALL(io_getevents);\nCOND_SYSCALL(io_pgetevents);\nCOND_SYSCALL_COMPAT(io_getevents);\nCOND_SYSCALL_COMPAT(io_pgetevents);\n"
+      }
+    ],
+    "explanation": "The native io_pgetevents number exists, but this build has CONFIG_AIO disabled and the compiled __arm64_sys_io_pgetevents symbol is a weak stub. The older AArch32 table also lacks io_pgetevents, in addition to lacking its newer time64 entry."
+  },
+  "adjacent_y2038_boundaries": {
+    "statx": {
+      "status": "present for native AArch64 and AArch32 compat, with fixed-width signed 64-bit timestamp seconds",
+      "native_table_entry": {
+        "number": 291,
+        "source": {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/uapi/asm-generic/unistd.h",
+          "lines": [
+            733,
+            735
+          ],
+          "excerpt": "#define __NR_statx 291\n__SYSCALL(__NR_statx,     sys_statx)\n#define __NR_io_pgetevents 292"
+        }
+      },
+      "compat_table_entry": {
+        "number": 397,
+        "source": {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/asm/unistd32.h",
+          "lines": [
+            818,
+            820
+          ],
+          "excerpt": "#define __NR_statx 397\n__SYSCALL(__NR_statx, sys_statx)\n#define __NR_rseq 398"
+        }
+      },
+      "sources": [
+        {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/uapi/linux/stat.h",
+          "lines": [
+            46,
+            60
+          ],
+          "excerpt": "/*\n * Timestamp structure for the timestamps in struct statx.\n *\n * tv_sec holds the number of seconds before (negative) or after (positive)\n * 00:00:00 1st January 1970 UTC.\n *\n * tv_nsec holds a number of nanoseconds (0..999,999,999) after the tv_sec time.\n *\n * __reserved is held in case we need a yet finer resolution.\n */\nstruct statx_timestamp {\n\t__s64\ttv_sec;\n\t__u32\ttv_nsec;\n\t__s32\t__reserved;\n};"
+        },
+        {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/uapi/linux/stat.h",
+          "lines": [
+            111,
+            121
+          ],
+          "excerpt": "\t__u64\tstx_ino;\t/* Inode number */\n\t__u64\tstx_size;\t/* File size */\n\t__u64\tstx_blocks;\t/* Number of 512-byte blocks allocated */\n\t__u64\tstx_attributes_mask; /* Mask to show what's supported in stx_attributes */\n\t/* 0x40 */\n\tstruct statx_timestamp\tstx_atime;\t/* Last access time */\n\tstruct statx_timestamp\tstx_btime;\t/* File creation time */\n\tstruct statx_timestamp\tstx_ctime;\t/* Last attribute change time */\n\tstruct statx_timestamp\tstx_mtime;\t/* Last data modification time */\n\t/* 0x80 */\n\t__u32\tstx_rdev_major;\t/* Device ID of special file [if bdev/cdev] */"
+        }
+      ],
+      "limits": "A time64-capable statx ABI does not extend a filesystem's actual timestamp range or force every requested field to be supported. Userspace must use a suitable API and check stx_mask."
+    },
+    "legacy_stat": {
+      "status": "native generic stat uses 64-bit long seconds; compat stat/stat64 remain 32-bit time fields",
+      "sources": [
+        {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/uapi/asm-generic/stat.h",
+          "lines": [
+            24,
+            44
+          ],
+          "excerpt": "struct stat {\n\tunsigned long\tst_dev;\t\t/* Device.  */\n\tunsigned long\tst_ino;\t\t/* File serial number.  */\n\tunsigned int\tst_mode;\t/* File mode.  */\n\tunsigned int\tst_nlink;\t/* Link count.  */\n\tunsigned int\tst_uid;\t\t/* User ID of the file's owner.  */\n\tunsigned int\tst_gid;\t\t/* Group ID of the file's group. */\n\tunsigned long\tst_rdev;\t/* Device number, if device.  */\n\tunsigned long\t__pad1;\n\tlong\t\tst_size;\t/* Size of file, in bytes.  */\n\tint\t\tst_blksize;\t/* Optimal block size for I/O.  */\n\tint\t\t__pad2;\n\tlong\t\tst_blocks;\t/* Number 512-byte blocks allocated. */\n\tlong\t\tst_atime;\t/* Time of last access.  */\n\tunsigned long\tst_atime_nsec;\n\tlong\t\tst_mtime;\t/* Time of last modification.  */\n\tunsigned long\tst_mtime_nsec;\n\tlong\t\tst_ctime;\t/* Time of last status change.  */\n\tunsigned long\tst_ctime_nsec;\n\tunsigned int\t__unused4;\n\tunsigned int\t__unused5;"
+        },
+        {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/asm/compat.h",
+          "lines": [
+            85,
+            95
+          ],
+          "excerpt": "#endif\n\tcompat_off_t\tst_size;\n\tcompat_off_t\tst_blksize;\n\tcompat_off_t\tst_blocks;\n\tcompat_time_t\tst_atime;\n\tcompat_ulong_t\tst_atime_nsec;\n\tcompat_time_t\tst_mtime;\n\tcompat_ulong_t\tst_mtime_nsec;\n\tcompat_time_t\tst_ctime;\n\tcompat_ulong_t\tst_ctime_nsec;\n\tcompat_ulong_t\t__unused4[2];"
+        },
+        {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/asm/stat.h",
+          "lines": [
+            26,
+            59
+          ],
+          "excerpt": "/*\n * struct stat64 is needed for compat tasks only. Its definition is different\n * from the generic struct stat64.\n */\nstruct stat64 {\n\tcompat_u64\tst_dev;\n\tunsigned char   __pad0[4];\n\n#define STAT64_HAS_BROKEN_ST_INO\t1\n\tcompat_ulong_t\t__st_ino;\n\tcompat_uint_t\tst_mode;\n\tcompat_uint_t\tst_nlink;\n\n\tcompat_ulong_t\tst_uid;\n\tcompat_ulong_t\tst_gid;\n\n\tcompat_u64\tst_rdev;\n\tunsigned char   __pad3[4];\n\n\tcompat_s64\tst_size;\n\tcompat_ulong_t\tst_blksize;\n\tcompat_u64\tst_blocks;\t/* Number of 512-byte blocks allocated. */\n\n\tcompat_ulong_t\tst_atime;\n\tcompat_ulong_t\tst_atime_nsec;\n\n\tcompat_ulong_t\tst_mtime;\n\tcompat_ulong_t\tst_mtime_nsec;\n\n\tcompat_ulong_t\tst_ctime;\n\tcompat_ulong_t\tst_ctime_nsec;\n\n\tcompat_u64\tst_ino;\n};"
+        }
+      ],
+      "limits": "The stat64 name widens file size/inode-related fields; it does not imply 64-bit timestamps. The compat stat64 fields are u32 compat_ulong_t, while other compat stat fields use signed compat_time_t. Neither is a 64-bit seconds ABI."
+    },
+    "socket_timestamps": {
+      "status": "SO_TIMESTAMP_NEW, SO_TIMESTAMPNS_NEW and SO_TIMESTAMPING_NEW are absent from UAPI and SOL_SOCKET handling; only the older timestamp options are supported here. New timeout options are also absent.",
+      "existing_option_values": {
+        "SO_TIMESTAMP": 29,
+        "SO_TIMESTAMPNS": 35,
+        "SO_TIMESTAMPING": 37,
+        "SO_RCVTIMEO": 20,
+        "SO_SNDTIMEO": 21
+      },
+      "sources": [
+        {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/uapi/asm/Kbuild",
+          "lines": [
+            16,
+            16
+          ],
+          "excerpt": "generic-y += socket.h"
+        },
+        {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/uapi/asm-generic/socket.h",
+          "lines": [
+            30,
+            33
+          ],
+          "excerpt": "#define SO_RCVLOWAT\t18\n#define SO_SNDLOWAT\t19\n#define SO_RCVTIMEO\t20\n#define SO_SNDTIMEO\t21"
+        },
+        {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/uapi/asm-generic/socket.h",
+          "lines": [
+            48,
+            62
+          ],
+          "excerpt": "#define SO_PEERNAME\t\t28\n#define SO_TIMESTAMP\t\t29\n#define SCM_TIMESTAMP\t\tSO_TIMESTAMP\n\n#define SO_ACCEPTCONN\t\t30\n\n#define SO_PEERSEC\t\t31\n#define SO_PASSSEC\t\t34\n#define SO_TIMESTAMPNS\t\t35\n#define SCM_TIMESTAMPNS\t\tSO_TIMESTAMPNS\n\n#define SO_MARK\t\t\t36\n\n#define SO_TIMESTAMPING\t\t37\n#define SCM_TIMESTAMPING\tSO_TIMESTAMPING"
+        },
+        {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/net/compat.c",
+          "lines": [
+            208,
+            240
+          ],
+          "excerpt": "int put_cmsg_compat(struct msghdr *kmsg, int level, int type, int len, void *data)\n{\n\tstruct compat_cmsghdr __user *cm = (struct compat_cmsghdr __user *) kmsg->msg_control;\n\tstruct compat_cmsghdr cmhdr;\n\tstruct compat_timeval ctv;\n\tstruct compat_timespec cts[3];\n\tint cmlen;\n\n\tif (cm == NULL || kmsg->msg_controllen < sizeof(*cm)) {\n\t\tkmsg->msg_flags |= MSG_CTRUNC;\n\t\treturn 0; /* XXX: return error? check spec. */\n\t}\n\n\tif (!COMPAT_USE_64BIT_TIME) {\n\t\tif (level == SOL_SOCKET && type == SCM_TIMESTAMP) {\n\t\t\tstruct timeval *tv = (struct timeval *)data;\n\t\t\tctv.tv_sec = tv->tv_sec;\n\t\t\tctv.tv_usec = tv->tv_usec;\n\t\t\tdata = &ctv;\n\t\t\tlen = sizeof(ctv);\n\t\t}\n\t\tif (level == SOL_SOCKET &&\n\t\t    (type == SCM_TIMESTAMPNS || type == SCM_TIMESTAMPING)) {\n\t\t\tint count = type == SCM_TIMESTAMPNS ? 1 : 3;\n\t\t\tint i;\n\t\t\tstruct timespec *ts = (struct timespec *)data;\n\t\t\tfor (i = 0; i < count; i++) {\n\t\t\t\tcts[i].tv_sec = ts[i].tv_sec;\n\t\t\t\tcts[i].tv_nsec = ts[i].tv_nsec;\n\t\t\t}\n\t\t\tdata = &cts;\n\t\t\tlen = sizeof(cts[0]) * count;\n\t\t}"
+        },
+        {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/net/socket.c",
+          "lines": [
+            775,
+            785
+          ],
+          "excerpt": "\tif (need_software_tstamp) {\n\t\tif (!sock_flag(sk, SOCK_RCVTSTAMPNS)) {\n\t\t\tstruct timeval tv;\n\t\t\tskb_get_timestamp(skb, &tv);\n\t\t\tput_cmsg(msg, SOL_SOCKET, SCM_TIMESTAMP,\n\t\t\t\t sizeof(tv), &tv);\n\t\t} else {\n\t\t\tstruct timespec ts;\n\t\t\tskb_get_timestampns(skb, &ts);\n\t\t\tput_cmsg(msg, SOL_SOCKET, SCM_TIMESTAMPNS,\n\t\t\t\t sizeof(ts), &ts);"
+        },
+        {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/net/core/sock.c",
+          "lines": [
+            818,
+            851
+          ],
+          "excerpt": "\t\t\tset_bit(SOCK_PASSCRED, &sock->flags);\n\t\telse\n\t\t\tclear_bit(SOCK_PASSCRED, &sock->flags);\n\t\tbreak;\n\n\tcase SO_TIMESTAMP:\n\tcase SO_TIMESTAMPNS:\n\t\tif (valbool)  {\n\t\t\tif (optname == SO_TIMESTAMP)\n\t\t\t\tsock_reset_flag(sk, SOCK_RCVTSTAMPNS);\n\t\t\telse\n\t\t\t\tsock_set_flag(sk, SOCK_RCVTSTAMPNS);\n\t\t\tsock_set_flag(sk, SOCK_RCVTSTAMP);\n\t\t\tsock_enable_timestamp(sk, SOCK_TIMESTAMP);\n\t\t} else {\n\t\t\tsock_reset_flag(sk, SOCK_RCVTSTAMP);\n\t\t\tsock_reset_flag(sk, SOCK_RCVTSTAMPNS);\n\t\t}\n\t\tbreak;\n\n\tcase SO_TIMESTAMPING:\n\t\tif (val & ~SOF_TIMESTAMPING_MASK) {\n\t\t\tret = -EINVAL;\n\t\t\tbreak;\n\t\t}\n\n\t\tif (val & SOF_TIMESTAMPING_OPT_ID &&\n\t\t    !(sk->sk_tsflags & SOF_TIMESTAMPING_OPT_ID)) {\n\t\t\tif (sk->sk_protocol == IPPROTO_TCP &&\n\t\t\t    sk->sk_type == SOCK_STREAM) {\n\t\t\t\tif ((1 << sk->sk_state) &\n\t\t\t\t    (TCPF_CLOSE | TCPF_LISTEN)) {\n\t\t\t\t\tret = -EINVAL;\n\t\t\t\t\tbreak;"
+        },
+        {
+          "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/net/core/sock.c",
+          "lines": [
+            1195,
+            1215
+          ],
+          "excerpt": "\tcase SO_BSDCOMPAT:\n\t\tsock_warn_obsolete_bsdism(\"getsockopt\");\n\t\tbreak;\n\n\tcase SO_TIMESTAMP:\n\t\tv.val = sock_flag(sk, SOCK_RCVTSTAMP) &&\n\t\t\t\t!sock_flag(sk, SOCK_RCVTSTAMPNS);\n\t\tbreak;\n\n\tcase SO_TIMESTAMPNS:\n\t\tv.val = sock_flag(sk, SOCK_RCVTSTAMPNS);\n\t\tbreak;\n\n\tcase SO_TIMESTAMPING:\n\t\tv.val = sk->sk_tsflags;\n\t\tbreak;\n\n\tcase SO_RCVTIMEO:\n\t\tlv = sizeof(struct timeval);\n\t\tif (sk->sk_rcvtimeo == MAX_SCHEDULE_TIMEOUT) {\n\t\t\tv.tm.tv_sec = 0;"
+        }
+      ],
+      "assessment": "Native AArch64 old timestamp options carry native long/64-bit time fields. AArch32 ancillary data is explicitly converted to 32-bit compat timeval/timespec. Thus current native functionality is not equivalent to support for all modern *_NEW options. Rebuilding 32-bit userspace with 64-bit time_t alone cannot supply missing kernel ABI."
+    }
+  },
+  "backport_scope_caution": "Do not fix this by only increasing the syscall count or pointing every new number at an existing compat handler. Existing compat handlers consume time32. Native handlers for fd sets, signal sets, mmsghdr and timex may also have different non-time ABI layouts; a coherent upstream time64 series and ABI-specific marshalling are required. Existing internal timespec64 helpers do not imply exported AArch32 time64 support.",
+  "runtime_scope": "Raw live probes are handled separately by the parent. This report predicts ENOSYS for absent AArch32 numbers from source and ELF; it does not claim to have executed them or to have tested timestamps beyond 2038.",
+  "provenance": {
+    "source_git_HEAD": "69838e4a60564e5550e97f11d8a8cf2c6260c4f0",
+    "source_git_shallow": true,
+    "historical_limit": "The source checkout is shallow. Equality to this vendor/Merlin source base and absence from the six local patches are verified; the original upstream introduction history of every existing preparatory helper is not reconstructed here.",
+    "source_manifest": [
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/.config",
+        "sha256": "1c495c39d80319246f26a38192eb481b54860ea938d46bbc8156b4fa676a8216",
+        "bytes": 118732,
+        "equals_source_git_HEAD": false
+      },
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/Kconfig",
+        "sha256": "1d4ceb30597876b0a1391a01960b9e3409d4f7958a45156cc79018353d908d02",
+        "bytes": 26878,
+        "equals_source_git_HEAD": true
+      },
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/asm/compat.h",
+        "sha256": "b081111abbfdb157109b5523a45cd76288556d50b6e1b4ae42311a3c74e956e1",
+        "bytes": 5726,
+        "equals_source_git_HEAD": true
+      },
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/asm/stat.h",
+        "sha256": "5ab170cebe9b4f9de96d26cb6d57df97f3be2d000d23e5813f4e50edbc8d6adb",
+        "bytes": 1494,
+        "equals_source_git_HEAD": true
+      },
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/asm/unistd.h",
+        "sha256": "f92b26c85a5c562301f1281a8106741a77bae41dd29e3f44927e3b9eab900c9f",
+        "bytes": 1705,
+        "equals_source_git_HEAD": true
+      },
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/asm/unistd32.h",
+        "sha256": "769187a264e5eaf387ac5c5ade614e987c6cd482de316cf892562c6a2c1d2db1",
+        "bytes": 28224,
+        "equals_source_git_HEAD": true
+      },
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/uapi/asm/Kbuild",
+        "sha256": "11197687ac741f7b99fe99f18cbc7449fc6f10f832a46aa46d1db83d3b2042aa",
+        "bytes": 479,
+        "equals_source_git_HEAD": true
+      },
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/uapi/asm/bitsperlong.h",
+        "sha256": "84fc9dd6bb62530cda94516a8cc023483dcfc29ba55566c0a551b98159da400e",
+        "bytes": 841,
+        "equals_source_git_HEAD": true
+      },
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/kernel/sys.c",
+        "sha256": "21e3ddc2759b1b3f69f89e2902d5bee85e02c4f72211531798f8a6a079280360",
+        "bytes": 2040,
+        "equals_source_git_HEAD": true
+      },
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/kernel/sys32.c",
+        "sha256": "b36536fbb04828ffe7214e7cb355c863346a791c266f032434d7196303aa8a6a",
+        "bytes": 4246,
+        "equals_source_git_HEAD": true
+      },
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/kernel/sys_compat.c",
+        "sha256": "785d654ce3c31d25c06f18975c87ed58710a35f5372e7b9c953308c95c78adcb",
+        "bytes": 3705,
+        "equals_source_git_HEAD": true
+      },
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/kernel/syscall.c",
+        "sha256": "292a179c0f3cca91a5297504f1ba86a84aad31dccc7f3a96bc73a32e18644d66",
+        "bytes": 4255,
+        "equals_source_git_HEAD": true
+      },
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/fs/Makefile",
+        "sha256": "e843334843d10b889170dcbc1c9cf9f78636e99b51223a47a34904f800cf0f6c",
+        "bytes": 4338,
+        "equals_source_git_HEAD": true
+      },
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/fs/aio.c",
+        "sha256": "dbcc3705393c52b2335c512672765aa34b5c44201f5cb16489187de148e6d55e",
+        "bytes": 61169,
+        "equals_source_git_HEAD": true
+      },
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/fs/select.c",
+        "sha256": "16bb151df5366ff7e4225c0a39138e895ffd5f85f43d9517bc1771dbee0f9f07",
+        "bytes": 35470,
+        "equals_source_git_HEAD": true
+      },
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/fs/timerfd.c",
+        "sha256": "aeafda9893a5abb62b285ab9a46e2f1db5507475eea724f20c90aa3c04cfe287",
+        "bytes": 13748,
+        "equals_source_git_HEAD": true
+      },
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/fs/utimes.c",
+        "sha256": "c671b7fb5d19fc36e5ee3d12688da501161c0e3fdadce92f8e85871731e3d67a",
+        "bytes": 7653,
+        "equals_source_git_HEAD": true
+      },
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/compat.h",
+        "sha256": "94d0b31de1f5763b8db5d170806ba137c5a096fd03dc8e65cff755e022007b31",
+        "bytes": 34944,
+        "equals_source_git_HEAD": true
+      },
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/compat_time.h",
+        "sha256": "598b5b3e99ac7e706264747a1ff43d0550431750f2b2dda9168b5c5768ff4b00",
+        "bytes": 821,
+        "equals_source_git_HEAD": true
+      },
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/time64.h",
+        "sha256": "8a246c9f785ba61d7c6a1e100a2b79705c2bcd8fde2f9a85ffb0ee1d611eecc4",
+        "bytes": 4880,
+        "equals_source_git_HEAD": true
+      },
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/uapi/asm-generic/posix_types.h",
+        "sha256": "0b94eebdf4488407d32fa199136f302653ab51a2843bd68dee24c38c9f0ce82e",
+        "bytes": 2331,
+        "equals_source_git_HEAD": true
+      },
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/uapi/asm-generic/socket.h",
+        "sha256": "5dfd9cc83c350d29f388039b15ee60cc79b249c5f79c83baa9882d6cd9897f48",
+        "bytes": 2345,
+        "equals_source_git_HEAD": true
+      },
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/uapi/asm-generic/stat.h",
+        "sha256": "8c8b66ab62a09ed42e8793c82edbf4a18ba4362891f1ed91026933e1a6c8cedf",
+        "bytes": 2633,
+        "equals_source_git_HEAD": true
+      },
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/uapi/asm-generic/unistd.h",
+        "sha256": "9ef8cc9befe8a0b60e44071829fdf3783598f29f93c28e86b5ec9f21077e677a",
+        "bytes": 25686,
+        "equals_source_git_HEAD": true
+      },
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/uapi/linux/stat.h",
+        "sha256": "2e5c5b2179e313d91995c3c5e8bd1303dc2cec3915424cd0ce2b8b1f31bec819",
+        "bytes": 6115,
+        "equals_source_git_HEAD": true
+      },
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/uapi/linux/time.h",
+        "sha256": "3e55624be3b3f10ec0836c6b3f98db21ae8f24dfb1d60a7a0a9c1a67e18b4ff7",
+        "bytes": 2518,
+        "equals_source_git_HEAD": true
+      },
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/ipc/mqueue.c",
+        "sha256": "3e9e69ec7c80676b38bc6277cb5428d4f57d55d8f83b2d4085f1b10b7047f320",
+        "bytes": 40729,
+        "equals_source_git_HEAD": true
+      },
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/ipc/sem.c",
+        "sha256": "af2a62ba908837bdde0069354152e8e07a56d4fb2bb78588f0f0020725d81ad5",
+        "bytes": 62794,
+        "equals_source_git_HEAD": true
+      },
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/futex.c",
+        "sha256": "1d5d37b86ee9f4666d6bd9169c966d769dd9f73c2481738f35142b4f9dd982e0",
+        "bytes": 116061,
+        "equals_source_git_HEAD": true
+      },
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/sched/core.c",
+        "sha256": "10824701ac69321fe466afe4998f03b42d91a08d53d91a86e1f244171e08a0ed",
+        "bytes": 183263,
+        "equals_source_git_HEAD": false
+      },
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/signal.c",
+        "sha256": "8e88405e09797a460dc6a517e24887634e3f2767fef7e3812fd5d79cd50dd6a2",
+        "bytes": 107014,
+        "equals_source_git_HEAD": true
+      },
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/sys_ni.c",
+        "sha256": "f65799a46ebfb9b50ac320907d42e170244bf34f0caf65253c3e4c705ab16272",
+        "bytes": 9053,
+        "equals_source_git_HEAD": true
+      },
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/time/posix-timers.c",
+        "sha256": "4797b181f8c5342125739c1eb098398f2d00e37c509732536dcef1e96ca28f7a",
+        "bytes": 36906,
+        "equals_source_git_HEAD": true
+      },
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/time/time.c",
+        "sha256": "3a247ddac0c3ef5ce4490845877229c7e18a7c3c3b38b83f7d05edcb1a960ff6",
+        "bytes": 25106,
+        "equals_source_git_HEAD": true
+      },
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/net/compat.c",
+        "sha256": "55ad37103ec4f05c21f99098fd2398621237580c472b25b5ca234e07807363b1",
+        "bytes": 26564,
+        "equals_source_git_HEAD": true
+      },
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/net/socket.c",
+        "sha256": "9f76d33805d789beb1c0c6d51d97add70c93c7363be2435fdfc48f9259dc60ae",
+        "bytes": 92682,
+        "equals_source_git_HEAD": true
+      },
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/net/core/sock.c",
+        "sha256": "a74fc7b8922c9f06bcdd948227522007dff7873b90adef03790b2b151ec072e2",
+        "bytes": 87579,
+        "equals_source_git_HEAD": true
+      }
+    ],
+    "local_patches": [
+      {
+        "path": "patches/0001-be98-kernel-feature-port.patch",
+        "sha256": "08ac709548e4e22ba640ff35e9c938bf045975a8f5c2ad5496f732dd24e104c9",
+        "time64_related_matches": []
+      },
+      {
+        "path": "patches/0002-be19000ai-netdev-abi.patch",
+        "sha256": "346913ea57bda1ec1b65d59c8d9e0492d169cc930c54496f4767e1d5d97f14d8",
+        "time64_related_matches": []
+      },
+      {
+        "path": "patches/0003-trial-metadata-protection.patch",
+        "sha256": "0790bdade92bc1672ba2ab930d03033770e60506c65f3ab3277dbd10d0bb8c61",
+        "time64_related_matches": []
+      },
+      {
+        "path": "patches/0004-cpu-cpuset-blkio-userns-abi.patch",
+        "sha256": "b4b01ec3c612ab9c9595240371392106b44af978fbb15f0451cd5d8802b3b455",
+        "time64_related_matches": []
+      },
+      {
+        "path": "patches/0005-psi-cgroup-monitoring-abi.patch",
+        "sha256": "e2ee130ef931ba8d5737edcf9d4a3a265dbccdf81bb7fb4aae74644f9ba73737",
+        "time64_related_matches": []
+      },
+      {
+        "path": "patches/0006-psi-workingset-refault-abi.patch",
+        "sha256": "6e2b2a186b16944c8204be4b148c1691f960a05a33daa8ff5970ab021e1c3c9b",
+        "time64_related_matches": []
+      }
+    ]
+  }
+}

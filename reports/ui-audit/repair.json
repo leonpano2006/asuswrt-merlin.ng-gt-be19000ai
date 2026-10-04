@@ -1,0 +1,182 @@
+{
+  "status": "Installed and verified: persistent, reversible web-only fixes for the GT-BE19000AI AiMesh node",
+  "device": "192.168.100.15",
+  "firmware": "Merlin 3006.102.9",
+  "changes": [
+    "Restore the native AI Board / Docker menu after mode-specific navigation filtering.",
+    "Fix light/dark logo selection, standalone/embedded UI4 theme inheritance and text contrast.",
+    "Load jQuery UI before the legacy RequireJS loader to avoid anonymous AMD conflicts.",
+    "On AiMesh nodes, replace the empty local SDN profile editor with actual wireless status and a controller settings link.",
+    "Read CPU/RAM from the existing local telemetry endpoint; derive CPU percentage from counter deltas.",
+    "Count locally authorized wireless clients per band instead of LAN-discovered devices.",
+    "Show AI board IP and container status; prefer the validated IPv4 address for existing app links.",
+    "Match the existing legacy re_mode=1 policy-popup exemption in the new wrapper. Consent records and feature-specific EULA flows remain unchanged.",
+    "Explicitly label unavailable Wi-Fi history; avoid the absent raw-history endpoint without substituting incompatible sampled data.",
+    "Override the hardcoded translucent-white AI app cards in dark mode; keep disabled controls disabled while improving text and button contrast."
+  ],
+  "verification": {
+    "syntax": [
+      {
+        "name": "index.html#1",
+        "ok": true
+      },
+      {
+        "name": "index.html#2",
+        "ok": true
+      },
+      {
+        "name": "js/basic.js",
+        "ok": true
+      },
+      {
+        "name": "state.js",
+        "ok": true
+      },
+      {
+        "name": "SDN/sdn.html#1",
+        "ok": true
+      },
+      {
+        "name": "SDN/sdn.html#2",
+        "ok": true
+      },
+      {
+        "name": "pages/aiboard.html#1",
+        "ok": true
+      },
+      {
+        "name": "pages/sdn.html#1",
+        "ok": true
+      },
+      {
+        "name": "pages/sdn.html#2",
+        "ok": true
+      },
+      {
+        "name": "js/dashboard.module.js",
+        "ok": true
+      },
+      {
+        "name": "pages/dashboard.html#1",
+        "ok": true
+      },
+      {
+        "name": "pages/dashboard.html#2",
+        "ok": true
+      }
+    ],
+    "chrome": "Dashboard, Network wireless status, Tools system information and AI Board pages inspected in native Chrome.",
+    "dashboard": {
+      "cpu_percent_observed": 4.9,
+      "ram_percent_observed": 22.4,
+      "wireless_clients_by_band": [
+        2,
+        0,
+        1
+      ]
+    },
+    "ai_page": {
+      "ip": "192.168.100.39",
+      "containers_observed": [
+        "slm-asus \u2014 Up 14 minutes (after AI board firmware update)"
+      ],
+      "portainer": "Not installed; native install control visible",
+      "home_assistant": "Not installed; native install control visible",
+      "frigate": "Not installed; native install control visible",
+      "firmware_visible_in_chrome": "3.0.0.2.102_171-g7f63bc6_19-gec2d4"
+    },
+    "policy_popup": "No automatic ASUS base-policy popup after reload and a fresh authenticated login on this node.",
+    "deployment": "All nine mounted files verified by SHA256; repeated apply tested without stacking bind mounts.",
+    "reboot_tested": false
+  },
+  "persistence": {
+    "directory": "/jffs/node-web-fix",
+    "hook": "/jffs/scripts/services-start",
+    "rgb_hook_preserved": true,
+    "nvram_changed": false,
+    "kernel_or_blob_changed": false,
+    "rollback_command": "sh /jffs/node-web-fix/rollback.sh",
+    "guard": "Skip if model or role does not match, disabled marker exists, or current firmware web-file hashes differ."
+  },
+  "ai_update_observed": {
+    "router_local_started": "2026-10-03 20:25:39",
+    "source_log": "httpds 4060:notify_rc start_webs_ai_upgrade",
+    "initiator": "Not established; user confirmation requested. No update command intentionally issued by this web-overlay deployment.",
+    "final_status": "DONE",
+    "error_code": 0,
+    "system_status": "success",
+    "queried_version": "3.0.0.2 build 171",
+    "bcm_boot_id_unchanged": true
+  },
+  "limitations": [
+    "This is a first set of concrete web UI repairs, not an exhaustive audit of every page.",
+    "Stock httpd still lacks the Wi-Fi raw-history API; history is unavailable.",
+    "Portainer, Home Assistant and Frigate have only been exposed; their installation and functional tests have not been performed.",
+    "No AI-specific terms were accepted, no AI query was submitted, and no WAN management was enabled.",
+    "Persistence was verified by the startup hook, mounted file hashes and idempotent apply, without rebooting the router.",
+    "AiMesh Wi-Fi configuration still belongs to the controller; this change does not resolve the separate WPA3 profile synchronization or LAN-bond reboot issues."
+  ],
+  "evidence": [
+    "evidence/ui-audit/persistent-install.json",
+    "evidence/ui-audit/persistent-refinement.json"
+  ],
+  "manifest": {
+    "files": [
+      {
+        "path": "index.html",
+        "source_sha256": "71d16b822f86a7d0cd060292b778952722362958bb66d075bc60a43eaa5bae40",
+        "patched_sha256": "f83245b3253e6bad74d9b9593120b32f4943b18f0c1923a01ae03615d47227d5",
+        "size": 10638
+      },
+      {
+        "path": "js/basic.js",
+        "source_sha256": "b2d73bab83b1c0df7029047174218a3eaef962d2aa669d957ecaefac016f504b",
+        "patched_sha256": "2771501c2be0e7d350bb5eba8e376c5e447c4c501557c2ea9f684a661b66db40",
+        "size": 70292
+      },
+      {
+        "path": "state.js",
+        "source_sha256": "752d1e38748c6ab101ee9586fac2d05a8199b7a68910c4b1eb0f277bdb3b498a",
+        "patched_sha256": "4d31fe429cc51bcfd882bcaa9bb9ff79e7ff79f666ceef12ce485f9e491aa90e",
+        "size": 192906
+      },
+      {
+        "path": "SDN/sdn.html",
+        "source_sha256": "a5d3f44b0060195f62c05f6489749fea126765e5a43256f8437698f05b527f62",
+        "patched_sha256": "a5796b4520c1f76a102dd87c17a8b07699edcdbaa1e8c05176040a8c8b8e76a4",
+        "size": 12794
+      },
+      {
+        "path": "css/architecture.css",
+        "source_sha256": "ec8da371d66bb261edd9be3c4c7942d49f599e532799e8867cc5a028df0f1c41",
+        "patched_sha256": "554c2e90945bad0c358bbd7fe375f55ffb46b8c35fe850781e8d17ad06bf6c5b",
+        "size": 36834
+      },
+      {
+        "path": "pages/aiboard.html",
+        "source_sha256": "e680a0946500edd9f8f5c0047fd3a24458aa369774d7188c90f26bb84a056611",
+        "patched_sha256": "99f5f2a42579d5bedf7731643e98e4a99bc07e5f5da926ecf21694085d172414",
+        "size": 62187
+      },
+      {
+        "path": "pages/sdn.html",
+        "source_sha256": "3d239df3c582aa14d5a604990a95d2da492b2ba5bdd6c80f69f5c94b02f7df8c",
+        "patched_sha256": "2a313cfe5c5780baca951a3bed79e2e9b699da5d6195b321ad0d917a44b3008d",
+        "size": 3927
+      },
+      {
+        "path": "js/dashboard.module.js",
+        "source_sha256": "8747bc29f7c51bcb1a944cba68e53c5aff2869357b459805d0d3dd228faef018",
+        "patched_sha256": "37d02a6c5a9d2b5f6c738edf261ee24183412b7070196235e043fba125326406",
+        "size": 104765
+      },
+      {
+        "path": "pages/dashboard.html",
+        "source_sha256": "fd5dbc05c14d8b13cf98131c13c7e7b39af0a58a673dc964e433047b16084ddc",
+        "patched_sha256": "d9f25788a7c9c96313e4d47727701774fbe639f8e6b49780c2ccdc8e295e9cc6",
+        "size": 114301
+      }
+    ],
+    "scope": "Authenticated local node web UI; no network-role or authentication changes"
+  }
+}

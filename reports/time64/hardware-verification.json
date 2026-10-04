@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "verified_at_utc": "2026-10-04T12:20:58.945170+00:00",
+  "scope": "GT-BE19000AI BCM side, deployed kernel8-ui1; verification only; SL1680 AI board excluded",
+  "verdict": {
+    "overall": "partial: ARM64 native time64 works in tested paths; ARM32 compat time64 syscall ABI absent",
+    "zh_TW": "目前 kernel8 原生 arm64 已通過 time64 實測；armel／armhf 缺少新版 time64 系統呼叫，尚不符合完整混合 ABI 使用者空間的需求。"
+  },
+  "device": {
+    "model": "GT-BE19000AI",
+    "address": "192.168.100.15",
+    "release": "4.19.294",
+    "build": "#8",
+    "machine": "aarch64",
+    "boot_id_before_and_after": "00000000-0000-4000-8000-000000000012",
+    "running_config_sha256": "1c495c39d80319246f26a38192eb481b54860ea938d46bbc8156b4fa676a8216",
+    "execution": "Direct real-hardware execution over SSH; no QEMU-user, no syscall interposition"
+  },
+  "artifact_binding": {
+    "build/Image-v8": "bd866bd952a79092126e31a15e123d6286f6e10b92ddf3b1e81d553ccb790234",
+    "configs/kernel8.config": "1c495c39d80319246f26a38192eb481b54860ea938d46bbc8156b4fa676a8216",
+    "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/vmlinux": "76778f142fae0e3c68908718b19b6ade234ac726aef035076c41214e21a4dabe"
+  },
+  "native_arm64": {
+    "tested_time64_behavior_passes": 11,
+    "safely_probed_syscalls": 18,
+    "available": 17,
+    "enosys": 1,
+    "enosys_explanation": "io_pgetevents is disabled by CONFIG_AIO=n; not a time width failure",
+    "future_absolute_seconds": 4102444800,
+    "future_date_utc": "2100-01-01",
+    "timerfd_roundtrip": "passed, private timer immediately closed",
+    "file_timestamp_roundtrip": "passed exact seconds and nanoseconds using utimensat and statx on an immediately unlinked private temporary file",
+    "limits": "Dispatch-only invalid-input tests do not prove full semantics for every interface; clock_settime and clock_adjtime deliberately not invoked; no claim of full modern glibc/systemd compatibility"
+  },
+  "arm32_compat": {
+    "abis": [
+      "armel (32-bit softfp)",
+      "armhf (32-bit hardfp)"
+    ],
+    "legacy_clock_gettime32_control": "passed on both ABIs",
+    "time64_syscalls_safely_tested_per_abi": 18,
+    "time64_syscalls_returning_enosys_per_abi": 18,
+    "mutating_clock_syscalls_not_executed": [
+      "clock_settime64",
+      "clock_adjtime64"
+    ],
+    "all_missing_entries_proved_by_source_and_compiled_table": [
+      403,
+      404,
+      405,
+      406,
+      407,
+      408,
+      409,
+      410,
+      411,
+      412,
+      413,
+      414,
+      416,
+      417,
+      418,
+      419,
+      420,
+      421,
+      422,
+      423
+    ],
+    "reserved_number_not_tested": 415,
+    "compiled_compat_table_entries": 399,
+    "compiled_compat_table_bytes": 3192,
+    "CONFIG_COMPAT_32BIT_TIME": "y; preserves the old 32-bit-time ABI, does not add new time64 entry points"
+  },
+  "real_glibc_runtime": {
+    "version": "2.44",
+    "source_commit": "2d5421ffca8893534d5e02ad38c28acd8e778fa3",
+    "origin": "Existing BE98 builds copied and stripped into isolated temporary directories",
+    "abis": [
+      "armel",
+      "armhf"
+    ],
+    "time_t_bytes": 8,
+    "feature_macros": [
+      "_TIME_BITS=64",
+      "_FILE_OFFSET_BITS=64"
+    ],
+    "configured_minimum_kernel": "4.19",
+    "current_time_read": "passed on both ABIs",
+    "private_relative_timer_seconds": 2147483664,
+    "expected_kernel_capability_test_result": "EOVERFLOW (errno 75) on both ABIs",
+    "meaning": "libc current-time fallback works but does not supply missing kernel time64 functionality",
+    "runtime_resolution": "Explicit isolated loader and library path; hashes matched; stock libc/loader not replaced",
+    "probe_exit_status_note": "Exit 0 with --expect-eoverflow means the expected limitation was confirmed, not that time64 support passed"
+  },
+  "followup_required_for_full_arm32_time64": [
+    "Backport the Linux 5.1-era ARM32 time64 syscall ABI and the associated compat handlers/conversions; entry numbers alone are insufficient.",
+    "Preserve legacy time32 interfaces for ASUS/Broadcom blobs; do not simply disable CONFIG_COMPAT_32BIT_TIME.",
+    "Review ancillary timestamp interfaces (SO_TIMESTAMP_NEW, SO_TIMESTAMPNS_NEW, SO_TIMESTAMPING_NEW) and old stat ABI boundaries separately.",
+    "Repeat real hardware tests for both armel and armhf plus native ARM64 regression, including positive future-time behavior after the backport."
+  ],
+  "changes_and_cleanup": {
+    "kernel_or_firmware_changed": false,
+    "system_clock_set_or_adjusted": false,
+    "router_rebooted": false,
+    "stock_userspace_or_shared_libraries_replaced": false,
+    "AI_board_changed": false,
+    "test_directory": "/tmp/kernel8-ui1-time64",
+    "uploaded_files_removed": true,
+    "test_directory_absence_verified": true,
+    "cleanup_command_exit_status": 0,
+    "SSH_session_closed": true
+  },
+  "references": [
+    {
+      "url": "https://sourceware.org/glibc/manual/2.44/html_node/Feature-Test-Macros.html",
+      "relevance": "_TIME_BITS=64 requires _FILE_OFFSET_BITS=64; traditional32bit APIs can fall back to legacy syscalls."
+    },
+    {
+      "url": "https://kernel.googlesource.com/pub/scm/linux/kernel/git/arnd/playground/+/refs/tags/y2038-new-syscalls",
+      "relevance": "Author tag lists time64 syscall ABI additions for32bit architectures. Final numbering cross-checked with installed UAPI."
+    }
+  ],
+  "evidence": [
+    {
+      "path": "evidence/time64/final-cleanup.txt",
+      "sha256": "51692fe1394d5973060fbfe4f5a9c80fddd1c84a5e066506b5d4a9cf463c43b0"
+    },
+    {
+      "path": "evidence/time64/glibc-armel.txt",
+      "sha256": "d098b122d6661fdd0a9ea51ecaafcde65f739c2024d02709394a4530325e9058"
+    },
+    {
+      "path": "evidence/time64/glibc-armhf.txt",
+      "sha256": "c289bc4e3aa1822fd963e50a15d0d998ee3a2ae5a88ee379eb82ec9dabe46f3e"
+    },
+    {
+      "path": "evidence/time64/glibc-runtime-resolution.txt",
+      "sha256": "8d4be2e6e87a49650df94d201193071525c4a7e869495a505d8955d4eb55a180"
+    },
+    {
+      "path": "evidence/time64/live-baseline.txt",
+      "sha256": "f8f1d000b57759826952ef0cb45e8d311da98e542f57a56fa64981befbb3e197"
+    },
+    {
+      "path": "evidence/time64/raw-arm64.txt",
+      "sha256": "e8cc17d8de1fca9ec907385d354835a5a9edf9ce06ca25148109fb2411915995"
+    },
+    {
+      "path": "evidence/time64/raw-armel.txt",
+      "sha256": "caec1d27d84abc0cf31eac9baf5a8b17fc741e8221ba691be58d5959ebeda754"
+    },
+    {
+      "path": "evidence/time64/raw-armhf.txt",
+      "sha256": "6e20588e30adea6f2b1c87007f664d8f013e40aeceaa068d4060dd18f812d33d"
+    },
+    {
+      "path": "evidence/time64/test-directory.txt",
+      "sha256": "d2957a110145d7f53422397c0e7aa9a51068fe470876acb6dfc8ef7eabbd5e78"
+    }
+  ],
+  "supporting_audits": [
+    {
+      "path": "reports/time64/source-audit.json",
+      "sha256": "c0708e761fc7d499ab25f43b91e37d655286314854963485e68fa0866a863cba"
+    },
+    {
+      "path": "reports/time64/probe-build.json",
+      "sha256": "535ef9a04d81824e183d7b14c93ee5cb54223610f1765e8f694ed91a39cbead4"
+    },
+    {
+      "path": "build/time64-glibc/build-manifest.json",
+      "sha256": "8ecff94a74638426fcaea5d03ff4bd053ddcfa5f42993e3c6b3b6660bdaa3c1c"
+    }
+  ],
+  "audit_status_note": "Supporting source and build audits describe their own static stages; this historical kernel8 report records the later completed hardware runs. Kernel9 follow-up is recorded separately in reports/kernel9/hardware-acceptance.json."
+}

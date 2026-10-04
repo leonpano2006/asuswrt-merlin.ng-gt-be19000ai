@@ -1,0 +1,125 @@
+{
+  "release": "kernel6-ui1",
+  "validated_at": "2026-10-04T10:08:10.217272+00:00",
+  "status": "FLASHED_TRIAL_BOOT_ACCEPTED",
+  "image": "GT-BE19000AI_3006_102.9_leon-kernel6-ui1_TRIAL.pkgtb",
+  "sha256": "b4f4a744814929d77a65fd4283507e42d7d485637440194b0bd3ed23466e39a8",
+  "bytes": 86701964,
+  "kernel": {
+    "version": "4.19.294 #6",
+    "sha256": "807318115f76789e20d7d3ebfeff8cf22a5c19959ac1ecedf1d33dc96eff93ce",
+    "unchanged_from_validated_kernel6": true,
+    "live_config_sha256": "6343cfb8c8de0338bd4361cc5b9f3a4e4b8cbe134e615050a11a7d4fccb2c4ed"
+  },
+  "integration": {
+    "changed_filesystem_entries": 32,
+    "live_regular_file_hashes_verified": 27,
+    "web_assets": 15,
+    "stock_pid1_and_libcodb_retained": true,
+    "kernel_modules_unchanged": true,
+    "ai_board_modified": false,
+    "rootfs": "Zstd SquashFS, level 22, block 524288",
+    "credential_embedded": false,
+    "web_bind_overlays_after_reboot": false
+  },
+  "validation": {
+    "qemu_complete": true,
+    "qemu_panic": false,
+    "qemu_result": "build/qemu/rc1-integrated-final/result.json",
+    "qemu_initramfs_sha256": "76d9a39a08e3059a1348ee6430235e98a778e8e8df88a05964b153cae17e8a57",
+    "qemu_log_sha256": "eff4b4166ab6da8e8f2508bb36ce6a3b41f3939308318297b7d0e767ee19678a",
+    "qemu_checks": [
+      "LAB_ROOTFS_PASS zstd_mount_and_all_userspace_hashes",
+      "LAB_ZSWAP_BOOT_POOL_PASS",
+      "LAB_MODULE_BEGIN tfat",
+      "LAB_MODULE_END tfat rc=0 errno=0 message=Success",
+      "LAB_MODULE_BEGIN tntfs",
+      "LAB_MODULE_END tntfs rc=0 errno=0 message=Success",
+      "LAB_MODULE_BEGIN thfsplus",
+      "LAB_MODULE_END thfsplus rc=0 errno=0 message=Success",
+      "LAB_MODULE_BEGIN raid6_pq",
+      "LAB_MODULE_END raid6_pq rc=0 errno=0 message=Success",
+      "LAB_MODULE_BEGIN xor",
+      "LAB_MODULE_END xor rc=0 errno=0 message=Success",
+      "LAB_MODULE_BEGIN btrfs",
+      "LAB_MODULE_END btrfs rc=0 errno=0 message=Success",
+      "LAB_MODULE_BEGIN exportfs",
+      "LAB_MODULE_END exportfs rc=0 errno=0 message=Success",
+      "LAB_MODULE_BEGIN overlay",
+      "LAB_MODULE_END overlay rc=0 errno=0 message=Success",
+      "LAB_DOCKER_PASS memory_and_memswap_limit_visible",
+      "LAB_DOCKER_PASS cpu_quota_cpuset_blkio_flags",
+      "LAB_DOCKER_PASS btrfs_overlay_pagecache",
+      "LAB_DOCKER_PASS oom_isolated_and_reported",
+      "LAB_DOCKER_PASS swap_charge_reclaim_and_data_roundtrip",
+      "LAB_DOCKER_PASS survives_oom"
+    ],
+    "flash_readback_passed": true,
+    "original_slot2_full_hashes_unchanged": true,
+    "controller_reports_mesh_online": true,
+    "wired_backhaul": true,
+    "radio_isup": [
+      1,
+      1,
+      1
+    ],
+    "ai_internal_link_ping": true,
+    "rgb_firmware_executable_running": true,
+    "rgb_eight_schemes_qemu_pass": true,
+    "rgb_physical_colors_after_this_boot": "Not separately confirmed by user after this reboot; earlier runtime version was physically confirmed.",
+    "chrome_reloaded_local_management": true,
+    "chrome_ai_hostname": "aiboard-C686",
+    "chrome_ai_board_ip": "192.168.100.39",
+    "chrome_ai_containers": [
+      "formal-portainer-asus: Up 13 hours",
+      "homeassistant-asus: Up About an hour",
+      "slm-asus: Up 16 hours"
+    ],
+    "chrome_ccr_status": "fresh data normal",
+    "chrome_local_ethernet": "5/7 connected",
+    "collectors_running_from_firmware": true,
+    "collector_error_files_bytes": [
+      0,
+      0
+    ],
+    "final_observed_uptime_seconds": 670.84,
+    "no_panic_oops_bug_seen": true
+  },
+  "trial": {
+    "booted_slot": 1,
+    "slot1_committed": false,
+    "next_boot_slot": 2,
+    "slot2_committed": true,
+    "metadata_partitions_read_only": true,
+    "permanent_commit_performed": false,
+    "boot_id": "00000000-0000-4000-8000-000000000031"
+  },
+  "fallback_hashes": {
+    "bootfs2_full": "ecda0c1ad0dab3fbe28ef93ab9500e713e19b2b238a055d1fd3971ede03a0256",
+    "rootfs2_full": "51128dda31033fb34ef315e25b767f1b4557967bb1168bbdb8636c1e79b76465"
+  },
+  "persistent_hooks": {
+    "services_start_sha256": "81a2cca1c6088bfc06052d833aae75158ecb4a17b565850e74a87086a3ab6e54",
+    "ledg_ensure_sha256": "38cad6313bafeb635848ba9dc8775616fc53aab1d322c245d6f325d6d21167f9",
+    "fallback": "Original slot uses the previous JFFS runtime fixes; integrated slot starts its firmware collectors. Exact image checks guard selection.",
+    "nvram_changes_this_release": false
+  },
+  "limitations": [
+    "Short bounded boot acceptance, not a long soak or throughput test.",
+    "One Serdes warning remains in dmesg; do not claim a globally warning-free log.",
+    "libcodb NULL guard excluded: public source lacks three shipped ABI exports; stock library retained with NULL-free history schema.",
+    "Scoped service restarts for settings changes remain audit/design only.",
+    "Full AirIQ FFT and remaining custom UI localization are pending.",
+    "SL1680 THP, kernel, modules, userspace and memory settings remain unchanged."
+  ],
+  "evidence": [
+    "evidence/rc1/flash-readback.txt",
+    "evidence/rc1/health-first.txt",
+    "evidence/rc1/health-final.txt",
+    "evidence/rc1/live-files.sha256",
+    "evidence/rc1/controller-mesh.json",
+    "evidence/rc1/rootfs-changes.json",
+    "evidence/rc1/chrome-ai-board.txt",
+    "reports/ui-audit/libcodb-integration.json"
+  ]
+}

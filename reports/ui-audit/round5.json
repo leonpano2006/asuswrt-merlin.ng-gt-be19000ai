@@ -1,0 +1,130 @@
+{
+  "scope": "Local Ethernet dashboard repair and read-only myStrom connectivity diagnosis",
+  "date": "2026-10-03",
+  "firmware_packaged": false,
+  "flashed": false,
+  "git_committed": false,
+  "changed_assets": [
+    "pages/dashboard.html"
+  ],
+  "backup": "/jffs/node-web-fix/before-round5",
+  "ethernet": {
+    "root_cause": "NEW_PHYMAP node get_port_status.cgi returns {}; dashboard hides its legacy PHY table despite live physical links",
+    "fix": "Use existing authenticated get_wan_lan_status() hook for exact GT-BE19000AI physical-port map; seven external ports, excluding internal eth.ai",
+    "parser": "Strict known speed codes; invalid/missing fields are unknown, X alone is disconnected; failed fetch clears old readings; no eval",
+    "refresh_seconds": 5,
+    "read_timeout_seconds": 5,
+    "port_mapping_source": "shared/sysdeps/broadcom/broadcom.c GTBE19000AI phy_port_mapping",
+    "observed_ports": [
+      {
+        "key": "WAN 0",
+        "label": "WAN / LAN",
+        "capacity": "10 Gbps",
+        "state": "up",
+        "rate": "10 Gbps"
+      },
+      {
+        "key": "LAN 1",
+        "label": "LAN 1",
+        "capacity": "2.5 Gbps",
+        "state": "up",
+        "rate": "1 Gbps"
+      },
+      {
+        "key": "LAN 2",
+        "label": "LAN 2",
+        "capacity": "2.5 Gbps",
+        "state": "up",
+        "rate": "1 Gbps"
+      },
+      {
+        "key": "LAN 3",
+        "label": "LAN 3",
+        "capacity": "2.5 Gbps",
+        "state": "down",
+        "rate": null
+      },
+      {
+        "key": "LAN 4",
+        "label": "LAN 4",
+        "capacity": "2.5 Gbps",
+        "state": "up",
+        "rate": "2.5 Gbps"
+      },
+      {
+        "key": "LAN 5",
+        "label": "LAN 5",
+        "capacity": "1 Gbps",
+        "state": "down",
+        "rate": null
+      },
+      {
+        "key": "LAN 6",
+        "label": "LAN 6",
+        "capacity": "10 Gbps",
+        "state": "up",
+        "rate": "10 Gbps"
+      }
+    ],
+    "kernel_correspondence": "eth0 10G; eth1/eth2 1G; eth3 down; eth4 2.5G; eth5 down; eth6 10G; all full duplex where connected",
+    "bond": "bond0 active 802.3ad aggregator with eth1 and eth2 at 1G each; member links shown separately; no bond settings changed",
+    "live_dashboard_sha256": "8ae418971704fb658b6e3be790cadbe784fb595535a030f65ff62e2bd3c34894"
+  },
+  "validation": {
+    "javascript": "reports/ui-audit/round5-js-validation.json",
+    "all_15_live_hashes": "passed",
+    "only_dashboard_changed": true,
+    "reapply_idempotence": "passed",
+    "chrome": "Normal Chrome dashboard displays 5/7 connected, correct seven rows and speeds, readable Dark ROG/Fancy theme, existing CPU/wireless/history/RGB views still present",
+    "error_log_limit": "Legacy iframe login-expiry errors predate reload. Two opaque Object errors on index.html remain; not claiming a globally error-free page.",
+    "cable_unplug_test": "not performed",
+    "reboot_validation": "deferred"
+  },
+  "runtime": {
+    "boot_id": "00000000-0000-4000-8000-000000000003",
+    "httpds": 15731,
+    "httpd": 4062,
+    "hostapd": 9278,
+    "cfg_client": 6858,
+    "ledg": 7960,
+    "history": 3638,
+    "unchanged_pids_verified": true,
+    "rebooted": false,
+    "services_restarted": false
+  },
+  "mystrom": {
+    "changes_made": false,
+    "known_devices": [
+      {
+        "name": "myStrom-Switch-CEF5A8",
+        "ip": "192.168.100.17",
+        "rssi_dbm": -70
+      },
+      {
+        "name": "myStrom-Switch-7D6DCC",
+        "ip": "192.168.100.18",
+        "rssi_dbm": -36
+      },
+      {
+        "name": "myStrom-Switch-7D875C",
+        "ip": "192.168.100.49",
+        "rssi_dbm": -35
+      }
+    ],
+    "current_status": "All three authorized on BE98 2.4GHz wl3.1, valid CCR DHCP leases, station records show WPA3-SAE, three pings each with zero loss",
+    "local_api": "All three /api/v1/info and /report returned HTTP200; firmware4.0.14; connected=true and ntp,dns,connection,handshake,login all true",
+    "official_api_reference": "https://api.mystrom.ch/",
+    "historical_event": {
+      "time_zone": "CEST",
+      "wireless_restart": "2026-10-03 20:58:31 cfg_server notify_rc restart_wireless;restart_sdn 3;restart_sdn 1",
+      "reassociation": "All three reconnect 20:59:19–20:59:34 after transient authentication/deauthentication events",
+      "interpretation": "Confirmed earlier wireless service restart, not evidence of a whole-device reboot; initiating setting/person and relationship to reported symptom unknown"
+    },
+    "limitations": [
+      "User has not identified affected device or whether failure is pairing versus app offline",
+      "Current success cannot rule out a past or intermittent outage",
+      "Weakest device is .17; signal alone does not establish cause"
+    ],
+    "private_evidence": "evidence/ui-audit/round5 and round5-master"
+  }
+}

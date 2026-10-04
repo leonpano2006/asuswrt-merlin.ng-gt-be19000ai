@@ -1,0 +1,140 @@
+{
+  "reviewed_at_utc": "2026-10-04T10:52:13.763514+00:00",
+  "status": "passed",
+  "runs": {
+    "psi7-refault-baseline": {
+      "result_path": "build/qemu/psi7-refault-baseline/result.json",
+      "kernel_sha256": "9819ebd69792190a9d178fd802782fe4de4a9866c411949f24e15fd1724187c3",
+      "initramfs_sha256": "b144c60744e1a4b28ca24a7a47ca9ae85ed3ce5afbe37be47e13cf1be0154cde",
+      "log_sha256": "460417adcd2e880a90db5ed03e6c460cd86228ecab6081807b02bdc14766bcfb",
+      "guest_complete": true,
+      "exit_code": 0,
+      "elapsed_seconds": 10.22,
+      "diagnostics": [],
+      "measurements": {
+        "cold": {
+          "expectation": "baseline",
+          "memory_some_delta": 0,
+          "memory_full_delta": 0,
+          "io_some_delta": 3962589,
+          "io_full_delta": 3962589,
+          "refault_delta": 0,
+          "activate_delta": 0,
+          "pgscan_delta": 0,
+          "max_event_delta": 0,
+          "memory_event": 0,
+          "seconds": 4.002
+        },
+        "hot": {
+          "expectation": "baseline",
+          "memory_some_delta": 0,
+          "memory_full_delta": 0,
+          "io_some_delta": 3621117,
+          "io_full_delta": 3621117,
+          "refault_delta": 462,
+          "activate_delta": 462,
+          "pgscan_delta": 0,
+          "max_event_delta": 0,
+          "memory_event": 0,
+          "seconds": 3.659
+        }
+      },
+      "lab_lines": [
+        "LAB_REFAULT_EVENT cold_io flags=0x2",
+        "LAB_REFAULT_READ kind=cold seconds=3.999 bytes=2097152",
+        "LAB_REFAULT_MEASURE kind=cold expectation=baseline memory_some_delta=0 memory_full_delta=0 io_some_delta=3962589 io_full_delta=3962589 refault_delta=0 activate_delta=0 pgscan_delta=0 max_event_delta=0 memory_event=0 seconds=4.002",
+        "LAB_REFAULT_WARM active_file=14622720 hot_resident=512",
+        "LAB_REFAULT_PREPARED resident=45 churn_bytes=14680064 active_file=10244096 pgdeactivate=1081 pgscan=2102 pgsteal=2102 max_events=57",
+        "LAB_REFAULT_EVENT hot_io flags=0x2",
+        "LAB_REFAULT_READ kind=hot seconds=3.656 bytes=2097152",
+        "LAB_REFAULT_MEASURE kind=hot expectation=baseline memory_some_delta=0 memory_full_delta=0 io_some_delta=3621117 io_full_delta=3621117 refault_delta=462 activate_delta=462 pgscan_delta=0 max_event_delta=0 memory_event=0 seconds=3.659",
+        "LAB_REFAULT_PASS expectation=baseline cold_hot_file_read_with_no_measurement_reclaim",
+        "LAB_REFAULT_PASS no_psi_underflow_inconsistent_leak_oops_or_warning"
+      ]
+    },
+    "psi8-refault-hooks": {
+      "result_path": "build/qemu/psi8-refault-hooks/result.json",
+      "kernel_sha256": "bd866bd952a79092126e31a15e123d6286f6e10b92ddf3b1e81d553ccb790234",
+      "initramfs_sha256": "f6256ccc9f5c66e19635709a73fc431ce184b124ec60080b6eb1d9312f6e48bf",
+      "log_sha256": "75705e0357f78721098ac5da3848c9b24865755108f988369076c9ef37c87162",
+      "guest_complete": true,
+      "exit_code": 0,
+      "elapsed_seconds": 10.22,
+      "diagnostics": [],
+      "measurements": {
+        "cold": {
+          "expectation": "hooks",
+          "memory_some_delta": 0,
+          "memory_full_delta": 0,
+          "io_some_delta": 3957998,
+          "io_full_delta": 3957998,
+          "refault_delta": 0,
+          "activate_delta": 0,
+          "pgscan_delta": 0,
+          "max_event_delta": 0,
+          "memory_event": 0,
+          "seconds": 3.998
+        },
+        "hot": {
+          "expectation": "hooks",
+          "memory_some_delta": 3476059,
+          "memory_full_delta": 3476059,
+          "io_some_delta": 3472603,
+          "io_full_delta": 3472603,
+          "refault_delta": 429,
+          "activate_delta": 429,
+          "pgscan_delta": 0,
+          "max_event_delta": 0,
+          "memory_event": 1,
+          "seconds": 3.507
+        }
+      },
+      "lab_lines": [
+        "LAB_REFAULT_EVENT cold_io flags=0x2",
+        "LAB_REFAULT_READ kind=cold seconds=3.994 bytes=2097152",
+        "LAB_REFAULT_MEASURE kind=cold expectation=hooks memory_some_delta=0 memory_full_delta=0 io_some_delta=3957998 io_full_delta=3957998 refault_delta=0 activate_delta=0 pgscan_delta=0 max_event_delta=0 memory_event=0 seconds=3.998",
+        "LAB_REFAULT_WARM active_file=14622720 hot_resident=512",
+        "LAB_REFAULT_PREPARED resident=62 churn_bytes=14680064 active_file=10276864 pgdeactivate=1047 pgscan=2142 pgsteal=2142 max_events=55",
+        "LAB_REFAULT_EVENT hot_io flags=0x2",
+        "LAB_REFAULT_EVENT hot_memory flags=0x2",
+        "LAB_REFAULT_READ kind=hot seconds=3.505 bytes=2097152",
+        "LAB_REFAULT_MEASURE kind=hot expectation=hooks memory_some_delta=3476059 memory_full_delta=3476059 io_some_delta=3472603 io_full_delta=3472603 refault_delta=429 activate_delta=429 pgscan_delta=0 max_event_delta=0 memory_event=1 seconds=3.507",
+        "LAB_REFAULT_PASS expectation=hooks cold_hot_file_read_with_no_measurement_reclaim",
+        "LAB_REFAULT_PASS no_psi_underflow_inconsistent_leak_oops_or_warning"
+      ]
+    }
+  },
+  "ab_control": {
+    "probe_binary_identical": true,
+    "probe_binary_sha256": "6e3ca635bbebe2e68b87c304900f5941b0668d4a057b82485434e7255bc9bfc1",
+    "filesystem_image_identical": true,
+    "filesystem_image_sha256": "3cc1c8a5a7062cb1b43d10a7f83da9ec372bc78f845e1eadcaa18ae540067507",
+    "only_guest_argument_differs": "--baseline versus --expect-hooks; kernel Image-v7 versus Image-v8",
+    "old_kernel_hot_memory_psi_microseconds": 0,
+    "new_kernel_hot_memory_psi_microseconds": 3476059,
+    "cold_memory_psi_microseconds_both": 0
+  },
+  "assertion_review": {
+    "normal_hot_eviction": "Warm hot+anchor three times, preserve mapped anchor references, read bounded churn under memory.max=20MiB until mincore reports at most 1/8 hot pages resident. No fadvise or drop_caches. LRU pgdeactivate and pgsteal must increase.",
+    "refault_not_cold_read": "Both kernels report positive workingset_refault and workingset_activate during the measured hot read. Cold reads report neither.",
+    "exclude_reclaim_false_positive": "After preparation completes and worker blocks on a pipe, parent raises memory.max to128MiB and keeps memory.high=max; then arms thresholds, captures fresh PSI/reclaim baselines and starts the measured read. pgscan, pgsteal and memory.events max must remain unchanged throughout measurement.",
+    "real_backing_io": "Read-only ext4 on a96MiB guest RAM-loop; buffered2MiB files contain nonzero allocated data, and v1 blkio read cap512KiB/s produces positive IO some/full plus strict PRI notifications.",
+    "memory_notification": "Old kernel hot memory PSI remains zero with no event; new kernel hot PSI increases by3.476059s and emits strict PRI without ERR/HUP/NVAL.",
+    "cold_control": "First cold file read begins with mincore resident0, ample128MiB budget, memory PSI remains0 on both kernels despite about4s of IO PSI."
+  },
+  "non_guest_guard_exit": 125,
+  "limits": {
+    "guest_ram_mib": 1024,
+    "loop_image_mib": 96,
+    "maximum_parallel_file_workers": 1,
+    "parent_watchdog_seconds": 60,
+    "child_watchdog_seconds": 50,
+    "host_disks": false,
+    "network": false
+  },
+  "remaining_limits": [
+    "Single bounded functional comparison, not a performance benchmark or exhaustive race proof.",
+    "Refault workloads evict slightly different hot page counts between runs; no throughput comparison is claimed.",
+    "This file-backed test does not validate swap-shadow restoration or anonymous swapped-page classification."
+  ]
+}

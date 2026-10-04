@@ -1,0 +1,17 @@
+{
+  "upstream_commit": "b8e24a9300b0836a9d39f6b20746766b3b81f1bd",
+  "reference": "https://github.com/torvalds/linux/commit/b8e24a9300b0836a9d39f6b20746766b3b81f1bd",
+  "memdelay_reference": "https://github.com/gregkh/linux/blob/a051a4bf909f76f470ccb3761ee0cf6e2395616e/block/blk-cgroup.c",
+  "adaptation": [
+    "BIO_WORKINGSET=12 instead of inserting among existing flag values",
+    "bi_flags remains 16 bits, bvec pool bit13+ encoding unchanged",
+    "bio_iov_iter_get_pages 4.19 directly constructs vectors without __bio_add_page; it does not newly mark direct IO as workingset",
+    "use_memdelay enter/leave follows upstream; runtime latency policy currently disabled so this branch is not claimed exercised"
+  ],
+  "files": {
+    "include/linux/blk_types.h": "f4fd69a29eb29911b0eda68abdc628cb06d4fd2ea642f746d156a9ebb96f4f95",
+    "block/bio.c": "75cabdb0c00dbb001eecd5a1f473a41b9365a0114ddc3e50c61553a28c2eb9eb",
+    "block/blk-core.c": "26ff2e88a24bb2c0d501dc2cafe498673ffe4c672d54acaab5174fa70ecb3c92",
+    "block/blk-cgroup.c": "ba89404ffcf5fa4aad2f51c21c924b3e246000574787d757ab785da4f5c3e527"
+  }
+}

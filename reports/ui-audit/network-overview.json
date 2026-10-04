@@ -1,0 +1,71 @@
+{
+  "updated_at": "2026-10-04T08:10:41.701085+00:00",
+  "target": "GT-BE19000AI 192.168.100.15",
+  "state": "Installed reversible UI/collector overlay; candidate held; no firmware image built",
+  "scope": "Read-only CCR2216 LAN observability, not a full UniFi controller",
+  "features": [
+    "Search/filter MAC inventory with ARP/DHCP/FDB evidence",
+    "Port-based topology; LLDP neighbors distinguished from broadcast discovery",
+    "Recent link/reboot/collection-gap events and current health/counter issues",
+    "Stale IP addresses kept separate from current DHCP/ARP-reachable addresses"
+  ],
+  "collection": {
+    "direct": true,
+    "dependency_on_192_168_100_51": false,
+    "interval_seconds": 30,
+    "max_snapshot_bytes": 131072,
+    "max_inventory_rows": 160,
+    "max_neighbors": 32,
+    "events_max": 30,
+    "events_retention_seconds": 86400,
+    "event_storage": "RAM; reset on BE19000AI reboot"
+  },
+  "observed": {
+    "sample_timestamp": 1791101361,
+    "mac_records": 70,
+    "recently_seen": 54,
+    "neighbor_advertisements": 7,
+    "infrastructure_groups": 6,
+    "issues": [],
+    "snapshot_db_rows": 1,
+    "payload_base64_bytes": 28400,
+    "boot_id": "00000000-0000-4000-8000-000000000003",
+    "service_pids": "15731 15731 4062 9278 6858 7960"
+  },
+  "verification": {
+    "backend_boundary_tests": 17,
+    "existing_ccr_tests": 10,
+    "frontend_data_tests": 7,
+    "chrome": [
+      "Live telemetry refresh",
+      "Topology port opens filtered inventory",
+      "Name search and stale-IP handling",
+      "Per-device inspector",
+      "Unconfirmed visibility filter",
+      "Issue scope and event retention text",
+      "Theme readability"
+    ],
+    "authentication": {
+      "status": 200,
+      "content_type": "text/html",
+      "login_page": true,
+      "telemetry_exposed": false,
+      "location": null
+    },
+    "router_rebooted": false,
+    "httpd_hostapd_cfg_client_ledg_restarted": false,
+    "credential_permissions": "0600; no new credential copy"
+  },
+  "limitations": [
+    "Visibility is recent observation, not an active reachability test of every device",
+    "Topology shows CCR paths; downstream switch internal cabling is not asserted",
+    "IPv4 LAN 192.168.100.0/24; no per-client SSID/roaming history/DPI",
+    "Events cover monitoring start onwards; no long-duration soak or reboot test performed",
+    "Existing generic vendor/extension console errors were present before this update"
+  ],
+  "rollback": "sh /jffs/node-web-fix/before-network-overview-20261004/rollback.sh",
+  "sources": [
+    "https://help.ui.com/hc/en-us/articles/360012192813-Introduction-to-UniFi",
+    "https://help.mikrotik.com/docs/spaces/ROS/pages/24805517/Neighbor+discovery"
+  ]
+}

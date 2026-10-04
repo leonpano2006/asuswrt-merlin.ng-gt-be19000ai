@@ -1,0 +1,195 @@
+{
+  "updated_at_utc": "2026-10-04T13:18:54.701231+00:00",
+  "target": "GT-BE19000AI BCM6813",
+  "candidate": "kernel9-arm32-time64",
+  "status": "FLASHED_TRIAL_BOOT_ACCEPTED",
+  "kernel": "Linux 4.19.294 #9",
+  "request": "Add the missing ARM32 time64 kernel support while preserving the existing ASUS/Broadcom time32 ABI.",
+  "deployed_firmware": "Kernel9-ui1 boots on the physical GT-BE19000AI BCM6813 in slot1. Bounded service and time64 acceptance passed. Slot1 remains uncommitted and the next reboot selects original slot2; SL1680 is unchanged.",
+  "image": {
+    "path": "build/Image-v9",
+    "sha256": "cf4f036d1ff03cb4d13e6f41aedb1b31665d6921a0dd93ff0b8fc951ae18e073"
+  },
+  "vmlinux": {
+    "path": "build/time64-kernel9/vmlinux",
+    "sha256": "b319c7880df88a4f0ab879201ba054655b1770b7d5d7a8dc3b58f6209008aa05"
+  },
+  "config": {
+    "path": "configs/kernel9.config",
+    "sha256": "1c495c39d80319246f26a38192eb481b54860ea938d46bbc8156b4fa676a8216",
+    "identical_to_kernel8": true
+  },
+  "patch": {
+    "path": "patches/0007-arm32-time64-compat.patch",
+    "sha256": "efd6466a359036c2fa8bfa85db76dc65a96187334f526223c22b821bcc6585ae",
+    "changed_files": 9,
+    "ordered_stack_check": "7/7 patches across 142 files; exact unwind to pinned source HEAD passed"
+  },
+  "implementation": {
+    "new_ABI_entries": 20,
+    "enabled_handlers": 19,
+    "disabled_by_existing_config": {
+      "io_pgetevents_time64": "CONFIG_AIO=n: ENOSYS remains intentional; handler independently compile-tested with CONFIG_AIO=1 without changing candidate configuration"
+    },
+    "compat_table_count_before": 399,
+    "compat_table_count_after": 424,
+    "unimplemented_holes": [
+      399,
+      400,
+      401,
+      402,
+      415
+    ],
+    "compound_compat_handlers": [
+      "pselect6_time64",
+      "ppoll_time64",
+      "io_pgetevents_time64",
+      "recvmmsg_time64",
+      "rt_sigtimedwait_time64"
+    ],
+    "padding": "Compat nanosecond high word is ignored; native64 invalid high bits still rejected. Shared futex reads through get_timespec64.",
+    "legacy_time32": "Old entry points and compat layouts remain; CONFIG_COMPAT_32BIT_TIME=y and COMPAT_USE_64BIT_TIME=0 retained."
+  },
+  "validation": {
+    "qemu": [
+      {
+        "label": "time64-kernel9-confirmed",
+        "report": "reports/kernel9/time64-kernel9-confirmed.json",
+        "guest_complete": true,
+        "kernel_sha256": "cf4f036d1ff03cb4d13e6f41aedb1b31665d6921a0dd93ff0b8fc951ae18e073"
+      },
+      {
+        "label": "time64-kernel9-resource",
+        "report": "reports/kernel9/time64-kernel9-resource.json",
+        "guest_complete": true,
+        "kernel_sha256": "cf4f036d1ff03cb4d13e6f41aedb1b31665d6921a0dd93ff0b8fc951ae18e073"
+      },
+      {
+        "label": "time64-kernel9-psi",
+        "report": "reports/kernel9/time64-kernel9-psi.json",
+        "guest_complete": true,
+        "kernel_sha256": "cf4f036d1ff03cb4d13e6f41aedb1b31665d6921a0dd93ff0b8fc951ae18e073"
+      },
+      {
+        "label": "time64-kernel9-docker-confirmed",
+        "report": "reports/kernel9/time64-kernel9-docker-confirmed.json",
+        "guest_complete": true,
+        "kernel_sha256": "cf4f036d1ff03cb4d13e6f41aedb1b31665d6921a0dd93ff0b8fc951ae18e073"
+      }
+    ],
+    "time64": "Raw arm64, armel, armhf pass; armel and armhf actual BE98 glibc2.44 time_t64 positive future timer, interrupted sleeps, pselect/ppoll remaining timeout and signal-mask restoration, futex STOP/CONT restart, and 2100 VM clock roundtrip pass.",
+    "nested_layouts": "Ready fd sets and sigarg guard pages, pending high RT63 signal mask, compat siginfo, recvmmsg message/iovec/SCM_RIGHTS, POSIX timers, message queues and semaphores pass.",
+    "legacy": "ARM32 time32 clock and timerfd canary/roundtrip tests pass.",
+    "abi_report": "reports/time64/abi-candidate.json",
+    "handler_review": "reports/time64/kernel9-handler-review.json",
+    "timex_layout": "reports/time64/timex-layout.json",
+    "reviewed_aggregate_layouts_unchanged": 543,
+    "old_dispatch_entries_unchanged": 693,
+    "actual_ELF_export_names_and_sections_unchanged": 7998,
+    "CRC_limitation": "CONFIG_MODVERSIONS=n; no ELF CRC symbols, so CRC comparison is not used as proof.",
+    "existing_modules": "Kernel8 module fixture retained; Tuxera tfat/tntfs/thfsplus and RAID/Btrfs/exportfs/Overlay modules loaded successfully in Docker regression. No module source/config or module artifact changes are required for this syscall-only patch.",
+    "independent_test_review": {
+      "path": "reports/time64/kernel9-test-review.json",
+      "sha256": "5a0b3cf98cecaab72ae81bd823e058cd0fa7e69e15be95e3946fa1442c5a4bc1"
+    },
+    "time64_semantic_checks": {
+      "arm64": 60,
+      "armel": 65,
+      "armhf": 65
+    },
+    "exact_integrated_qemu": {
+      "label": "kernel9-ui1-integrated-final",
+      "guest_complete": true,
+      "kernel_sha256": "cf4f036d1ff03cb4d13e6f41aedb1b31665d6921a0dd93ff0b8fc951ae18e073",
+      "initramfs_sha256": "5c3020fa1223dc64dc60ad11924b0eafdb930e945ba25ea902299f240bb0f5ae",
+      "result_sha256": "680f892954cb6a828d685fa345a7e80b711190701cb1260a0653be904bbb41c6",
+      "log_sha256": "bc2caea5318c82d736daae9f16f2d4d21705e1dc68c6cd7069a2dfe0fd5a71a1",
+      "marker": "QEMU_DOCKER_MEMCG_COMPLETE",
+      "zswap_enabled_for_test": true
+    },
+    "metadata_guard_qemu": {
+      "label": "kernel9-ui1-trial-guard",
+      "guest_complete": true,
+      "kernel_sha256": "cf4f036d1ff03cb4d13e6f41aedb1b31665d6921a0dd93ff0b8fc951ae18e073",
+      "initramfs_sha256": "146d9759316806ed0cc63233a8557cee6cb880f23494d2fa0ea64e1048e42c18",
+      "result_sha256": "b8958ec439ab6f6533e30206bde0e648fc672adcf0fca9c0bf426c8b1aea1f21",
+      "checks": [
+        "LAB_PASS stock_sysfs_block_layout",
+        "LAB_PASS metadata_writes_blocked",
+        "LAB_PASS ordinary_partition_writable",
+        "LAB_PASS explicit_operator_unlock"
+      ],
+      "qemu_disk_override_only": "loop.max_part=8 be19000ai_trial_disk=loop0; not a hardware boot parameter"
+    },
+    "package_checks": {
+      "original_signature_verified": true,
+      "new_signature_verified": true,
+      "signing_public_der_sha256": "8450c64281c9d0206dff844ae174fbe5e0ee805309368a02c4d54df5723643c0",
+      "uboot_lzo_exact_kernel_match": true,
+      "nonkernel_boot_payloads_unchanged": true,
+      "has_loader_update": false
+    },
+    "hardware_acceptance": {
+      "report": "reports/kernel9/hardware-acceptance.json",
+      "status": "FLASHED_TRIAL_BOOT_ACCEPTED",
+      "boot_id": "00000000-0000-4000-8000-000000000013",
+      "running_config_sha256": "1c495c39d80319246f26a38192eb481b54860ea938d46bbc8156b4fa676a8216",
+      "flash_readback_passed": true,
+      "original_slot2_full_hashes_unchanged": true,
+      "raw_time64_abis_passed": 3,
+      "isolated_glibc_time64_abis_passed": 2,
+      "global_clock_set_or_adjusted": false,
+      "temporary_probe_cleanup_verified": true,
+      "boot_log_review": "reports/kernel9/boot-log-review.json",
+      "observed_uptime_seconds": 405.62,
+      "ai_containers_running": 3
+    }
+  },
+  "build": {
+    "report": "build/kernel9-image/result.json",
+    "ccache": "on",
+    "source_changed_after_build": false
+  },
+  "boundaries": [
+    "Physical acceptance is bounded: successful new boot, exact live file hashes, enabled time64 probes and observed core services do not establish long-term stability, every SSID/client or throughput.",
+    "Kernel8 modules and integrated web/RGB/history/CCR code are retained. Only two rootfs release identity files change; stock PID 1, libcodb, loader and libc remain unchanged.",
+    "Isolated temporary glibc runtimes were used for hardware probes, then removed. No stock glibc/loader installation or SL1680 board change is included; no test set or adjusted the global clock.",
+    "The new syscall ABI is not a claim that all legacy 32-bit socket timestamp options, ioctls or filesystem formats are Y2038 safe.",
+    "AIO stays disabled; compile-only review is not AIO runtime validation.",
+    "QEMU cannot prove board-specific Wi-Fi, Runner or vendor hardware behavior.",
+    "Slot1 remains uncommitted; next reboot selects original slot2. No permanent boot-slot commit was performed."
+  ],
+  "initial_harness_attempts": [
+    {
+      "report": "reports/kernel9/time64-kernel9.json",
+      "resolution": "Corrected VM epoch-zero fixture assumption and invalid-clock test ID; kernel image unchanged."
+    },
+    {
+      "report": "reports/kernel9/time64-kernel9-docker.json",
+      "resolution": "Reran with the actual QEMU_DOCKER_MEMCG_COMPLETE marker; kernel and initramfs unchanged."
+    }
+  ],
+  "test_fixture": {
+    "manifest": "build/time64-kernel9/manifest.json",
+    "sha256": "c822f771d35443f5de70e48fc8036c19ea3bcb0323c5e0c4a9bfcf8f955b66d6"
+  },
+  "upstream_provenance_report": "reports/time64/kernel9-handler-review.json",
+  "package": {
+    "release": "kernel9-ui1",
+    "image": "GT-BE19000AI_3006_102.9_leon-kernel9-ui1_TRIAL.pkgtb",
+    "sha256": "d849dd524e40c1426edeca0dbeb9d0f6daa49cb6c7e207c54d609179c1640603",
+    "bytes": 86709020,
+    "bootfs_sha256": "9660ef70f31b1a088ededad321bfe2668eda6ef75a7920fb5127d6c47df77770",
+    "bootfs_bytes": 12492628,
+    "rootfs_sha256": "beac450ebc9d71192a421cf6c2cb8e06ef6997b6e11b2ea854c3ef49e20dc766",
+    "rootfs_bytes": 74215424,
+    "rootfs_compression": "zstd",
+    "base_integrated_release": "kernel8-ui1",
+    "base_integrated_rootfs_sha256": "d8391b4406de3766d558ac5e4d2001eb25bf54e732c09fda9bceb05f0064da36",
+    "kernel_modules_unchanged_from_v8": true,
+    "identity_only_rootfs_changes": true,
+    "reviewed_web_rgb_history_ccr_unchanged": true,
+    "credential_in_image": false,
+    "hardware_acceptance_report": "reports/kernel9/hardware-acceptance.json"
+  }
+}

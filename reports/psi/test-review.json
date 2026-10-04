@@ -1,0 +1,314 @@
+{
+  "reviewed_at_utc": "2026-10-04T10:41:03.928919+00:00",
+  "status": "passed_with_documented_scope_limits",
+  "observed_kernel_failure": false,
+  "review_scope": "Read-only review of PSI kernel7 QEMU results and probe assertions, followed by the specifically authorized minimal notification-ERR assertion fix. No new workload or fixture added.",
+  "runs": {
+    "psi7-functional": {
+      "result": "build/qemu/psi7-functional/result.json",
+      "serial": "build/qemu/psi7-functional/serial.log",
+      "kernel_sha256": "9819ebd69792190a9d178fd802782fe4de4a9866c411949f24e15fd1724187c3",
+      "initramfs_sha256": "a52fee170569445f47784615867445f6912eb8f74075b73b0a28fcd55e6c2b8f",
+      "log_sha256": "8490213538c26570eeac1f8a8df9bf406c5c81585ba5ab30cbc4f510e6aaa3d0",
+      "log_hash_matches_result": true,
+      "guest_complete": true,
+      "exit_code": 0,
+      "panic": false,
+      "elapsed_seconds": 8.22,
+      "diagnostics": [],
+      "lab_lines": [
+        "LAB_KERNEL 4.19.294 #7 SMP PREEMPT Sat Oct 3 12:00:00 UTC 2026",
+        "LAB_PSI_PASS parser_fixtures count=15",
+        "LAB_PSI_PASS threshold_abi path=/proc/pressure/cpu",
+        "LAB_PSI_PASS threshold_abi path=/sys/fs/cgroup/psi-probe/a/cpu.pressure",
+        "LAB_PSI_PASS threshold_abi path=/proc/pressure/memory",
+        "LAB_PSI_PASS threshold_abi path=/sys/fs/cgroup/psi-probe/a/memory.pressure",
+        "LAB_PSI_PASS threshold_abi path=/proc/pressure/io",
+        "LAB_PSI_PASS threshold_abi path=/sys/fs/cgroup/psi-probe/a/io.pressure",
+        "LAB_PSI_PASS unregistered_pressure_poll_epoll_error_semantics",
+        "LAB_PSI_PASS generic_cgroup_events_populated_0_1_0_poll_rearm",
+        "LAB_PSI_PASS global_cpu_poll_epoll_read_rearm total_delta=1251339",
+        "LAB_PSI_PASS hierarchy_and_live_migration child_delta=755797 parent_delta=759434 destination_delta=754181",
+        "LAB_PSI_PASS single_worker_cpu_max some_delta=1027062 full_delta=1027062 full_supported=1",
+        "LAB_PSI_PASS one_worker_competes_with_other_cgroup some_delta=630173 full_delta=630174",
+        "LAB_PSI_PASS system_cpu_full_zero full_supported=1",
+        "LAB_PSI_PASS bounded_memory_high_epoll some_delta=4567 full_delta=4567 allocation_limit=25165824",
+        "LAB_PSI_PASS cgroup_remove_with_open_pressure_and_epoll_fds rounds=16",
+        "LAB_PSI_PASS global_and_cgroup_cpu_memory_io_format_and_monotonic_totals",
+        "LAB_PSI_LIMIT io_notification_generation_not_tested_no_real_or_host_disk"
+      ]
+    },
+    "psi7-disabled": {
+      "result": "build/qemu/psi7-disabled/result.json",
+      "serial": "build/qemu/psi7-disabled/serial.log",
+      "kernel_sha256": "9819ebd69792190a9d178fd802782fe4de4a9866c411949f24e15fd1724187c3",
+      "initramfs_sha256": "eefb0ba21033c50cd027fc9ce70fbe51bd2e34683b967eeb8c69624ea543c4d4",
+      "log_sha256": "523351a4518b1cc995ea972503523fe66f6ec70fae3984bb9720eac4b4c1097c",
+      "log_hash_matches_result": true,
+      "guest_complete": true,
+      "exit_code": 0,
+      "panic": false,
+      "elapsed_seconds": 1.0,
+      "diagnostics": [],
+      "lab_lines": [
+        "LAB_KERNEL 4.19.294 #7 SMP PREEMPT Sat Oct 3 12:00:00 UTC 2026",
+        "LAB_PSI_PASS disabled_interface path=/proc/pressure/cpu open_errno=2",
+        "LAB_PSI_PASS disabled_interface path=/sys/fs/cgroup/psi-probe/cpu.pressure read_errno=95 write_errno=95",
+        "LAB_PSI_PASS disabled_interface path=/proc/pressure/memory open_errno=2",
+        "LAB_PSI_PASS disabled_interface path=/sys/fs/cgroup/psi-probe/memory.pressure read_errno=95 write_errno=95",
+        "LAB_PSI_PASS disabled_interface path=/proc/pressure/io open_errno=2",
+        "LAB_PSI_PASS disabled_interface path=/sys/fs/cgroup/psi-probe/io.pressure read_errno=95 write_errno=95"
+      ]
+    },
+    "psi7-lifetime": {
+      "result": "build/qemu/psi7-lifetime/result.json",
+      "serial": "build/qemu/psi7-lifetime/serial.log",
+      "kernel_sha256": "9819ebd69792190a9d178fd802782fe4de4a9866c411949f24e15fd1724187c3",
+      "initramfs_sha256": "4c6710cd16efff0ca23acbdae780773e392b72ac1d6b8d61945a02bcd05a8823",
+      "log_sha256": "b9d0b676db9b55aabb6e855510d0f74497493ab225c4101b94d7db75bd13111d",
+      "log_hash_matches_result": true,
+      "guest_complete": true,
+      "exit_code": 0,
+      "panic": false,
+      "elapsed_seconds": 6.61,
+      "diagnostics": [],
+      "lab_lines": [
+        "LAB_KERNEL 4.19.294 #7 SMP PREEMPT Sat Oct 3 12:00:00 UTC 2026",
+        "LAB_PSI_LIFETIME_ROUND round=1 kind=shared-fd-write-and-poll-delete resource=cpu",
+        "LAB_PSI_LIFETIME_ROUND round=2 kind=open-write-poll-delete resource=memory",
+        "LAB_PSI_LIFETIME_ROUND round=3 kind=shared-fd-write-and-poll-delete resource=io",
+        "LAB_PSI_LIFETIME_ROUND round=4 kind=open-write-poll-delete resource=cpu",
+        "LAB_PSI_LIFETIME_ROUND round=5 kind=shared-fd-write-and-poll-delete resource=memory",
+        "LAB_PSI_LIFETIME_ROUND round=6 kind=open-write-poll-delete resource=io",
+        "LAB_PSI_LIFETIME_ROUND round=7 kind=shared-fd-write-and-poll-delete resource=cpu",
+        "LAB_PSI_LIFETIME_ROUND round=8 kind=open-write-poll-delete resource=memory",
+        "LAB_PSI_LIFETIME_ROUND round=9 kind=shared-fd-write-and-poll-delete resource=io",
+        "LAB_PSI_LIFETIME_ROUND round=10 kind=open-write-poll-delete resource=cpu",
+        "LAB_PSI_LIFETIME_ROUND round=11 kind=shared-fd-write-and-poll-delete resource=memory",
+        "LAB_PSI_LIFETIME_ROUND round=12 kind=open-write-poll-delete resource=io",
+        "LAB_PSI_LIFETIME_ROUND round=13 kind=shared-fd-write-and-poll-delete resource=cpu",
+        "LAB_PSI_LIFETIME_ROUND round=14 kind=open-write-poll-delete resource=memory",
+        "LAB_PSI_LIFETIME_ROUND round=15 kind=shared-fd-write-and-poll-delete resource=io",
+        "LAB_PSI_LIFETIME_ROUND round=16 kind=open-write-poll-delete resource=cpu",
+        "LAB_PSI_LIFETIME_ROUND round=17 kind=shared-fd-write-and-poll-delete resource=memory",
+        "LAB_PSI_LIFETIME_ROUND round=18 kind=open-write-poll-delete resource=io",
+        "LAB_PSI_LIFETIME_ROUND round=19 kind=shared-fd-write-and-poll-delete resource=cpu",
+        "LAB_PSI_LIFETIME_ROUND round=20 kind=open-write-poll-delete resource=memory",
+        "LAB_PSI_LIFETIME_ROUND round=21 kind=shared-fd-write-and-poll-delete resource=io",
+        "LAB_PSI_LIFETIME_ROUND round=22 kind=open-write-poll-delete resource=cpu",
+        "LAB_PSI_LIFETIME_ROUND round=23 kind=shared-fd-write-and-poll-delete resource=memory",
+        "LAB_PSI_LIFETIME_ROUND round=24 kind=open-write-poll-delete resource=io",
+        "LAB_PSI_LIFETIME_ROUND round=25 kind=shared-fd-write-and-poll-delete resource=cpu",
+        "LAB_PSI_LIFETIME_ROUND round=26 kind=open-write-poll-delete resource=memory",
+        "LAB_PSI_LIFETIME_ROUND round=27 kind=shared-fd-write-and-poll-delete resource=io",
+        "LAB_PSI_LIFETIME_ROUND round=28 kind=open-write-poll-delete resource=cpu",
+        "LAB_PSI_LIFETIME_ROUND round=29 kind=shared-fd-write-and-poll-delete resource=memory",
+        "LAB_PSI_LIFETIME_ROUND round=30 kind=open-write-poll-delete resource=io",
+        "LAB_PSI_LIFETIME_ROUND round=31 kind=shared-fd-write-and-poll-delete resource=cpu",
+        "LAB_PSI_LIFETIME_ROUND round=32 kind=open-write-poll-delete resource=memory",
+        "LAB_PSI_LIFETIME_PASS rounds=32 same_fd_races=16 writes=30 busy=16 noent=5 nodev=13 elapsed=5.559",
+        "LAB_PSI_LIFETIME_PASS no_psi_underflow_inconsistent_leak_oops_or_warning"
+      ]
+    },
+    "psi7-resource": {
+      "result": "build/qemu/psi7-resource/result.json",
+      "serial": "build/qemu/psi7-resource/serial.log",
+      "kernel_sha256": "9819ebd69792190a9d178fd802782fe4de4a9866c411949f24e15fd1724187c3",
+      "initramfs_sha256": "48301057190eac901c0925c18a5910e4be8087e6069ac1e9a5ab6e63e9410e93",
+      "log_sha256": "ae3312ecb89b1c1c10d7e8732e4119b837e51c06675b0bfc9b308c63297e7b74",
+      "log_hash_matches_result": true,
+      "guest_complete": true,
+      "exit_code": 0,
+      "panic": false,
+      "elapsed_seconds": 12.62,
+      "diagnostics": [],
+      "lab_lines": [
+        "LAB_CPU_STAT nr_periods=31",
+        "LAB_CPU_STAT nr_throttled=30",
+        "LAB_CPU_STAT throttled_time=5227491472",
+        "LAB_RESOURCE_PASS cpu_quota_two_busy_children",
+        "LAB_RESOURCE_PASS cpuset_cpu1_and_fork_inheritance",
+        "LAB_IO_WRITE_SECONDS 3.997",
+        "LAB_IO_READ_SECONDS 4.003",
+        "LAB_RESOURCE_PASS block_read_write_bandwidth_and_data",
+        "LAB_RESOURCE_PASS unprivileged_uid_gid_mount_net_pid_namespaces"
+      ]
+    },
+    "psi7-functional-strict": {
+      "result": "build/qemu/psi7-functional-strict/result.json",
+      "serial": "build/qemu/psi7-functional-strict/serial.log",
+      "kernel_sha256": "9819ebd69792190a9d178fd802782fe4de4a9866c411949f24e15fd1724187c3",
+      "initramfs_sha256": "0555ee0a8e7dbbc85563dd720f5750d0f5393b2e2c5e1039ce82d181b8daf389",
+      "log_sha256": "281d20d756a09365b3fc8f8fdaab2fea2e61efd66a0f7696b0b8829fa54d13ba",
+      "log_hash_matches_result": true,
+      "guest_complete": true,
+      "exit_code": 0,
+      "panic": false,
+      "elapsed_seconds": 8.02,
+      "diagnostics": [],
+      "lab_lines": [
+        "LAB_KERNEL 4.19.294 #7 SMP PREEMPT Sat Oct 3 12:00:00 UTC 2026",
+        "LAB_PSI_PASS parser_fixtures count=15",
+        "LAB_PSI_PASS threshold_abi path=/proc/pressure/cpu",
+        "LAB_PSI_PASS threshold_abi path=/sys/fs/cgroup/psi-probe/a/cpu.pressure",
+        "LAB_PSI_PASS threshold_abi path=/proc/pressure/memory",
+        "LAB_PSI_PASS threshold_abi path=/sys/fs/cgroup/psi-probe/a/memory.pressure",
+        "LAB_PSI_PASS threshold_abi path=/proc/pressure/io",
+        "LAB_PSI_PASS threshold_abi path=/sys/fs/cgroup/psi-probe/a/io.pressure",
+        "LAB_PSI_PASS unregistered_pressure_poll_epoll_error_semantics",
+        "LAB_PSI_PASS generic_cgroup_events_populated_0_1_0_poll_rearm",
+        "LAB_PSI_PASS global_cpu_poll_epoll_read_rearm total_delta=1250414",
+        "LAB_PSI_PASS hierarchy_and_live_migration child_delta=752037 parent_delta=752962 destination_delta=754169",
+        "LAB_PSI_PASS single_worker_cpu_max some_delta=989921 full_delta=989921 full_supported=1",
+        "LAB_PSI_PASS one_worker_competes_with_other_cgroup some_delta=628249 full_delta=628249",
+        "LAB_PSI_PASS system_cpu_full_zero full_supported=1",
+        "LAB_PSI_PASS bounded_memory_high_epoll some_delta=4865 full_delta=4865 allocation_limit=25165824",
+        "LAB_PSI_PASS cgroup_remove_with_open_pressure_and_epoll_fds rounds=16",
+        "LAB_PSI_PASS global_and_cgroup_cpu_memory_io_format_and_monotonic_totals",
+        "LAB_PSI_LIMIT io_notification_generation_not_tested_no_real_or_host_disk"
+      ]
+    },
+    "psi7-disabled-strict": {
+      "result": "build/qemu/psi7-disabled-strict/result.json",
+      "serial": "build/qemu/psi7-disabled-strict/serial.log",
+      "kernel_sha256": "9819ebd69792190a9d178fd802782fe4de4a9866c411949f24e15fd1724187c3",
+      "initramfs_sha256": "8907bd45cb3f750e2ea857dc54649050ead3437062fb3f7b6ada030d06675868",
+      "log_sha256": "fd4250e78a7ccd9408eaf4726a6c0447904a716ec429b22511689f3eafe906a0",
+      "log_hash_matches_result": true,
+      "guest_complete": true,
+      "exit_code": 0,
+      "panic": false,
+      "elapsed_seconds": 0.8,
+      "diagnostics": [],
+      "lab_lines": [
+        "LAB_KERNEL 4.19.294 #7 SMP PREEMPT Sat Oct 3 12:00:00 UTC 2026",
+        "LAB_PSI_PASS disabled_interface path=/proc/pressure/cpu open_errno=2",
+        "LAB_PSI_PASS disabled_interface path=/sys/fs/cgroup/psi-probe/cpu.pressure read_errno=95 write_errno=95",
+        "LAB_PSI_PASS disabled_interface path=/proc/pressure/memory open_errno=2",
+        "LAB_PSI_PASS disabled_interface path=/sys/fs/cgroup/psi-probe/memory.pressure read_errno=95 write_errno=95",
+        "LAB_PSI_PASS disabled_interface path=/proc/pressure/io open_errno=2",
+        "LAB_PSI_PASS disabled_interface path=/sys/fs/cgroup/psi-probe/io.pressure read_errno=95 write_errno=95"
+      ]
+    }
+  },
+  "findings": [
+    {
+      "id": "notification_error_false_positive",
+      "severity": "medium",
+      "status": "fixed_and_strict_qemu_passed",
+      "detail": "Original notified_poll/notified_epoll accepted PRI together with ERR. An absent trigger intentionally returns PRI|ERR, so that path could have satisfied a pressure-event assertion. Old logs contain no revents values and cannot exclude that false positive.",
+      "correction": "All pressure notification waits now reject ERR as well as HUP; poll also rejects NVAL. Only ordinary cgroup.events opts into allow_error=1 because its kernfs event ABI legitimately returns PRI|ERR.",
+      "old_evidence_policy": "Preserved unchanged; do not use the old functional run alone to claim pressure event delivery was strictly validated.",
+      "validation": "psi7-functional-strict completed with all pressure PRI notification checks rejecting ERR/HUP. Its archive SHA matches the corrected source manifest; psi7-disabled-strict also passed. Old evidence remains preserved."
+    },
+    {
+      "id": "cpu_cgroup_migration",
+      "severity": "info",
+      "status": "pass_with_scope_limit",
+      "detail": "Both CPU workers remain pinned to one vCPU. Their cgroup.procs moves are checked for write success; source/parent totals increase, destination total increases after migration, and source total stops increasing after workers leave. This proves live cgroup migration accounting, not forced CPU-to-CPU migration of a stalled task.",
+      "observed_microseconds": {
+        "child_delta": 755797,
+        "parent_delta": 759434,
+        "destination_delta": 754181
+      },
+      "not_covered": "A controlled cross-CPU iowait/memstall wake migration is not asserted by this fixture."
+    },
+    {
+      "id": "cpu_full_and_quota",
+      "severity": "info",
+      "status": "pass",
+      "detail": "The CPU full tests executed rather than taking the pre-5.13 skip branch. A single worker with cpu.max=20000/100000 produced nonzero some and full; a single worker competing with another cgroup also produced some; global CPU full was asserted zero.",
+      "observed_microseconds": {
+        "quota_some_delta": 1027062,
+        "quota_full_delta": 1027062,
+        "cross_cgroup_some_delta": 630173,
+        "cross_cgroup_full_delta": 630174
+      },
+      "limit": "The PSI fixture asserts counters and notification behavior, not an exact quota-enforcement ratio. Separate psi7-resource asserts actual CFS throttling (nr_throttled=30).",
+      "strict_observed_microseconds": {
+        "some_delta": 989921,
+        "full_delta": 989921
+      }
+    },
+    {
+      "id": "notification_rearm_scope",
+      "severity": "info",
+      "status": "pass",
+      "detail": "Two global CPU descriptors independently test poll and epoll. The poll descriptor is then rewound/read and waited on again while pressure continues. PSI events are consumed by polling; the test does not claim read itself consumes the PSI event.",
+      "not_covered": "Explicit EPOLLET mode and precise threshold timing bounds are not asserted."
+    },
+    {
+      "id": "memory_high_assertion",
+      "severity": "info",
+      "status": "pass_with_scope_limit",
+      "detail": "A fresh memory cgroup has high=8MiB and max=64MiB. Its only workload maps at most 24MiB; the probe requires memory.some to increase and a notification, then kills/reaps the worker. The observed some/full deltas are both 4567us; the 1000us event threshold is below that.",
+      "observed_microseconds": {
+        "some_delta": 4567,
+        "full_delta": 4567
+      },
+      "limit": "This validates observed pressure under a bounded memory.high workload. It does not assert memory.events high count, exact RSS, exact high-throttle delay, or completed allocation of every page.",
+      "strict_observed_microseconds": {
+        "some_delta": 4865,
+        "full_delta": 4865
+      }
+    },
+    {
+      "id": "disabled_mode",
+      "severity": "info",
+      "status": "pass",
+      "detail": "The fixture checks an explicit psi=0 command-line token. All three /proc/pressure files were absent (ENOENT), while all three cgroup pressure reads and writes returned EOPNOTSUPP. No workload ran."
+    },
+    {
+      "id": "lifetime_race",
+      "severity": "info",
+      "status": "pass_with_bounded_claim",
+      "detail": "32 rounds completed; each of 16 same-open-description races explicitly required one full successful write and one EBUSY. Independent open/write/rmdir races produced both success and removal errors. Child exit status and deadlines were checked; no PSI diagnostic, WARNING, BUG, Oops or panic appears in the serial log.",
+      "observed": {
+        "rounds": 32,
+        "same_fd_races": 16,
+        "writes": 30,
+        "busy": 16,
+        "noent": 5,
+        "nodev": 13,
+        "guest_probe_seconds": 5.559
+      },
+      "limit": "A bounded race run is regression evidence, not a proof that every possible interleaving or UAF is impossible; this guest is not a KASAN run."
+    },
+    {
+      "id": "io_pressure_scope",
+      "severity": "info",
+      "status": "explicitly_limited",
+      "detail": "IO file format, totals, threshold registration/errors and descriptor lifetimes are tested. No IO pressure notification generation is claimed. The separate RAM-loop resource test verifies throttle bandwidth/data but does not assert PSI IO notification."
+    }
+  ],
+  "strict_artifacts": {
+    "psi-next-strict": {
+      "path": "build/psi-next-strict/psi-test.cpio.gz",
+      "sha256": "0555ee0a8e7dbbc85563dd720f5750d0f5393b2e2c5e1039ce82d181b8daf389",
+      "complete_marker": "QEMU_PSI_COMPLETE",
+      "source_sha256": "75527c102707fc6e6218be16e2c7b7b52cd3ecefb049c22a1244f70232276194",
+      "static_compile": "passed -Wall -Wextra -Werror",
+      "parser_fixtures": 15
+    },
+    "psi-next-disabled-strict": {
+      "path": "build/psi-next-disabled-strict/psi-test.cpio.gz",
+      "sha256": "8907bd45cb3f750e2ea857dc54649050ead3437062fb3f7b6ada030d06675868",
+      "complete_marker": "QEMU_PSI_DISABLED_COMPLETE",
+      "source_sha256": "75527c102707fc6e6218be16e2c7b7b52cd3ecefb049c22a1244f70232276194",
+      "static_compile": "passed -Wall -Wextra -Werror",
+      "parser_fixtures": 15
+    }
+  },
+  "final_acceptance": {
+    "passed": true,
+    "strict_notification_checks_passed": true,
+    "authoritative_functional_run": "psi7-functional-strict",
+    "authoritative_disabled_run": "psi7-disabled-strict",
+    "kernel_sha256": "9819ebd69792190a9d178fd802782fe4de4a9866c411949f24e15fd1724187c3",
+    "limitations": [
+      "IO pressure notification generation was not tested.",
+      "CPU-to-CPU migration of an iowait/memstall-waking task was not deliberately forced or asserted.",
+      "Bounded lifecycle races do not prove absence of every possible interleaving or UAF."
+    ]
+  }
+}

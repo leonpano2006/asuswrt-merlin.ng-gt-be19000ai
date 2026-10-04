@@ -1,0 +1,78 @@
+{
+  "bin/busybox": {
+    "sha256": "52151e7f322f926b64049cdaa1410dc3ea6485525e0624b05813791c219ae933",
+    "bytes": 1914704
+  },
+  "load_one": {
+    "sha256": "bec2eef5213b1c2eccd95d703cc18ff045cf96a7786fb04b981e3d3155f2f009",
+    "bytes": 721568
+  },
+  "btrfs.img": {
+    "sha256": "0dd7f55e3a8524df472cbe666070475b5ed86f6c737925229d6f03aa990edda9",
+    "bytes": 134217728
+  },
+  "image.tar": {
+    "sha256": "d7360bee421f80d065b26d3ea012b51427313ca460004bb3682a31a654cd0b4f",
+    "bytes": 2570240
+  },
+  "rootfs.img": {
+    "sha256": "4993eba62b1472cefd0e690e34583a3cf7e94feefcdd598c6f91a9d864c6ce77",
+    "bytes": 73011200
+  },
+  "docker/docker": {
+    "sha256": "3b6dd39bc70945a53810cb698b1f29cd41c03682cab47cdc1f2b07b1264f11d8",
+    "bytes": 41522848
+  },
+  "docker/dockerd": {
+    "sha256": "d2997001cfb25b60b05834f8faf248e5c18924b58117ddad9bb8574d5fdc89ad",
+    "bytes": 95181536
+  },
+  "docker/containerd": {
+    "sha256": "4c14bb60b04edc67d298bac605d7012ce91dd940e46270559a49b32a28e82699",
+    "bytes": 35848354
+  },
+  "docker/containerd-shim-runc-v2": {
+    "sha256": "d144d1270e60e580bff38510f3a38b3cc94d10a7efe7fb1f9839b4faba383a51",
+    "bytes": 8061090
+  },
+  "docker/runc": {
+    "sha256": "54c1098ed2aa022dc1c8b0ef749f06cf75f56889c2455be2eedef7d495117472",
+    "bytes": 14188976
+  },
+  "docker/docker-init": {
+    "sha256": "ab2244312e069c6c97bece2437f61fb01db474eae5b0f1ce006162e212eae5b0",
+    "bytes": 601296
+  },
+  "modules/tfat.ko": {
+    "sha256": "22ceae7596398efbdde7119c667fce3c18f94ac3fd6ae1159a5bad6b3f121ce6",
+    "bytes": 597152
+  },
+  "modules/tntfs.ko": {
+    "sha256": "3e07d980687533ad0986daeb59e40300dd6e767f6b99c7d6497cbf255c7985eb",
+    "bytes": 949744
+  },
+  "modules/thfsplus.ko": {
+    "sha256": "1b08b2dbd6f02bafefd485d16fb0ef96690f6e6488c1262b598e110b853c111b",
+    "bytes": 178168
+  },
+  "modules/raid6_pq.ko": {
+    "sha256": "93553361eb5a5c0ec8d9f14797ee062932529e5fb3223a21116a584e6b4caf95",
+    "bytes": 109312
+  },
+  "modules/xor.ko": {
+    "sha256": "dc6fd642be563897ffb6ce447eba33717bbe53140d8c5969864ef85d8702091d",
+    "bytes": 13392
+  },
+  "modules/btrfs.ko": {
+    "sha256": "0b1643f2581e914b7acfb9b86e894c97cff591a17f9c349921d5404649fca69e",
+    "bytes": 1781704
+  },
+  "modules/exportfs.ko": {
+    "sha256": "97e80f9293091018fcef8a729235051b2ed1c070f8c74cdc088a0adb4924403b",
+    "bytes": 11056
+  },
+  "modules/overlay.ko": {
+    "sha256": "5c3b87c54430a351bf7cbd91d1217950457055817c97a6a79d7e03be9483793e",
+    "bytes": 189576
+  }
+}

@@ -1,0 +1,5 @@
+#!/bin/sh
+# All other router services remain untouched.
+case "$1:$2" in
+    start:ledg|restart:ledg) /jffs/ledg-node-fix/ensure.sh ;;
+esac

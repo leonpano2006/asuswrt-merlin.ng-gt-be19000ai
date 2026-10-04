@@ -1,0 +1,111 @@
+{
+  "release": "kernel8-ui1",
+  "status": "passed",
+  "scope": "Captured live file identity, kernel identity, new boot and trial rollback state only",
+  "manifest_sha256": "9f9f24e9a360a6cd1593d1e774195d830aeeeaaa39de97fa43c16b5e3f599b0f",
+  "package_sha256": "cf74c805927e2128cc26a273980c2af1f470fa34f78fbe0127f94d6fbb4bbe64",
+  "files": {
+    "status": "passed",
+    "path": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/evidence/kernel8-ui1/live-files.sha256",
+    "evidence_sha256": "7ade0a8b1d193f6e0ff7cb66d7f1e6593dd92d2ae5eb12cfd330ab52a090a556",
+    "expected_count": 27,
+    "matched_count": 27,
+    "missing": [],
+    "mismatched": [],
+    "errors": [],
+    "extra_paths_not_verified": []
+  },
+  "health": {
+    "status": "passed",
+    "path": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/evidence/kernel8-ui1/health-first.txt",
+    "evidence_sha256": "b6d5bb067cd14f9f4c28e6d433e96a0c835e2adb3252625b49b3c3d5d1761dfe",
+    "checks": {
+      "kernel_version": {
+        "status": "passed",
+        "expected": "Linux 4.19.294 #8",
+        "observed": [
+          "Linux GT-BE19000AI-6B50 4.19.294 #8 SMP PREEMPT Sat Oct 3 12:00:00 UTC 2026 aarch64 ASUSWRT-Merlin"
+        ]
+      },
+      "active_root": {
+        "status": "passed",
+        "expected": "/dev/mmcblk0p4",
+        "observed": [
+          "/dev/mmcblk0p4"
+        ]
+      },
+      "active_slot": {
+        "status": "passed",
+        "expected": "First",
+        "observed": [
+          "First"
+        ]
+      },
+      "next_slot": {
+        "status": "passed",
+        "expected": "Second",
+        "observed": [
+          "Second"
+        ]
+      },
+      "first_commit_flag": {
+        "status": "passed",
+        "expected": "0",
+        "observed": [
+          "0"
+        ]
+      },
+      "second_commit_flag": {
+        "status": "passed",
+        "expected": "1",
+        "observed": [
+          "1"
+        ]
+      },
+      "committed_metadata": {
+        "status": "passed",
+        "expected": "2",
+        "observed": [
+          "2"
+        ]
+      },
+      "metadata1_read_only": {
+        "status": "passed",
+        "expected": "1",
+        "observed": [
+          "1"
+        ]
+      },
+      "metadata2_read_only": {
+        "status": "passed",
+        "expected": "1",
+        "observed": [
+          "1"
+        ]
+      },
+      "kernel_config": {
+        "status": "passed",
+        "expected": "1c495c39d80319246f26a38192eb481b54860ea938d46bbc8156b4fa676a8216",
+        "observed": [
+          "1c495c39d80319246f26a38192eb481b54860ea938d46bbc8156b4fa676a8216"
+        ]
+      },
+      "new_boot": {
+        "status": "passed",
+        "live_boot_ids": [
+          "00000000-0000-4000-8000-000000000012"
+        ],
+        "previous_boot_ids": [
+          "00000000-0000-4000-8000-000000000020"
+        ]
+      }
+    }
+  },
+  "live_identity_verified": true,
+  "permanent_commit_authorized": false,
+  "limitations": [
+    "Captured evidence is not a fresh network observation.",
+    "Wi-Fi, UI behavior, AI board health and sustained stability require separate checks.",
+    "Symlink targets, file modes, all kernel modules and full slot payload readback are outside this file-hash list."
+  ]
+}

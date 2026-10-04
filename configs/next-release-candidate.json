@@ -1,0 +1,244 @@
+{
+  "updated_at": "2026-10-04T11:21:40.715205+00:00",
+  "target": "GT-BE19000AI",
+  "status": "FLASHED_TRIAL_BOOT_ACCEPTED: kernel8-ui1; original slot2 preserved; SL1680 deferred",
+  "packaging_authorized": true,
+  "base": "Validated kernel8 PSI kernel/modules plus reviewed kernel6-ui1 UI/RGB/observability",
+  "selected_changes": [
+    {
+      "id": "node-web-ui",
+      "builder": "scripts/prepare-node-web-fix.py",
+      "config": "configs/node-web-fix",
+      "baseline_report": "reports/ui-audit/repair.json",
+      "round2": "reports/ui-audit/round2.json",
+      "state": "Fifteen assets integrated into readonly rootfs; live hashes match, Chrome reloaded successfully, no web bind overlays after reboot.",
+      "round3": "reports/ui-audit/round3.json",
+      "round4": "reports/ui-audit/round4.json",
+      "round5": "reports/ui-audit/round5.json",
+      "ccr_status": "reports/ui-audit/ccr-status.json",
+      "network_overview": "reports/ui-audit/network-overview.json"
+    },
+    {
+      "id": "node-rgb",
+      "builder": "scripts/prepare-ledg-node-trial.py",
+      "config": "configs/ledg-node-fix",
+      "report": "reports/rgb-audit/assessment.json",
+      "state": "Integrated patched ledg entry point; all eight QEMU schemes pass and correct executable is running after reboot. Physical colors were confirmed before packaging, not separately after this boot."
+    },
+    {
+      "id": "node-local-history",
+      "config": "configs/node-history",
+      "validation": "scripts/verify-node-history.py",
+      "state": "Firmware /usr/libexec collector starts via guarded services-start hook; fresh RAM samples and web data verified after reboot.",
+      "interval_seconds": 60,
+      "retention_seconds": 86400,
+      "writer_max_database_bytes": 33554432,
+      "row_limit": 90000
+    },
+    {
+      "id": "codb-null-serialization",
+      "patch": "configs/node-history/codb-null-guard.patch",
+      "state": "Excluded from RC1: source rebuild lacks three stock ABI symbols. Keep original library and existing NULL-free history schema.",
+      "source_sha256": "a5c211367c3c3ef123d96625af72dd7f25c3492dea3b3ee44a7cc4b1827f162b",
+      "requires": "Rebuild and validate libcodb for firmware integration",
+      "integration_report": "reports/ui-audit/libcodb-integration.json"
+    },
+    {
+      "id": "node-ccr-status",
+      "config": "configs/ccr-status",
+      "frontend": "configs/node-web-fix/ccr-status.js",
+      "validation": "scripts/verify-ccr-status.py",
+      "report": "reports/ui-audit/ccr-status.json",
+      "state": "Direct read-only CCR status, MAC inventory, evidence-based topology and bounded RAM issue/event snapshots",
+      "backend_files": [
+        "collect.sh",
+        "normalize.jq",
+        "network.jq",
+        "schema.sql"
+      ],
+      "credential_provisioning": "Device-local curl.conf mode 0600 under directory mode 0700. Never include this file in Git, web assets or firmware.",
+      "network_overview": "reports/ui-audit/network-overview.json",
+      "additional_validation": [
+        "scripts/verify-network-overview.py",
+        "scripts/verify-network-overview.js"
+      ],
+      "max_snapshot_bytes": 131072
+    }
+  ],
+  "integration_notes": [
+    "Existing re_upgrade=1 and jffs2_scripts=1 remain individually authorized device settings; firmware defaults are unchanged.",
+    "Original committed slot 2 remains byte-identical. Slot 1 is an uncommitted one-time trial, with next boot set to slot 2.",
+    "kernel8-ui1 contains reviewed web assets in SquashFS; no /www bind overlays are active after reboot.",
+    "Kernel/modules are byte-identical to QEMU-tested kernel8; stock PID1 and userspace ABI remain. AI-board firmware is unchanged.",
+    "Exact-hash guarded JFFS services-start selects firmware collectors on this image and retains old runtime fixes on fallback firmware.",
+    "Recent history is bounded RAM data and resets on reboot. A short post-reboot check passed; no 24-hour soak is claimed.",
+    "AirIQ 3+1 scan mode was not enabled.",
+    "CCR status reads directly using existing device-only /jffs/ccr-status/curl.conf; no credentials in image or source."
+  ],
+  "open_checks": [
+    "Longer real-world soak and physical RGB observation following this reboot; no permanent boot-slot commitment authorized.",
+    "Full AirIQ FFT spectrum and classified interference events; passive on-channel history is available.",
+    "Resolve libcodb source/shipped ABI mismatch before integrating the NULL serialization guard; see reports/ui-audit/libcodb-integration.json.",
+    "Implement and validate scoped BCM service restarts for settings changes; reports/service-scope/assessment.json remains audit/design.",
+    "Complete remaining localization of custom diagnostic/container-status UI outside Traditional Chinese."
+  ],
+  "web_manifest": {
+    "files": [
+      {
+        "path": "Lang_Hdr.txt",
+        "source_sha256": "0e802e9f2b49124b70d6d93ad05d28f13532047c229db5683913cf9ac716740c",
+        "patched_sha256": "90d77c7f8e9b36bbc9a55820f69ebc661387cfe61df05a2756ec290ed0d5a3cd",
+        "size": 453
+      },
+      {
+        "path": "index.html",
+        "source_sha256": "71d16b822f86a7d0cd060292b778952722362958bb66d075bc60a43eaa5bae40",
+        "patched_sha256": "f83245b3253e6bad74d9b9593120b32f4943b18f0c1923a01ae03615d47227d5",
+        "size": 10638
+      },
+      {
+        "path": "js/basic.js",
+        "source_sha256": "b2d73bab83b1c0df7029047174218a3eaef962d2aa669d957ecaefac016f504b",
+        "patched_sha256": "2771501c2be0e7d350bb5eba8e376c5e447c4c501557c2ea9f684a661b66db40",
+        "size": 70292
+      },
+      {
+        "path": "state.js",
+        "source_sha256": "752d1e38748c6ab101ee9586fac2d05a8199b7a68910c4b1eb0f277bdb3b498a",
+        "patched_sha256": "4d31fe429cc51bcfd882bcaa9bb9ff79e7ff79f666ceef12ce485f9e491aa90e",
+        "size": 192906
+      },
+      {
+        "path": "SDN/sdn.html",
+        "source_sha256": "a5d3f44b0060195f62c05f6489749fea126765e5a43256f8437698f05b527f62",
+        "patched_sha256": "a5796b4520c1f76a102dd87c17a8b07699edcdbaa1e8c05176040a8c8b8e76a4",
+        "size": 12794
+      },
+      {
+        "path": "css/architecture.css",
+        "source_sha256": "ec8da371d66bb261edd9be3c4c7942d49f599e532799e8867cc5a028df0f1c41",
+        "patched_sha256": "554c2e90945bad0c358bbd7fe375f55ffb46b8c35fe850781e8d17ad06bf6c5b",
+        "size": 36834
+      },
+      {
+        "path": "pages/aiboard.html",
+        "source_sha256": "e680a0946500edd9f8f5c0047fd3a24458aa369774d7188c90f26bb84a056611",
+        "patched_sha256": "dcc21ec5a7f2d1ea8a7daa5c0844bf889d83556045a4a3c6b2aa13e496e6106c",
+        "size": 65897
+      },
+      {
+        "path": "pages/sdn.html",
+        "source_sha256": "3d239df3c582aa14d5a604990a95d2da492b2ba5bdd6c80f69f5c94b02f7df8c",
+        "patched_sha256": "2a313cfe5c5780baca951a3bed79e2e9b699da5d6195b321ad0d917a44b3008d",
+        "size": 3927
+      },
+      {
+        "path": "js/dashboard.module.js",
+        "source_sha256": "8747bc29f7c51bcb1a944cba68e53c5aff2869357b459805d0d3dd228faef018",
+        "patched_sha256": "2a9b0be742691cf67620dd49fa268b09a65f332171e7af2c1a66951ab1e67adb",
+        "size": 105659
+      },
+      {
+        "path": "pages/dashboard.html",
+        "source_sha256": "fd5dbc05c14d8b13cf98131c13c7e7b39af0a58a673dc964e433047b16084ddc",
+        "patched_sha256": "3c33d8fc9a8cbfc35f05613b7fd13182b3ecc74df9577475bd61b0fc34332615",
+        "size": 160620
+      },
+      {
+        "path": "pages/trafficmonitor.html",
+        "source_sha256": "2464a8589080d9d217d64ad8d294e2fd80112eeba16ccd4e3b0986060e683d45",
+        "patched_sha256": "5c0051eb28f162a5a8db9201327b1df57026ca52ae29e0528d4ee1084eb8d0f6",
+        "size": 17445
+      },
+      {
+        "path": "Advanced_SwitchCtrl_Content.asp",
+        "source_sha256": "5f9e23dc93b0d51dd1722a7ff702fc44a2f6982adba481c8fc2a91f021d421ba",
+        "patched_sha256": "b9d7a4438221c7ad50fb19084875a16b4f8eaa75551ef098e71b21362928b926",
+        "size": 34945
+      },
+      {
+        "path": "APP_Installation.asp",
+        "source_sha256": "88b0c269b1696c2b47907ba6a1ea2aee673d10bbd5c6a68a681ba226b34fa28b",
+        "patched_sha256": "fb9541d5e1150a7b80d1136bf866cb23103b2c673e8bd024317d20e613cefb50",
+        "size": 42181
+      },
+      {
+        "path": "Advanced_OperationMode_Content.asp",
+        "source_sha256": "7ac3ef45390dbfc6b2e6001b62b42f06c1aefef97194761f10f89601940af309",
+        "patched_sha256": "8270db12bcad777cabe47ec34fa4f1ebf2dd30e46892f3ad24dfea7f7c555182",
+        "size": 34490
+      },
+      {
+        "path": "Main_WStatus_Content.asp",
+        "source_sha256": "d8e2ba668ed1b996bf6e448b32fc2cc522c1131a6ed76932750b67b548c6539c",
+        "patched_sha256": "cee432e42517f6f593d4200caec888fd2574cb6fe447ca07e1ba87bf3838749e",
+        "size": 21212
+      }
+    ],
+    "scope": "Authenticated local node web UI; no network-role or authentication changes"
+  },
+  "source_checksums": {
+    ".gitignore": "3683bcae3e576c7df807a6de09523c6cc1be3e360947d43f7b5d675eae1f2b81",
+    "configs/ccr-status/collect.sh": "78495cd63573a4a91dd0260c01b8639f73fd457ad8fc8425b20331f70de27e7c",
+    "configs/ccr-status/network.jq": "3522343ebda8c9b720de7edb0e5b738469f80a822bd0c2f42e2718945d7e7016",
+    "configs/ccr-status/normalize.jq": "d13d475768dc0fb01312d2b59298ac0786780f7831ebad419de7920d3d1b2342",
+    "configs/ccr-status/rollback-node.sh": "ad13a172db38e40341434784d1322522368a3027b58e804ecb026a245ef91620",
+    "configs/ccr-status/rollback-proxy.sh": "19a6db25f6c7957da80a7d9e276ef40d34b35eb532d8dbb1ebb23a9798957e6a",
+    "configs/ccr-status/schema.sql": "fe1036df3cc848db0e2c119aaa401a4aa81da6c609f89b8f118264fde37ba546",
+    "configs/node-history/codb-null-guard.patch": "910b61e0d0d0613c2e5043762621c1a5150e36f5372929c9557008391a7f1420",
+    "configs/node-history/collect.awk": "97c203a96efe3f2eaf61ebe4810823e1924774adba3e10c20eca856991beba33",
+    "configs/node-history/history.sh": "fc6838509fb04b1f63f3b53608934039a84486171be21efbcb2d01b40d8226d6",
+    "configs/node-history/schema.sql": "9f950d801c55b886dc06045ad9576743aed336ab64334e1eb815df323abc068c",
+    "configs/node-web-fix/ai-hostname.js": "9a25548e6eb514de16476fd785eccecf8f37c4eb29b9f8058c84ab24a3910b8f",
+    "configs/node-web-fix/apply.sh": "e262f959b3dd77e2e659ca817fbced875929365fd50b4bb43e710c10ba77e442",
+    "configs/node-web-fix/ccr-status.js": "54518b2bb679381c45fa846c597693bc6d8ebd8d602e0f1d01c3943bb4a4f908",
+    "configs/node-web-fix/dashboard-clients.js": "c688862693139a6d395302f5112f350d4c2e6238e9544cfd5a04fe3ff0cb42f7",
+    "configs/node-web-fix/network-overview.js": "48f03d9ef08a038ec31d8112f1a82f4477a4a246509407b2714e987dc3affb69",
+    "configs/node-web-fix/node-ethernet.js": "a5e124f08ff09e2da4f96995fdc57336a99766bcc81990f543ca0e4ac019e504",
+    "configs/node-web-fix/node-history.js": "349ec58e762e7ce392980c27e87c8a1a288ef014e0af5e3bb7b0504f2fe443d3",
+    "configs/node-web-fix/node-insight.js": "5285d6759b8415a249ac2666a9335f46928292cd09a43b5492c2188322ee4385",
+    "configs/node-web-fix/rollback.sh": "fbf39c874825dbb5d7177f480952a3c8ebf278d6bf287f67129c9de795aefd76",
+    "configs/node-web-fix/wireless-snapshot.js": "32e1e50b3304a70940b1df6ae646937a32a1535b1df55eed31c8bde216da9cb8",
+    "scripts/deploy-ccr-direct.py": "9497fd6b1413663695faa06d5d14100bda144603f2c070e14ad8df9f799e789e",
+    "scripts/deploy-network-overview.py": "b5fe1cce385286ddaec4152bbee6386b3e5936769d749b34923dd85f5c8648ff",
+    "scripts/prepare-node-web-fix.py": "3c634e2724785eb65f5d5db41e9e6ff9a4af907b883a01f23420e05b7f4d8802",
+    "scripts/verify-ccr-status.py": "3bd18edcdc8bdfbebd16b46db97292c1011d4378800ebd3617d6c4929922409e",
+    "scripts/verify-network-overview.js": "1a7a2af32e19cb25763e0d136b207d0b0d71a681e2dfeb447cb60cfe7274ef8d",
+    "scripts/verify-network-overview.py": "64b0f5dab343c36680c989299901c18553e592c147e550619b8fac29b64a9968",
+    "scripts/verify-node-history.py": "d74adf6463a7f454267022c388a5bb1577b3f73b27b78207136d23daabaf8a2d"
+  },
+  "active_work_scope": {
+    "target": "BE19000AI BCM6813 side first",
+    "user_direction": "Complete the BCM-side work before modifying the SL1680 AI board.",
+    "sl1680": "Deferred: no AI-board kernel, modules, userspace, swap, zram or THP changes. Existing read-only audit is evidence only.",
+    "bcm_kernel": "Kernel #8 is running as integrated kernel8-ui1 in uncommitted slot1. Next boot original slot2; physical PSI APIs, services, Chrome and wired AiMesh accepted.",
+    "packaging": "User authorized packaging and flashing on 2026-10-04. Preserve original committed slot 2; trial slot only; no permanent boot-slot commit."
+  },
+  "release_report": "reports/releases/kernel8-ui1.json",
+  "next_kernel_candidate": {
+    "id": "kernel9-arm32-time64",
+    "state": "QEMU_VALIDATED_NOT_PACKAGED_NOT_FLASHED",
+    "report": "reports/kernel9/candidate.json",
+    "patches": [
+      "patches/0007-arm32-time64-compat.patch"
+    ],
+    "base_kernel": "kernel8",
+    "config": "configs/kernel9.config",
+    "config_identical_to": "configs/kernel8.config",
+    "image": "build/Image-v9",
+    "image_sha256": "cf4f036d1ff03cb4d13e6f41aedb1b31665d6921a0dd93ff0b8fc951ae18e073",
+    "qemu_passed": [
+      "time64-kernel9-confirmed",
+      "time64-kernel9-resource",
+      "time64-kernel9-psi",
+      "time64-kernel9-docker-confirmed"
+    ],
+    "integration": "Kernel9 is a QEMU-validated kernel candidate only; no kernel9 firmware package or device flash. Currently deployed kernel8-ui1 and its uncommitted one-time trial/fallback state are unchanged.",
+    "userspace": "unchanged; armel/armhf glibc probes run only in the QEMU test fixture",
+    "limits": [
+      "CONFIG_AIO=n is retained: io_pgetevents_time64 remains ENOSYS; its optional handler has compile-only validation.",
+      "SO_TIMESTAMP_NEW, SO_TIMESTAMPNS_NEW, SO_TIMESTAMPING_NEW and unrelated ioctl/driver/file-format time layouts are outside this change; no complete Y2038 claim."
+    ],
+    "sl1680": "deferred; unchanged"
+  }
+}

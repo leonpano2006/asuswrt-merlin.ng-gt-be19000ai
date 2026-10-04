@@ -2,9 +2,9 @@
 """Build an offline RAM-only Docker guest using this candidate's modules."""
 from pathlib import Path
 import stat,gzip,json,hashlib,argparse
-r=Path(__file__).resolve().parents[1];b=r/'build';p=argparse.ArgumentParser();p.add_argument('--version',type=int,default=5);a=p.parse_args();root=b/f'candidate-rootfs-v{a.version}'
+r=Path(__file__).resolve().parents[1];b=r/'build';p=argparse.ArgumentParser();p.add_argument('--version',type=int,default=5);p.add_argument('--root',type=Path);p.add_argument('--rootfs',type=Path);p.add_argument('--output',type=Path);p.add_argument('--evidence',type=Path);a=p.parse_args();root=a.root or b/f'candidate-rootfs-v{a.version}'
 entries={d:(stat.S_IFDIR|0o755,b'',0,0) for d in ['bin','proc','sys','dev','tmp','mnt','modules','docker','etc','var','firmware']}
-files={'bin/busybox':b/'busybox','load_one':b/'load_one','btrfs.img':b/'blank-btrfs.img','image.tar':b/'image.tar','rootfs.img':b/'rootfs.zstd.squashfs'}
+files={'bin/busybox':b/'busybox','load_one':b/'load_one','btrfs.img':b/'blank-btrfs.img','image.tar':b/'image.tar','rootfs.img':a.rootfs or b/'rootfs.zstd.squashfs'}
 for n in ['docker','dockerd','containerd','containerd-shim-runc-v2','runc','docker-init']:files['docker/'+n]=b/'docker-tools'/n
 zsmalloc_builtin=not list((root/'lib/modules').rglob('zsmalloc.ko'))
 for n in ['tfat','tntfs','thfsplus','raid6_pq','xor','btrfs','exportfs','overlay','zsmalloc']:
@@ -39,6 +39,6 @@ out=bytearray()
 for ino,(n,(m,d,ma,mi)) in enumerate(entries.items(),1):
  n=n.encode()+b'\0';f=[ino,m,0,0,2 if stat.S_ISDIR(m) else 1,0,len(d),0,0,ma,mi,len(n),0]
  out+=b'070701'+''.join(f'{v:08x}' for v in f).encode()+n;out+=b'\0'*(-len(out)%4);out+=d;out+=b'\0'*(-len(out)%4)
-p=b/'docker-candidate.cpio.gz';p.write_bytes(gzip.compress(out,compresslevel=1,mtime=0))
+p=a.output or b/'docker-candidate.cpio.gz';p.write_bytes(gzip.compress(out,compresslevel=1,mtime=0))
 record={n:{'sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'bytes':p.stat().st_size} for n,p in files.items()}
-(r/'evidence/qemu-inputs.json').write_text(json.dumps(record,indent=2)+'\n');print(p,p.stat().st_size)
+(a.evidence or r/'evidence/qemu-inputs.json').write_text(json.dumps(record,indent=2)+'\n');print(p,p.stat().st_size)

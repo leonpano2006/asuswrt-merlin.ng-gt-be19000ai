@@ -1,0 +1,136 @@
+{
+  "release": "kernel8-ui1",
+  "validated_at": "2026-10-04T11:21:40.715205+00:00",
+  "status": "FLASHED_TRIAL_BOOT_ACCEPTED",
+  "image": "GT-BE19000AI_3006_102.9_leon-kernel8-ui1_TRIAL.pkgtb",
+  "sha256": "cf74c805927e2128cc26a273980c2af1f470fa34f78fbe0127f94d6fbb4bbe64",
+  "bytes": 86711104,
+  "kernel": {
+    "version": "4.19.294 #8",
+    "sha256": "bd866bd952a79092126e31a15e123d6286f6e10b92ddf3b1e81d553ccb790234",
+    "live_config_sha256": "1c495c39d80319246f26a38192eb481b54860ea938d46bbc8156b4fa676a8216"
+  },
+  "integration": {
+    "web_assets": 15,
+    "live_file_hashes_verified": 27,
+    "rebuilt_modules": 133,
+    "stock_pid1_and_libcodb_retained": true,
+    "rootfs": "Zstd SquashFS, level22, block524288",
+    "ai_board_modified": false,
+    "credential_embedded": false,
+    "web_bind_overlays_after_reboot": false
+  },
+  "validation": {
+    "exact_integrated_qemu": true,
+    "metadata_guard_qemu": true,
+    "bsp_bootloader_lzo_roundtrip": true,
+    "signature_verified": true,
+    "flash_readback_passed": true,
+    "original_slot2_full_hashes_unchanged": true,
+    "live_identity_report": "reports/kernel8/live-identity-review.json",
+    "psi": {
+      "interface_files": 6,
+      "valid_monitors": 12,
+      "invalid_threshold_checks": 24,
+      "duplicate_monitor_EBUSY": true,
+      "poll_epoll_timeout_zero": true,
+      "private_mount_namespace_cleanup": true,
+      "hardware_load_injected": false,
+      "actual_notification_delivery_tested_on_hardware": false,
+      "actual_refault_and_io_delivery_tested_in_QEMU": true
+    },
+    "radio_isup": [
+      1,
+      1,
+      1
+    ],
+    "wired_aimesh_confirmed_by_controller_Chrome": true,
+    "ai_internal_link_ping": true,
+    "ai_containers_running": 3,
+    "rgb_firmware_executable_running": true,
+    "rgb_physical_colors_after_boot": "not separately confirmed",
+    "collectors_fresh_and_errors_empty": true,
+    "chrome_observations": "evidence/kernel8-ui1/chrome-observations.json",
+    "boot_log_review": "reports/kernel8/boot-log-review.json",
+    "no_panic_oops_bug_seen": true,
+    "observed_uptime_seconds": 552.62,
+    "acceleration": {
+      "flow_activation_success": 33550,
+      "flow_activation_failure": 0,
+      "flow_refresh_success": 83796,
+      "flow_refresh_failure": 0,
+      "throughput_benchmark": false
+    },
+    "virtual_bss": {
+      "up": [
+        "wl0.1",
+        "wl0.2",
+        "wl0.3",
+        "wl1.1",
+        "wl1.2",
+        "wl2.1",
+        "wl2.2"
+      ],
+      "down": [
+        "wl0",
+        "wl0.5",
+        "wl1",
+        "wl2"
+      ],
+      "notes": "Physical base interfaces are wet mode. wl0.5 has nvram mode ap but live status Managed/unassociated; no wireless setting changed and no claim all configured BSS or IoT devices recovered."
+    }
+  },
+  "trial": {
+    "booted_slot": 1,
+    "slot1_committed": false,
+    "next_boot_slot": 2,
+    "slot2_committed": true,
+    "metadata_partitions_read_only": true,
+    "permanent_commit_performed": false,
+    "boot_id": "00000000-0000-4000-8000-000000000012",
+    "fallback_semantics": "Next reset boots original slot2; one-time selection alone does not guarantee a hung kernel resets itself."
+  },
+  "fallback_hashes": {
+    "bootfs2_full": "ecda0c1ad0dab3fbe28ef93ab9500e713e19b2b238a055d1fd3971ede03a0256",
+    "rootfs2_full": "51128dda31033fb34ef315e25b767f1b4557967bb1168bbdb8636c1e79b76465"
+  },
+  "persistent_hooks": {
+    "services_start_sha256": "7d387f934e68242d5a44ec5d7c2e134ab9ebd8a7468facd543d4fe9faf5104f2",
+    "old_and_new_integrated_entry_allowed": true,
+    "original_JFFS_fallback_preserved": true,
+    "nvram_changed_this_release": false
+  },
+  "build_ccache": {
+    "enabled_by_default": "auto",
+    "cache": "build/ccache",
+    "maximum_size": "5G",
+    "real_compile_hit_verified": true,
+    "report": "reports/ccache/verification.json",
+    "packaged_Image8_rebuilt_to_enable_cache": false
+  },
+  "limitations": [
+    "Bounded boot acceptance, not a throughput benchmark or long soak.",
+    "Existing BP3/regulatory.db/virtual-BSS startup diagnostics also occur on stock fallback; no blanket warning-free claim. Per-SSID client/beacon and all IoT device recovery are not established.",
+    "Anonymous/swap working-set classification and modern PSI additions outside the selected backport remain excluded.",
+    "SL1680 firmware, kernel, modules, userspace and memory policy unchanged.",
+    "No permanent boot-slot commit or Git commit."
+  ],
+  "evidence": {
+    "evidence/kernel8-ui1/image-manifest.json": "9f9f24e9a360a6cd1593d1e774195d830aeeeaaa39de97fa43c16b5e3f599b0f",
+    "evidence/kernel8-ui1/flash-readback.txt": "d58cb672dd7203c6ba2a0ed1ed4e00acd4f200574dce93563da5d144d1809c8b",
+    "evidence/kernel8-ui1/health-first.txt": "b6d5bb067cd14f9f4c28e6d433e96a0c835e2adb3252625b49b3c3d5d1761dfe",
+    "evidence/kernel8-ui1/health-final-confirmed.txt": "e6a816641194e2d8e83e6c376c3a73412bc780059bd5ea39eb3edf251bf01bc9",
+    "evidence/kernel8-ui1/psi-api.txt": "8abf4cc14fd8aede03d971f454526048b0e62641239dff01db07d34b348be2e4",
+    "evidence/kernel8-ui1/live-files.sha256": "7ade0a8b1d193f6e0ff7cb66d7f1e6593dd92d2ae5eb12cfd330ab52a090a556",
+    "evidence/kernel8-ui1/bss-live.txt": "d087ecd3f7389728dfc92f03713b89a1407c122eaea824e1c6135ca6cce50c5e",
+    "evidence/kernel8-ui1/chrome-observations.json": "50328f7703650c43aa1401155c50ed26cfde1843dac770015d23d0cc329a7bb4",
+    "evidence/kernel8-ui1/bss-config-and-acceleration.txt": "2c90e5d710ddf9aac0672c9605b670df48b685ca3e17b21c41d4d035439b0dcd",
+    "evidence/kernel8-ui1/bss-wl0.5-detail.txt": "a6efde41252612b7a8383bb2e851d000fa25e53abe3254e74b59b4d0c217c2c0"
+  },
+  "test_fixture_corrections": [
+    "First QEMU metadata guard lacked loop.max_part=8; corrected invocation passed before flash.",
+    "Initial stock signature check rejected the different PKG demo key before image creation; correct GEN3/Krot-fld.pem matches prior public key and both signatures passed.",
+    "Temporary BusyBox executable needed basename busybox via a symlink; first PSI invocation stopped before kernel API tests, corrected invocation passed.",
+    "Initial optional fcache stats read targeted a directory; final health command completed and correct stats/fhw counters were collected."
+  ]
+}

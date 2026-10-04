@@ -1,0 +1,77 @@
+{
+  "scope": "AI board hostname editor and corrupt language selector labels",
+  "date": "2026-10-03",
+  "firmware_packaged": false,
+  "flashed": false,
+  "git_committed": false,
+  "hostname_changed": false,
+  "hostname": "aiboard-C686",
+  "user_preference": "Preserve current AI hostname",
+  "language_root_cause": {
+    "file": "www/Lang_Hdr.txt",
+    "stock": "25 codes; non-ASCII labels already replaced by question marks",
+    "intact_reference": "www/Lang_Hdr",
+    "fix": "Restore UTF-8 labels in original order, correct Cyrillic initial letter in Russian, retain all 25 language codes; no BOM; every name fits HTTPD 30-byte target buffer"
+  },
+  "be98_reference": {
+    "path": "rmerlin-httpd-fix-20260917",
+    "finding": "Prior translation issue was replace_tag_string bounds in ej.c under FORTIFY_SOURCE=3; distinct from this damaged language table. That binary patch is not transplanted."
+  },
+  "hostname_root_cause": {
+    "disabled_input": true,
+    "hidden_apply_footer": true,
+    "legacy_apply_coupled_to_hidden_portainer_control": true,
+    "actual_rc_sha256": "9d31d5f2c3a97dd38e69ac7978dedc9a86089708d5083d994a693483a7a62814",
+    "binary_confirmation": "0x154808 reads ai_hostname; 0x15485c names JSON key hostname; 0x154860 adds it to setting object",
+    "source_caveat": "Pinned public rc/ai_service.c predates hostname support; actual stock binary inspected separately",
+    "fix": "Enable field after initial read, reveal Apply, validate stock 5–32 character rules, no-op unchanged names, submit hostname only via existing authenticated apply API, verify ai_sys_hostname rather than treating NVRAM acceptance as board success",
+    "service_scope": "Vendor start_ai_request apply still replays existing AI settings internally; this is not a new hostname-only backend. Frontend does not submit Portainer/SSH/LAN/authentication changes."
+  },
+  "validation": {
+    "javascript_helper_syntax": "passed",
+    "full_page_async_script_syntax": "passed",
+    "valid_invalid_name_cases": "passed",
+    "unchanged_and_invalid_no_requests": "passed",
+    "mock_confirmed_success": "passed",
+    "mock_unconfirmed_does_not_claim_success": "passed",
+    "mock_network_failure": "passed",
+    "all_15_live_hashes": "passed",
+    "overlay_reapply_idempotence": "passed",
+    "chrome": {
+      "hostname_input": "editable, current name preserved",
+      "invalid_name": "abc rejected with localized inline message",
+      "no_change": "original name restores disabled Apply button",
+      "language_names": "all 25 language labels readable; TW, JP, FR, TH, RU, UK visibly corrected",
+      "round_trip": "TW -> EN -> TW; English title, menu and main content verified; final TW",
+      "preferences": "Dark ROG/Fancy retained",
+      "language_option_count": 25,
+      "damaged_label_count": 0
+    },
+    "real_rename": "not performed; user asked to retain current hostname",
+    "remaining_localization": "Earlier custom diagnostic/container-status additions still contain Traditional Chinese strings in English mode; not part of the corrupt selector-label repair."
+  },
+  "runtime": {
+    "boot_id": "00000000-0000-4000-8000-000000000003",
+    "httpds": 15731,
+    "httpd": 4062,
+    "hostapd": 9278,
+    "cfg_client": 6858,
+    "ledg": 7960,
+    "history": 3638,
+    "rebooted": false,
+    "services_restarted": false,
+    "final_preferred_lang": "TW",
+    "final_ai_sys_hostname": "aiboard-C686",
+    "final_cfg_alive": "1",
+    "unchanged_pids_verified": true
+  },
+  "backup": "/jffs/node-web-fix/before-round4",
+  "changed_assets": [
+    "Lang_Hdr.txt",
+    "pages/aiboard.html"
+  ],
+  "remaining": [
+    "Actual rename and mDNS propagation need a future user-selected name; no temporary rename was performed",
+    "Router reboot validation remains deferred"
+  ]
+}

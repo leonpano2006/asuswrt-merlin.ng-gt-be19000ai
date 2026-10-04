@@ -1,0 +1,237 @@
+{
+  "assessed_at": "2026-10-03T18:04:51.343114+00:00",
+  "status": "Persistent RGB hooks installed with explicit user approval. LED service restart and cycle/rainbow switching passed; the user physically confirmed that switching effects in the node web UI still produces normal changing colors.",
+  "physical_confirmation": "已恢復循環變色",
+  "root_cause": {
+    "component": "Unmodified Merlin 3006.102.9 /sbin/rc ledg applet",
+    "source_sha256": "9d31d5f2c3a97dd38e69ac7978dedc9a86089708d5083d994a693483a7a62814",
+    "evidence": [
+      "ledg_scheme=4 (color cycle), re_mode=1, no active scheduler or temporary override.",
+      "Reapplying the normal SIGTSTP notification and restarting stock ledg both retained red-only channels.",
+      "In ledg initialization, 0x2569c8 reads re_mode; node branch forces steady mode and maps schemes 4/5 to scheme 2.",
+      "At 0x2579d4, node mode causes animation setup to return before starting its timer.",
+      "Additional ledg-only node branches suppress user color/pattern selection.",
+      "Isolated QEMU reproduces red-only commands in stock node mode; patched node emits exactly the stock controller commands for all modes 0 through 7.",
+      "Patched live node enabled green and blue channels, and the user confirmed physical cycling.",
+      "After the first successful RAM trial, changing the effect made ledg notify rc restart_ledg; /proc/<pid>/exe then returned to the stock /sbin/rc. The persistent event hook now replaces that stock instance after the normal restart."
+    ],
+    "scope": "This is a userspace node-mode policy in the stock applet, not evidence of damaged LEDs or a custom-kernel regression.",
+    "closed_source": "rc Makefile selects prebuilt ledg.o; ledg.c absent from this source revision. Analysis used the exact stock executable."
+  },
+  "change": {
+    "source_sha256": "9d31d5f2c3a97dd38e69ac7978dedc9a86089708d5083d994a693483a7a62814",
+    "candidate_sha256": "630bf99efe7d014b55dda7e337bf43d80cd5d1f93514c30115b170a96d6e9567",
+    "changed_bytes": 20,
+    "same_size": true,
+    "changes": [
+      {
+        "virtual_address": "0x255190",
+        "file_offset": 2380176,
+        "before": "0xebffff8f",
+        "after": "0xe3a00000",
+        "reason": "Allow user RGB palette selection"
+      },
+      {
+        "virtual_address": "0x2569c8",
+        "file_offset": 2386376,
+        "before": "0xebf72dda",
+        "after": "0xe3a00000",
+        "reason": "Keep selected animation instead of forcing steady color"
+      },
+      {
+        "virtual_address": "0x25701c",
+        "file_offset": 2387996,
+        "before": "0xebf72c45",
+        "after": "0xe3a00000",
+        "reason": "Keep selected channel brightness"
+      },
+      {
+        "virtual_address": "0x257080",
+        "file_offset": 2388096,
+        "before": "0xebf72c2c",
+        "after": "0xe3a00000",
+        "reason": "Keep selected pattern channel brightness"
+      },
+      {
+        "virtual_address": "0x2579d4",
+        "file_offset": 2390484,
+        "before": "0xebfff57e",
+        "after": "0xe3a00000",
+        "reason": "Allow animation timer on a node"
+      }
+    ],
+    "deployment": "Version-locked copy under /jffs/ledg-node-fix/rc; only the ledg applet is launched. Merlin services-start and service-event-end hooks reconnect it after boot or start/restart_ledg. Original /sbin/rc remains unchanged."
+  },
+  "live_trial": {
+    "executable": "/tmp/codex-ledg-node-trial/rc",
+    "pid": "24961",
+    "ledg_scheme": "4",
+    "re_mode": "1",
+    "persistent": false,
+    "original_firmware_file_modified": false,
+    "nvram_commit_performed": false,
+    "automatic_effect_cache_changes": {
+      "ledg_new_default_scheme": {
+        "before": "1",
+        "after": "4"
+      },
+      "ledg_new_default_rgb": {
+        "before": "10,10,128,60,0,128,128,0,100,128,0,128",
+        "after": ""
+      }
+    },
+    "historical": true
+  },
+  "validation": {
+    "qemu": {
+      "isolation": "Bubblewrap unshare-all, read-only rootfs, no router access; hardware/NVRAM/timer calls mocked.",
+      "cases": [
+        {
+          "scheme": 0,
+          "patched_node_matches_stock_controller": true
+        },
+        {
+          "scheme": 1,
+          "patched_node_matches_stock_controller": true
+        },
+        {
+          "scheme": 2,
+          "patched_node_matches_stock_controller": true
+        },
+        {
+          "scheme": 3,
+          "patched_node_matches_stock_controller": true
+        },
+        {
+          "scheme": 4,
+          "patched_node_matches_stock_controller": true
+        },
+        {
+          "scheme": 5,
+          "patched_node_matches_stock_controller": true
+        },
+        {
+          "scheme": 6,
+          "patched_node_matches_stock_controller": true
+        },
+        {
+          "scheme": 7,
+          "patched_node_matches_stock_controller": true
+        }
+      ],
+      "limitation": "Validates initial hardware command sequence and timer request, not physical LED output or long-running animation."
+    },
+    "physical_cycle_confirmed": true,
+    "same_boot_id": true,
+    "network_service_pids_unchanged": {
+      "cfg_client": true,
+      "httpd": true,
+      "hostapd": true
+    },
+    "node_role_and_backhaul_unchanged": true,
+    "cfg_alive": "1",
+    "persistent_web_ui_effect_switch_physically_confirmed": true
+  },
+  "limitations": [
+    "Installation is persistent and the startup script has been exercised manually; a real router reboot has not been tested.",
+    "QEMU covered initial modes 0-7. Real hardware cycle/rainbow service integration and subsequent user web UI effect switching passed; QIS/identify/SDN/night scheduling and long-duration operation remain untested.",
+    "A firmware update changing /sbin/rc intentionally disables the override until a new patch is reviewed.",
+    "No git commit or push was performed."
+  ],
+  "rollback": {
+    "first_verify": "These hooks were installed only because the original hook directories were empty. Verify their hashes still match before disabling them; preserve any subsequent user edits.",
+    "disable_hooks_then_restore_stock": [
+      "mv /jffs/scripts/service-event-end /jffs/ledg-node-fix/service-event-end.disabled",
+      "mv /jffs/scripts/services-start /jffs/ledg-node-fix/services-start.disabled",
+      "service restart_ledg"
+    ],
+    "restore_flag_if_no_other_custom_scripts_or_configs_have_been_added": [
+      "nvram set jffs2_scripts=0",
+      "nvram commit"
+    ],
+    "note": "Disabling hooks before restarting is essential; otherwise restart_ledg will correctly reactivate the patch. No reboot or flash needed."
+  },
+  "next_integration": "Keep this separately approved JFFS userspace fix separate from the kernel-only firmware branch until userspace firmware integration is explicitly requested.",
+  "persistent_integration": {
+    "installed_at": "2026-10-03T18:03:01.212240+00:00",
+    "authorization": "User explicitly approved installing and permanently enabling the RGB fix, including jffs2_scripts=1.",
+    "jffs2_scripts_before": "0",
+    "jffs2_scripts_after": "1",
+    "nvram_commit_performed": true,
+    "hook_directories_were_empty": true,
+    "files": {
+      "/jffs/ledg-node-fix/rc": {
+        "sha256": "630bf99efe7d014b55dda7e337bf43d80cd5d1f93514c30115b170a96d6e9567",
+        "size": 2955764
+      },
+      "/jffs/ledg-node-fix/ensure.sh": {
+        "sha256": "e2cc0ec7e68006059d85f8c8d7fcd3ee1051f2ff6a431f2b22c92ca7aa88d81a",
+        "size": 2263
+      },
+      "/jffs/scripts/services-start": {
+        "sha256": "2de9611498f18be57134ad2e1e35c333d4a1c05ede32455a33e3b838a951ae06",
+        "size": 118
+      },
+      "/jffs/scripts/service-event-end": {
+        "sha256": "80dada4f78dae6608a027839f63c97a64a7ccadb3bd07773091cf6fb6a4c5b47",
+        "size": 139
+      }
+    },
+    "symlink": {
+      "/jffs/ledg-node-fix/ledg": "rc"
+    },
+    "tests": [
+      {
+        "case": "initial activation",
+        "passed": true,
+        "ledg_pid": "3081",
+        "scheme": "5",
+        "executable": "/jffs/ledg-node-fix/rc"
+      },
+      {
+        "case": "rc restart_ledg invokes service-event-end",
+        "passed": true,
+        "ledg_pid": "3325",
+        "scheme": "5",
+        "executable": "/jffs/ledg-node-fix/rc"
+      },
+      {
+        "case": "effect change to 4",
+        "passed": true,
+        "ledg_pid": "3578",
+        "scheme": "4",
+        "executable": "/jffs/ledg-node-fix/rc"
+      },
+      {
+        "case": "effect change to 5",
+        "passed": true,
+        "ledg_pid": "3825",
+        "scheme": "5",
+        "executable": "/jffs/ledg-node-fix/rc"
+      },
+      {
+        "case": "startup hook idempotence",
+        "passed": true,
+        "ledg_pid": "3825",
+        "scheme": "5",
+        "executable": "/jffs/ledg-node-fix/rc"
+      }
+    ],
+    "startup_order_verified": "services.c calls start_ledg at line 13074 before services-start at line 13536. Startup hook manually tested and idempotent; no actual reboot performed.",
+    "same_boot_id": true,
+    "firmware_unchanged": true,
+    "network_service_pids_unchanged": {
+      "cfg_client": true,
+      "httpd": true,
+      "hostapd": true
+    },
+    "cfg_alive": "1",
+    "final_effect": "5",
+    "boot_tested": false,
+    "current_physical_confirmation": "User confirmed: 切換後仍正常變色",
+    "guard": "Runs only on GT-BE19000AI with re_mode=1 and exact stock/patched SHA-256. Leaves stock in control after a firmware change or patched-file mismatch.",
+    "scope": "Userspace RGB-only follow-up, separate from the existing kernel-only firmware work. No flash, reboot, network-mode change, Git commit or push.",
+    "physical_confirmation_at": "2026-10-03T18:04:51.343114+00:00",
+    "web_ui_effect_switch_physically_confirmed": true
+  }
+}

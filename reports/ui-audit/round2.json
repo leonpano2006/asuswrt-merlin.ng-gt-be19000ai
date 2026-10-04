@@ -1,0 +1,308 @@
+{
+  "scope": "Second node web UI repair batch; no firmware packaging",
+  "device": "GT-BE19000AI at 192.168.100.15",
+  "findings": [
+    {
+      "id": "switch-usb-blank",
+      "cause": "Both pages take a special re_mode=1 path that skips show_menu(), and therefore skip the wrapper setup that reveals the body. The iframe document is present but visibility:hidden.",
+      "fix": "Use the normal wrapper initialization when isWebWrapper is true; keep the original direct per-node page path otherwise.",
+      "verified": "Chrome displays Switch Control with Jumbo/STP/LACP and USB application list with Servers Center, printer server and Download Master. No settings submitted."
+    },
+    {
+      "id": "operation-modes",
+      "cause": "Current firmware exposes router/AP/AiMesh options and disables repeater and media-bridge controls through capability flags. Legacy wlc_psta=2 classification incorrectly displays Repeater explanation for an actual re_mode=1 node.",
+      "fix": "Actual AiMesh membership takes display precedence; select the AiMesh radio and explain current firmware options.",
+      "verified": "Three supported choices remain; AiMesh value 5 is checked, the other choices remain unchanged. No network mode changed.",
+      "limit": "This does not prove hardware cannot support standalone repeater/media bridge; those modes have not been enabled or tested."
+    },
+    {
+      "id": "wireless-header",
+      "cause": "wl_status_array() selects wl0/wl1/wl2 for proxy/repeater modes, while the real main front-haul AP is on wl*.2. It emits Not associated, channel 0 and empty BSSID. The same response's detailed wl log has correct AP status.",
+      "fix": "Safely parse existing response data, derive main AP header from the detailed log by frequency band, reset each snapshot, and use actual per-band authorized station records.",
+      "verified": "Driver wl*.2 status matches rendered BSSID and channels. Live Chrome shows channels 6, 100/160 and 6g5/320-1 and populated client tables.",
+      "additional": [
+        "Label SSID groups without calling every subunit a Guest Network.",
+        "Handle empty-IP cache fallback.",
+        "Escape long names and SSIDs when inserted into table markup.",
+        "Show per-band authorized links with an MLO caveat rather than claim unique physical-device counts."
+      ]
+    },
+    {
+      "id": "wifi-insight",
+      "cause": "Stock httpd has no get_diag_raw_data.cgi route. Existing latest channel_change and wifi_detect queries returned empty contents; airiq_enable is 0.",
+      "fix": "For this node show a live AP-status table with primary channel, bandwidth, BSSID, QBSS utilization, noise and authorized links, using the same snapshot as the dashboard client card.",
+      "verified": {
+        "primary_channels": [
+          6,
+          100,
+          5
+        ],
+        "bandwidth_MHz": [
+          20,
+          160,
+          320
+        ],
+        "sample_counts": [
+          1,
+          3,
+          1
+        ],
+        "refresh_seconds": 5
+      },
+      "limit": "Historical events, spectrum data and non-Wi-Fi interference analysis are not implemented by this change. AIRIQ has not been enabled. This is a live-status alternative to the unusable node chart."
+    }
+  ],
+  "validation": {
+    "initial": {
+      "syntax": [
+        {
+          "name": "index.html#1",
+          "ok": true
+        },
+        {
+          "name": "index.html#2",
+          "ok": true
+        },
+        {
+          "name": "js/basic.js",
+          "ok": true
+        },
+        {
+          "name": "state.js",
+          "ok": true
+        },
+        {
+          "name": "SDN/sdn.html#1",
+          "ok": true
+        },
+        {
+          "name": "SDN/sdn.html#2",
+          "ok": true
+        },
+        {
+          "name": "pages/aiboard.html#1",
+          "ok": true
+        },
+        {
+          "name": "pages/sdn.html#1",
+          "ok": true
+        },
+        {
+          "name": "pages/sdn.html#2",
+          "ok": true
+        },
+        {
+          "name": "js/dashboard.module.js",
+          "ok": true
+        },
+        {
+          "name": "pages/dashboard.html#1",
+          "ok": true
+        },
+        {
+          "name": "pages/dashboard.html#2",
+          "ok": true
+        },
+        {
+          "name": "Advanced_SwitchCtrl_Content.asp#1",
+          "ok": true
+        },
+        {
+          "name": "APP_Installation.asp#1",
+          "ok": true
+        },
+        {
+          "name": "Advanced_OperationMode_Content.asp#1",
+          "ok": true
+        },
+        {
+          "name": "Main_WStatus_Content.asp#1",
+          "ok": true
+        }
+      ],
+      "parserChecks": {
+        "expectedCounts": true,
+        "channels": true,
+        "bandwidths": true,
+        "detailPresent": true
+      },
+      "fixture": [
+        {
+          "label": "2.4 GHz",
+          "count": 3,
+          "channel": "6",
+          "bandwidth": 20,
+          "utilization": 57
+        },
+        {
+          "label": "5 GHz",
+          "count": 2,
+          "channel": "100/160",
+          "bandwidth": 160,
+          "utilization": 4
+        },
+        {
+          "label": "6 GHz",
+          "count": 2,
+          "channel": "6g5/320-1",
+          "bandwidth": 320,
+          "utilization": 3
+        }
+      ]
+    },
+    "final": {
+      "syntax": [
+        {
+          "name": "Main_WStatus_Content.asp#1",
+          "ok": true
+        },
+        {
+          "name": "pages/dashboard.html#1",
+          "ok": true
+        },
+        {
+          "name": "pages/dashboard.html#2",
+          "ok": true
+        }
+      ],
+      "counts": [
+        3,
+        2,
+        2
+      ],
+      "primaryChannels": [
+        6,
+        100,
+        5
+      ],
+      "semicolonSSID": true
+    },
+    "browser": "Native Chrome; actual pages and live data inspected. Network/USB apply buttons were not used.",
+    "trial": "evidence/ui-audit/round2/trial.json",
+    "persistent": "evidence/ui-audit/round2/persistent.json"
+  },
+  "packaging": {
+    "performed": false,
+    "authorization": false,
+    "candidate": "configs/next-release-candidate.json"
+  },
+  "remaining": [
+    "Native historical WiFi Insight data/API integration remains open.",
+    "Firmware image integration and post-reboot validation have not been performed.",
+    "Other dashboard historical traffic graphs are outside this repair and still require separate validation."
+  ],
+  "final_manifest": {
+    "files": [
+      {
+        "path": "index.html",
+        "source_sha256": "71d16b822f86a7d0cd060292b778952722362958bb66d075bc60a43eaa5bae40",
+        "patched_sha256": "f83245b3253e6bad74d9b9593120b32f4943b18f0c1923a01ae03615d47227d5",
+        "size": 10638
+      },
+      {
+        "path": "js/basic.js",
+        "source_sha256": "b2d73bab83b1c0df7029047174218a3eaef962d2aa669d957ecaefac016f504b",
+        "patched_sha256": "2771501c2be0e7d350bb5eba8e376c5e447c4c501557c2ea9f684a661b66db40",
+        "size": 70292
+      },
+      {
+        "path": "state.js",
+        "source_sha256": "752d1e38748c6ab101ee9586fac2d05a8199b7a68910c4b1eb0f277bdb3b498a",
+        "patched_sha256": "4d31fe429cc51bcfd882bcaa9bb9ff79e7ff79f666ceef12ce485f9e491aa90e",
+        "size": 192906
+      },
+      {
+        "path": "SDN/sdn.html",
+        "source_sha256": "a5d3f44b0060195f62c05f6489749fea126765e5a43256f8437698f05b527f62",
+        "patched_sha256": "a5796b4520c1f76a102dd87c17a8b07699edcdbaa1e8c05176040a8c8b8e76a4",
+        "size": 12794
+      },
+      {
+        "path": "css/architecture.css",
+        "source_sha256": "ec8da371d66bb261edd9be3c4c7942d49f599e532799e8867cc5a028df0f1c41",
+        "patched_sha256": "554c2e90945bad0c358bbd7fe375f55ffb46b8c35fe850781e8d17ad06bf6c5b",
+        "size": 36834
+      },
+      {
+        "path": "pages/aiboard.html",
+        "source_sha256": "e680a0946500edd9f8f5c0047fd3a24458aa369774d7188c90f26bb84a056611",
+        "patched_sha256": "99f5f2a42579d5bedf7731643e98e4a99bc07e5f5da926ecf21694085d172414",
+        "size": 62187
+      },
+      {
+        "path": "pages/sdn.html",
+        "source_sha256": "3d239df3c582aa14d5a604990a95d2da492b2ba5bdd6c80f69f5c94b02f7df8c",
+        "patched_sha256": "2a313cfe5c5780baca951a3bed79e2e9b699da5d6195b321ad0d917a44b3008d",
+        "size": 3927
+      },
+      {
+        "path": "js/dashboard.module.js",
+        "source_sha256": "8747bc29f7c51bcb1a944cba68e53c5aff2869357b459805d0d3dd228faef018",
+        "patched_sha256": "37d02a6c5a9d2b5f6c738edf261ee24183412b7070196235e043fba125326406",
+        "size": 104765
+      },
+      {
+        "path": "pages/dashboard.html",
+        "source_sha256": "fd5dbc05c14d8b13cf98131c13c7e7b39af0a58a673dc964e433047b16084ddc",
+        "patched_sha256": "59ca62c398e243c66a2f13b6067d9bf3c90f672f5fe014f7447e95717e34c6d0",
+        "size": 119977
+      },
+      {
+        "path": "Advanced_SwitchCtrl_Content.asp",
+        "source_sha256": "5f9e23dc93b0d51dd1722a7ff702fc44a2f6982adba481c8fc2a91f021d421ba",
+        "patched_sha256": "b9d7a4438221c7ad50fb19084875a16b4f8eaa75551ef098e71b21362928b926",
+        "size": 34945
+      },
+      {
+        "path": "APP_Installation.asp",
+        "source_sha256": "88b0c269b1696c2b47907ba6a1ea2aee673d10bbd5c6a68a681ba226b34fa28b",
+        "patched_sha256": "fb9541d5e1150a7b80d1136bf866cb23103b2c673e8bd024317d20e613cefb50",
+        "size": 42181
+      },
+      {
+        "path": "Advanced_OperationMode_Content.asp",
+        "source_sha256": "7ac3ef45390dbfc6b2e6001b62b42f06c1aefef97194761f10f89601940af309",
+        "patched_sha256": "8270db12bcad777cabe47ec34fa4f1ebf2dd30e46892f3ad24dfea7f7c555182",
+        "size": 34490
+      },
+      {
+        "path": "Main_WStatus_Content.asp",
+        "source_sha256": "d8e2ba668ed1b996bf6e448b32fc2cc522c1131a6ed76932750b67b548c6539c",
+        "patched_sha256": "f608252d15028c7d7f61f2b8f711a1b45e46c730fbaf816fc8cb14b73fb508ec",
+        "size": 21138
+      }
+    ],
+    "scope": "Authenticated local node web UI; no network-role or authentication changes"
+  },
+  "persistence_summary": {
+    "time": "2026-10-03T19:12:50.373514+00:00",
+    "changed": [
+      "pages/dashboard.html",
+      "Advanced_SwitchCtrl_Content.asp",
+      "APP_Installation.asp",
+      "Advanced_OperationMode_Content.asp",
+      "Main_WStatus_Content.asp"
+    ],
+    "before": {
+      "boot_id": "00000000-0000-4000-8000-000000000003",
+      "cfg_client": "6858",
+      "httpd": "4062 4060",
+      "hostapd": "9278",
+      "re_mode": "1",
+      "cfg_alive": "1"
+    },
+    "backup_directory": "/jffs/node-web-fix/before-round2",
+    "after": {
+      "boot_id": "00000000-0000-4000-8000-000000000003",
+      "cfg_client": "6858",
+      "httpd": "4062 4060",
+      "hostapd": "9278",
+      "re_mode": "1",
+      "cfg_alive": "1"
+    },
+    "status": "Thirteen web-only files persistently installed; no firmware packaging, NVRAM changes or service restarts",
+    "idempotent_apply": true,
+    "rgb_hook_preserved": true,
+    "reboot_tested": false
+  }
+}

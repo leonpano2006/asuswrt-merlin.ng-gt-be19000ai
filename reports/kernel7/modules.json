@@ -1,0 +1,534 @@
+[
+  {
+    "path": "lib/modules/4.19.294/kernel/crypto/842.ko",
+    "sha256": "8ea1fe2dee846f7255304f2cb4204e3218cd015990a6ed6bc8c0db27daf1573a"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/crypto/af_alg.ko",
+    "sha256": "1df437337520549900ffc4cca29e4637c6877bb620bbe197fb7cc77479b63d60"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/crypto/algif_aead.ko",
+    "sha256": "3a70f6735a6b09cac46f78b884f2fdc4c255979b9873a5853039b8cd0b91fc89"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/crypto/algif_hash.ko",
+    "sha256": "61f20527b8c2b2fa6ccd453cb7967940f09bcaa60ff8ac9c9d14d516f296796f"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/crypto/algif_rng.ko",
+    "sha256": "51f5c4fffd937edd21bb103582fe60ea371f709261031b4c64cfaf6188008e30"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/crypto/algif_skcipher.ko",
+    "sha256": "fedde7c3b57b2a82da5490f4bf6983d67924d10dd19ca14dbfced7565aa5a152"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/crypto/lz4.ko",
+    "sha256": "260bfabe3dce4959652b712ff83f1ab041ed6e2fe2bae5e81f9ee7ff51caf4dd"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/crypto/lz4hc.ko",
+    "sha256": "25b4e56ce0b9a221081f47dd9c26f120a017514d3957330df08f52634aa5b847"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/crypto/xor.ko",
+    "sha256": "dc6fd642be563897ffb6ce447eba33717bbe53140d8c5969864ef85d8702091d"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/base/firmware_loader/firmware_class.ko",
+    "sha256": "3bbae45bce4dfea42952c890669dadd094df75fbc16ea2c2ec2074eca48ad7b4"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/block/zram/zram.ko",
+    "sha256": "1c40b38ec43e03d11e55fe1a2b94cf2759defadf91f2ffcd569fdcad46d2ad77"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/cdrom/cdrom.ko",
+    "sha256": "c914d7a39e34d3a7dd14c11e9abaea513a4329a7490b125b711c7190ac47c8ea"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/char/rtl8372/rtl8372.ko",
+    "sha256": "3044b7b31fc1ed1851791aac5c3df13ef31496132a01cfd8c5cc732f8112f4c3"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/connector/cn.ko",
+    "sha256": "7055525dd24c4feeebbc9fb24a28831c34d443799ba6872e10b8586392762919"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/hid/usbhid/usbhid.ko",
+    "sha256": "5be5d0fed4d052bd0946abbe48e00921c3270795d85c8fa9bc43c14932a2558c"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/mmc/core/oops_mmc.ko",
+    "sha256": "698e8a7f8bda96357a9ca29108c3cf5ff4ab39beedfbb6bf61548716a1a51ca3"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/mtd/mtdoops.ko",
+    "sha256": "667d4734bcfa450d9cbaca40736d4f164e8e32931bb9db3a5196c12c5434c074"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/net/bonding/bonding.ko",
+    "sha256": "db6e6dc996aefcaf0b5d6f5db100224890e084a6dff7dab756db3d18ac92c7ba"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/net/can/can-dev.ko",
+    "sha256": "d1b01a07072a76b45f6a76b7f2124ab94fa2eeb790d0cf94e68928299f2aecfe"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/net/can/usb/peak_usb/peak_usb.ko",
+    "sha256": "e737a1bc85ebe10be76c1c577dc4fb804be238aff9d199159f27f59847f8d37d"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/net/mii.ko",
+    "sha256": "87a7b0dfe52213c3e4be479f5724ca7a3fb81c7c848c3ca246c3514904d02140"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/net/tun.ko",
+    "sha256": "e2dd1bb8edbbce32a7f056f11c838e7b2a4fa838c7884fecee2d32d70aac6605"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/net/usb/asix.ko",
+    "sha256": "3eacae3287b643578c7f1e8c19b0f5c10b7f10a6221491dd79f781ba4634090c"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/net/usb/ax88179_178a.ko",
+    "sha256": "00aac46dcbfa9b637d3b29a6c16ca671e32fb817250419865d7416542e6f4cca"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/net/usb/cdc_ether.ko",
+    "sha256": "44cd02d8deb61ce77f53db4bfb51f93d4c61798d32956d2b05bc3e6779dd66c3"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/net/usb/cdc_ncm.ko",
+    "sha256": "efc4edc6da205190d7285d239bf40f75308a267cc8e0ca4051ae94f69225b731"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/net/usb/ipheth.ko",
+    "sha256": "a36e737bfd1959cbd006191bb21e0e9ed8c5a9457445b9de58bd33b49444b44e"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/net/usb/qmi_wwan.ko",
+    "sha256": "450760aa45cf83ec3a53c3358efa2f96181f470ee4ab01328052be97a41b1725"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/net/usb/rndis_host.ko",
+    "sha256": "bf9e3a5b6c558d7594879fb5074c93ad854ea18272566fe4d8ac8a0e5bff0a9b"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/net/usb/usbnet.ko",
+    "sha256": "4c4ee1ad9278fdc4cf9eee932e9241720977fabec4924c70d2abad8316446881"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/scsi/scsi_mod.ko",
+    "sha256": "a81b6b24e1603d6d5d2121809a00f52d01b31049f173ab73e97c321643a7a98a"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/scsi/sd_mod.ko",
+    "sha256": "1197a999b7aa88ea0b5d1d77f4d87387d136e6e5408ce05225bd1c7c345305fb"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/scsi/sg.ko",
+    "sha256": "ad4397f4237a9d3a3cd22e6628bab34ca5994ee9a0251dbbeefcf4756c9a03e4"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/scsi/sr_mod.ko",
+    "sha256": "562e8ccf9361f1df919f9e48e2786008ef957eacc7f69759380f76a012b55121"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/usb/class/cdc-acm.ko",
+    "sha256": "e3fab602333387fe6bf4cbe8e8e9cc319881e842ec541364cbabfce623ff5155"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/usb/class/cdc-wdm.ko",
+    "sha256": "ed18818ceaa7bfdf0e16ff73ff6fca441e22b9f0d6122c48607e2ca328725ac6"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/usb/class/usblp.ko",
+    "sha256": "ef1f736b9e6e4ff114f73be7b616511205b37b30783b003f8d16abd0dc771601"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/usb/common/usb-common.ko",
+    "sha256": "b2ddb735729e329f88d7594feb91e7f69f3c217cb3c91d47288b3c6f09d27f99"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/usb/core/ledtrig-usbport.ko",
+    "sha256": "a94617aa02720fe4c44b03cb1f1296817cdbcae607e9228bfcee32164ef5e380"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/usb/core/usbcore.ko",
+    "sha256": "716e5139552a1360b82aa209137cb5014a31ba574f134bdf7c1bdcaa1d11e9d2"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/usb/host/ehci-hcd.ko",
+    "sha256": "f22d5f45c58696296b74aef5c12d29126bef4377953603b9a7b66c0514157589"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/usb/host/ehci-pci.ko",
+    "sha256": "11146ce1bf8c7bff4f4319c8080506a7a0992c4b950a4d17f390c50a7155a1d0"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/usb/host/ehci-platform.ko",
+    "sha256": "eb77b043037982fba1484417f9d5d617ed191cfdff80b5a953fe7e76972333d8"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/usb/host/ohci-hcd.ko",
+    "sha256": "da5f73263ae81f9f1910c2393509d0b9428997de4be98dffd058b367588d182f"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/usb/host/ohci-pci.ko",
+    "sha256": "39562ac2ab92840957e8f6ea265fdd9a4d4b117613dba4440072f9a2efb95677"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/usb/host/ohci-platform.ko",
+    "sha256": "c1972964662f8210640eadb02539ac2dc0ea76ac2836dc997052e7b1c2abb403"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/usb/host/xhci-hcd.ko",
+    "sha256": "bf9ca5f7f062cfffa66f3c42917e9a2856f4c94e786c93d43b1a4cde96bf07b1"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/usb/host/xhci-pci.ko",
+    "sha256": "2dca1b3bb10b51ff3bdbaf5d3006c28a7370c0eafce2c4110d00f3b6e7000352"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/usb/host/xhci-plat-hcd.ko",
+    "sha256": "b4ee449fcb436d5b86364a32c483ac614274be8affdb29835444017b3ac4dc09"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/usb/mon/usbmon.ko",
+    "sha256": "477d8167c9460de15c2b03ae24b112172ba26e6bed28d859fa39c3699241a859"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/usb/serial/option.ko",
+    "sha256": "9da279a4afa191456fd966e571a22f9d73428fa68b6c53076c84aa2c4c304d69"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/usb/serial/usb_wwan.ko",
+    "sha256": "78ef835301c0911939193ae72a15d5a7f37e7a1f8551e9fae9138cf4740b1326"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/usb/serial/usbserial.ko",
+    "sha256": "a0364cf15780287981980e9611e809687386e48baf71d190923cfb076e28a10e"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/usb/storage/uas.ko",
+    "sha256": "182d0a06c38f80b417c508560f98e25473d78e3ec9106b3f7dbf34219e4e25ef"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/drivers/usb/storage/usb-storage.ko",
+    "sha256": "b6e8d5fedbb86f52071f95e5aed1e37a8b74a66572d46dd03cd0b9c05b4966e6"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/fs/binfmt_misc.ko",
+    "sha256": "404f173b57d563ae15088b1bfaf391c6d0e8ef90574aacfe1fe3e051f88c0d27"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/fs/btrfs/btrfs.ko",
+    "sha256": "0b1643f2581e914b7acfb9b86e894c97cff591a17f9c349921d5404649fca69e"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/fs/cifs/cifs.ko",
+    "sha256": "60461e9e1e4636d5f8de53b088ec8ec703331d29e7aa2826f2544feb732062ad"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/fs/exportfs/exportfs.ko",
+    "sha256": "97e80f9293091018fcef8a729235051b2ed1c070f8c74cdc088a0adb4924403b"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/fs/nls/nls_cp437.ko",
+    "sha256": "e3c2ba11fd2f68b60dbea4f4ce777002113277b8d444522e1749934c866036c2"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/fs/nls/nls_cp850.ko",
+    "sha256": "f8d659a58eb30cce2de2962fe592f5a9608c16949d41c040bd02ddaae8fd30c9"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/fs/nls/nls_cp852.ko",
+    "sha256": "b237c2b968afcb9c1c6f1b7718d89e4a85e86278633d0ac6ed6a9f903a687dba"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/fs/nls/nls_cp866.ko",
+    "sha256": "e0b4713efbac5b8301df339c94fe5348b4675ce94bdbd2702b027c943f536cbd"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/fs/nls/nls_cp932.ko",
+    "sha256": "94689fc0a3e248dc9c2a83c031f7c18e32dcff79efbcffad5b6e16486d11a0c1"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/fs/nls/nls_cp936.ko",
+    "sha256": "d2e6172b057cb799e7dc152115dfd526d34623fcb9eae8a2057061a30b95dbdb"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/fs/nls/nls_cp949.ko",
+    "sha256": "be8c80d610f576842fd12e11a99f708335d4b4841d33cb2e94b5555df0f9ae7f"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/fs/nls/nls_cp950.ko",
+    "sha256": "1200a7f1231ef9b2947cebf7e9e0d97c4d42248e93557ba7c65ab990fd819c79"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/fs/nls/nls_euc-jp.ko",
+    "sha256": "313897d8061c64ec281a68c60ca37d5911f01440b7a955a5c6e2928483174438"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/fs/ntfs/ntfs.ko",
+    "sha256": "92c70617a6c76bbc7feb773ea9063c7c12586283ca1629b8959bbf992c95f42c"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/fs/overlayfs/overlay.ko",
+    "sha256": "5c3b87c54430a351bf7cbd91d1217950457055817c97a6a79d7e03be9483793e"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/fs/xfs/xfs.ko",
+    "sha256": "aa2b64e71954bdc7aa2e83512abb78caf28b6583b5c1fadc48111bb51ef9d43a"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/lib/842/842_compress.ko",
+    "sha256": "e56fc9f5c7d0d84cd79919c4dc72bdce5d3c561df102f7f82916733257180a02"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/lib/842/842_decompress.ko",
+    "sha256": "dd3cd2e927da647ea2c5fe489a3aeb24931b9f2849d2f4ea83b239376f3199fd"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/lib/lz4/lz4_compress.ko",
+    "sha256": "091c9fd33a068d534694f502be18d4c6fe9b3f9406ce0807b8ab2c7a45d4d179"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/lib/lz4/lz4_decompress.ko",
+    "sha256": "5918ebb0a3816a192308fce4279da4a2f104f2ca8eacd5f3cb3a435f0a97f74b"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/lib/lz4/lz4hc_compress.ko",
+    "sha256": "ed4eecfb617287770993ef836560f2ec6ee63d764b5a03e6936d5d1309acb348"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/lib/raid6/raid6_pq.ko",
+    "sha256": "93553361eb5a5c0ec8d9f14797ee062932529e5fb3223a21116a584e6b4caf95"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/mm/z3fold.ko",
+    "sha256": "92a10d82761ff9875d7a0b7c775e48146cd1f82784895c14e0873d1f2b6d5f55"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/mm/zbud.ko",
+    "sha256": "fdc30b01a31c85ad5d2f1c6bf0faec275c7f32174edae69f2ea513288173daa3"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/bridge/br_netfilter.ko",
+    "sha256": "af486a907d13488d7d89a527a543171460f30b952620e86627459cab67f65f01"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/can/can-bcm.ko",
+    "sha256": "07fa3af549919af7280fed1d4e6eb9292cb23ba5448241a8c804e9aeb3ca3329"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/can/can-gw.ko",
+    "sha256": "9d28804c58d315ed0734dd9d57d19bf6c4fbc41062aff06e158aadd892c902b8"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/can/can-raw.ko",
+    "sha256": "d92d59c046084c684962943998a8842bb6b1d4c4f2c2fad836c68080f993b8c6"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/can/can.ko",
+    "sha256": "e2f96c06ec80966f3d763f286269fe8bdeaa81cd5f84397e57bb61d9151a083c"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/dns_resolver/dns_resolver.ko",
+    "sha256": "55a182e4f9472299200409ff79e883f5bf3f1efba39d71568194a209e8f40858"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/ipv4/ah4.ko",
+    "sha256": "cfd381d1b6f3c96cecb7a0a762cfd35fc9acd866b7cba1f566ad4f5e912e9dec"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/ipv4/esp4.ko",
+    "sha256": "a85e8c077960260af8eb52d11b7eba4e5a2158fa734cd421a33e7e8ed49b1419"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/ipv4/ipcomp.ko",
+    "sha256": "d4612f9ccec702b06f62de8d9569f42866a5b33215d0cffeb29f56335a232fe0"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/ipv4/netfilter/ipt_TOS.ko",
+    "sha256": "9acd9d46bb0fe8879904bb3c6840ba4ac87b7355793b14fc2e323fff9907c620"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/ipv4/netfilter/ipt_ipp2p.ko",
+    "sha256": "c62fedf7296ac37a41e27a89e3045b8a2cc2001be82354bec47ec4e64a43acc3"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/ipv4/netfilter/ipt_tos.ko",
+    "sha256": "83715e4ee35b6aacc50427b418c78b44c6ed12cbd6e9634723af66262e35daaf"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/ipv4/netfilter/ipt_web.ko",
+    "sha256": "a5c6b94da98bd67fba1066c2f8ef7d40277f7fc06e36ad9ea22bf88b41145809"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/ipv4/netfilter/ipt_webmon.ko",
+    "sha256": "3e58c7f7ec5b9713219a0f446dfdafb686a79588511d252173e053526da824a5"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/ipv4/netfilter/nf_dup_ipv4.ko",
+    "sha256": "2e52ed4aebb823a6eb5f906621f6bcd26f2df8e6d737bb6760ca1aa29deb095f"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/ipv4/netfilter/nf_nat_h323.ko",
+    "sha256": "a1c2745a1295a3c4d4d5f3387ff6ba53f1bf5df0a770bba742352fe28ac38adb"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/ipv4/netfilter/nf_socket_ipv4.ko",
+    "sha256": "b45a0dfa3c67943c0a021b7615ea8e2abf3e67e6eea87d9704873602ebc8573c"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/ipv4/netfilter/nf_tproxy_ipv4.ko",
+    "sha256": "066a213ebbb9b1e8001f4ebe9ad5275ae396eb1b39cb0ad6f05f55f9684d3efc"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/ipv4/xfrm4_tunnel.ko",
+    "sha256": "d82e6d4db67ec89116d8695736950ab0ce5b5b7d4ba13b252fef246dbc226fd9"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/ipv6/netfilter/nf_dup_ipv6.ko",
+    "sha256": "d658ad719577f18525e2b0239824c0fd7501149699ad9f9bd1994a57049bcf51"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/ipv6/netfilter/nf_socket_ipv6.ko",
+    "sha256": "9243cf3993fc431c01e9565d0f044231932823aea75cd9e4b2e1f131cd9b2373"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/ipv6/netfilter/nf_tproxy_ipv6.ko",
+    "sha256": "8797b463129a72bed5ef2594d6890ef66d417c8891e36438f14a45731d8ffbe2"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/netfilter/nf_conntrack_ftp.ko",
+    "sha256": "1755290d91bd58b6f67ae5f580d34ad05693012f0a9997c529cd1c4d6a326bce"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/netfilter/nf_conntrack_h323.ko",
+    "sha256": "a87902f6c75fe6f75c84f959a9d812be82ff4f34821d4fac57e2e33039705462"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/netfilter/nf_conntrack_sip.ko",
+    "sha256": "c14dd0c2d1a086720f7353f0cdaf9c431b70c322d7f9835d6386665f8dbae3b2"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/netfilter/nf_conntrack_tftp.ko",
+    "sha256": "6e06393d37098fdae165c568a7ac0baadc3b5ae5e17ba28f272d0beea2016b7d"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/netfilter/nf_nat_ftp.ko",
+    "sha256": "5158bfbdd774dccd06a9c672c2146f6417b6ed5bb80b005f76349ab0afa8e7da"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/netfilter/nf_nat_sip.ko",
+    "sha256": "cef267c7272c735bcc226cf92003bc1e0ebc2e85c5cd2c617fc54293543e5d55"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/netfilter/nf_nat_tftp.ko",
+    "sha256": "f487e6be9da02df2e717cb2799cc6027eb29815aba2346921befb84fd8c38d17"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/netfilter/nf_tables.ko",
+    "sha256": "b6f9c0079fb8e1e354fb4628ad74c1e368bfdf933faad091c912bb4b83a2c045"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/netfilter/xt_HL.ko",
+    "sha256": "66fd9643fbbb8bb846043d0816943eacce3a3f8525fca10f27f0ac86034418e4"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/netfilter/xt_TEE.ko",
+    "sha256": "727fd849e83f5d97185727a92052c6ef95d41dafc438d050dbf5834acaec63ec"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/netfilter/xt_TPROXY.ko",
+    "sha256": "fc67f0871537515ac821722f0eaca7c971ad39ddf01145e076b0a6e9fc981b3f"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/netfilter/xt_comment.ko",
+    "sha256": "88e7842b6afaf2a944c74c438ccaadfd767d8c45598e03ab5a0084745469f29b"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/netfilter/xt_condition.ko",
+    "sha256": "096df00c26c8158730056657e66600799cd268270b45403e36eebfbae774d31b"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/netfilter/xt_geoip.ko",
+    "sha256": "479bc0e9acc58af86ba2f5e4d6a4b60a42fba96bdce10134f4ca9caca17a5c96"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/netfilter/xt_hashlimit.ko",
+    "sha256": "40b74c9815287f7aaa8e8d565a32688b9202fe0fed7c81cd5f0995bd23f2bfcf"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/netfilter/xt_hl.ko",
+    "sha256": "ec8d0c2571ac18c6ab1d65d14b922584476b8d21b59e9e943b3e986dff6b4f5a"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/netfilter/xt_length.ko",
+    "sha256": "e63eab2f9cb181ac4958360b8fd5e41eb4dd49a6c4106045a35b6943580c9f75"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/netfilter/xt_pkttype.ko",
+    "sha256": "fbbe2fc999ff2f48a38f3d3a46d91b6d0fb574076ca0f1bacb997a9af7e077d9"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/netfilter/xt_quota.ko",
+    "sha256": "0f8aefb94569f61f2ba9ab7b291babbdd1633af2452185ac7d056f11ef2ede3b"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/netfilter/xt_sctp.ko",
+    "sha256": "1c9244ef166c3d9601d201b059875e4bb15cd9f7cb5d84db4cac8edc7518982b"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/netfilter/xt_socket.ko",
+    "sha256": "5a796877d71217b9f66f8348c10b9e33844eb9c79577f2712422ee32e9d18dfd"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/sched/em_cmp.ko",
+    "sha256": "e2bab8cc3ab8d8fa7982b060a61cf5fd0b3b06d800453f09491d847987d67991"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/sched/em_ipset.ko",
+    "sha256": "f51162a816f6d9ce614828b496a7cc9ec3fef79aa18a89d618b379d6a1388ce9"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/sched/em_ipt.ko",
+    "sha256": "97bc9598feae88329d1850cde4b5dba1adbdd1aa99fb164eeb419190a1534694"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/sched/em_meta.ko",
+    "sha256": "6e65b234f4b29b1656ad7f6a07a128b553a7cf9a4da7cc191a5304eea8c16c40"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/sched/em_nbyte.ko",
+    "sha256": "d96339ce8683801bdc78538b5c073a5552475b1eb3f50083d5ac3cecf3bb1bd7"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/sched/em_text.ko",
+    "sha256": "e98f26d5c56e7a2c523ce4afb6d6aa5616544e4bbe902969d424d73c4026b982"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/sched/em_u32.ko",
+    "sha256": "0ca6a077dc5dcd7007a9047427554559552c34c01a1556c6c01aaf6fa354180b"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/sched/sch_hfsc.ko",
+    "sha256": "547f519ca9571309ffab42ef4c15993c92eda6ec9568cf5386879f002f2ca277"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/wireguard/wireguard.ko",
+    "sha256": "c7de3ab52e077d3215c24f2ee048deac652d0029b53a9ee441efc37249ac700c"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/wireless/cfg80211.ko",
+    "sha256": "6f04121db811c5bc66ab56834b4843e29165d6f1dee96ecaed4530d78222ac7d"
+  },
+  {
+    "path": "lib/modules/4.19.294/kernel/net/xfrm/xfrm_user.ko",
+    "sha256": "39d41d71f88ddfdf1ce01ce1b7991f21ac9b1908c8622699e9beee343ecd4698"
+  }
+]

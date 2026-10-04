@@ -1,0 +1,2711 @@
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/Documentation/accounting/psi.txt b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/Documentation/accounting/psi.txt
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/Documentation/accounting/psi.txt
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/Documentation/accounting/psi.txt
+@@ -35,11 +35,7 @@
+ Pressure information for each resource is exported through the
+ respective file in /proc/pressure/ -- cpu, memory, and io.
+ 
+-The format for CPU is as such:
+-
+-some avg10=0.00 avg60=0.00 avg300=0.00 total=0
+-
+-and for memory and IO:
++The format for CPU, memory and IO is:
+ 
+ some avg10=0.00 avg60=0.00 avg300=0.00 total=0
+ full avg10=0.00 avg60=0.00 avg300=0.00 total=0
+@@ -62,3 +58,48 @@
+ tracked and exported as well, to allow detection of latency spikes
+ which wouldn't necessarily make a dent in the time averages, or to
+ average trends over custom time frames.
++
++Per-cgroup accounting and notifications
++======================================
++
++The cgroup v2 hierarchy exports cpu.pressure, memory.pressure and io.pressure
++for every group. Each group includes the pressure of its descendants; the root
++uses the system totals. CPU some/full also records a single runnable task waiting
++for its CPU quota or for a task in another cgroup. System-level CPU full has no
++useful definition and is exported as zero for ABI compatibility.
++
++To register a monitor, open a pressure file read/write and write a NUL-terminated
++string in the form "some <stall-us> <window-us>" or "full <stall-us> <window-us>".
++For example, "some 20000 500000" requests a notification after 20 milliseconds
++of stall in a 500 millisecond window. Windows range from 500,000 to 10,000,000
++microseconds, with a positive stall threshold no larger than the window.
++Keep this descriptor open and monitor POLLPRI or EPOLLPRI; closing it destroys
++the trigger. A second trigger write on the same descriptor returns EBUSY.
++POLLERR must not be treated as a pressure notification. The monitor limits
++notification frequency to one event per window.
++
++Writable /proc/pressure opens require CAP_SYS_RESOURCE. Writable delegated
++cgroup pressure files follow cgroup permissions; they do not apply that extra
++capability check in this backport. Administrators should account for per-group
++polling worker overhead when delegating writable pressure files.
++
++CONFIG_PSI=y enables accounting by default. Booting with psi=0 disables it.
++The optional CONFIG_PSI_DEFAULT_DISABLED reverses that default; psi=1 enables
++accounting explicitly. This backport does not add per-cgroup pressure toggles,
++IRQ pressure or the later unprivileged average-based monitoring API.
++
++BCM 4.19 backport scope
++======================
++
++The scheduler/group/trigger implementation is based on Linux v5.15.222 with
++additional upstream event, sampling, worker and lifetime corrections. Original
++task, cgroup, kernfs and worker layout is retained: a task bit uses existing
++space and kernel-private group/worker data is allocated after existing objects.
++
++Memory PSI retains the 4.19 reclaim and compaction annotations, including
++memory.high synchronous reclaim. It does not backport the complete workingset
++page-cache refault and swap-reload classification. Do not interpret zero memory
++pressure as evidence that no file/swap-related stall occurred. Merely marking
++all swap reads as memory pressure would introduce cold-swapin overcounting.
++Userspace policy, including systemd-oomd configuration, is separate from these
++kernel interfaces.
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/fs/kernfs/file.c b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/fs/kernfs/file.c
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/fs/kernfs/file.c
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/fs/kernfs/file.c
+@@ -32,6 +32,32 @@
+ static DEFINE_SPINLOCK(kernfs_open_node_lock);
+ static DEFINE_MUTEX(kernfs_open_file_mutex);
+ 
++/*
++ * Original Broadcom objects can contain 88-byte kernfs_ops instances. Even
++ * appending ->poll would let the core read beyond those objects. A single
++ * built-in, init-only hook instead matches the existing ->open callback;
++ * cgroup's kmemdup() of its ops table therefore preserves dispatch.
++ * No module can register, replace or unregister these unexported callbacks.
++ */
++static int (*kernfs_poll_open)(struct kernfs_open_file *) __ro_after_init;
++static __poll_t (*kernfs_poll_hook)(struct kernfs_open_file *, poll_table *)
++	__ro_after_init;
++
++int __init kernfs_register_poll(
++	int (*open)(struct kernfs_open_file *),
++	__poll_t (*poll)(struct kernfs_open_file *, poll_table *))
++{
++	if (!open || !poll)
++		return -EINVAL;
++	if (kernfs_poll_open || kernfs_poll_hook)
++		return -EBUSY;
++
++	/* Called before the matching filesystem publishes any files. */
++	kernfs_poll_open = open;
++	kernfs_poll_hook = poll;
++	return 0;
++}
++
+ struct kernfs_open_node {
+ 	atomic_t		refcnt;
+ 	atomic_t		event;
+@@ -55,6 +81,21 @@
+ static struct kernfs_open_file *kernfs_of(struct file *file)
+ {
+ 	return ((struct seq_file *)file->private_data)->private;
++}
++
++/*
++ * A drained file can outlive its private data and its node can be reactivated.
++ * Check released after obtaining the active reference, which excludes drain.
++ */
++static struct kernfs_open_file *kernfs_get_active_of(struct kernfs_open_file *of)
++{
++	if (!kernfs_get_active(of->kn))
++		return NULL;
++	if (unlikely(of->released)) {
++		kernfs_put_active(of->kn);
++		return NULL;
++	}
++	return of;
+ }
+ 
+ /*
+@@ -110,7 +151,7 @@
+ 	 * the ops aren't called concurrently for the same open file.
+ 	 */
+ 	mutex_lock(&of->mutex);
+-	if (!kernfs_get_active(of->kn))
++	if (!kernfs_get_active_of(of))
+ 		return ERR_PTR(-ENODEV);
+ 
+ 	ops = kernfs_ops(of->kn);
+@@ -202,7 +243,7 @@
+ 	 * the ops aren't called concurrently for the same open file.
+ 	 */
+ 	mutex_lock(&of->mutex);
+-	if (!kernfs_get_active(of->kn)) {
++	if (!kernfs_get_active_of(of)) {
+ 		len = -ENODEV;
+ 		mutex_unlock(&of->mutex);
+ 		goto out_free;
+@@ -305,7 +346,7 @@
+ 	 * the ops aren't called concurrently for the same open file.
+ 	 */
+ 	mutex_lock(&of->mutex);
+-	if (!kernfs_get_active(of->kn)) {
++	if (!kernfs_get_active_of(of)) {
+ 		mutex_unlock(&of->mutex);
+ 		len = -ENODEV;
+ 		goto out_free;
+@@ -339,7 +380,7 @@
+ 	if (!of->vm_ops)
+ 		return;
+ 
+-	if (!kernfs_get_active(of->kn))
++	if (!kernfs_get_active_of(of))
+ 		return;
+ 
+ 	if (of->vm_ops->open)
+@@ -357,7 +398,7 @@
+ 	if (!of->vm_ops)
+ 		return VM_FAULT_SIGBUS;
+ 
+-	if (!kernfs_get_active(of->kn))
++	if (!kernfs_get_active_of(of))
+ 		return VM_FAULT_SIGBUS;
+ 
+ 	ret = VM_FAULT_SIGBUS;
+@@ -377,7 +418,7 @@
+ 	if (!of->vm_ops)
+ 		return VM_FAULT_SIGBUS;
+ 
+-	if (!kernfs_get_active(of->kn))
++	if (!kernfs_get_active_of(of))
+ 		return VM_FAULT_SIGBUS;
+ 
+ 	ret = 0;
+@@ -400,7 +441,7 @@
+ 	if (!of->vm_ops)
+ 		return -EINVAL;
+ 
+-	if (!kernfs_get_active(of->kn))
++	if (!kernfs_get_active_of(of))
+ 		return -EINVAL;
+ 
+ 	ret = -EINVAL;
+@@ -422,7 +463,7 @@
+ 	if (!of->vm_ops)
+ 		return 0;
+ 
+-	if (!kernfs_get_active(of->kn))
++	if (!kernfs_get_active_of(of))
+ 		return -EINVAL;
+ 
+ 	ret = 0;
+@@ -443,7 +484,7 @@
+ 	if (!of->vm_ops)
+ 		return vma->vm_policy;
+ 
+-	if (!kernfs_get_active(of->kn))
++	if (!kernfs_get_active_of(of))
+ 		return vma->vm_policy;
+ 
+ 	pol = vma->vm_policy;
+@@ -486,7 +527,7 @@
+ 	mutex_lock(&of->mutex);
+ 
+ 	rc = -ENODEV;
+-	if (!kernfs_get_active(of->kn))
++	if (!kernfs_get_active_of(of))
+ 		goto out_unlock;
+ 
+ 	ops = kernfs_ops(of->kn);
+@@ -832,26 +873,40 @@
+  * to see if it supports poll (Neither 'poll' nor 'select' return
+  * an appropriate error code).  When in doubt, set a suitable timeout value.
+  */
++__poll_t kernfs_generic_poll(struct kernfs_open_file *of, poll_table *wait)
++{
++	struct kernfs_open_node *on = of->kn->attr.open;
++
++	/* Caller owns an active reference for the whole operation. */
++	poll_wait(of->file, &on->poll, wait);
++
++	if (of->event != atomic_read(&on->event))
++		return DEFAULT_POLLMASK|EPOLLERR|EPOLLPRI;
++
++	return DEFAULT_POLLMASK;
++}
++
+ static __poll_t kernfs_fop_poll(struct file *filp, poll_table *wait)
+ {
+ 	struct kernfs_open_file *of = kernfs_of(filp);
+-	struct kernfs_node *kn = kernfs_dentry_node(filp->f_path.dentry);
+-	struct kernfs_open_node *on = kn->attr.open;
+-
+-	if (!kernfs_get_active(kn))
+-		goto trigger;
+-
+-	poll_wait(filp, &on->poll, wait);
+-
+-	kernfs_put_active(kn);
+-
+-	if (of->event != atomic_read(&on->event))
+-		goto trigger;
+-
+-	return DEFAULT_POLLMASK;
+-
+- trigger:
+-	return DEFAULT_POLLMASK|EPOLLERR|EPOLLPRI;
++	const struct kernfs_ops *ops;
++	__poll_t ret = DEFAULT_POLLMASK|EPOLLERR|EPOLLPRI;
++
++	/* Same order as read/write: per-open mutex outside active ref. */
++	mutex_lock(&of->mutex);
++	if (!kernfs_get_active_of(of))
++		goto out_unlock;
++
++	ops = kernfs_ops(of->kn);
++	if (kernfs_poll_hook && ops->open == kernfs_poll_open)
++		ret = kernfs_poll_hook(of, wait);
++	else
++		ret = kernfs_generic_poll(of, wait);
++
++	kernfs_put_active(of->kn);
++ out_unlock:
++	mutex_unlock(&of->mutex);
++	return ret;
+ }
+ 
+ static void kernfs_notify_workfn(struct work_struct *work)
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/cgroup.h b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/cgroup.h
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/cgroup.h
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/cgroup.h
+@@ -26,6 +26,7 @@
+ #include <linux/kernel_stat.h>
+ 
+ #include <linux/cgroup-defs.h>
++#include <linux/psi_types.h>
+ 
+ #ifdef CONFIG_CGROUPS
+ 
+@@ -540,6 +541,35 @@
+ 	return task_css_set(task)->dfl_cgrp;
+ }
+ 
++#ifdef CONFIG_PSI
++extern struct psi_group psi_system;
++bool cgroup_psi_enabled(void);
++/* BCM vendor ABI: keep cgroup and ancestor_ids at their original offsets. */
++static inline size_t cgroup_psi_offset(int level)
++{
++	return ALIGN(sizeof(struct cgroup) + sizeof(int) * (level + 1),
++		     __alignof__(struct psi_group));
++}
++
++static inline struct psi_group *cgroup_psi(struct cgroup *cgrp)
++{
++	/* Roots are embedded in cgroup_root and have no dynamic tail. */
++	if (!cgrp->level)
++		return &psi_system;
++	return (struct psi_group *)((char *)cgrp + cgroup_psi_offset(cgrp->level));
++}
++
++static inline size_t cgroup_psi_alloc_size(int level)
++{
++	return cgroup_psi_offset(level) + sizeof(struct psi_group);
++}
++#else
++static inline size_t cgroup_psi_alloc_size(int level)
++{
++	return sizeof(struct cgroup) + sizeof(int) * (level + 1);
++}
++#endif
++
+ static inline struct cgroup *cgroup_parent(struct cgroup *cgrp)
+ {
+ 	struct cgroup_subsys_state *parent_css = cgrp->self.parent;
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/kernfs.h b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/kernfs.h
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/kernfs.h
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/kernfs.h
+@@ -8,6 +8,7 @@
+ #define __LINUX_KERNFS_H
+ 
+ #include <linux/kernel.h>
++#include <linux/init.h>
+ #include <linux/err.h>
+ #include <linux/list.h>
+ #include <linux/mutex.h>
+@@ -25,6 +26,7 @@
+ struct vm_area_struct;
+ struct super_block;
+ struct file_system_type;
++struct poll_table_struct;
+ 
+ struct kernfs_open_node;
+ struct kernfs_iattrs;
+@@ -353,6 +355,17 @@
+ int kernfs_setattr(struct kernfs_node *kn, const struct iattr *iattr);
+ void kernfs_notify(struct kernfs_node *kn);
+ 
++/*
++ * Built-in PSI poll dispatch without extending the vendor kernfs_ops ABI.
++ * Register once during init, before publishing files using @open. The open
++ * callback identifies copied ops tables as well as the original static table.
++ */
++int __init kernfs_register_poll(
++	int (*open)(struct kernfs_open_file *),
++	__poll_t (*poll)(struct kernfs_open_file *, struct poll_table_struct *));
++__poll_t kernfs_generic_poll(struct kernfs_open_file *of,
++			    struct poll_table_struct *wait);
++
+ const void *kernfs_super_ns(struct super_block *sb);
+ struct dentry *kernfs_mount_ns(struct file_system_type *fs_type, int flags,
+ 			       struct kernfs_root *root, unsigned long magic,
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/psi.h b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/psi.h
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/psi.h
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/psi.h
+@@ -1,20 +1,44 @@
+ #ifndef _LINUX_PSI_H
+ #define _LINUX_PSI_H
+ 
++#include <linux/jump_label.h>
+ #include <linux/psi_types.h>
+ #include <linux/sched.h>
++#include <linux/poll.h>
++
++struct seq_file;
++struct css_set;
++struct kernfs_open_file;
+ 
+ #ifdef CONFIG_PSI
+ 
+-extern bool psi_disabled;
++extern struct static_key_false psi_disabled;
++extern struct psi_group psi_system;
+ 
+ void psi_init(void);
+ 
+ void psi_task_change(struct task_struct *task, int clear, int set);
++void psi_task_switch(struct task_struct *prev, struct task_struct *next,
++		     bool sleep);
+ 
+-void psi_memstall_tick(struct task_struct *task, int cpu);
+ void psi_memstall_enter(unsigned long *flags);
+ void psi_memstall_leave(unsigned long *flags);
++
++int psi_show(struct seq_file *s, struct psi_group *group, enum psi_res res);
++struct psi_trigger *psi_trigger_create(struct psi_group *group,
++			char *buf, size_t nbytes, enum psi_res res,
++			struct kernfs_open_file *of, bool *need_poll_worker);
++int psi_trigger_create_poll_worker(struct psi_group *group);
++void psi_trigger_destroy(struct psi_trigger *t);
++
++__poll_t psi_trigger_poll(void **trigger_ptr, struct file *file,
++			poll_table *wait);
++
++#ifdef CONFIG_CGROUPS
++int psi_cgroup_alloc(struct cgroup *cgrp);
++void psi_cgroup_free(struct cgroup *cgrp);
++void cgroup_move_task(struct task_struct *p, struct css_set *to);
++#endif
+ 
+ #else /* CONFIG_PSI */
+ 
+@@ -23,6 +47,20 @@
+ static inline void psi_memstall_enter(unsigned long *flags) {}
+ static inline void psi_memstall_leave(unsigned long *flags) {}
+ 
++#ifdef CONFIG_CGROUPS
++static inline int psi_cgroup_alloc(struct cgroup *cgrp)
++{
++	return 0;
++}
++static inline void psi_cgroup_free(struct cgroup *cgrp)
++{
++}
++static inline void cgroup_move_task(struct task_struct *p, struct css_set *to)
++{
++	rcu_assign_pointer(p->cgroups, to);
++}
++#endif
++
+ #endif /* CONFIG_PSI */
+ 
+ #endif /* _LINUX_PSI_H */
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/psi_types.h b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/psi_types.h
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/psi_types.h
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/psi_types.h
+@@ -1,8 +1,11 @@
+ #ifndef _LINUX_PSI_TYPES_H
+ #define _LINUX_PSI_TYPES_H
+ 
++#include <linux/workqueue.h>
+ #include <linux/seqlock.h>
+ #include <linux/types.h>
++#include <linux/kref.h>
++#include <linux/wait.h>
+ 
+ #ifdef CONFIG_PSI
+ 
+@@ -11,20 +14,39 @@
+ 	NR_IOWAIT,
+ 	NR_MEMSTALL,
+ 	NR_RUNNING,
+-	NR_PSI_TASK_COUNTS,
++	/*
++	 * This can't have values other than 0 or 1 and could be
++	 * implemented as a bit flag. But for now we still have room
++	 * in the first cacheline of psi_group_cpu, and this way we
++	 * don't have to special case any state tracking for it.
++	 */
++	NR_ONCPU,
++	/*
++	 * For IO and CPU stalls the presence of running/oncpu tasks
++	 * in the domain means a partial rather than a full stall.
++	 * For memory it's not so simple because of page reclaimers:
++	 * they are running/oncpu while representing a stall. To tell
++	 * whether a domain has productivity left or not, we need to
++	 * distinguish between regular running (i.e. productive)
++	 * threads and memstall ones.
++	 */
++	NR_MEMSTALL_RUNNING,
++	NR_PSI_TASK_COUNTS = 5,
+ };
+ 
+ /* Task state bitmasks */
+ #define TSK_IOWAIT	(1 << NR_IOWAIT)
+ #define TSK_MEMSTALL	(1 << NR_MEMSTALL)
+ #define TSK_RUNNING	(1 << NR_RUNNING)
++#define TSK_ONCPU	(1 << NR_ONCPU)
++#define TSK_MEMSTALL_RUNNING	(1 << NR_MEMSTALL_RUNNING)
+ 
+ /* Resources that workloads could be stalled on */
+ enum psi_res {
+ 	PSI_IO,
+ 	PSI_MEM,
+ 	PSI_CPU,
+-	NR_PSI_RESOURCES,
++	NR_PSI_RESOURCES = 3,
+ };
+ 
+ /*
+@@ -39,9 +61,19 @@
+ 	PSI_MEM_SOME,
+ 	PSI_MEM_FULL,
+ 	PSI_CPU_SOME,
++	PSI_CPU_FULL,
+ 	/* Only per-CPU, to weigh the CPU in the global average: */
+ 	PSI_NONIDLE,
+-	NR_PSI_STATES,
++	NR_PSI_STATES = 7,
++};
++
++/* Keep this outside the actual per-resource state bits. */
++#define PSI_STATE_RESCHEDULE (1 << (NR_PSI_STATES + 1))
++
++enum psi_aggregators {
++	PSI_AVGS = 0,
++	PSI_POLL,
++	NR_PSI_AGGREGATORS,
+ };
+ 
+ struct psi_group_cpu {
+@@ -53,6 +85,9 @@
+ 	/* States of the tasks belonging to this group */
+ 	unsigned int tasks[NR_PSI_TASK_COUNTS];
+ 
++	/* Aggregate pressure state derived from the tasks */
++	u32 state_mask;
++
+ 	/* Period time sampling buckets for each state of interest (ns) */
+ 	u32 times[NR_PSI_STATES];
+ 
+@@ -62,25 +97,95 @@
+ 	/* 2nd cacheline updated by the aggregator */
+ 
+ 	/* Delta detection against the sampling buckets */
+-	u32 times_prev[NR_PSI_STATES] ____cacheline_aligned_in_smp;
++	u32 times_prev[NR_PSI_AGGREGATORS][NR_PSI_STATES]
++			____cacheline_aligned_in_smp;
++};
++
++/* PSI growth tracking window */
++struct psi_window {
++	/* Window size in ns */
++	u64 size;
++
++	/* Start time of the current window in ns */
++	u64 start_time;
++
++	/* Value at the start of the window */
++	u64 start_value;
++
++	/* Value growth in the previous window */
++	u64 prev_growth;
++};
++
++struct psi_trigger {
++	/* PSI state being monitored by the trigger */
++	enum psi_states state;
++
++	/* User-spacified threshold in ns */
++	u64 threshold;
++
++	/* List node inside triggers list */
++	struct list_head node;
++
++	/* Backpointer needed during trigger destruction */
++	struct psi_group *group;
++
++	/* Wait queue for polling */
++	wait_queue_head_t event_wait;
++	struct kernfs_open_file *of;
++
++	/* Pending event flag */
++	int event;
++
++	/* Tracking window */
++	struct psi_window win;
++
++	/*
++	 * Time last event was generated. Used for rate-limiting
++	 * events to one per window
++	 */
++	u64 last_event_time;
++	bool pending_event;
+ };
+ 
+ struct psi_group {
+-	/* Protects data updated during an aggregation */
+-	struct mutex stat_lock;
++	/* Protects data used by the aggregator */
++	struct mutex avgs_lock;
+ 
+ 	/* Per-cpu task state & time tracking */
+ 	struct psi_group_cpu __percpu *pcpu;
+ 
+-	/* Periodic aggregation state */
+-	u64 total_prev[NR_PSI_STATES - 1];
+-	u64 last_update;
+-	u64 next_update;
+-	struct delayed_work clock_work;
++	/* Running pressure averages */
++	u64 avg_total[NR_PSI_STATES - 1];
++	u64 avg_last_update;
++	u64 avg_next_update;
++
++	/* Aggregator work control */
++	struct delayed_work avgs_work;
+ 
+ 	/* Total stall times and sampled pressure averages */
+-	u64 total[NR_PSI_STATES - 1];
++	u64 total[NR_PSI_AGGREGATORS][NR_PSI_STATES - 1];
+ 	unsigned long avg[NR_PSI_STATES - 1][3];
++
++	/* Monitor work control */
++	struct task_struct __rcu *poll_task;
++	struct timer_list poll_timer;
++	wait_queue_head_t poll_wait;
++	atomic_t poll_wakeup;
++	atomic_t poll_scheduled;
++
++	/* Protects data used by the monitor */
++	struct mutex trigger_lock;
++
++	/* Configured polling triggers */
++	struct list_head triggers;
++	u32 nr_triggers[NR_PSI_STATES - 1];
++	u32 poll_states;
++	u64 poll_min_period;
++
++	/* Total stall times at the start of monitor activation */
++	u64 polling_total[NR_PSI_STATES - 1];
++	u64 polling_next_update;
++	u64 polling_until;
+ };
+ 
+ #else /* CONFIG_PSI */
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/sched.h b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/sched.h
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/sched.h
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/sched.h
+@@ -25,7 +25,6 @@
+ #include <linux/latencytop.h>
+ #include <linux/sched/prio.h>
+ #include <linux/signal_types.h>
+-#include <linux/psi_types.h>
+ #include <linux/mm_types_task.h>
+ #include <linux/task_io_accounting.h>
+ #include <linux/rseq.h>
+@@ -793,6 +792,11 @@
+ 
+ #if defined(CONFIG_BLK_CGROUP) && defined(CONFIG_GTBE19000AI_RESOURCE_ABI)
+ 	unsigned			use_memdelay:1;
++#endif
++
++#ifdef CONFIG_PSI
++	/* Use a spare bit; preserve every pre-existing vendor bit and offset. */
++	unsigned			in_memstall:1;
+ #endif
+ 
+ 	unsigned long			atomic_flags; /* Flags requiring atomic access. */
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/init/Kconfig b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/init/Kconfig
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/init/Kconfig
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/init/Kconfig
+@@ -509,6 +509,14 @@
+ 	  For more details see Documentation/accounting/psi.txt.
+ 
+ 	  Say N if unsure.
++
++config PSI_DEFAULT_DISABLED
++	bool "Require boot parameter to enable pressure stall information tracking"
++	depends on PSI
++	default n
++	help
++	  Disable PSI by default; use psi=1 to enable it at boot.
++	  Leave this off for the BCM container-capable kernel.
+ 
+ endmenu # "CPU/Task time and stats accounting"
+ 
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/cgroup/cgroup.c b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/cgroup/cgroup.c
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/cgroup/cgroup.c
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/cgroup/cgroup.c
+@@ -31,6 +31,7 @@
+ #include "cgroup-internal.h"
+ 
+ #include <linux/cred.h>
++#include <linux/psi.h>
+ #include <linux/errno.h>
+ #include <linux/init_task.h>
+ #include <linux/kernel.h>
+@@ -838,7 +839,7 @@
+ 		 */
+ 		WARN_ON_ONCE(task->flags & PF_EXITING);
+ 
+-		rcu_assign_pointer(task->cgroups, to_cset);
++		cgroup_move_task(task, to_cset);
+ 		list_add_tail(&task->cg_list, use_mg_tasks ? &to_cset->mg_tasks :
+ 							     &to_cset->tasks);
+ 	}
+@@ -3511,6 +3512,126 @@
+ 	return ret;
+ }
+ 
++#ifdef CONFIG_PSI
++static int cgroup_io_pressure_show(struct seq_file *seq, void *v)
++{
++	struct cgroup *cgrp = seq_css(seq)->cgroup;
++	struct psi_group *psi = cgroup_psi(cgrp);
++
++	return psi_show(seq, psi, PSI_IO);
++}
++static int cgroup_memory_pressure_show(struct seq_file *seq, void *v)
++{
++	struct cgroup *cgrp = seq_css(seq)->cgroup;
++	struct psi_group *psi = cgroup_psi(cgrp);
++
++	return psi_show(seq, psi, PSI_MEM);
++}
++static int cgroup_cpu_pressure_show(struct seq_file *seq, void *v)
++{
++	struct cgroup *cgrp = seq_css(seq)->cgroup;
++	struct psi_group *psi = cgroup_psi(cgrp);
++
++	return psi_show(seq, psi, PSI_CPU);
++}
++
++static ssize_t cgroup_pressure_write(struct kernfs_open_file *of, char *buf,
++				    size_t nbytes, enum psi_res res)
++{
++	struct cgroup_file_ctx *ctx;
++	struct psi_trigger *new;
++	struct cgroup *cgrp;
++	struct psi_group *psi;
++	bool need_poll_worker;
++	ssize_t ret = 0;
++
++	cgrp = cgroup_kn_lock_live(of->kn, false);
++	if (!cgrp)
++		return -ENODEV;
++	ctx = of->priv;
++	if (!ctx) {
++		ret = -ENODEV;
++		goto out_unlock;
++	}
++	if (ctx->psi.trigger) {
++		ret = -EBUSY;
++		goto out_unlock;
++	}
++	psi = cgroup_psi(cgrp);
++	new = psi_trigger_create(psi, buf, nbytes, res, of,
++				 &need_poll_worker);
++	if (IS_ERR(new)) {
++		ret = PTR_ERR(new);
++		goto out_unlock;
++	}
++	if (need_poll_worker) {
++		/* Keep the cgrp pin and kernfs active reference broken. */
++		mutex_unlock(&cgroup_mutex);
++		ret = psi_trigger_create_poll_worker(psi);
++		mutex_lock(&cgroup_mutex);
++		ctx = of->priv;
++		if (!ret && !ctx)
++			ret = -ENODEV;
++		if (ret) {
++			psi_trigger_destroy(new);
++			goto out_unlock;
++		}
++	}
++	smp_store_release(&ctx->psi.trigger, new);
++out_unlock:
++	cgroup_kn_unlock(of->kn);
++	return ret ? ret : nbytes;
++}
++
++static ssize_t cgroup_io_pressure_write(struct kernfs_open_file *of,
++					  char *buf, size_t nbytes,
++					  loff_t off)
++{
++	return cgroup_pressure_write(of, buf, nbytes, PSI_IO);
++}
++
++static ssize_t cgroup_memory_pressure_write(struct kernfs_open_file *of,
++					  char *buf, size_t nbytes,
++					  loff_t off)
++{
++	return cgroup_pressure_write(of, buf, nbytes, PSI_MEM);
++}
++
++static ssize_t cgroup_cpu_pressure_write(struct kernfs_open_file *of,
++					  char *buf, size_t nbytes,
++					  loff_t off)
++{
++	return cgroup_pressure_write(of, buf, nbytes, PSI_CPU);
++}
++
++static __poll_t cgroup_pressure_poll(struct kernfs_open_file *of,
++					  poll_table *pt)
++{
++	struct cgroup_file_ctx *ctx = of->priv;
++
++	return psi_trigger_poll(&ctx->psi.trigger, of->file, pt);
++}
++
++static void cgroup_pressure_release(struct kernfs_open_file *of)
++{
++	struct cgroup_file_ctx *ctx = of->priv;
++
++	psi_trigger_destroy(ctx->psi.trigger);
++}
++
++bool cgroup_psi_enabled(void)
++{
++	return true; /* This candidate enables per-cgroup PSI with system PSI. */
++}
++
++#else /* CONFIG_PSI */
++bool cgroup_psi_enabled(void)
++{
++	return false;
++}
++
++#endif /* CONFIG_PSI */
++
+ static int cgroup_file_open(struct kernfs_open_file *of)
+ {
+ 	struct cftype *cft = of->kn->priv;
+@@ -3545,6 +3666,7 @@
+ 		cft->release(of);
+ 	put_cgroup_ns(ctx->ns);
+ 	kfree(ctx);
++	of->priv = NULL;
+ }
+ 
+ static ssize_t cgroup_file_write(struct kernfs_open_file *of, char *buf,
+@@ -3628,6 +3750,18 @@
+ 	else
+ 		return -EINVAL;
+ 	return 0;
++}
++
++static __poll_t cgroup_file_poll(struct kernfs_open_file *of, poll_table *pt)
++{
++#ifdef CONFIG_PSI
++	struct cftype *cft = of->kn->priv;
++
++	/* Preserve cftype's vendor layout; only PSI files need custom poll. */
++	if (cft->release == cgroup_pressure_release)
++		return cgroup_pressure_poll(of, pt);
++#endif
++	return kernfs_generic_poll(of, pt);
+ }
+ 
+ static struct kernfs_ops cgroup_kf_single_ops = {
+@@ -4727,6 +4861,26 @@
+ 		.flags = CFTYPE_NOT_ON_ROOT,
+ 		.seq_show = cpu_stat_show,
+ 	},
++#ifdef CONFIG_PSI
++	{
++		.name = "io.pressure",
++		.seq_show = cgroup_io_pressure_show,
++		.write = cgroup_io_pressure_write,
++		.release = cgroup_pressure_release,
++	},
++	{
++		.name = "memory.pressure",
++		.seq_show = cgroup_memory_pressure_show,
++		.write = cgroup_memory_pressure_write,
++		.release = cgroup_pressure_release,
++	},
++	{
++		.name = "cpu.pressure",
++		.seq_show = cgroup_cpu_pressure_show,
++		.write = cgroup_cpu_pressure_write,
++		.release = cgroup_pressure_release,
++	},
++#endif /* CONFIG_PSI */
+ 	{ }	/* terminate */
+ };
+ 
+@@ -4789,6 +4943,7 @@
+ 			kernfs_put(cgrp->kn);
+ 			if (cgroup_on_dfl(cgrp))
+ 				cgroup_rstat_exit(cgrp);
++			psi_cgroup_free(cgrp);
+ 			kfree(cgrp);
+ 		} else {
+ 			/*
+@@ -5015,7 +5170,7 @@
+ 	int ret;
+ 
+ 	/* allocate the cgroup and its ID, 0 is reserved for the root */
+-	cgrp = kzalloc(struct_size(cgrp, ancestor_ids, (level + 1)),
++	cgrp = kzalloc(cgroup_psi_alloc_size(level),
+ 		       GFP_KERNEL);
+ 	if (!cgrp)
+ 		return ERR_PTR(-ENOMEM);
+@@ -5040,6 +5195,12 @@
+ 		goto out_stat_exit;
+ 	}
+ 
++	/* Tail storage uses the final depth; initialize before publication. */
++	cgrp->level = level;
++	ret = psi_cgroup_alloc(cgrp);
++	if (ret)
++		goto out_idr_free;
++
+ 	init_cgroup_housekeeping(cgrp);
+ 
+ 	cgrp->self.parent = &parent->self;
+@@ -5047,7 +5208,7 @@
+ 	cgrp->level = level;
+ 	ret = cgroup_bpf_inherit(cgrp);
+ 	if (ret)
+-		goto out_idr_free;
++		goto out_psi_free;
+ 
+ 	spin_lock_irq(&css_set_lock);
+ 	for (tcgrp = cgrp; tcgrp; tcgrp = cgroup_parent(tcgrp)) {
+@@ -5088,6 +5249,8 @@
+ 
+ 	return cgrp;
+ 
++out_psi_free:
++	psi_cgroup_free(cgrp);
+ out_idr_free:
+ 	cgroup_idr_remove(&root->cgroup_idr, cgrp->id);
+ out_stat_exit:
+@@ -5480,6 +5643,7 @@
+ 	int ssid;
+ 
+ 	BUILD_BUG_ON(CGROUP_SUBSYS_COUNT > 16);
++	BUG_ON(kernfs_register_poll(cgroup_file_open, cgroup_file_poll));
+ 	BUG_ON(percpu_init_rwsem(&cgroup_threadgroup_rwsem));
+ 	BUG_ON(cgroup_init_cftypes(NULL, cgroup_base_files));
+ 	BUG_ON(cgroup_init_cftypes(NULL, cgroup1_base_files));
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/fork.c b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/fork.c
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/fork.c
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/fork.c
+@@ -1831,6 +1831,7 @@
+ 
+ #ifdef CONFIG_PSI
+ 	p->psi_flags = 0;
++	p->in_memstall = 0;
+ #endif
+ 
+ 	task_io_accounting_init(&p->ioac);
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/sched/core.c b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/sched/core.c
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/sched/core.c
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/sched/core.c
+@@ -730,7 +730,8 @@
+ 
+ 	if (!(flags & ENQUEUE_RESTORE)) {
+ 		sched_info_queued(rq, p);
+-		psi_enqueue(p, flags & ENQUEUE_WAKEUP);
++		psi_enqueue(p, (flags & ENQUEUE_WAKEUP) &&
++			    !(flags & ENQUEUE_MIGRATED));
+ 	}
+ 
+ 	p->sched_class->enqueue_task(rq, p, flags);
+@@ -3188,7 +3189,6 @@
+ 	curr->sched_class->task_tick(rq, curr, 0);
+ 	cpu_load_update_active(rq);
+ 	calc_global_load_tick(rq);
+-	psi_task_tick(rq);
+ 
+ 	rq_unlock(rq, &rf);
+ 
+@@ -3561,6 +3561,7 @@
+  */
+ static void __sched notrace __schedule(bool preempt)
+ {
++	bool psi_sleep = false;
+ 	struct task_struct *prev, *next;
+ 	unsigned long *switch_count;
+ 	struct rq_flags rf;
+@@ -3599,6 +3600,7 @@
+ 		if (unlikely(signal_pending_state(prev->state, prev))) {
+ 			prev->state = TASK_RUNNING;
+ 		} else {
++			psi_sleep = true;
+ 			deactivate_task(rq, prev, DEQUEUE_SLEEP | DEQUEUE_NOCLOCK);
+ 			prev->on_rq = 0;
+ 
+@@ -3630,6 +3632,7 @@
+ 	if (likely(prev != next)) {
+ 		rq->nr_switches++;
+ 		rq->curr = next;
++		psi_sched_switch(prev, next, psi_sleep);
+ 		/*
+ 		 * The membarrier system call requires each architecture
+ 		 * to have a full memory barrier after updating
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/sched/psi.c b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/sched/psi.c
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/sched/psi.c
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/sched/psi.c
+@@ -3,6 +3,9 @@
+  *
+  * Copyright (c) 2018 Facebook, Inc.
+  * Author: Johannes Weiner <hannes@cmpxchg.org>
++ *
++ * Polling support by Suren Baghdasaryan <surenb@google.com>
++ * Copyright (c) 2018 Google, Inc.
+  *
+  * When CPU, memory and IO are contended, tasks experience delays that
+  * reduce throughput and introduce latencies into the workload. Memory
+@@ -31,10 +34,19 @@
+  * delayed on that resource such that nobody is advancing and the CPU
+  * goes idle. This leaves both workload and CPU unproductive.
+  *
+- * (Naturally, the FULL state doesn't exist for the CPU resource.)
+- *
+  *	SOME = nr_delayed_tasks != 0
+- *	FULL = nr_delayed_tasks != 0 && nr_running_tasks == 0
++ *	FULL = nr_delayed_tasks != 0 && nr_productive_tasks == 0
++ *
++ * What it means for a task to be productive is defined differently
++ * for each resource. For IO, productive means a running task. For
++ * memory, productive means a running task that isn't a reclaimer. For
++ * CPU, productive means an oncpu task.
++ *
++ * Naturally, the FULL state doesn't exist for the CPU resource at the
++ * system level, but exist at the cgroup level. At the cgroup level,
++ * FULL means all non-idle tasks in the cgroup are delayed on the CPU
++ * resource which is being used by others outside of the cgroup or
++ * throttled by the cgroup cpu.max configuration.
+  *
+  * The percentage of wallclock time spent in those compound stall
+  * states gives pressure numbers between 0 and 100 for each resource,
+@@ -56,7 +68,7 @@
+  * states, we would have to conclude a CPU SOME pressure number of
+  * 100%, since *somebody* is waiting on a runqueue at all
+  * times. However, that is clearly not the amount of contention the
+- * workload is experiencing: only one out of 256 possible exceution
++ * workload is experiencing: only one out of 256 possible execution
+  * threads will be contended at any given time, or about 0.4%.
+  *
+  * Conversely, consider a scenario of 4 tasks and 4 CPUs where at any
+@@ -70,18 +82,18 @@
+  * we have to base our calculation on the number of non-idle tasks in
+  * conjunction with the number of available CPUs, which is the number
+  * of potential execution threads. SOME becomes then the proportion of
+- * delayed tasks to possibe threads, and FULL is the share of possible
++ * delayed tasks to possible threads, and FULL is the share of possible
+  * threads that are unproductive due to delays:
+  *
+  *	threads = min(nr_nonidle_tasks, nr_cpus)
+  *	   SOME = min(nr_delayed_tasks / threads, 1)
+- *	   FULL = (threads - min(nr_running_tasks, threads)) / threads
++ *	   FULL = (threads - min(nr_productive_tasks, threads)) / threads
+  *
+  * For the 257 number crunchers on 256 CPUs, this yields:
+  *
+  *	threads = min(257, 256)
+  *	   SOME = min(1 / 256, 1)             = 0.4%
+- *	   FULL = (256 - min(257, 256)) / 256 = 0%
++ *	   FULL = (256 - min(256, 256)) / 256 = 0%
+  *
+  * For the 1 out of 4 memory-delayed tasks, this yields:
+  *
+@@ -106,7 +118,7 @@
+  * For each runqueue, we track:
+  *
+  *	   tSOME[cpu] = time(nr_delayed_tasks[cpu] != 0)
+- *	   tFULL[cpu] = time(nr_delayed_tasks[cpu] && !nr_running_tasks[cpu])
++ *	   tFULL[cpu] = time(nr_delayed_tasks[cpu] && !nr_productive_tasks[cpu])
+  *	tNONIDLE[cpu] = time(nr_nonidle_tasks[cpu] != 0)
+  *
+  * and then periodically aggregate:
+@@ -124,20 +136,38 @@
+  * sampling of the aggregate task states would be.
+  */
+ 
++#include "../workqueue_internal.h"
+ #include <linux/sched/loadavg.h>
+ #include <linux/seq_file.h>
+ #include <linux/proc_fs.h>
+ #include <linux/seqlock.h>
++#include <linux/uaccess.h>
+ #include <linux/cgroup.h>
+ #include <linux/module.h>
+ #include <linux/sched.h>
++#include <linux/ctype.h>
++#include <linux/file.h>
++#include <linux/poll.h>
+ #include <linux/psi.h>
++#include <linux/kernfs.h>
++#include <linux/kthread.h>
+ #include "sched.h"
+ 
+ static int psi_bug __read_mostly;
+ 
+-bool psi_disabled __read_mostly;
+-core_param(psi_disabled, psi_disabled, bool, 0644);
++DEFINE_STATIC_KEY_FALSE(psi_disabled);
++DEFINE_STATIC_KEY_TRUE(psi_cgroups_enabled);
++
++#ifdef CONFIG_PSI_DEFAULT_DISABLED
++static bool psi_enable;
++#else
++static bool psi_enable = true;
++#endif
++static int __init setup_psi(char *str)
++{
++	return kstrtobool(str, &psi_enable) == 0;
++}
++__setup("psi=", setup_psi);
+ 
+ /* Running averages - we need to be higher-res than loadavg */
+ #define PSI_FREQ	(2*HZ+1)	/* 2 sec intervals */
+@@ -145,16 +175,23 @@
+ #define EXP_60s		1981		/* 1/exp(2s/60s) */
+ #define EXP_300s	2034		/* 1/exp(2s/300s) */
+ 
++/* PSI trigger definitions */
++#define WINDOW_MIN_US 500000	/* Min window size is 500ms */
++#define WINDOW_MAX_US 10000000	/* Max window size is 10s */
++#define UPDATES_PER_WINDOW 10	/* 10 updates per window */
++
+ /* Sampling frequency in nanoseconds */
+ static u64 psi_period __read_mostly;
+ 
+ /* System-level pressure and stall tracking */
+ static DEFINE_PER_CPU(struct psi_group_cpu, system_group_pcpu);
+-static struct psi_group psi_system = {
++struct psi_group psi_system = {
+ 	.pcpu = &system_group_pcpu,
+ };
+ 
+-static void psi_update_work(struct work_struct *work);
++static void psi_avgs_work(struct work_struct *work);
++
++static void poll_timer_fn(struct timer_list *t);
+ 
+ static void group_init(struct psi_group *group)
+ {
+@@ -162,15 +199,34 @@
+ 
+ 	for_each_possible_cpu(cpu)
+ 		seqcount_init(&per_cpu_ptr(group->pcpu, cpu)->seq);
+-	group->next_update = sched_clock() + psi_period;
+-	INIT_DELAYED_WORK(&group->clock_work, psi_update_work);
+-	mutex_init(&group->stat_lock);
++	group->avg_last_update = sched_clock();
++	group->avg_next_update = group->avg_last_update + psi_period;
++	INIT_DELAYED_WORK(&group->avgs_work, psi_avgs_work);
++	mutex_init(&group->avgs_lock);
++	/* Init trigger-related members */
++	atomic_set(&group->poll_scheduled, 0);
++	mutex_init(&group->trigger_lock);
++	INIT_LIST_HEAD(&group->triggers);
++	memset(group->nr_triggers, 0, sizeof(group->nr_triggers));
++	group->poll_states = 0;
++	group->poll_min_period = U32_MAX;
++	memset(group->polling_total, 0, sizeof(group->polling_total));
++	group->polling_next_update = ULLONG_MAX;
++	group->polling_until = 0;
++	init_waitqueue_head(&group->poll_wait);
++	timer_setup(&group->poll_timer, poll_timer_fn, 0);
++	rcu_assign_pointer(group->poll_task, NULL);
+ }
+ 
+ void __init psi_init(void)
+ {
+-	if (psi_disabled)
++	if (!psi_enable) {
++		static_branch_enable(&psi_disabled);
+ 		return;
++	}
++
++	if (!cgroup_psi_enabled())
++		static_branch_disable(&psi_cgroups_enabled);
+ 
+ 	psi_period = jiffies_to_nsecs(PSI_FREQ);
+ 	group_init(&psi_system);
+@@ -180,15 +236,18 @@
+ {
+ 	switch (state) {
+ 	case PSI_IO_SOME:
+-		return tasks[NR_IOWAIT];
++		return unlikely(tasks[NR_IOWAIT]);
+ 	case PSI_IO_FULL:
+-		return tasks[NR_IOWAIT] && !tasks[NR_RUNNING];
++		return unlikely(tasks[NR_IOWAIT] && !tasks[NR_RUNNING]);
+ 	case PSI_MEM_SOME:
+-		return tasks[NR_MEMSTALL];
++		return unlikely(tasks[NR_MEMSTALL]);
+ 	case PSI_MEM_FULL:
+-		return tasks[NR_MEMSTALL] && !tasks[NR_RUNNING];
++		return unlikely(tasks[NR_MEMSTALL] &&
++			tasks[NR_RUNNING] == tasks[NR_MEMSTALL_RUNNING]);
+ 	case PSI_CPU_SOME:
+-		return tasks[NR_RUNNING] > 1;
++		return unlikely(tasks[NR_RUNNING] > tasks[NR_ONCPU]);
++	case PSI_CPU_FULL:
++		return unlikely(tasks[NR_RUNNING] && !tasks[NR_ONCPU]);
+ 	case PSI_NONIDLE:
+ 		return tasks[NR_IOWAIT] || tasks[NR_MEMSTALL] ||
+ 			tasks[NR_RUNNING];
+@@ -197,21 +256,29 @@
+ 	}
+ }
+ 
+-static void get_recent_times(struct psi_group *group, int cpu, u32 *times)
++static void get_recent_times(struct psi_group *group, int cpu,
++			     enum psi_aggregators aggregator, u32 *times,
++			     u32 *pchanged_states)
+ {
+ 	struct psi_group_cpu *groupc = per_cpu_ptr(group->pcpu, cpu);
++	int current_cpu = raw_smp_processor_id();
+ 	unsigned int tasks[NR_PSI_TASK_COUNTS];
+ 	u64 now, state_start;
++	enum psi_states s;
+ 	unsigned int seq;
+-	int s;
++	u32 state_mask;
++
++	*pchanged_states = 0;
+ 
+ 	/* Snapshot a coherent view of the CPU state */
+ 	do {
+ 		seq = read_seqcount_begin(&groupc->seq);
+ 		now = cpu_clock(cpu);
+ 		memcpy(times, groupc->times, sizeof(groupc->times));
+-		memcpy(tasks, groupc->tasks, sizeof(groupc->tasks));
++		state_mask = groupc->state_mask;
+ 		state_start = groupc->state_start;
++		if (cpu == current_cpu)
++			memcpy(tasks, groupc->tasks, sizeof(groupc->tasks));
+ 	} while (read_seqcount_retry(&groupc->seq, seq));
+ 
+ 	/* Calculate state time deltas against the previous snapshot */
+@@ -226,13 +293,37 @@
+ 		 * (u32) and our reported pressure close to what's
+ 		 * actually happening.
+ 		 */
+-		if (test_state(tasks, s))
++		if (state_mask & (1 << s))
+ 			times[s] += now - state_start;
+ 
+-		delta = times[s] - groupc->times_prev[s];
+-		groupc->times_prev[s] = times[s];
++		delta = times[s] - groupc->times_prev[aggregator][s];
++		groupc->times_prev[aggregator][s] = times[s];
+ 
+ 		times[s] = delta;
++		if (delta)
++			*pchanged_states |= (1 << s);
++	}
++
++	/*
++	 * When collect_percpu_times() from the avgs_work, we don't want to
++	 * re-arm avgs_work when all CPUs are IDLE. But the current CPU running
++	 * this avgs_work is never IDLE, cause avgs_work can't be shut off.
++	 * So for the current CPU, we need to re-arm avgs_work only when
++	 * (NR_RUNNING > 1 || NR_IOWAIT > 0 || NR_MEMSTALL > 0), for other CPUs
++	 * we can just check PSI_NONIDLE delta.
++	 */
++	if (current_work() == &group->avgs_work.work) {
++		bool reschedule;
++
++		if (cpu == current_cpu)
++			reschedule = tasks[NR_RUNNING] +
++				     tasks[NR_IOWAIT] +
++				     tasks[NR_MEMSTALL] > 1;
++		else
++			reschedule = *pchanged_states & (1 << PSI_NONIDLE);
++
++		if (reschedule)
++			*pchanged_states |= PSI_STATE_RESCHEDULE;
+ 	}
+ }
+ 
+@@ -256,16 +347,15 @@
+ 	avg[2] = calc_load(avg[2], EXP_300s, pct);
+ }
+ 
+-static bool update_stats(struct psi_group *group)
++static void collect_percpu_times(struct psi_group *group,
++				 enum psi_aggregators aggregator,
++				 u32 *pchanged_states)
+ {
+ 	u64 deltas[NR_PSI_STATES - 1] = { 0, };
+-	unsigned long missed_periods = 0;
+ 	unsigned long nonidle_total = 0;
+-	u64 now, expires, period;
++	u32 changed_states = 0;
+ 	int cpu;
+ 	int s;
+-
+-	mutex_lock(&group->stat_lock);
+ 
+ 	/*
+ 	 * Collect the per-cpu time buckets and average them into a
+@@ -278,8 +368,11 @@
+ 	for_each_possible_cpu(cpu) {
+ 		u32 times[NR_PSI_STATES];
+ 		u32 nonidle;
+-
+-		get_recent_times(group, cpu, times);
++		u32 cpu_changed_states;
++
++		get_recent_times(group, cpu, aggregator, times,
++				&cpu_changed_states);
++		changed_states |= cpu_changed_states;
+ 
+ 		nonidle = nsecs_to_jiffies(times[PSI_NONIDLE]);
+ 		nonidle_total += nonidle;
+@@ -302,14 +395,23 @@
+ 
+ 	/* total= */
+ 	for (s = 0; s < NR_PSI_STATES - 1; s++)
+-		group->total[s] += div_u64(deltas[s], max(nonidle_total, 1UL));
++		group->total[aggregator][s] +=
++				div_u64(deltas[s], max(nonidle_total, 1UL));
++
++	if (pchanged_states)
++		*pchanged_states = changed_states;
++}
++
++static u64 update_averages(struct psi_group *group, u64 now)
++{
++	unsigned long missed_periods = 0;
++	u64 expires, period;
++	u64 avg_next_update;
++	int s;
+ 
+ 	/* avgX= */
+-	now = sched_clock();
+-	expires = group->next_update;
+-	if (now < expires)
+-		goto out;
+-	if (now - expires > psi_period)
++	expires = group->avg_next_update;
++	if (now - expires >= psi_period)
+ 		missed_periods = div_u64(now - expires, psi_period);
+ 
+ 	/*
+@@ -319,14 +421,14 @@
+ 	 * But the deltas we sample out of the per-cpu buckets above
+ 	 * are based on the actual time elapsing between clock ticks.
+ 	 */
+-	group->next_update = expires + ((1 + missed_periods) * psi_period);
+-	period = now - (group->last_update + (missed_periods * psi_period));
+-	group->last_update = now;
++	avg_next_update = expires + ((1 + missed_periods) * psi_period);
++	period = now - (group->avg_last_update + (missed_periods * psi_period));
++	group->avg_last_update = now;
+ 
+ 	for (s = 0; s < NR_PSI_STATES - 1; s++) {
+ 		u32 sample;
+ 
+-		sample = group->total[s] - group->total_prev[s];
++		sample = group->total[PSI_AVGS][s] - group->avg_total[s];
+ 		/*
+ 		 * Due to the lockless sampling of the time buckets,
+ 		 * recorded time deltas can slip into the next period,
+@@ -346,23 +448,28 @@
+ 		 */
+ 		if (sample > period)
+ 			sample = period;
+-		group->total_prev[s] += sample;
++		group->avg_total[s] += sample;
+ 		calc_avgs(group->avg[s], missed_periods, sample, period);
+ 	}
+-out:
+-	mutex_unlock(&group->stat_lock);
+-	return nonidle_total;
+-}
+-
+-static void psi_update_work(struct work_struct *work)
++
++	return avg_next_update;
++}
++
++static void psi_avgs_work(struct work_struct *work)
+ {
+ 	struct delayed_work *dwork;
+ 	struct psi_group *group;
+-	bool nonidle;
++	u32 changed_states;
++	u64 now;
+ 
+ 	dwork = to_delayed_work(work);
+-	group = container_of(dwork, struct psi_group, clock_work);
+-
++	group = container_of(dwork, struct psi_group, avgs_work);
++
++	mutex_lock(&group->avgs_lock);
++
++	now = sched_clock();
++
++	collect_percpu_times(group, PSI_AVGS, &changed_states);
+ 	/*
+ 	 * If there is task activity, periodically fold the per-cpu
+ 	 * times and feed samples into the running averages. If things
+@@ -370,71 +477,316 @@
+ 	 * Once restarted, we'll catch up the running averages in one
+ 	 * go - see calc_avgs() and missed_periods.
+ 	 */
+-
+-	nonidle = update_stats(group);
+-
+-	if (nonidle) {
+-		unsigned long delay = 0;
+-		u64 now;
+-
+-		now = sched_clock();
+-		if (group->next_update > now)
+-			delay = nsecs_to_jiffies(group->next_update - now) + 1;
+-		schedule_delayed_work(dwork, delay);
+-	}
+-}
+-
+-static void record_times(struct psi_group_cpu *groupc, int cpu,
+-			 bool memstall_tick)
++	if (now >= group->avg_next_update)
++		group->avg_next_update = update_averages(group, now);
++
++	if (changed_states & PSI_STATE_RESCHEDULE) {
++		schedule_delayed_work(dwork, nsecs_to_jiffies(
++				group->avg_next_update - now) + 1);
++	}
++
++	mutex_unlock(&group->avgs_lock);
++}
++
++/* Trigger tracking window manipulations */
++static void window_reset(struct psi_window *win, u64 now, u64 value,
++			 u64 prev_growth)
++{
++	win->start_time = now;
++	win->start_value = value;
++	win->prev_growth = prev_growth;
++}
++
++/*
++ * PSI growth tracking window update and growth calculation routine.
++ *
++ * This approximates a sliding tracking window by interpolating
++ * partially elapsed windows using historical growth data from the
++ * previous intervals. This minimizes memory requirements (by not storing
++ * all the intermediate values in the previous window) and simplifies
++ * the calculations. It works well because PSI signal changes only in
++ * positive direction and over relatively small window sizes the growth
++ * is close to linear.
++ */
++static u64 window_update(struct psi_window *win, u64 now, u64 value)
++{
++	u64 elapsed;
++	u64 growth;
++
++	elapsed = now - win->start_time;
++	growth = value - win->start_value;
++	/*
++	 * After each tracking window passes win->start_value and
++	 * win->start_time get reset and win->prev_growth stores
++	 * the average per-window growth of the previous window.
++	 * win->prev_growth is then used to interpolate additional
++	 * growth from the previous window assuming it was linear.
++	 */
++	if (elapsed > win->size)
++		window_reset(win, now, value, growth);
++	else {
++		u32 remaining;
++
++		remaining = win->size - elapsed;
++		growth += div64_u64(win->prev_growth * remaining, win->size);
++	}
++
++	return growth;
++}
++
++static void init_triggers(struct psi_group *group, u64 now)
++{
++	struct psi_trigger *t;
++
++	list_for_each_entry(t, &group->triggers, node)
++		window_reset(&t->win, now,
++				group->total[PSI_POLL][t->state], 0);
++	memcpy(group->polling_total, group->total[PSI_POLL],
++		   sizeof(group->polling_total));
++	group->polling_next_update = now + group->poll_min_period;
++}
++
++static u64 update_triggers(struct psi_group *group, u64 now)
++{
++	struct psi_trigger *t;
++	bool update_total = false;
++	u64 *total = group->total[PSI_POLL];
++
++	/*
++	 * On subsequent updates, calculate growth deltas and let
++	 * watchers know when their specified thresholds are exceeded.
++	 */
++	list_for_each_entry(t, &group->triggers, node) {
++		u64 growth;
++		bool new_stall;
++
++		new_stall = group->polling_total[t->state] != total[t->state];
++
++		/* Check for stall activity or a previous threshold breach */
++		if (!new_stall && !t->pending_event)
++			continue;
++		/*
++		 * Check for new stall activity, as well as deferred
++		 * events that occurred in the last window after the
++		 * trigger had already fired (we want to ratelimit
++		 * events without dropping any).
++		 */
++		if (new_stall) {
++			/*
++			 * Multiple triggers might be looking at the same state,
++			 * remember to update group->polling_total[] once we've
++			 * been through all of them. Also remember to extend the
++			 * polling time if we see new stall activity.
++			 */
++			update_total = true;
++
++			/* Calculate growth since last update */
++			growth = window_update(&t->win, now, total[t->state]);
++			if (!t->pending_event) {
++				if (growth < t->threshold)
++					continue;
++
++				t->pending_event = true;
++			}
++		}
++		/* Limit event signaling to once per window */
++		if (now < t->last_event_time + t->win.size)
++			continue;
++
++		/* Generate an event */
++		if (cmpxchg(&t->event, 0, 1) == 0) {
++			if (t->of)
++				kernfs_notify(t->of->kn);
++			else
++				wake_up_interruptible(&t->event_wait);
++		}
++		t->last_event_time = now;
++		/* Reset threshold breach flag once event got generated */
++		t->pending_event = false;
++	}
++
++	if (update_total)
++		memcpy(group->polling_total, total,
++				sizeof(group->polling_total));
++
++	return now + group->poll_min_period;
++}
++
++/* Schedule polling if it's not already scheduled or forced. */
++static void psi_schedule_poll_work(struct psi_group *group, unsigned long delay,
++				   bool force)
++{
++	struct task_struct *task;
++
++	/*
++	 * atomic_xchg should be called even when !force to provide a
++	 * full memory barrier (see the comment inside psi_poll_work).
++	 */
++	if (atomic_xchg(&group->poll_scheduled, 1) && !force)
++		return;
++
++	rcu_read_lock();
++
++	task = rcu_dereference(group->poll_task);
++	/*
++	 * kworker might be NULL in case psi_trigger_destroy races with
++	 * psi_task_change (hotpath) which can't use locks
++	 */
++	if (likely(task))
++		mod_timer(&group->poll_timer, jiffies + delay);
++	else
++		atomic_set(&group->poll_scheduled, 0);
++
++	rcu_read_unlock();
++}
++
++static void psi_poll_work(struct psi_group *group)
++{
++	bool force_reschedule = false;
++	u32 changed_states;
++	u64 now;
++
++	mutex_lock(&group->trigger_lock);
++
++	now = sched_clock();
++
++	if (now > group->polling_until) {
++		/*
++		 * We are either about to start or might stop polling if no
++		 * state change was recorded. Resetting poll_scheduled leaves
++		 * a small window for psi_group_change to sneak in and schedule
++		 * an immediate poll_work before we get to rescheduling. One
++		 * potential extra wakeup at the end of the polling window
++		 * should be negligible and polling_next_update still keeps
++		 * updates correctly on schedule.
++		 */
++		atomic_set(&group->poll_scheduled, 0);
++		/*
++		 * A task change can race with the poll worker that is supposed to
++		 * report on it. To avoid missing events, ensure ordering between
++		 * poll_scheduled and the task state accesses, such that if the poll
++		 * worker misses the state update, the task change is guaranteed to
++		 * reschedule the poll worker:
++		 *
++		 * poll worker:
++		 *   atomic_set(poll_scheduled, 0)
++		 *   smp_mb()
++		 *   LOAD states
++		 *
++		 * task change:
++		 *   STORE states
++		 *   if atomic_xchg(poll_scheduled, 1) == 0:
++		 *     schedule poll worker
++		 *
++		 * The atomic_xchg() implies a full barrier.
++		 */
++		smp_mb();
++	} else {
++		/* Polling window is not over, keep rescheduling */
++		force_reschedule = true;
++	}
++
++
++	collect_percpu_times(group, PSI_POLL, &changed_states);
++
++	if (changed_states & group->poll_states) {
++		/* Initialize trigger windows when entering polling mode */
++		if (now > group->polling_until)
++			init_triggers(group, now);
++
++		/*
++		 * Keep the monitor active for at least the duration of the
++		 * minimum tracking window as long as monitor states are
++		 * changing.
++		 */
++		group->polling_until = now +
++			group->poll_min_period * UPDATES_PER_WINDOW;
++	}
++
++	if (now > group->polling_until) {
++		group->polling_next_update = ULLONG_MAX;
++		goto out;
++	}
++
++	if (now >= group->polling_next_update)
++		group->polling_next_update = update_triggers(group, now);
++
++	psi_schedule_poll_work(group,
++		nsecs_to_jiffies(group->polling_next_update - now) + 1,
++		force_reschedule);
++
++out:
++	mutex_unlock(&group->trigger_lock);
++}
++
++static int psi_poll_worker(void *data)
++{
++	struct psi_group *group = (struct psi_group *)data;
++
++	/* 4.19 equivalent of sched_set_fifo_low(). */
++	{
++		struct sched_param param = { .sched_priority = 1 };
++		sched_setscheduler_nocheck(current, SCHED_FIFO, &param);
++	}
++
++	while (true) {
++		wait_event_interruptible(group->poll_wait,
++				atomic_cmpxchg(&group->poll_wakeup, 1, 0) ||
++				kthread_should_stop());
++		if (kthread_should_stop())
++			break;
++
++		psi_poll_work(group);
++	}
++	return 0;
++}
++
++static void poll_timer_fn(struct timer_list *t)
++{
++	struct psi_group *group = from_timer(group, t, poll_timer);
++
++	atomic_set(&group->poll_wakeup, 1);
++	wake_up_interruptible(&group->poll_wait);
++}
++
++static void record_times(struct psi_group_cpu *groupc, u64 now)
+ {
+ 	u32 delta;
+-	u64 now;
+-
+-	now = cpu_clock(cpu);
++
+ 	delta = now - groupc->state_start;
+ 	groupc->state_start = now;
+ 
+-	if (test_state(groupc->tasks, PSI_IO_SOME)) {
++	if (groupc->state_mask & (1 << PSI_IO_SOME)) {
+ 		groupc->times[PSI_IO_SOME] += delta;
+-		if (test_state(groupc->tasks, PSI_IO_FULL))
++		if (groupc->state_mask & (1 << PSI_IO_FULL))
+ 			groupc->times[PSI_IO_FULL] += delta;
+ 	}
+ 
+-	if (test_state(groupc->tasks, PSI_MEM_SOME)) {
++	if (groupc->state_mask & (1 << PSI_MEM_SOME)) {
+ 		groupc->times[PSI_MEM_SOME] += delta;
+-		if (test_state(groupc->tasks, PSI_MEM_FULL))
++		if (groupc->state_mask & (1 << PSI_MEM_FULL))
+ 			groupc->times[PSI_MEM_FULL] += delta;
+-		else if (memstall_tick) {
+-			u32 sample;
+-			/*
+-			 * Since we care about lost potential, a
+-			 * memstall is FULL when there are no other
+-			 * working tasks, but also when the CPU is
+-			 * actively reclaiming and nothing productive
+-			 * could run even if it were runnable.
+-			 *
+-			 * When the timer tick sees a reclaiming CPU,
+-			 * regardless of runnable tasks, sample a FULL
+-			 * tick (or less if it hasn't been a full tick
+-			 * since the last state change).
+-			 */
+-			sample = min(delta, (u32)jiffies_to_nsecs(1));
+-			groupc->times[PSI_MEM_FULL] += sample;
+-		}
+-	}
+-
+-	if (test_state(groupc->tasks, PSI_CPU_SOME))
++	}
++
++	if (groupc->state_mask & (1 << PSI_CPU_SOME)) {
+ 		groupc->times[PSI_CPU_SOME] += delta;
+-
+-	if (test_state(groupc->tasks, PSI_NONIDLE))
++		if (groupc->state_mask & (1 << PSI_CPU_FULL))
++			groupc->times[PSI_CPU_FULL] += delta;
++	}
++
++	if (groupc->state_mask & (1 << PSI_NONIDLE))
+ 		groupc->times[PSI_NONIDLE] += delta;
+ }
+ 
+ static void psi_group_change(struct psi_group *group, int cpu,
+-			     unsigned int clear, unsigned int set)
++			     unsigned int clear, unsigned int set,
++			     bool wake_clock)
+ {
+ 	struct psi_group_cpu *groupc;
++	u32 state_mask = 0;
+ 	unsigned int t, m;
++	enum psi_states s;
++	u64 now;
+ 
+ 	groupc = per_cpu_ptr(group->pcpu, cpu);
+ 
+@@ -447,62 +799,181 @@
+ 	 * change requested through the @clear and @set bits.
+ 	 */
+ 	write_seqcount_begin(&groupc->seq);
+-
+-	record_times(groupc, cpu, false);
++	now = cpu_clock(cpu);
++
++	record_times(groupc, now);
+ 
+ 	for (t = 0, m = clear; m; m &= ~(1 << t), t++) {
+ 		if (!(m & (1 << t)))
+ 			continue;
+-		if (groupc->tasks[t] == 0 && !psi_bug) {
+-			printk_deferred(KERN_ERR "psi: task underflow! cpu=%d t=%d tasks=[%u %u %u] clear=%x set=%x\n",
++		if (groupc->tasks[t]) {
++			groupc->tasks[t]--;
++		} else if (!psi_bug) {
++			printk_deferred(KERN_ERR "psi: task underflow! cpu=%d t=%d tasks=[%u %u %u %u %u] clear=%x set=%x\n",
+ 					cpu, t, groupc->tasks[0],
+ 					groupc->tasks[1], groupc->tasks[2],
++					groupc->tasks[3], groupc->tasks[4],
+ 					clear, set);
+ 			psi_bug = 1;
+ 		}
+-		groupc->tasks[t]--;
+ 	}
+ 
+ 	for (t = 0; set; set &= ~(1 << t), t++)
+ 		if (set & (1 << t))
+ 			groupc->tasks[t]++;
+ 
++	/* Calculate state mask representing active states */
++	for (s = 0; s < NR_PSI_STATES; s++) {
++		if (test_state(groupc->tasks, s))
++			state_mask |= (1 << s);
++	}
++
++	/*
++	 * Since we care about lost potential, a memstall is FULL
++	 * when there are no other working tasks, but also when
++	 * the CPU is actively reclaiming and nothing productive
++	 * could run even if it were runnable. So when the current
++	 * task in a cgroup is in_memstall, the corresponding groupc
++	 * on that cpu is in PSI_MEM_FULL state.
++	 */
++	if (unlikely(groupc->tasks[NR_ONCPU] && cpu_curr(cpu)->in_memstall))
++		state_mask |= (1 << PSI_MEM_FULL);
++
++	groupc->state_mask = state_mask;
++
+ 	write_seqcount_end(&groupc->seq);
+ 
+-	if (!delayed_work_pending(&group->clock_work))
+-		schedule_delayed_work(&group->clock_work, PSI_FREQ);
+-}
+-
+-void psi_task_change(struct task_struct *task, int clear, int set)
+-{
+-	int cpu = task_cpu(task);
+-
+-	if (!task->pid)
+-		return;
+-
++	if (state_mask & group->poll_states)
++		psi_schedule_poll_work(group, 1, false);
++
++	if (wake_clock && !delayed_work_pending(&group->avgs_work))
++		schedule_delayed_work(&group->avgs_work, PSI_FREQ);
++}
++
++static struct psi_group *iterate_groups(struct task_struct *task, void **iter)
++{
++	if (*iter == &psi_system)
++		return NULL;
++
++#ifdef CONFIG_CGROUPS
++	if (static_branch_likely(&psi_cgroups_enabled)) {
++		struct cgroup *cgroup = NULL;
++
++		if (!*iter)
++			cgroup = task->cgroups->dfl_cgrp;
++		else
++			cgroup = cgroup_parent(*iter);
++
++		if (cgroup && cgroup_parent(cgroup)) {
++			*iter = cgroup;
++			return cgroup_psi(cgroup);
++		}
++	}
++#endif
++	*iter = &psi_system;
++	return &psi_system;
++}
++
++static void psi_flags_change(struct task_struct *task, int clear, int set)
++{
+ 	if (((task->psi_flags & set) ||
+ 	     (task->psi_flags & clear) != clear) &&
+ 	    !psi_bug) {
+ 		printk_deferred(KERN_ERR "psi: inconsistent task state! task=%d:%s cpu=%d psi_flags=%x clear=%x set=%x\n",
+-				task->pid, task->comm, cpu,
++				task->pid, task->comm, task_cpu(task),
+ 				task->psi_flags, clear, set);
+ 		psi_bug = 1;
+ 	}
+ 
+ 	task->psi_flags &= ~clear;
+ 	task->psi_flags |= set;
+-
+-	psi_group_change(&psi_system, cpu, clear, set);
+-}
+-
+-void psi_memstall_tick(struct task_struct *task, int cpu)
+-{
+-	struct psi_group_cpu *groupc;
+-
+-	groupc = per_cpu_ptr(psi_system.pcpu, cpu);
+-	write_seqcount_begin(&groupc->seq);
+-	record_times(groupc, cpu, true);
+-	write_seqcount_end(&groupc->seq);
++}
++
++void psi_task_change(struct task_struct *task, int clear, int set)
++{
++	int cpu = task_cpu(task);
++	struct psi_group *group;
++	void *iter = NULL;
++
++	if (!task->pid)
++		return;
++
++	psi_flags_change(task, clear, set);
++
++	while ((group = iterate_groups(task, &iter)))
++		psi_group_change(group, cpu, clear, set, true);
++}
++
++void psi_task_switch(struct task_struct *prev, struct task_struct *next,
++		     bool sleep)
++{
++	struct psi_group *group, *common = NULL;
++	int cpu = task_cpu(prev);
++	void *iter;
++
++	if (next->pid) {
++		bool identical_state;
++
++		psi_flags_change(next, 0, TSK_ONCPU);
++		/*
++		 * When switching between tasks that have an identical
++		 * runtime state, the cgroup that contains both tasks
++		 * runtime state, the cgroup that contains both tasks
++		 * we reach the first common ancestor. Iterate @next's
++		 * ancestors only until we encounter @prev's ONCPU.
++		 */
++		identical_state = prev->psi_flags == next->psi_flags;
++		iter = NULL;
++		while ((group = iterate_groups(next, &iter))) {
++			if (identical_state &&
++			    per_cpu_ptr(group->pcpu, cpu)->tasks[NR_ONCPU]) {
++				common = group;
++				break;
++			}
++
++			psi_group_change(group, cpu, 0, TSK_ONCPU, true);
++		}
++	}
++
++	if (prev->pid) {
++		int clear = TSK_ONCPU, set = 0;
++		bool wake_clock = true;
++
++		/*
++		 * When we're going to sleep, psi_dequeue() lets us
++		 * handle TSK_RUNNING, TSK_MEMSTALL_RUNNING and
++		 * TSK_IOWAIT here, where we can combine it with
++		 * TSK_ONCPU and save walking common ancestors twice.
++		 */
++		if (sleep) {
++			clear |= TSK_RUNNING;
++			if (prev->in_memstall)
++				clear |= TSK_MEMSTALL_RUNNING;
++			if (prev->in_iowait)
++				set |= TSK_IOWAIT;
++
++			/* Do not let the averaging worker wake itself on sleep. */
++			if (unlikely((prev->flags & PF_WQ_WORKER) &&
++				     wq_worker_last_func(prev) == psi_avgs_work))
++				wake_clock = false;
++		}
++
++		psi_flags_change(prev, clear, set);
++
++		iter = NULL;
++		while ((group = iterate_groups(prev, &iter)) && group != common)
++			psi_group_change(group, cpu, clear, set, wake_clock);
++
++		/*
++		 * TSK_ONCPU is handled up to the common ancestor. If we're tasked
++		 * with dequeuing too, finish that for the rest of the hierarchy.
++		 */
++		if (sleep) {
++			clear &= ~TSK_ONCPU;
++			for (; group; group = iterate_groups(prev, &iter))
++				psi_group_change(group, cpu, clear, set, wake_clock);
++		}
++	}
+ }
+ 
+ /**
+@@ -517,21 +988,21 @@
+ 	struct rq_flags rf;
+ 	struct rq *rq;
+ 
+-	if (psi_disabled)
++	if (static_branch_likely(&psi_disabled))
+ 		return;
+ 
+-	*flags = current->flags & PF_MEMSTALL;
++	*flags = current->in_memstall;
+ 	if (*flags)
+ 		return;
+ 	/*
+-	 * PF_MEMSTALL setting & accounting needs to be atomic wrt
++	 * in_memstall setting & accounting needs to be atomic wrt
+ 	 * changes to the task's scheduling state, otherwise we can
+ 	 * race with CPU migration.
+ 	 */
+ 	rq = this_rq_lock_irq(&rf);
+ 
+-	current->flags |= PF_MEMSTALL;
+-	psi_task_change(current, 0, TSK_MEMSTALL);
++	current->in_memstall = 1;
++	psi_task_change(current, 0, TSK_MEMSTALL | TSK_MEMSTALL_RUNNING);
+ 
+ 	rq_unlock_irq(rq, &rf);
+ }
+@@ -547,42 +1018,158 @@
+ 	struct rq_flags rf;
+ 	struct rq *rq;
+ 
+-	if (psi_disabled)
++	if (static_branch_likely(&psi_disabled))
+ 		return;
+ 
+ 	if (*flags)
+ 		return;
+ 	/*
+-	 * PF_MEMSTALL clearing & accounting needs to be atomic wrt
++	 * in_memstall clearing & accounting needs to be atomic wrt
+ 	 * changes to the task's scheduling state, otherwise we could
+ 	 * race with CPU migration.
+ 	 */
+ 	rq = this_rq_lock_irq(&rf);
+ 
+-	current->flags &= ~PF_MEMSTALL;
+-	psi_task_change(current, TSK_MEMSTALL, 0);
++	current->in_memstall = 0;
++	psi_task_change(current, TSK_MEMSTALL | TSK_MEMSTALL_RUNNING, 0);
+ 
+ 	rq_unlock_irq(rq, &rf);
+ }
+ 
+-static int psi_show(struct seq_file *m, struct psi_group *group,
+-		    enum psi_res res)
++#ifdef CONFIG_CGROUPS
++int psi_cgroup_alloc(struct cgroup *cgroup)
++{
++	if (static_branch_likely(&psi_disabled))
++		return 0;
++
++	cgroup_psi(cgroup)->pcpu = alloc_percpu(struct psi_group_cpu);
++	if (!cgroup_psi(cgroup)->pcpu)
++		return -ENOMEM;
++	group_init(cgroup_psi(cgroup));
++	return 0;
++}
++
++void psi_cgroup_free(struct cgroup *cgroup)
++{
++	if (static_branch_likely(&psi_disabled))
++		return;
++
++	cancel_delayed_work_sync(&cgroup_psi(cgroup)->avgs_work);
++	/*
++	 * A psi_schedule_poll_work() call racing the last trigger's
++	 * destruction may have re-armed the timer after psi_trigger_destroy()
++	 * deleted it. Spurious firing while the group is alive is harmless.
++	 */
++	/*
++	 * 4.19 has no timer_shutdown_sync(). No task or new trigger can
++	 * reach this dying cgroup. The last trigger has unpublished its
++	 * worker and stopped it; drain lockless timer schedulers before
++	 * deleting the final timer. Its callback cannot rearm itself.
++	 */
++	WARN_ON_ONCE(rcu_access_pointer(cgroup_psi(cgroup)->poll_task));
++	synchronize_rcu();
++	del_timer_sync(&cgroup_psi(cgroup)->poll_timer);
++	free_percpu(cgroup_psi(cgroup)->pcpu);
++	/* All triggers must be removed by now */
++	WARN_ONCE(cgroup_psi(cgroup)->poll_states, "psi: trigger leak\n");
++}
++
++/**
++ * cgroup_move_task - move task to a different cgroup
++ * @task: the task
++ * @to: the target css_set
++ *
++ * Move task to a new cgroup and safely migrate its associated stall
++ * state between the different groups.
++ *
++ * This function acquires the task's rq lock to lock out concurrent
++ * changes to the task's scheduling state and - in case the task is
++ * running - concurrent changes to its stall state.
++ */
++void cgroup_move_task(struct task_struct *task, struct css_set *to)
++{
++	unsigned int task_flags;
++	struct rq_flags rf;
++	struct rq *rq;
++
++	if (static_branch_likely(&psi_disabled)) {
++		/*
++		 * Lame to do this here, but the scheduler cannot be locked
++		 * from the outside, so we move cgroups from inside sched/.
++		 */
++		rcu_assign_pointer(task->cgroups, to);
++		return;
++	}
++
++	rq = task_rq_lock(task, &rf);
++
++	/*
++	 * We may race with schedule() dropping the rq lock between
++	 * deactivating prev and switching to next. Because the psi
++	 * updates from the deactivation are deferred to the switch
++	 * callback to save cgroup tree updates, the task's scheduling
++	 * state here is not coherent with its psi state:
++	 *
++	 * schedule()                   cgroup_move_task()
++	 *   rq_lock()
++	 *   deactivate_task()
++	 *     p->on_rq = 0
++	 *     psi_dequeue() // defers TSK_RUNNING & TSK_IOWAIT updates
++	 *   pick_next_task()
++	 *     rq_unlock()
++	 *                                rq_lock()
++	 *                                psi_task_change() // old cgroup
++	 *                                task->cgroups = to
++	 *                                psi_task_change() // new cgroup
++	 *                                rq_unlock()
++	 *     rq_lock()
++	 *   psi_sched_switch() // does deferred updates in new cgroup
++	 *
++	 * Don't rely on the scheduling state. Use psi_flags instead.
++	 */
++	task_flags = task->psi_flags;
++
++	if (task_flags)
++		psi_task_change(task, task_flags, 0);
++
++	/* See comment above */
++	rcu_assign_pointer(task->cgroups, to);
++
++	if (task_flags)
++		psi_task_change(task, 0, task_flags);
++
++	task_rq_unlock(rq, task, &rf);
++}
++#endif /* CONFIG_CGROUPS */
++
++int psi_show(struct seq_file *m, struct psi_group *group, enum psi_res res)
+ {
+ 	int full;
+-
+-	if (psi_disabled)
++	u64 now;
++
++	if (static_branch_likely(&psi_disabled))
+ 		return -EOPNOTSUPP;
+ 
+-	update_stats(group);
+-
+-	for (full = 0; full < 2 - (res == PSI_CPU); full++) {
+-		unsigned long avg[3];
+-		u64 total;
++	/* Update averages before reporting them */
++	mutex_lock(&group->avgs_lock);
++	now = sched_clock();
++	collect_percpu_times(group, PSI_AVGS, NULL);
++	if (now >= group->avg_next_update)
++		group->avg_next_update = update_averages(group, now);
++	mutex_unlock(&group->avgs_lock);
++
++	for (full = 0; full < 2; full++) {
++		unsigned long avg[3] = { 0, };
++		u64 total = 0;
+ 		int w;
+ 
+-		for (w = 0; w < 3; w++)
+-			avg[w] = group->avg[res * 2 + full][w];
+-		total = div_u64(group->total[res * 2 + full], NSEC_PER_USEC);
++		/* CPU FULL is undefined at the system level */
++		if (!(group == &psi_system && res == PSI_CPU && full)) {
++			for (w = 0; w < 3; w++)
++				avg[w] = group->avg[res * 2 + full][w];
++			total = div_u64(group->total[PSI_AVGS][res * 2 + full],
++					NSEC_PER_USEC);
++		}
+ 
+ 		seq_printf(m, "%s avg10=%lu.%02lu avg60=%lu.%02lu avg300=%lu.%02lu total=%llu\n",
+ 			   full ? "full" : "some",
+@@ -595,6 +1182,195 @@
+ 	return 0;
+ }
+ 
++/*
++ * Adapted from upstream fadeedd7cfc5: never fork while cgroup_mutex or a
++ * kernfs active reference is held. The already registered trigger pins
++ * the polling machinery until the caller publishes it or destroys it.
++ */
++int psi_trigger_create_poll_worker(struct psi_group *group)
++{
++	struct task_struct *task;
++
++	task = kthread_create(psi_poll_worker, group, "psimon");
++	if (IS_ERR(task))
++		return PTR_ERR(task);
++
++	mutex_lock(&group->trigger_lock);
++	if (!rcu_access_pointer(group->poll_task)) {
++		atomic_set(&group->poll_wakeup, 0);
++		wake_up_process(task);
++		rcu_assign_pointer(group->poll_task, task);
++		psi_schedule_poll_work(group, 1, true);
++		mutex_unlock(&group->trigger_lock);
++		return 0;
++	}
++	mutex_unlock(&group->trigger_lock);
++	kthread_stop(task);
++	return 0;
++}
++
++struct psi_trigger *psi_trigger_create(struct psi_group *group,
++			char *buf, size_t nbytes, enum psi_res res,
++			struct kernfs_open_file *of, bool *need_poll_worker)
++{
++	struct psi_trigger *t;
++	enum psi_states state;
++	u32 threshold_us;
++	u32 window_us;
++
++	*need_poll_worker = false;
++
++	if (static_branch_likely(&psi_disabled))
++		return ERR_PTR(-EOPNOTSUPP);
++
++	if (sscanf(buf, "some %u %u", &threshold_us, &window_us) == 2)
++		state = PSI_IO_SOME + res * 2;
++	else if (sscanf(buf, "full %u %u", &threshold_us, &window_us) == 2)
++		state = PSI_IO_FULL + res * 2;
++	else
++		return ERR_PTR(-EINVAL);
++
++	if (state >= PSI_NONIDLE)
++		return ERR_PTR(-EINVAL);
++
++	if (window_us < WINDOW_MIN_US ||
++		window_us > WINDOW_MAX_US)
++		return ERR_PTR(-EINVAL);
++
++	/* Check threshold */
++	if (threshold_us == 0 || threshold_us > window_us)
++		return ERR_PTR(-EINVAL);
++
++	t = kmalloc(sizeof(*t), GFP_KERNEL);
++	if (!t)
++		return ERR_PTR(-ENOMEM);
++
++	t->group = group;
++	t->state = state;
++	t->threshold = threshold_us * NSEC_PER_USEC;
++	t->win.size = window_us * NSEC_PER_USEC;
++
++	t->event = 0;
++	t->last_event_time = 0;
++	t->pending_event = false;
++	t->of = of;
++	if (!of)
++		init_waitqueue_head(&t->event_wait);
++
++	mutex_lock(&group->trigger_lock);
++
++	window_reset(&t->win, sched_clock(),
++			group->total[PSI_POLL][t->state], 0);
++
++	list_add(&t->node, &group->triggers);
++	group->poll_min_period = min(group->poll_min_period,
++		div_u64(t->win.size, UPDATES_PER_WINDOW));
++	group->nr_triggers[t->state]++;
++	group->poll_states |= (1 << t->state);
++	*need_poll_worker = !rcu_access_pointer(group->poll_task);
++
++	mutex_unlock(&group->trigger_lock);
++
++	return t;
++}
++
++void psi_trigger_destroy(struct psi_trigger *t)
++{
++	struct psi_group *group;
++	struct task_struct *task_to_destroy = NULL;
++
++	/*
++	 * We do not check psi_disabled since it might have been disabled after
++	 * the trigger got created.
++	 */
++	if (!t)
++		return;
++
++	group = t->group;
++	/*
++	 * Wakeup waiters to stop polling and clear the queue to prevent it from
++	 * being accessed later. Can happen if cgroup is deleted from under a
++	 * polling process.
++	 */
++	if (t->of)
++		kernfs_notify(t->of->kn);
++	else
++		wake_up_interruptible(&t->event_wait);
++
++	mutex_lock(&group->trigger_lock);
++
++	if (!list_empty(&t->node)) {
++		struct psi_trigger *tmp;
++		u64 period = ULLONG_MAX;
++
++		list_del(&t->node);
++		group->nr_triggers[t->state]--;
++		if (!group->nr_triggers[t->state])
++			group->poll_states &= ~(1 << t->state);
++		/* reset min update period for the remaining triggers */
++		list_for_each_entry(tmp, &group->triggers, node)
++			period = min(period, div_u64(tmp->win.size,
++					UPDATES_PER_WINDOW));
++		group->poll_min_period = period;
++		/* Destroy poll_task when the last trigger is destroyed */
++		if (group->poll_states == 0) {
++			group->polling_until = 0;
++			task_to_destroy = rcu_dereference_protected(
++					group->poll_task,
++					lockdep_is_held(&group->trigger_lock));
++			rcu_assign_pointer(group->poll_task, NULL);
++			del_timer(&group->poll_timer);
++		}
++	}
++
++	mutex_unlock(&group->trigger_lock);
++
++	/*
++	 * Wait for psi_schedule_poll_work RCU to complete its read-side
++	 * critical section before destroying the trigger and optionally the
++	 * poll_task.
++	 */
++	synchronize_rcu();
++	/*
++	 * Stop kthread 'psimon' after releasing trigger_lock to prevent a
++	 * deadlock while waiting for psi_poll_work to acquire trigger_lock
++	 */
++	if (task_to_destroy) {
++		/*
++		 * After the RCU grace period has expired, the worker
++		 * can no longer be found through group->poll_task.
++		 */
++		kthread_stop(task_to_destroy);
++		atomic_set(&group->poll_scheduled, 0);
++	}
++	kfree(t);
++}
++
++__poll_t psi_trigger_poll(void **trigger_ptr,
++				struct file *file, poll_table *wait)
++{
++	__poll_t ret = DEFAULT_POLLMASK;
++	struct psi_trigger *t;
++
++	if (static_branch_likely(&psi_disabled))
++		return DEFAULT_POLLMASK | EPOLLERR | EPOLLPRI;
++
++	t = smp_load_acquire(trigger_ptr);
++	if (!t)
++		return DEFAULT_POLLMASK | EPOLLERR | EPOLLPRI;
++
++	if (t->of)
++		kernfs_generic_poll(t->of, wait);
++	else
++		poll_wait(file, &t->event_wait, wait);
++
++	if (cmpxchg(&t->event, 1, 0) == 1)
++		ret |= EPOLLPRI;
++
++	return ret;
++}
++
++#ifdef CONFIG_PROC_FS
+ static int psi_io_show(struct seq_file *m, void *v)
+ {
+ 	return psi_show(m, &psi_system, PSI_IO);
+@@ -610,48 +1386,154 @@
+ 	return psi_show(m, &psi_system, PSI_CPU);
+ }
+ 
++static int psi_open(struct file *file, int (*psi_show)(struct seq_file *, void *))
++{
++	if (file->f_mode & FMODE_WRITE && !capable(CAP_SYS_RESOURCE))
++		return -EPERM;
++
++	return single_open(file, psi_show, NULL);
++}
++
+ static int psi_io_open(struct inode *inode, struct file *file)
+ {
+-	return single_open(file, psi_io_show, NULL);
++	return psi_open(file, psi_io_show);
+ }
+ 
+ static int psi_memory_open(struct inode *inode, struct file *file)
+ {
+-	return single_open(file, psi_memory_show, NULL);
++	return psi_open(file, psi_memory_show);
+ }
+ 
+ static int psi_cpu_open(struct inode *inode, struct file *file)
+ {
+-	return single_open(file, psi_cpu_show, NULL);
+-}
+-
+-static const struct file_operations psi_io_fops = {
+-	.open           = psi_io_open,
+-	.read           = seq_read,
+-	.llseek         = seq_lseek,
+-	.release        = single_release,
++	return psi_open(file, psi_cpu_show);
++}
++
++static ssize_t psi_write(struct file *file, const char __user *user_buf,
++			 size_t nbytes, enum psi_res res)
++{
++	char buf[32];
++	size_t buf_size;
++	struct seq_file *seq;
++	struct psi_trigger *new;
++	bool need_poll_worker;
++	int ret;
++
++	if (static_branch_likely(&psi_disabled))
++		return -EOPNOTSUPP;
++
++	if (!nbytes)
++		return -EINVAL;
++
++	buf_size = min(nbytes, sizeof(buf));
++	if (copy_from_user(buf, user_buf, buf_size))
++		return -EFAULT;
++
++	buf[buf_size - 1] = '\0';
++
++	seq = file->private_data;
++
++	/* Take seq->lock to protect seq->private from concurrent writes */
++	mutex_lock(&seq->lock);
++
++	/* Allow only one trigger per file descriptor */
++	if (seq->private) {
++		mutex_unlock(&seq->lock);
++		return -EBUSY;
++	}
++
++	new = psi_trigger_create(&psi_system, buf, nbytes, res, NULL,
++				 &need_poll_worker);
++	if (IS_ERR(new)) {
++		mutex_unlock(&seq->lock);
++		return PTR_ERR(new);
++	}
++
++	if (need_poll_worker) {
++		ret = psi_trigger_create_poll_worker(&psi_system);
++		if (ret) {
++			psi_trigger_destroy(new);
++			mutex_unlock(&seq->lock);
++			return ret;
++		}
++	}
++
++	smp_store_release(&seq->private, new);
++	mutex_unlock(&seq->lock);
++
++	return nbytes;
++}
++
++static ssize_t psi_io_write(struct file *file, const char __user *user_buf,
++			    size_t nbytes, loff_t *ppos)
++{
++	return psi_write(file, user_buf, nbytes, PSI_IO);
++}
++
++static ssize_t psi_memory_write(struct file *file, const char __user *user_buf,
++				size_t nbytes, loff_t *ppos)
++{
++	return psi_write(file, user_buf, nbytes, PSI_MEM);
++}
++
++static ssize_t psi_cpu_write(struct file *file, const char __user *user_buf,
++			     size_t nbytes, loff_t *ppos)
++{
++	return psi_write(file, user_buf, nbytes, PSI_CPU);
++}
++
++static __poll_t psi_fop_poll(struct file *file, poll_table *wait)
++{
++	struct seq_file *seq = file->private_data;
++
++	return psi_trigger_poll(&seq->private, file, wait);
++}
++
++static int psi_fop_release(struct inode *inode, struct file *file)
++{
++	struct seq_file *seq = file->private_data;
++
++	psi_trigger_destroy(seq->private);
++	return single_release(inode, file);
++}
++
++static const struct file_operations psi_io_proc_ops = {
++	.open	= psi_io_open,
++	.read	= seq_read,
++	.llseek	= seq_lseek,
++	.write	= psi_io_write,
++	.poll	= psi_fop_poll,
++	.release	= psi_fop_release,
+ };
+ 
+-static const struct file_operations psi_memory_fops = {
+-	.open           = psi_memory_open,
+-	.read           = seq_read,
+-	.llseek         = seq_lseek,
+-	.release        = single_release,
++static const struct file_operations psi_memory_proc_ops = {
++	.open	= psi_memory_open,
++	.read	= seq_read,
++	.llseek	= seq_lseek,
++	.write	= psi_memory_write,
++	.poll	= psi_fop_poll,
++	.release	= psi_fop_release,
+ };
+ 
+-static const struct file_operations psi_cpu_fops = {
+-	.open           = psi_cpu_open,
+-	.read           = seq_read,
+-	.llseek         = seq_lseek,
+-	.release        = single_release,
++static const struct file_operations psi_cpu_proc_ops = {
++	.open	= psi_cpu_open,
++	.read	= seq_read,
++	.llseek	= seq_lseek,
++	.write	= psi_cpu_write,
++	.poll	= psi_fop_poll,
++	.release	= psi_fop_release,
+ };
+ 
+ static int __init psi_proc_init(void)
+ {
+-	proc_mkdir("pressure", NULL);
+-	proc_create("pressure/io", 0, NULL, &psi_io_fops);
+-	proc_create("pressure/memory", 0, NULL, &psi_memory_fops);
+-	proc_create("pressure/cpu", 0, NULL, &psi_cpu_fops);
++	if (psi_enable) {
++		proc_mkdir("pressure", NULL);
++		proc_create("pressure/io", 0666, NULL, &psi_io_proc_ops);
++		proc_create("pressure/memory", 0666, NULL, &psi_memory_proc_ops);
++		proc_create("pressure/cpu", 0666, NULL, &psi_cpu_proc_ops);
++	}
+ 	return 0;
+ }
+ module_init(psi_proc_init);
++
++#endif /* CONFIG_PROC_FS */
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/sched/stats.h b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/sched/stats.h
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/sched/stats.h
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/sched/stats.h
+@@ -71,14 +71,15 @@
+ {
+ 	int clear = 0, set = TSK_RUNNING;
+ 
+-	if (psi_disabled)
+-		return;
+-
+-	if (!wakeup || p->sched_psi_wake_requeue) {
+-		if (p->flags & PF_MEMSTALL)
++	if (static_branch_likely(&psi_disabled))
++		return;
++
++	if (p->in_memstall)
++		set |= TSK_MEMSTALL_RUNNING;
++
++	if (!wakeup) {
++		if (p->in_memstall)
+ 			set |= TSK_MEMSTALL;
+-		if (p->sched_psi_wake_requeue)
+-			p->sched_psi_wake_requeue = 0;
+ 	} else {
+ 		if (p->in_iowait)
+ 			clear |= TSK_IOWAIT;
+@@ -89,61 +90,57 @@
+ 
+ static inline void psi_dequeue(struct task_struct *p, bool sleep)
+ {
+-	int clear = TSK_RUNNING, set = 0;
+-
+-	if (psi_disabled)
+-		return;
+-
+-	if (!sleep) {
+-		if (p->flags & PF_MEMSTALL)
+-			clear |= TSK_MEMSTALL;
+-	} else {
+-		if (p->in_iowait)
+-			set |= TSK_IOWAIT;
+-	}
+-
+-	psi_task_change(p, clear, set);
++	if (static_branch_likely(&psi_disabled))
++		return;
++
++	/*
++	 * A voluntary sleep is a dequeue followed by a task switch. To
++	 * avoid walking all ancestors twice, psi_task_switch() handles
++	 * TSK_RUNNING and TSK_IOWAIT for us when it moves TSK_ONCPU.
++	 * Do nothing here.
++	 */
++	if (sleep)
++		return;
++
++	psi_task_change(p, p->psi_flags, 0);
+ }
+ 
+ static inline void psi_ttwu_dequeue(struct task_struct *p)
+ {
+-	if (psi_disabled)
++	if (static_branch_likely(&psi_disabled))
+ 		return;
+ 	/*
+ 	 * Is the task being migrated during a wakeup? Make sure to
+ 	 * deregister its sleep-persistent psi states from the old
+ 	 * queue, and let psi_enqueue() know it has to requeue.
+ 	 */
+-	if (unlikely(p->in_iowait || (p->flags & PF_MEMSTALL))) {
++	if (unlikely(p->psi_flags)) {
+ 		struct rq_flags rf;
+ 		struct rq *rq;
+-		int clear = 0;
+-
+-		if (p->in_iowait)
+-			clear |= TSK_IOWAIT;
+-		if (p->flags & PF_MEMSTALL)
+-			clear |= TSK_MEMSTALL;
+ 
+ 		rq = __task_rq_lock(p, &rf);
+-		psi_task_change(p, clear, 0);
+-		p->sched_psi_wake_requeue = 1;
++		psi_task_change(p, p->psi_flags, 0);
+ 		__task_rq_unlock(rq, &rf);
+ 	}
+ }
+ 
+-static inline void psi_task_tick(struct rq *rq)
+-{
+-	if (psi_disabled)
+-		return;
+-
+-	if (unlikely(rq->curr->flags & PF_MEMSTALL))
+-		psi_memstall_tick(rq->curr, cpu_of(rq));
+-}
++static inline void psi_sched_switch(struct task_struct *prev,
++				    struct task_struct *next,
++				    bool sleep)
++{
++	if (static_branch_likely(&psi_disabled))
++		return;
++
++	psi_task_switch(prev, next, sleep);
++}
++
+ #else /* CONFIG_PSI */
+ static inline void psi_enqueue(struct task_struct *p, bool wakeup) {}
+ static inline void psi_dequeue(struct task_struct *p, bool sleep) {}
+ static inline void psi_ttwu_dequeue(struct task_struct *p) {}
+-static inline void psi_task_tick(struct rq *rq) {}
++static inline void psi_sched_switch(struct task_struct *prev,
++				    struct task_struct *next,
++				    bool sleep) {}
+ #endif /* CONFIG_PSI */
+ 
+ #ifdef CONFIG_SCHED_INFO
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/workqueue.c b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/workqueue.c
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/workqueue.c
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/workqueue.c
+@@ -845,6 +845,34 @@
+ 		wake_up_process(worker->task);
+ }
+ 
++/*
++ * PSI needs the last callback after current_func is cleared at work completion.
++ * Keep this private word after the allocation instead of changing struct worker:
++ * vendor objects may depend on that structure's existing size and offsets.
++ * Both normal workers and rescuers are allocated by alloc_worker().
++ */
++static work_func_t *worker_last_func_slot(struct worker *worker)
++{
++	return (work_func_t *)(worker + 1);
++}
++
++/**
++ * wq_worker_last_func - return the worker's most recently started callback
++ * @task: current, or a task stabilized by the scheduler runqueue lock
++ *
++ * PF_WQ_WORKER is cleared before the worker allocation is freed. Callers must
++ * keep the worker task stable as they do for the other scheduler worker hooks.
++ */
++work_func_t wq_worker_last_func(struct task_struct *task)
++{
++	struct worker *worker;
++
++	if (!(task->flags & PF_WQ_WORKER))
++		return NULL;
++	worker = kthread_data(task);
++	return READ_ONCE(*worker_last_func_slot(worker));
++}
++
+ /**
+  * wq_worker_waking_up - a worker is waking up
+  * @task: task waking up
+@@ -1713,7 +1741,8 @@
+ {
+ 	struct worker *worker;
+ 
+-	worker = kzalloc_node(sizeof(*worker), GFP_KERNEL, node);
++	worker = kzalloc_node(sizeof(*worker) + sizeof(work_func_t),
++			      GFP_KERNEL, node);
+ 	if (worker) {
+ 		INIT_LIST_HEAD(&worker->entry);
+ 		INIT_LIST_HEAD(&worker->scheduled);
+@@ -2094,6 +2123,7 @@
+ 	hash_add(pool->busy_hash, &worker->hentry, (unsigned long)work);
+ 	worker->current_work = work;
+ 	worker->current_func = work->func;
++	WRITE_ONCE(*worker_last_func_slot(worker), worker->current_func);
+ 	worker->current_pwq = pwq;
+ 	work_color = get_work_color(work);
+ 
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/workqueue_internal.h b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/workqueue_internal.h
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/workqueue_internal.h
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/workqueue_internal.h
+@@ -69,6 +69,7 @@
+  * Scheduler hooks for concurrency managed workqueue.  Only to be used from
+  * sched/core.c and workqueue.c.
+  */
++work_func_t wq_worker_last_func(struct task_struct *task);
+ void wq_worker_waking_up(struct task_struct *task, int cpu);
+ struct task_struct *wq_worker_sleeping(struct task_struct *task);
+ 

@@ -1,0 +1,186 @@
+{
+  "reviewed_at_utc": "2026-10-04T13:08:24.651712+00:00",
+  "status": "STATIC_PLAN_VERIFIED_PENDING_EXPLICIT_BOOT_SLOT_COMMIT_AUTHORIZATION",
+  "task": "kernel9_boot_commit_review",
+  "device_actions_performed": false,
+  "source_edits_performed": false,
+  "scope": "Read-only repository/source and exact stock ELF review. No SSH, device writes, reboot, Git staging, or commit was performed by this reviewer.",
+  "authorization": {
+    "flash_authorized_by_user": true,
+    "git_commit_after_boot_authorized_by_user": true,
+    "permanent_boot_slot_commit": "Pending clarification by root agent; this report does not grant authorization."
+  },
+  "core_findings": [
+    "The new-layout eMMC metadata has one COMMITTED integer (0, 1, or 2). The bcm_bootstate per-slot commit flags are equality tests against that singleton, not two independent flags.",
+    "Thus slot1 permanently selected plus slot2 commit flag 1 is impossible with this stock metadata format. Permanent slot1 selection changes slot2 displayed commit flag to 0, while retaining VALID=1,2 and the original slot2 payload.",
+    "After an accepted slot1 trial with the one-time request already consumed, bcm_bootstate +1 alone sets the persistent default to slot1. bcm_bootstate 5 is not an additional required operation.",
+    "Never use bcm_bootstate -1 to restore stock default: it can set COMMITTED=0 and cause the bootloader to select the newer slot1 by sequence. Use +2 to restore COMMITTED=2.",
+    "commit() can invoke reboot when /var/gpt_modified.txt exists and /proc/cmdline contains gpt. Require the marker to be absent before either +1 or rollback +2; do not remove an unexplained marker automatically.",
+    "The metadata writer writes both copies but does not propagate each setEmmcMetadata return through wr_metadata. Exit status alone cannot establish durable success; verify both physical copies independently.",
+    "The early read-only guard can be deliberately relaxed with BLKROSET (blockdev --setrw) and reapplied with blockdev --setro. It does not protect whole-disk raw writes, so no raw whole-disk operation is in this plan."
+  ],
+  "evidence": {
+    "tool_cli": {
+      "path": "source/release/src-rt-5.04behnd.4916/router-sysdep.gt-be98_pro/bcm_bootstate/bcm_bootstate.c",
+      "sha256": "0174b15b3f693ad54b3d47580d84dff2d94b2d7d5ddd1f790c1cfcef264b2194"
+    },
+    "boot_selection": {
+      "path": "source/release/src-rt-5.04behnd.4916/bootloaders/u-boot-2019.07/board/broadcom/bcmbca/board_tpl.c",
+      "sha256": "602c444bc48302540dffdf0212d00f00219d8b741ce5d315881a318207024769"
+    },
+    "metadata_validation": {
+      "path": "source/release/src-rt-5.04behnd.4916/bootloaders/u-boot-2019.07/board/broadcom/bcmbca/spl_env.c",
+      "sha256": "cb2e14554a21fd3e9e832b3622aec46ce386b40dd533df950992f37877e2ae3d"
+    },
+    "boot_constants": {
+      "path": "source/release/src-rt-5.04behnd.4916/shared/opensource/include/bcm963xx/bcm_hwdefs.h",
+      "sha256": "f1ab77270f9893f84b74dfabfb825a0f839df2cb6ea111fd4ed8d11dc3dc9e4b"
+    },
+    "metadata_guard": {
+      "path": "patches/0003-trial-metadata-protection.patch",
+      "sha256": "0790bdade92bc1672ba2ab930d03033770e60506c65f3ab3277dbd10d0bb8c61"
+    },
+    "runtime_library": {
+      "path": "build/kernel9-ui1-rootfs/lib/libbcm_flashutil.so",
+      "sha256": "18c98a3c45d78b7ccc26e82a94ea225ac3b422d123b6b783f71691f5639fb0d0"
+    },
+    "runtime_cli": {
+      "path": "build/kernel9-ui1-rootfs/bin/bcm_bootstate",
+      "sha256": "2b01eb80604ef66aa21a99178c70501eeb8a2c458132d133051a241373c5c845"
+    }
+  },
+  "static_evidence_detail": [
+    {
+      "source": "tool_cli",
+      "lines": "160-179",
+      "finding": "5 invokes setBootImageState(BOOT_SET_PART1_IMAGE); +1 invokes commit(1,\"1\")."
+    },
+    {
+      "source": "runtime_library",
+      "addresses": [
+        "commit 0xc970-0xc9b4",
+        "commit 0xca18-0xca28"
+      ],
+      "finding": "Read flag returns ASCII 1 iff requested partition equals metadata committed; +1 stores partition into committed and valid[partition-1], then writes metadata."
+    },
+    {
+      "source": "runtime_library",
+      "addresses": [
+        "wr_metadata 0xa400-0xa604",
+        "setEmmcMetadata 0x1a344-0x1a480"
+      ],
+      "finding": "Serializes COMMITTED, VALID and SEQ, computes CRC, calls metadata writes for copies1 and2; setEmmcMetadata uses fflush/fsync/fclose. Caller ignores per-copy failure."
+    },
+    {
+      "source": "runtime_library",
+      "addresses": [
+        "commit 0xc918-0xca14"
+      ],
+      "finding": "After metadata write, /var/gpt_modified.txt stat plus successful grep -q gpt /proc/cmdline can call logged reboot."
+    },
+    {
+      "source": "runtime_library",
+      "addresses": [
+        "getBootImageState 0xcbf0-0xcc18",
+        "getBootImageState 0xcc98-0xcca8",
+        "setBootImageState 0xd084-0xd104"
+      ],
+      "finding": "New-layout next boot state follows committed slot and getBootReason. Setting permanent slot1 only commits it if needed. A consumed trial has no activation pending."
+    },
+    {
+      "source": "boot_selection",
+      "lines": "588-612,665-672",
+      "finding": "With both images valid, committed chooses default; activation/fallback flags may select 3-committed. Failed-image fallback depends on compiled bootloader support and is not guaranteed by existence of another valid payload."
+    },
+    {
+      "source": "metadata_validation",
+      "lines": "90-149",
+      "finding": "CRC covers bytes at offset12 for (second LE uint32 minus4)&0xffff bytes; parses singleton COMMITTED plus VALID and SEQ."
+    },
+    {
+      "source": "metadata_guard",
+      "finding": "Only metadata GPT partitions1/2 marked RO during partition registration; BLKROSET intentionally supported."
+    }
+  ],
+  "existing_preflash_backups": [
+    {
+      "path": "evidence/kernel9-ui1/private/metadata1-before.bin",
+      "bytes": 262144,
+      "sha256": "f555ad0bca09747d8305f659cb1c5465f6c2903144cd7ccaa1ae682254c21a73",
+      "crc_valid": true,
+      "fields": {
+        "COMMITTED": "2",
+        "VALID": "1,2",
+        "SEQ": "5,4"
+      }
+    },
+    {
+      "path": "evidence/kernel9-ui1/private/metadata2-before.bin",
+      "bytes": 262144,
+      "sha256": "f555ad0bca09747d8305f659cb1c5465f6c2903144cd7ccaa1ae682254c21a73",
+      "crc_valid": true,
+      "fields": {
+        "COMMITTED": "2",
+        "VALID": "1,2",
+        "SEQ": "5,4"
+      }
+    }
+  ],
+  "required_preconditions": [
+    "Explicit permanent boot-slot commit authorization has arrived; Git-only confirmation is insufficient.",
+    "Root has accepted actual kernel9 trial boot, exact kernel/config/package identity, time64/glibc checks, services/network/AI link, and no newly unexplained fatal boot diagnostics.",
+    "Product GT-BE19000AI, root=/dev/mmcblk0p4, Booted Partition: First; same expected kernel9 boot_id throughout.",
+    "Precommit metadata reads COMMITTED=2, VALID=1,2, SEQ=5,4 in BOTH copies; Boot image state is permanent BOOT_SET_PART2_IMAGE and Reboot Partition: Second. Abort on ONCE or contradictory reads.",
+    "metadata1 -> /dev/mmcblk0p1 and metadata2 -> /dev/mmcblk0p2, each512sectors; each currently read-only; no unexpected device mapping.",
+    "Stock slot2 full hashes match the baseline below, slot1 matches accepted kernel9 package, and both fresh full metadata backups are saved locally and checksummed.",
+    "Live /bin/bcm_bootstate and /lib/libbcm_flashutil.so hashes match reviewed runtime_cli and runtime_library.",
+    "/var/gpt_modified.txt does not exist. No overlapping flash/upgrade/bootstate operation is active."
+  ],
+  "bounded_sequence_after_authorization": [
+    "Use one root shell with a unique commit lock and EXIT/HUP/INT/TERM handling that syncs and restores BOTH metadata partitions to RO on every exit. Keep all checks and backups before unlock.",
+    "blockdev --setrw /dev/mmcblk0p1; blockdev --setrw /dev/mmcblk0p2. Verify each /sys/class/block/mmcblk0pN/ro reads0. If any unlock/check fails, restore BOTH to RO and stop.",
+    "/bin/bcm_bootstate +1, capture full output and exit code; sync. Do not call5 redundantly and do not reboot.",
+    "Immediately restore blockdev --setro on BOTH metadata partitions and confirm each ro file reads1, including if +1 reports failure.",
+    "Read bcm_bootstate and read both physical metadata partitions independently. Validate CRC and exact COMMITTED=1, VALID=1,2, SEQ=5,4 in both copies. Verify all expected CLI labels below and no ONCE.",
+    "Recheck original slot2 full hashes, same boot_id, kernel9 uname/root, and metadata RO1/1. Save hashes/raw metadata locally as private evidence.",
+    "Only mark permanent commit accepted if all readbacks pass. This sequence proves metadata selection without reboot; a later reboot acceptance is a separate observed result."
+  ],
+  "expected_cli_after_success": {
+    "Boot image state": "BOOT_SET_PART1_IMAGE",
+    "Booted Partition": "First",
+    "Reboot Partition": "First",
+    "First partition commit flag": "1",
+    "Second partition commit flag": "0",
+    "rd_metadata": "committed 1 valid 1,2 seq 5,4",
+    "metadata_ro": [
+      1,
+      1
+    ]
+  },
+  "expected_fallback_integrity": {
+    "slot2_valid": true,
+    "slot2_commit_flag_after_commit": 0,
+    "bootfs2_full_sha256": "ecda0c1ad0dab3fbe28ef93ab9500e713e19b2b238a055d1fd3971ede03a0256",
+    "rootfs2_full_sha256": "51128dda31033fb34ef315e25b767f1b4557967bb1168bbdb8636c1e79b76465",
+    "automatic_next_reboot_to_stock_after_permanent_commit": false,
+    "bootloader_watchdog_fallback_verified": false,
+    "recovery_note": "Original slot2 remains selectable recovery firmware; permanent slot1 default removes the current unconditional next-reset-to-stock behavior."
+  },
+  "failure_recovery": [
+    "On any ambiguous write/readback outcome, preserve live kernel9 session and do not reboot or claim successful commit.",
+    "If metadata remains readable and marker remains absent, perform bounded rollback to the saved default using the same guarded RW window: bcm_bootstate +2; sync; restore BOTH metadata partitions RO; verify BOTH copies CRC plus COMMITTED=2, VALID=1,2, SEQ=5,4 and Reboot Partition: Second.",
+    "Do not use -1 as a fallback reset, do not clear VALID entries, do not touch slot2 payloads, and do not issue5/7 blindly.",
+    "If +2 cannot restore both metadata copies, stop further automatic mutations and keep the current session alive. The verified full metadata backups are available for an explicitly reviewed recovery; this plan does not claim rollback is guaranteed under storage failure."
+  ],
+  "open_points": [
+    "Permanent slot commit authorization pending at report creation.",
+    "Actual running bootloader watchdog/fallback configuration is not established by available source; no guaranteed automatic recovery claim.",
+    "Root must refresh device-specific preconditions after successful kernel9 hardware boot; this audit has no live device observation."
+  ],
+  "post_review_hardware_update": {
+    "updated_at_utc": "2026-10-04T13:20:02.822855+00:00",
+    "acceptance_report": "reports/kernel9/hardware-acceptance.json",
+    "acceptance_status": "FLASHED_TRIAL_BOOT_ACCEPTED",
+    "note": "The initial static plan predates the accepted hardware boot. Hardware acceptance is now recorded separately; this does not authorize or perform a permanent boot-slot commit. Re-read all live preconditions immediately before any future authorized metadata action."
+  }
+}

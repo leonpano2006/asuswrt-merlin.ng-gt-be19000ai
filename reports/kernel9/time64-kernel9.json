@@ -1,0 +1,52 @@
+{
+  "label": "time64-kernel9",
+  "command": [
+    "qemu-system-aarch64",
+    "-machine",
+    "virt-8.2,gic-version=2",
+    "-accel",
+    "tcg,thread=multi",
+    "-cpu",
+    "cortex-a53",
+    "-smp",
+    "2",
+    "-m",
+    "1024",
+    "-nodefaults",
+    "-nic",
+    "none",
+    "-display",
+    "none",
+    "-monitor",
+    "none",
+    "-serial",
+    "stdio",
+    "-no-reboot",
+    "-sandbox",
+    "on,obsolete=deny,elevateprivileges=deny,spawn=deny,resourcecontrol=deny",
+    "-kernel",
+    "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/Image-v9",
+    "-initrd",
+    "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/time64-kernel9/time64-test.cpio.gz",
+    "-append",
+    "console=ttyAMA0 earlycon=pl011,mmio32,0x09000000 rdinit=/init panic=0 oops=panic nokaslr loglevel=8 initcall_debug initcall_blacklist=bcm_pmc_drv_reg,bcm_ubus_drv_init,pmc_xrdp_init,pmc_wan_initcall,bcmbca_vreg_sync_drv_reg "
+  ],
+  "stop_reason": "qemu_exit",
+  "exit_code": 0,
+  "elapsed_seconds": 1.2,
+  "kernel_sha256": "cf4f036d1ff03cb4d13e6f41aedb1b31665d6921a0dd93ff0b8fc951ae18e073",
+  "initramfs_sha256": "1b1c49a3895306219cba4f33e92b1d9642c5ef627bb5d666929ee2264b5bd700",
+  "log_sha256": "5501667d3ffe9217b5b409d385ea13e0cbbcdeff085191b8d20a71193cbb1a68",
+  "init_reached": true,
+  "guest_complete": false,
+  "panic": false,
+  "lab_lines": [
+    "LAB_TIME64_GUEST_FAILED"
+  ],
+  "diagnostic_lines": [
+    "TIME64_CHECK name=clock_adjtime_invalid_clock_no_mutation result=FAIL",
+    "TIME64_CHECK name=VM_clock_restored result=FAIL",
+    "TIME64_SUMMARY abi=aarch64-native64 available=17 ENOSYS=0 behavior_pass=10 failures=3 clock_writes=guest_only_restored"
+  ],
+  "review_note": "Initial fixture assumes positive wall time, but this VM starts at epoch zero; restoring the old sub-second epoch crosses monotonic time. Negative clock -1 is not a strictly invalid ID for clock_adjtime. Corrected fixture pending; no kernel change from this run."
+}

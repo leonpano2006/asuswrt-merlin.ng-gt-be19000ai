@@ -1,0 +1,207 @@
+{
+  "assessed_at": "2026-10-03T17:09:55.785427+00:00",
+  "status": "Confirmed missing security-profile coverage for BE19000AI single 5 GHz band; live repair not applied.",
+  "user_setting_confirmed": "BE98 client BSSs and main profile entries for its 2.4 GHz and both 5 GHz radios are WPA2/WPA3-Personal (psk2sae).",
+  "observed_node_failure": {
+    "interface": "wl1.2",
+    "band": "5 GHz",
+    "nvram_auth_mode_x": "psk2",
+    "nvram_akm": "psk2",
+    "nvram_mfp": "0",
+    "hostapd_key_mgmt": "WPA-PSK",
+    "external_scan_authentication_suites": "PSK"
+  },
+  "root_profile": {
+    "key": "apm2_security",
+    "ssid": "MastermixStudios",
+    "security_without_secrets": [
+      {
+        "band_mask": "1",
+        "auth": "psk2sae",
+        "cipher": "aes"
+      },
+      {
+        "band_mask": "4",
+        "auth": "psk2sae",
+        "cipher": "aes"
+      },
+      {
+        "band_mask": "8",
+        "auth": "psk2sae",
+        "cipher": "aes"
+      },
+      {
+        "band_mask": "16",
+        "auth": "sae",
+        "cipher": "aes"
+      }
+    ],
+    "dut_list": "<*>95>",
+    "band_codes": {
+      "1": "2.4 GHz",
+      "2": "single 5 GHz radio",
+      "4": "5 GHz-1 in dual-5GHz models",
+      "8": "5 GHz-2 in dual-5GHz models",
+      "16": "single 6 GHz radio"
+    }
+  },
+  "coverage_check": [
+    {
+      "device": "BE98",
+      "band_idx": "1",
+      "wl_prefix": "wl3.1",
+      "wl_ifname": "wl3.1",
+      "matching_security_entries": [
+        {
+          "band_mask": "1",
+          "auth": "psk2sae",
+          "cipher": "aes"
+        }
+      ]
+    },
+    {
+      "device": "BE98",
+      "band_idx": "4",
+      "wl_prefix": "wl0.1",
+      "wl_ifname": "wl0.1",
+      "matching_security_entries": [
+        {
+          "band_mask": "4",
+          "auth": "psk2sae",
+          "cipher": "aes"
+        }
+      ]
+    },
+    {
+      "device": "BE98",
+      "band_idx": "8",
+      "wl_prefix": "wl1.1",
+      "wl_ifname": "wl1.1",
+      "matching_security_entries": [
+        {
+          "band_mask": "8",
+          "auth": "psk2sae",
+          "cipher": "aes"
+        }
+      ]
+    },
+    {
+      "device": "BE98",
+      "band_idx": "16",
+      "wl_prefix": "wl2.1",
+      "wl_ifname": "wl2.1",
+      "matching_security_entries": [
+        {
+          "band_mask": "16",
+          "auth": "sae",
+          "cipher": "aes"
+        }
+      ]
+    },
+    {
+      "device": "BE19000AI",
+      "band_idx": "1",
+      "wl_prefix": "wl0.2",
+      "wl_ifname": "wl0.2",
+      "matching_security_entries": [
+        {
+          "band_mask": "1",
+          "auth": "psk2sae",
+          "cipher": "aes"
+        }
+      ]
+    },
+    {
+      "device": "BE19000AI",
+      "band_idx": "2",
+      "wl_prefix": "wl1.2",
+      "wl_ifname": "wl1.2",
+      "matching_security_entries": []
+    },
+    {
+      "device": "BE19000AI",
+      "band_idx": "16",
+      "wl_prefix": "wl2.2",
+      "wl_ifname": "wl2.2",
+      "matching_security_entries": [
+        {
+          "band_mask": "16",
+          "auth": "sae",
+          "cipher": "aes"
+        }
+      ]
+    }
+  ],
+  "synchronization": {
+    "master_cfg_ver": "13544588",
+    "node_cfg_ver": "13544588",
+    "node_cfg_alive": "1",
+    "interpretation": "Equal version numbers do not establish that the source profile covers every node radio."
+  },
+  "log_evidence": "cm_applyCfgAction logs show node wl1.2 SSID and BSS enable changes; wl0.2_auth_mode_x changes psk2 to psk2sae, while no corresponding wl1.2_auth_mode_x change appears in the retained log. Initial timestamps are before clock synchronization and cannot establish wall-clock dates.",
+  "source_evidence": [
+    {
+      "file": "build/service-scope-audit/source/httpd/web.c",
+      "line": 44113,
+      "function": "create_sdn_mwl_profile",
+      "finding": "Uses supplied security string as-is; default generated masks are 3,13,16,96, which include bit 2. This does not prove which path originally wrote the current 1,4,8,16 profile."
+    },
+    {
+      "file": "build/stock-rootfs/www/SDN/sdn.js",
+      "line": 9161,
+      "finding": "Current stock UI branch generates masks 1,14,16,96; 14 includes all three 5 GHz identifiers 2,4,8."
+    },
+    {
+      "file": "build/service-scope-audit/source/shared/Makefile",
+      "line": 243,
+      "finding": "AP group shared implementation falls back to prebuilt amas_apg_shared.o; fallback behavior was not proven from C source."
+    }
+  ],
+  "confidence_limits": [
+    "Missing band-2 security coverage is directly established from live master profile and live per-node mapping.",
+    "Its relationship to the retained WPA2 setting is strongly supported, but a corrective apply and external scan have not yet established causality experimentally.",
+    "The retained data does not identify which UI, migration, or manual-write path originally produced this profile.",
+    "Node apm profile NVRAM is empty; cfg_client applies generated wl-interface fields, so raw apm equality between master and node is not a valid synchronization check."
+  ],
+  "proposed_minimal_repair": {
+    "scope": "Master apm2_security profile",
+    "operation": "Add an explicit band-mask 2 security entry inheriting WPA2/WPA3-Personal, AES, and the existing 5 GHz credential; preserve all current entries. Check existing 5 GHz credentials agree before selecting the inherited entry.",
+    "apply_requirement": "Use verified AiMesh/SDN synchronization path and verify node wl1.2 auth_mode_x=psk2sae, akm includes sae, mfp=1, hostapd includes SAE, and external scan PSK+SAE.",
+    "operational_limit": "Existing restart_wireless path can affect wider LAN state; no apply or restart performed in this investigation."
+  },
+  "changes_to_devices": [],
+  "evidence": [
+    {
+      "path": "evidence/wpa3-sync/be19000ai-origin.json",
+      "sha256": "cece87a74cedd0a18e2ff01ba0249d2a0353ade9d63e8bfd61984750e0f05864"
+    },
+    {
+      "path": "evidence/wpa3-sync/be19000ai-profiles.txt",
+      "sha256": "2b89b62205401f734f191d77ff9bd461922ae46ba50d1e76670307dda7111d6b"
+    },
+    {
+      "path": "evidence/wpa3-sync/be19000ai-settings.txt",
+      "sha256": "dd3cb9fa78146e8d48747258751f0f483f46ad7eb0ce36023b3e26a0f9149191"
+    },
+    {
+      "path": "evidence/wpa3-sync/be19000ai-trace.json",
+      "sha256": "b8a930249a3b4fcbbdc18b5ce469c105aacaab25077c1cf6e9ddb88b186ecdbe"
+    },
+    {
+      "path": "evidence/wpa3-sync/be98-origin.json",
+      "sha256": "ad7f743feb3404b8776f6118bce78cf191ce2ebf64f07c85d4882560f2257208"
+    },
+    {
+      "path": "evidence/wpa3-sync/be98-profiles.txt",
+      "sha256": "da8e0249b22187fa0bff9e22467acc18e1150d8d58fdf9b9231f0a31ffa1c2bd"
+    },
+    {
+      "path": "evidence/wpa3-sync/be98-settings.txt",
+      "sha256": "2c1fac58cdf59af0f943d9702367fe01c376ddd77f6eaeb1253a97d58a2c733f"
+    },
+    {
+      "path": "evidence/wpa3-sync/be98-trace.json",
+      "sha256": "52ab0ca6b4864765e960e8509d79c4628c5a9fde8ce802bd2c77ef581884dfeb"
+    }
+  ]
+}

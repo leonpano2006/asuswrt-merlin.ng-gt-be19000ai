@@ -1,0 +1,534 @@
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/Documentation/accounting/psi.txt b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/Documentation/accounting/psi.txt
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/Documentation/accounting/psi.txt
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/Documentation/accounting/psi.txt
+@@ -96,10 +96,24 @@
+ task, cgroup, kernfs and worker layout is retained: a task bit uses existing
+ space and kernel-private group/worker data is allocated after existing objects.
+ 
+-Memory PSI retains the 4.19 reclaim and compaction annotations, including
+-memory.high synchronous reclaim. It does not backport the complete workingset
+-page-cache refault and swap-reload classification. Do not interpret zero memory
+-pressure as evidence that no file/swap-related stall occurred. Merely marking
+-all swap reads as memory pressure would introduce cold-swapin overcounting.
++Memory PSI includes reclaim, compaction, memory.high synchronous reclaim,
++and file-cache workingset refaults. Previously active file pages carry their
++workingset history through LRU deactivation, eviction shadows, eligible refault,
++migration and compound-page splitting. Waiting for those pages to become
++uptodate and submitting their read BIOs are memory stalls. Ordinary cold file
++reads do not become memory stalls just because they perform I/O.
++
++The BCM ABI keeps all previous page/BIO flag numbers unchanged: PG_workingset
++is appended in a free low page-flag bit and BIO_WORKINGSET uses spare bit 12,
++below the existing bit-13 bvec-pool field. No VM-stat enumeration or array is
++grown to add the optional workingset_restore diagnostic counter.
++
++Anonymous/swap workingset detection is not backported in this stage. Filemap
++waits exclude swap-backed pages, and swap_readpage is not indiscriminately
++marked as memory pressure; that would overcount cold swapins on zram/zswap.
++Existing reclaim-time swap stalls still follow the surrounding memstall scope.
++As in the selected upstream BIO annotation, legacy direct I/O using an already
++hot file-backed mapping as its user buffer can inherit the page's workingset
++mark. Ordinary anonymous direct-I/O buffers are not marked by this extension.
+ Userspace policy, including systemd-oomd configuration, is separate from these
+ kernel interfaces.
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/bio.c b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/bio.c
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/bio.c
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/bio.c
+@@ -803,6 +803,9 @@
+ 
+ 	bio->bi_iter.bi_size += len;
+ 	bio->bi_vcnt++;
++
++	if (!bio_flagged(bio, BIO_WORKINGSET) && unlikely(PageWorkingset(page)))
++		bio_set_flag(bio, BIO_WORKINGSET);
+ }
+ EXPORT_SYMBOL_GPL(__bio_add_page);
+ 
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/blk-cgroup.c b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/blk-cgroup.c
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/blk-cgroup.c
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/blk-cgroup.c
+@@ -29,6 +29,7 @@
+ #include <linux/blk-cgroup.h>
+ #include <linux/blk-mq.h>
+ #include <linux/tracehook.h>
++#include <linux/psi.h>
+ #include "blk.h"
+ 
+ #ifdef CONFIG_GTBE19000AI_RESOURCE_ABI
+@@ -1712,6 +1713,7 @@
+ 	u64 now = ktime_to_ns(ktime_get());
+ 	u64 exp;
+ 	u64 delay_nsec = 0;
++	unsigned long pflags;
+ 	int tok;
+ 
+ 	while (blkg->parent) {
+@@ -1735,11 +1737,8 @@
+ 	 */
+ 	delay_nsec = min_t(u64, delay_nsec, 250 * NSEC_PER_MSEC);
+ 
+-	/*
+-	 * TODO: the use_memdelay flag is going to be for the upcoming psi stuff
+-	 * that hasn't landed upstream yet.  Once that stuff is in place we need
+-	 * to do a psi_memstall_enter/leave if memdelay is set.
+-	 */
++	if (use_memdelay)
++		psi_memstall_enter(&pflags);
+ 
+ 	exp = ktime_add_ns(now, delay_nsec);
+ 	tok = io_schedule_prepare();
+@@ -1749,6 +1748,8 @@
+ 			break;
+ 	} while (!fatal_signal_pending(current));
+ 	io_schedule_finish(tok);
++	if (use_memdelay)
++		psi_memstall_leave(&pflags);
+ }
+ 
+ /**
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/blk-core.c b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/blk-core.c
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/blk-core.c
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/block/blk-core.c
+@@ -33,6 +33,7 @@
+ #include <linux/ratelimit.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/blk-cgroup.h>
++#include <linux/psi.h>
+ #include <linux/debugfs.h>
+ #include <linux/bpf.h>
+ 
+@@ -2541,6 +2542,10 @@
+  */
+ blk_qc_t submit_bio(struct bio *bio)
+ {
++	bool workingset_read = false;
++	unsigned long pflags;
++	blk_qc_t ret;
++
+ 	/*
+ 	 * If it's a regular read/write or a barrier with data attached,
+ 	 * go through the normal accounting stuff before submission.
+@@ -2556,6 +2561,8 @@
+ 		if (op_is_write(bio_op(bio))) {
+ 			count_vm_events(PGPGOUT, count);
+ 		} else {
++			if (bio_flagged(bio, BIO_WORKINGSET))
++				workingset_read = true;
+ 			task_io_account_read(bio->bi_iter.bi_size);
+ 			count_vm_events(PGPGIN, count);
+ 		}
+@@ -2570,7 +2577,14 @@
+ 		}
+ 	}
+ 
+-	return generic_make_request(bio);
++	/* Submission itself may stall on congestion or IO throttling. Only
++	 * reads of previously established workingset pages are memory stalls. */
++	if (workingset_read)
++		psi_memstall_enter(&pflags);
++	ret = generic_make_request(bio);
++	if (workingset_read)
++		psi_memstall_leave(&pflags);
++	return ret;
+ }
+ EXPORT_SYMBOL(submit_bio);
+ 
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/blk_types.h b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/blk_types.h
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/blk_types.h
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/blk_types.h
+@@ -232,6 +232,8 @@
+ #define BIO_TRACE_COMPLETION 10	/* bio_endio() should trace the final completion
+ 				 * of this bio. */
+ #define BIO_QUEUE_ENTERED 11	/* can use blk_queue_enter_live() */
++/* Use the final spare bit, keeping all vendor flags and bvec pool bits fixed. */
++#define BIO_WORKINGSET 12	/* contains userspace workingset pages */
+ 
+ /* See BVEC_POOL_OFFSET below before adding new flags */
+ 
+@@ -259,6 +261,9 @@
+  * only BVEC_POOL_IDX()
+  */
+ #define BIO_RESET_BITS	BVEC_POOL_OFFSET
++#if BIO_WORKINGSET >= BVEC_POOL_OFFSET
++#error "BIO_WORKINGSET must not overlap the vendor bvec pool encoding"
++#endif
+ 
+ typedef __u32 __bitwise blk_mq_req_flags_t;
+ 
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/page-flags.h b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/page-flags.h
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/page-flags.h
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/page-flags.h
+@@ -101,6 +101,8 @@
+ 	PG_young,
+ 	PG_idle,
+ #endif
++	/* Keep all vendor-visible page flag numbers unchanged. */
++	PG_workingset,		/* Previously active file-cache page */
+ 	__NR_PAGEFLAGS,
+ 
+ 	/* Filesystems */
+@@ -280,6 +282,8 @@
+ PAGEFLAG(LRU, lru, PF_HEAD) __CLEARPAGEFLAG(LRU, lru, PF_HEAD)
+ PAGEFLAG(Active, active, PF_HEAD) __CLEARPAGEFLAG(Active, active, PF_HEAD)
+ 	TESTCLEARFLAG(Active, active, PF_HEAD)
++PAGEFLAG(Workingset, workingset, PF_HEAD)
++	TESTCLEARFLAG(Workingset, workingset, PF_HEAD)
+ __PAGEFLAG(Slab, slab, PF_NO_TAIL)
+ __PAGEFLAG(SlobFree, slob_free, PF_NO_TAIL)
+ PAGEFLAG(Checked, checked, PF_NO_COMPOUND)	   /* Used by some filesystems */
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/swap.h b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/swap.h
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/swap.h
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/swap.h
+@@ -305,7 +305,7 @@
+ 
+ /* linux/mm/workingset.c */
+ void *workingset_eviction(struct address_space *mapping, struct page *page);
+-bool workingset_refault(void *shadow);
++void workingset_refault(struct page *page, void *shadow);
+ void workingset_activation(struct page *page);
+ 
+ /* Do not use directly, use workingset_lookup_update */
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/trace/events/mmflags.h b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/trace/events/mmflags.h
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/trace/events/mmflags.h
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/trace/events/mmflags.h
+@@ -88,6 +88,7 @@
+ 	{1UL << PG_dirty,		"dirty"		},		\
+ 	{1UL << PG_lru,			"lru"		},		\
+ 	{1UL << PG_active,		"active"	},		\
++	{1UL << PG_workingset,		"workingset"	},		\
+ 	{1UL << PG_slab,		"slab"		},		\
+ 	{1UL << PG_owner_priv_1,	"owner_priv_1"	},		\
+ 	{1UL << PG_arch_1,		"arch_1"	},		\
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/mm/filemap.c b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/mm/filemap.c
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/mm/filemap.c
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/mm/filemap.c
+@@ -36,6 +36,7 @@
+ #include <linux/cleancache.h>
+ #include <linux/shmem_fs.h>
+ #include <linux/rmap.h>
++#include <linux/psi.h>
+ #include "internal.h"
+ 
+ #define CREATE_TRACE_POINTS
+@@ -938,12 +939,9 @@
+ 		 * data from the working set, only to cache data that will
+ 		 * get overwritten with something else, is a waste of memory.
+ 		 */
+-		if (!(gfp_mask & __GFP_WRITE) &&
+-		    shadow && workingset_refault(shadow)) {
+-			SetPageActive(page);
+-			workingset_activation(page);
+-		} else
+-			ClearPageActive(page);
++		WARN_ON_ONCE(PageActive(page));
++		if (!(gfp_mask & __GFP_WRITE) && shadow)
++			workingset_refault(page, shadow);
+ 		lru_cache_add(page);
+ 	}
+ 	return ret;
+@@ -1099,7 +1097,15 @@
+ {
+ 	struct wait_page_queue wait_page;
+ 	wait_queue_entry_t *wait = &wait_page.wait;
++	bool thrashing = false;
++	unsigned long pflags;
+ 	int ret = 0;
++
++	if (bit_nr == PG_locked && !PageSwapBacked(page) &&
++	    !PageUptodate(page) && PageWorkingset(page)) {
++		psi_memstall_enter(&pflags);
++		thrashing = true;
++	}
+ 
+ 	init_wait(wait);
+ 	wait->flags = lock ? WQ_FLAG_EXCLUSIVE : 0;
+@@ -1138,6 +1144,9 @@
+ 	}
+ 
+ 	finish_wait(q, wait);
++
++	if (thrashing)
++		psi_memstall_leave(&pflags);
+ 
+ 	/*
+ 	 * A signal could leave PageWaiters set. Clearing it here if
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/mm/huge_memory.c b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/mm/huge_memory.c
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/mm/huge_memory.c
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/mm/huge_memory.c
+@@ -2474,6 +2474,7 @@
+ 			 (1L << PG_mlocked) |
+ 			 (1L << PG_uptodate) |
+ 			 (1L << PG_active) |
++			 (1L << PG_workingset) |
+ 			 (1L << PG_locked) |
+ 			 (1L << PG_unevictable) |
+ 			 (1L << PG_dirty)));
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/mm/migrate.c b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/mm/migrate.c
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/mm/migrate.c
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/mm/migrate.c
+@@ -691,6 +691,8 @@
+ 		SetPageActive(newpage);
+ 	} else if (TestClearPageUnevictable(page))
+ 		SetPageUnevictable(newpage);
++	if (PageWorkingset(page))
++		SetPageWorkingset(newpage);
+ 	if (PageChecked(page))
+ 		SetPageChecked(newpage);
+ 	if (PageMappedToDisk(page))
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/mm/vmscan.c b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/mm/vmscan.c
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/mm/vmscan.c
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/mm/vmscan.c
+@@ -2143,6 +2143,8 @@
+ 		}
+ 
+ 		ClearPageActive(page);	/* we are de-activating */
++		if (page_is_file_cache(page))
++			SetPageWorkingset(page);
+ 		list_add(&page->lru, &l_inactive);
+ 	}
+ 
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/mm/workingset.c b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/mm/workingset.c
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/mm/workingset.c
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/mm/workingset.c
+@@ -121,7 +121,7 @@
+  * the only thing eating into inactive list space is active pages.
+  *
+  *
+- *		Activating refaulting pages
++ *		Refaulting inactive pages
+  *
+  * All that is known about the active list is that the pages have been
+  * accessed more than once in the past.  This means that at any given
+@@ -134,6 +134,10 @@
+  * used less frequently than the refaulting page - or even not used at
+  * all anymore.
+  *
++ * That means if inactive cache is refaulting with a suitable refault
++ * distance, we assume the cache workingset is transitioning and put
++ * pressure on the current active list.
++ *
+  * If this is wrong and demotion kicks in, the pages which are truly
+  * used more frequently will be reactivated while the less frequently
+  * used once will be evicted from memory.
+@@ -141,6 +145,14 @@
+  * But if this is right, the stale pages will be pushed out of memory
+  * and the used pages get to stay in cache.
+  *
++ *		Refaulting active pages
++ *
++ * If on the other hand the refaulting pages have recently been
++ * deactivated, it means that the active list is no longer protecting
++ * actively used cache from reclaim. The cache is NOT transitioning to
++ * a different workingset; the existing workingset is thrashing in the
++ * space allocated to the page cache.
++ *
+  *
+  *		Implementation
+  *
+@@ -156,8 +168,7 @@
+  */
+ 
+ #define EVICTION_SHIFT	(RADIX_TREE_EXCEPTIONAL_ENTRY + \
+-			 NODES_SHIFT +	\
+-			 MEM_CGROUP_ID_SHIFT)
++			 1 + NODES_SHIFT + MEM_CGROUP_ID_SHIFT)
+ #define EVICTION_MASK	(~0UL >> EVICTION_SHIFT)
+ 
+ /*
+@@ -170,23 +181,28 @@
+  */
+ static unsigned int bucket_order __read_mostly;
+ 
+-static void *pack_shadow(int memcgid, pg_data_t *pgdat, unsigned long eviction)
++static void *pack_shadow(int memcgid, pg_data_t *pgdat, unsigned long eviction,
++			 bool workingset)
+ {
+ 	eviction >>= bucket_order;
+ 	eviction = (eviction << MEM_CGROUP_ID_SHIFT) | memcgid;
+ 	eviction = (eviction << NODES_SHIFT) | pgdat->node_id;
++	eviction = (eviction << 1) | workingset;
+ 	eviction = (eviction << RADIX_TREE_EXCEPTIONAL_SHIFT);
+ 
+ 	return (void *)(eviction | RADIX_TREE_EXCEPTIONAL_ENTRY);
+ }
+ 
+ static void unpack_shadow(void *shadow, int *memcgidp, pg_data_t **pgdat,
+-			  unsigned long *evictionp)
++			  unsigned long *evictionp, bool *workingsetp)
+ {
+ 	unsigned long entry = (unsigned long)shadow;
+ 	int memcgid, nid;
++	bool workingset;
+ 
+ 	entry >>= RADIX_TREE_EXCEPTIONAL_SHIFT;
++	workingset = entry & 1;
++	entry >>= 1;
+ 	nid = entry & ((1UL << NODES_SHIFT) - 1);
+ 	entry >>= NODES_SHIFT;
+ 	memcgid = entry & ((1UL << MEM_CGROUP_ID_SHIFT) - 1);
+@@ -195,6 +211,7 @@
+ 	*memcgidp = memcgid;
+ 	*pgdat = NODE_DATA(nid);
+ 	*evictionp = entry << bucket_order;
++	*workingsetp = workingset;
+ }
+ 
+ /**
+@@ -207,8 +224,8 @@
+  */
+ void *workingset_eviction(struct address_space *mapping, struct page *page)
+ {
++	struct pglist_data *pgdat = page_pgdat(page);
+ 	struct mem_cgroup *memcg = page_memcg(page);
+-	struct pglist_data *pgdat = page_pgdat(page);
+ 	int memcgid = mem_cgroup_id(memcg);
+ 	unsigned long eviction;
+ 	struct lruvec *lruvec;
+@@ -220,30 +237,30 @@
+ 
+ 	lruvec = mem_cgroup_lruvec(pgdat, memcg);
+ 	eviction = atomic_long_inc_return(&lruvec->inactive_age);
+-	return pack_shadow(memcgid, pgdat, eviction);
++	return pack_shadow(memcgid, pgdat, eviction, PageWorkingset(page));
+ }
+ 
+ /**
+  * workingset_refault - evaluate the refault of a previously evicted page
++ * @page: the freshly allocated replacement page
+  * @shadow: shadow entry of the evicted page
+  *
+  * Calculates and evaluates the refault distance of the previously
+  * evicted page in the context of the node it was allocated in.
+- *
+- * Returns %true if the page should be activated, %false otherwise.
+- */
+-bool workingset_refault(void *shadow)
++ */
++void workingset_refault(struct page *page, void *shadow)
+ {
+ 	unsigned long refault_distance;
++	struct pglist_data *pgdat;
+ 	unsigned long active_file;
+ 	struct mem_cgroup *memcg;
+ 	unsigned long eviction;
+ 	struct lruvec *lruvec;
+ 	unsigned long refault;
+-	struct pglist_data *pgdat;
++	bool workingset;
+ 	int memcgid;
+ 
+-	unpack_shadow(shadow, &memcgid, &pgdat, &eviction);
++	unpack_shadow(shadow, &memcgid, &pgdat, &eviction, &workingset);
+ 
+ 	rcu_read_lock();
+ 	/*
+@@ -263,41 +280,50 @@
+ 	 * configurations instead.
+ 	 */
+ 	memcg = mem_cgroup_from_id(memcgid);
+-	if (!mem_cgroup_disabled() && !memcg) {
+-		rcu_read_unlock();
+-		return false;
+-	}
++	if (!mem_cgroup_disabled() && !memcg)
++		goto out;
+ 	lruvec = mem_cgroup_lruvec(pgdat, memcg);
+ 	refault = atomic_long_read(&lruvec->inactive_age);
+ 	active_file = lruvec_lru_size(lruvec, LRU_ACTIVE_FILE, MAX_NR_ZONES);
+ 
+ 	/*
++	 * Calculate the refault distance
++	 *
+ 	 * The unsigned subtraction here gives an accurate distance
+-	 * across inactive_age overflows in most cases.
+-	 *
+-	 * There is a special case: usually, shadow entries have a
+-	 * short lifetime and are either refaulted or reclaimed along
+-	 * with the inode before they get too old.  But it is not
+-	 * impossible for the inactive_age to lap a shadow entry in
+-	 * the field, which can then can result in a false small
+-	 * refault distance, leading to a false activation should this
+-	 * old entry actually refault again.  However, earlier kernels
+-	 * used to deactivate unconditionally with *every* reclaim
+-	 * invocation for the longest time, so the occasional
+-	 * inappropriate activation leading to pressure on the active
+-	 * list is not a problem.
++	 * across inactive_age overflows in most cases. There is a
++	 * special case: usually, shadow entries have a short lifetime
++	 * and are either refaulted or reclaimed along with the inode
++	 * before they get too old.  But it is not impossible for the
++	 * inactive_age to lap a shadow entry in the field, which can
++	 * then result in a false small refault distance, leading to a
++	 * false activation should this old entry actually refault
++	 * again.  However, earlier kernels used to deactivate
++	 * unconditionally with *every* reclaim invocation for the
++	 * longest time, so the occasional inappropriate activation
++	 * leading to pressure on the active list is not a problem.
+ 	 */
+ 	refault_distance = (refault - eviction) & EVICTION_MASK;
+ 
+ 	inc_lruvec_state(lruvec, WORKINGSET_REFAULT);
+ 
+-	if (refault_distance <= active_file) {
+-		inc_lruvec_state(lruvec, WORKINGSET_ACTIVATE);
+-		rcu_read_unlock();
+-		return true;
++	/*
++	 * Compare the distance to the existing workingset size. We
++	 * don't act on pages that couldn't stay resident even if all
++	 * the memory was available to the page cache.
++	 */
++	if (refault_distance > active_file)
++		goto out;
++
++	SetPageActive(page);
++	atomic_long_inc(&lruvec->inactive_age);
++	inc_lruvec_state(lruvec, WORKINGSET_ACTIVATE);
++
++	/* Page was active prior to eviction */
++	if (workingset) {
++		SetPageWorkingset(page);
+ 	}
++out:
+ 	rcu_read_unlock();
+-	return false;
+ }
+ 
+ /**
+@@ -364,7 +390,7 @@
+ {
+ 	unsigned long max_nodes;
+ 	unsigned long nodes;
+-	unsigned long cache;
++	unsigned long pages;
+ 
+ 	nodes = list_lru_shrink_count(&shadow_nodes, sc);
+ 
+@@ -390,14 +416,20 @@
+ 	 *
+ 	 * PAGE_SIZE / radix_tree_nodes / node_entries * 8 / PAGE_SIZE
+ 	 */
++#ifdef CONFIG_MEMCG
+ 	if (sc->memcg) {
+-		cache = mem_cgroup_node_nr_lru_pages(sc->memcg, sc->nid,
+-						     LRU_ALL_FILE);
+-	} else {
+-		cache = node_page_state(NODE_DATA(sc->nid), NR_ACTIVE_FILE) +
+-			node_page_state(NODE_DATA(sc->nid), NR_INACTIVE_FILE);
+-	}
+-	max_nodes = cache >> (RADIX_TREE_MAP_SHIFT - 3);
++		struct lruvec *lruvec;
++
++		pages = mem_cgroup_node_nr_lru_pages(sc->memcg, sc->nid,
++						     LRU_ALL);
++		lruvec = mem_cgroup_lruvec(NODE_DATA(sc->nid), sc->memcg);
++		pages += lruvec_page_state(lruvec, NR_SLAB_RECLAIMABLE);
++		pages += lruvec_page_state(lruvec, NR_SLAB_UNRECLAIMABLE);
++	} else
++#endif
++		pages = node_present_pages(sc->nid);
++
++	max_nodes = pages >> (RADIX_TREE_MAP_SHIFT - 3);
+ 
+ 	if (!nodes)
+ 		return SHRINK_EMPTY;

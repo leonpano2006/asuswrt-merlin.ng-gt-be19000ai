@@ -1,0 +1,22 @@
+{
+  "passed": 17,
+  "checks": [
+    "LAN-only inventory has unique MAC keys",
+    "Old ASUS ARP address is not shown as current",
+    "ASUS loopback LLDP address resolved using same-MAC ARP",
+    "MNDP/CDP visibility is not asserted to be LLDP adjacency",
+    "Unused ports do not trigger alarms",
+    "Reservations and bound leases alone remain unconfirmed",
+    "Inactive reservation is separate from an observed IP",
+    "Hostname is data, unchanged rather than interpreted",
+    "Ambiguous MAC paths retain both observations",
+    "Observed link loss emits event and current issue",
+    "Unchanged disconnected link does not flood events",
+    "Link restoration clears current issue and records recovery",
+    "CCR restart resets expected links and records reboot",
+    "Collection gap does not invent per-sample counter alarms",
+    "Missing tables produce a collection warning, not false WAN/link loss",
+    "Counter increases become alerts with actual delta",
+    "Inventory truncation is explicit and payload bounded"
+  ]
+}

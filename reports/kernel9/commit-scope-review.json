@@ -1,0 +1,216 @@
+{
+  "reviewed_at_utc": "2026-10-04T13:22:14.827492+00:00",
+  "head_at_review": "3f7c5c24fa0d6cff4798f9dea3236e6db28324c3",
+  "scope": "Commit tested kernel9 and the integrated UI/RGB/history/CCR and kernel7/8 lineage required to reproduce it; exclude unfinished unrelated research.",
+  "suggested_path_list": "build/kernel9-commit-paths.txt",
+  "suggested_path_count": 187,
+  "path_groups": {
+    "configs/": 33,
+    "patches/": 3,
+    "reports/": 105,
+    "scripts/": 44
+  },
+  "excluded_pending_count": 32,
+  "excluded_groups": [
+    "BE92 firmware/SDK/loader research",
+    "SL1680 performance/runtime observations",
+    "Future B53/glibc/systemd userspace plans and probes",
+    "Unshipped libcodb source-rebuild experiment",
+    "Deferred myStrom investigation"
+  ],
+  "pending_paths_outside_scope": [
+    "configs/b53-userspace-targets.json",
+    "reports/aiboard-performance-20261004.json",
+    "reports/aiboard-runtime-20261004.json",
+    "reports/b53-userspace-targets-validation.json",
+    "reports/be92-40311/assessment.json",
+    "reports/be92-40311/asus-firmware-api.json",
+    "reports/be92-40311/asus-gpl-api.json",
+    "reports/be92-40311/be19000ai-stock-elf-inventory.json",
+    "reports/be92-40311/elf-inventory.json",
+    "reports/be92-40311/kernel-39063.config",
+    "reports/be92-40311/kernel-40311.config",
+    "reports/be92-40311/old-loader-explanation.json",
+    "reports/be92-40311/old-loader-name-control.json",
+    "reports/be92-40311/old-loader-trace.json",
+    "reports/be92-40311/previous-39063-elf-inventory.json",
+    "reports/be92-40311/source-manifest.json",
+    "reports/systemd262/assessment.json",
+    "reports/systemd262/blob-history-audit.json",
+    "reports/systemd262/boot-failure.txt",
+    "reports/systemd262/boot-result.json",
+    "reports/systemd262/build-configure-command.json",
+    "reports/systemd262/kernel6-capabilities.json",
+    "reports/systemd262/runtime-manifest.json",
+    "reports/time64/userspace-audit.json",
+    "reports/ui-audit/mystrom-followup.json",
+    "reports/ui-audit/mystrom-red.json",
+    "scripts/audit-rootfs-abi.py",
+    "scripts/build-codb-candidate.py",
+    "scripts/codb-null-probe.c",
+    "scripts/prepare-systemd-kernel-probe.py",
+    "scripts/prepare-systemd262-boot.py",
+    "scripts/systemd-kernel-probe.c"
+  ],
+  "secret_review": {
+    "git_visible_files_scanned": 311,
+    "strong_secret_matches": 0,
+    "private_key_matches": 0,
+    "raw_router_config_dumps_detected": 0,
+    "binary_files_visible_to_git": 0,
+    "generic_literal_credential_assignment_matches": 0,
+    "authorization_json_fields_reviewed": 2,
+    "authorization_field_classification": "Natural-language user authorization records, not Authorization header values or tokens.",
+    "credential_values_in_report": false,
+    "method": "Full current Git-visible UTF-8 file scan for private keys, known token formats, literal auth headers/credential URLs/curl users, literal credential assignments, credential-named JSON strings and bulk NVRAM key-value dumps. Only paths/counts are emitted; ignored backups, packages and secrets are excluded. Changed/new release files were read separately.",
+    "limitations": "Pattern/structure inspection is not a proof that no arbitrary unlabelled secret exists; only reviewed repository-visible text is covered."
+  },
+  "ignored_inputs_checked": [
+    "build/",
+    "inputs/",
+    "evidence/",
+    "__pycache__/",
+    "*.pyc",
+    "configs/ccr-status/curl.conf"
+  ],
+  "submodule": {
+    "path": "source",
+    "head": "69838e4a60564e5550e97f11d8a8cf2c6260c4f0",
+    "gitlink_unchanged": true,
+    "included_in_path_list": false,
+    "modifications_preserved_as": [
+      "patches/0005-psi-cgroup-monitoring-abi.patch",
+      "patches/0006-psi-workingset-refault-abi.patch",
+      "patches/0007-arm32-time64-compat.patch"
+    ]
+  },
+  "reproduction_notes": [
+    "Includes explicit kernel7/8/9 configs, original ordered patch stack, build/cache tooling, QEMU/direct ABI probes, accepted integrated web/RGB/collector source and versioned integration/packaging/flash preparation gates.",
+    "Vendor firmware, SDK/toolchains, signing key and generated rootfs/Image/packages remain external or ignored; no private key or binary artifact is proposed for staging.",
+    "Build dependencies retained in this list must be committed together; individual stage scripts depend on reviewed inputs from prior integrated releases."
+  ],
+  "reference_findings": [],
+  "kernel9_script_review": {
+    "scripts": [
+      "scripts/kernel9_ui1.py",
+      "scripts/pack-kernel9-ui1.py",
+      "scripts/prepare-kernel9-flash.py",
+      "scripts/prepare-time64-hardware9.py",
+      "scripts/stage-kernel9-ui1.py",
+      "scripts/watch-kernel9-boot.py"
+    ],
+    "method": "Read-only source review, including comparison against accepted kernel8 packaging scripts and the bounded watcher/safe hardware probe preparation. No deployment or test script executed by this auditor.",
+    "blocking_findings": 0,
+    "checks": [
+      "Pinned Image9 and integrated rootfs8 hashes",
+      "Only manifest/start identity changes allowed; v8 module inventory unchanged",
+      "Exact combined QEMU and package/signature/hash gates",
+      "Stock slot2 required before inactive slot1 writes; slot2 hashes preserved",
+      "Services hook accepts only exact reviewed kernel6/kernel8/kernel9 startup hashes",
+      "Watcher uses trusted SSH host keys, hidden password entry, bounded observation and a new boot/root/build identity check; no router writes.",
+      "Hardware preparation removes the clock-changing regression mode, uses guarded kernel9 raw probes and isolated temporary glibc runtimes."
+    ]
+  },
+  "git_and_firmware_commit_distinction": {
+    "git_commit": "Records source, patches, configuration and evidence in this repository; parent will act only after accepted kernel9 boot.",
+    "firmware_boot_commit": "Separate permanent boot-slot metadata action; not part of this path list and must not be inferred from a Git commit.",
+    "permanent_boot_slot_action_performed_by_auditor": false
+  },
+  "auditor_git_add_performed": false,
+  "auditor_git_commit_performed": false,
+  "source_edits_performed": false,
+  "post_boot_refresh_required": false,
+  "security_blocking_findings": 0,
+  "resolved_reference_findings": [
+    {
+      "from": "reports/time64/hardware-verification.json",
+      "removed_reference": "reports/time64/userspace-audit.json",
+      "resolution": "Optional background link removed without importing deferred userspace research; historical kernel8 evidence retained."
+    }
+  ],
+  "physical_acceptance_at_review": {
+    "status": "FLASHED_TRIAL_BOOT_ACCEPTED",
+    "report": "reports/kernel9/hardware-acceptance.json",
+    "report_sha256": "ee4c098dd1048bc50b5cc315488099c8b7941e0e1e5d38714cb1e6080136ccbe",
+    "observed_uptime_seconds": 405.62,
+    "raw_abis_passed": 3,
+    "isolated_glibc_abis_passed": 2,
+    "original_slot2_unchanged": true,
+    "permanent_boot_slot_commit_performed": false,
+    "next_boot_slot": 2,
+    "scope": "Read the root agent acceptance records; this auditor did not access the live router."
+  },
+  "validation": {
+    "git_diff_check": "Initial tracked-working-tree check passed; it did not cover then-untracked artifacts. The full staged check returns 2 with the classified exceptions below; it is not a clean full-stage pass.",
+    "new_reports_json_parse": "passed",
+    "excluded_research_reference_closure": "passed",
+    "ignored_secret_boundaries": "passed",
+    "source_gitlink_unchanged": true,
+    "root_HEAD_unchanged": true,
+    "nonartifact_staged_whitespace_check": {
+      "command": "git diff --cached --check -- . ':(exclude)*.patch' ':(exclude)reports/node-web-access/merlin-3006.102.8_2-operation-mode.c'",
+      "exit_code": 0,
+      "output_bytes": 0
+    }
+  },
+  "staged_whitespace_review": {
+    "full_check_exit_code": 2,
+    "full_check_diagnostics": 661,
+    "diagnostic_kinds": {
+      "trailing_whitespace": 206,
+      "space_before_tab_in_indent": 453,
+      "new_blank_line_at_EOF": 2
+    },
+    "per_file_diagnostic_counts": {
+      "configs/node-history/codb-null-guard.patch": 4,
+      "patches/0005-psi-cgroup-monitoring-abi.patch": 457,
+      "patches/0006-psi-workingset-refault-abi.patch": 161,
+      "patches/0007-arm32-time64-compat.patch": 37,
+      "reports/node-web-access/merlin-3006.102.8_2-operation-mode.c": 2
+    },
+    "artifact_classification": "All 659 diagnostics in the four .patch files point to unified-diff context lines. The outer added-file diff treats the mandatory context prefix as source indentation or trailing whitespace, including context blank lines. The remaining two diagnostics are trailing spaces in preserved upstream evidence.",
+    "preserved_upstream_excerpt": {
+      "path": "reports/node-web-access/merlin-3006.102.8_2-operation-mode.c",
+      "trailing_whitespace_lines": [
+        17,
+        32
+      ],
+      "provenance": "reports/node-web-access/merlin-3006.102.8_2-source.json",
+      "source_url": "https://raw.githubusercontent.com/RMerl/asuswrt-merlin.ng/3006.102.8_2/release/src/router/httpd/web.c",
+      "source_sha256": "1811bf46f9628b2f4fed6231b004bf6f751726da4d4a7b9ddbe0ac1cad764372",
+      "excerpt_edited": false
+    },
+    "inner_added_lines_checked": {
+      "configs/node-history/codb-null-guard.patch": 3,
+      "patches/0005-psi-cgroup-monitoring-abi.patch": 1639,
+      "patches/0006-psi-workingset-refault-abi.patch": 149,
+      "patches/0007-arm32-time64-compat.patch": 287
+    },
+    "inner_added_line_method": "Strip the added-line marker only inside unified-diff hunks, then inspect actual new source for trailing whitespace and spaces followed by tabs in leading indentation.",
+    "inner_added_trailing_whitespace_count": 0,
+    "inner_added_indentation_exceptions": [
+      {
+        "patch": "patches/0007-arm32-time64-compat.patch",
+        "patch_lines": [
+          218,
+          219
+        ],
+        "target": "release/src-rt-5.04behnd.4916/kernel/linux-4.19/fs/select.c",
+        "target_lines": [
+          1488,
+          1489
+        ],
+        "finding": "Two __get_user continuation lines contain spaces before a tab in indentation. These are real style exceptions, distinct from the outer-patch context diagnostics; they do not change C tokens or runtime behavior.",
+        "disposition": "Retained unchanged because the tested and deployed patch/Image identity is pinned; no claim that all inner added lines are whitespace-clean."
+      }
+    ],
+    "patch_bytes_changed": false,
+    "upstream_excerpt_bytes_changed": false,
+    "nonartifact_source_check": "Passed with no output",
+    "security_or_runtime_blocker": false,
+    "raw_diagnostic_log": "build/kernel9-staged-whitespace-check.txt"
+  },
+  "staged_path_count_at_review": 187,
+  "staged_paths_at_review_reference": "build/kernel9-commit-paths.txt",
+  "staging_performed_by": "root agent after the initial unstaged audit; this auditor made no Git index changes"
+}

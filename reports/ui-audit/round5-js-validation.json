@@ -1,0 +1,59 @@
+{
+  "passed": true,
+  "syntaxScripts": 2,
+  "ports": [
+    {
+      "key": "WAN 0",
+      "label": "WAN / LAN",
+      "capacity": "10 Gbps",
+      "state": "up",
+      "rate": "10 Gbps"
+    },
+    {
+      "key": "LAN 1",
+      "label": "LAN 1",
+      "capacity": "2.5 Gbps",
+      "state": "up",
+      "rate": "1 Gbps"
+    },
+    {
+      "key": "LAN 2",
+      "label": "LAN 2",
+      "capacity": "2.5 Gbps",
+      "state": "up",
+      "rate": "1 Gbps"
+    },
+    {
+      "key": "LAN 3",
+      "label": "LAN 3",
+      "capacity": "2.5 Gbps",
+      "state": "down",
+      "rate": null
+    },
+    {
+      "key": "LAN 4",
+      "label": "LAN 4",
+      "capacity": "2.5 Gbps",
+      "state": "up",
+      "rate": "2.5 Gbps"
+    },
+    {
+      "key": "LAN 5",
+      "label": "LAN 5",
+      "capacity": "1 Gbps",
+      "state": "down",
+      "rate": null
+    },
+    {
+      "key": "LAN 6",
+      "label": "LAN 6",
+      "capacity": "10 Gbps",
+      "state": "up",
+      "rate": "10 Gbps"
+    }
+  ],
+  "invalidCases": 9,
+  "changed": [
+    "pages/dashboard.html"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "source": "configured Ubuntu noble/universe arm64 package index, ports.ubuntu.com/ubuntu-ports",
+  "installed_system_packages": false,
+  "used_sudo": false,
+  "packages": [
+    {
+      "path": "build/tools/ccache/download/ccache_4.9.1-1_arm64.deb",
+      "sha256": "f2fec8c23c856e7c563175683366d54ab06d83af991740bd7a5ff2ef0705d11d",
+      "package": "ccache",
+      "version": "4.9.1-1",
+      "architecture": "arm64"
+    },
+    {
+      "path": "build/tools/ccache/download/libhiredis1.1.0_1.2.0-6ubuntu3_arm64.deb",
+      "sha256": "378a26e4425a5de22fac07d94c7f98525b0638f790b3ee13c04c2b4438bcf3e1",
+      "package": "libhiredis1.1.0",
+      "version": "1.2.0-6ubuntu3",
+      "architecture": "arm64"
+    }
+  ],
+  "launcher": "build/tools/ccache/bin/ccache",
+  "loader": "/lib/ld-linux-aarch64.so.1",
+  "library_path_scope": "loader argument only; no LD_LIBRARY_PATH override",
+  "cache": "build/ccache",
+  "max_cache_size": "5G",
+  "compiler_check": "content",
+  "sloppiness": [],
+  "download_commands": [
+    "apt download ccache=4.9.1-1",
+    "apt download libhiredis1.1.0=1.2.0-6ubuntu3"
+  ]
+}

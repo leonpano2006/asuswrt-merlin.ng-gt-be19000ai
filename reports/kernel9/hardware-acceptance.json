@@ -1,0 +1,240 @@
+{
+  "schema_version": 1,
+  "release": "kernel9-ui1",
+  "updated_at_utc": "2026-10-04T13:18:54.701231+00:00",
+  "validated_at_utc": "2026-10-04T13:18:54.701231+00:00",
+  "status": "FLASHED_TRIAL_BOOT_ACCEPTED",
+  "scope": "BCM6813 firmware only; SL1680 board firmware, kernel and userspace unchanged",
+  "image": {
+    "image": "GT-BE19000AI_3006_102.9_leon-kernel9-ui1_TRIAL.pkgtb",
+    "sha256": "d849dd524e40c1426edeca0dbeb9d0f6daa49cb6c7e207c54d609179c1640603",
+    "bytes": 86709020,
+    "bootfs_sha256": "9660ef70f31b1a088ededad321bfe2668eda6ef75a7920fb5127d6c47df77770",
+    "bootfs_bytes": 12492628,
+    "rootfs_sha256": "beac450ebc9d71192a421cf6c2cb8e06ef6997b6e11b2ea854c3ef49e20dc766",
+    "rootfs_bytes": 74215424
+  },
+  "kernel": {
+    "version": "4.19.294 #9",
+    "sha256": "cf4f036d1ff03cb4d13e6f41aedb1b31665d6921a0dd93ff0b8fc951ae18e073",
+    "expected_config_sha256": "1c495c39d80319246f26a38192eb481b54860ea938d46bbc8156b4fa676a8216",
+    "live_config_sha256": "1c495c39d80319246f26a38192eb481b54860ea938d46bbc8156b4fa676a8216",
+    "config_identical_to_kernel8": true
+  },
+  "integration": {
+    "base_release": "kernel8-ui1",
+    "web_assets": 15,
+    "retained_kernel8_modules": 133,
+    "rootfs_changed_entries": 2,
+    "rootfs_unchanged_entries": 4354,
+    "rootfs_changes": "Release manifest and startup script version label only",
+    "stock_pid1_and_libcodb_retained": true,
+    "reviewed_web_rgb_history_ccr_unchanged": true,
+    "rootfs": "Zstd SquashFS, level22, block524288",
+    "ai_board_modified": false,
+    "credential_embedded": false,
+    "live_file_hashes_verified": 27,
+    "web_bind_overlays_after_reboot": false
+  },
+  "predeployment_validation": {
+    "exact_integrated_qemu": {
+      "label": "kernel9-ui1-integrated-final",
+      "guest_complete": true,
+      "kernel_sha256": "cf4f036d1ff03cb4d13e6f41aedb1b31665d6921a0dd93ff0b8fc951ae18e073",
+      "initramfs_sha256": "5c3020fa1223dc64dc60ad11924b0eafdb930e945ba25ea902299f240bb0f5ae",
+      "result_sha256": "680f892954cb6a828d685fa345a7e80b711190701cb1260a0653be904bbb41c6",
+      "log_sha256": "bc2caea5318c82d736daae9f16f2d4d21705e1dc68c6cd7069a2dfe0fd5a71a1",
+      "marker": "QEMU_DOCKER_MEMCG_COMPLETE",
+      "zswap_enabled_for_test": true
+    },
+    "metadata_guard_qemu": {
+      "label": "kernel9-ui1-trial-guard",
+      "guest_complete": true,
+      "kernel_sha256": "cf4f036d1ff03cb4d13e6f41aedb1b31665d6921a0dd93ff0b8fc951ae18e073",
+      "initramfs_sha256": "146d9759316806ed0cc63233a8557cee6cb880f23494d2fa0ea64e1048e42c18",
+      "result_sha256": "b8958ec439ab6f6533e30206bde0e648fc672adcf0fca9c0bf426c8b1aea1f21",
+      "checks": [
+        "LAB_PASS stock_sysfs_block_layout",
+        "LAB_PASS metadata_writes_blocked",
+        "LAB_PASS ordinary_partition_writable",
+        "LAB_PASS explicit_operator_unlock"
+      ],
+      "qemu_disk_override_only": "loop.max_part=8 be19000ai_trial_disk=loop0; not a hardware boot parameter"
+    },
+    "package_checks": {
+      "original_signature_verified": true,
+      "new_signature_verified": true,
+      "signing_public_der_sha256": "8450c64281c9d0206dff844ae174fbe5e0ee805309368a02c4d54df5723643c0",
+      "uboot_lzo_exact_kernel_match": true,
+      "nonkernel_boot_payloads_unchanged": true,
+      "has_loader_update": false
+    },
+    "kernel_regressions": "reports/kernel9/candidate.json"
+  },
+  "physical_validation": {
+    "status": "PASSED_BOUNDED_BOOT_ACCEPTANCE",
+    "flash_readback_passed": true,
+    "original_slot2_full_hashes_unchanged": true,
+    "new_boot_observed": true,
+    "running_root": "/dev/mmcblk0p4",
+    "boot_id": "00000000-0000-4000-8000-000000000013",
+    "uname": "Linux 4.19.294 #9 SMP PREEMPT aarch64 ASUSWRT-Merlin",
+    "time64": {
+      "status": "PASSED",
+      "report": "reports/time64/hardware-kernel9.json",
+      "report_sha256": "6100fe405370261c3ea988341952b8f938e59a7afcc1ea36380092c860ca0050",
+      "raw_abis": [
+        "aarch64-native64",
+        "arm32-softfloat-direct-time64",
+        "arm32-hardfloat-direct-time64"
+      ],
+      "enabled_calls_available_per_raw_abi": 17,
+      "unexpected_enosys_per_raw_abi": 0,
+      "behavior_passes_per_raw_abi": 11,
+      "failures_per_raw_abi": 0,
+      "disabled_AIO_ENOSYS_tested_separately": true,
+      "isolated_glibc_abis": [
+        "armel",
+        "armhf"
+      ],
+      "isolated_glibc_version": "2.44",
+      "glibc_time_t_bytes": 8,
+      "glibc_private_relative_timer_seconds": 2147483664,
+      "private_file_timestamp_year": 2100,
+      "isolated_loader_resolution_verified": true,
+      "stock_loader_or_libc_replaced": false,
+      "global_clock_set_or_adjusted": false,
+      "temporary_probe_cleanup_verified": true,
+      "limits": "No global clock mutation; safe dispatch probes do not establish full semantics of every syscall. Reserved syscall 415 remains unimplemented; AIO stays disabled."
+    },
+    "radio_isup": [
+      1,
+      1,
+      1
+    ],
+    "wired_aimesh_confirmed_by_controller": true,
+    "ai_internal_link_ping": true,
+    "ai_containers_running": 3,
+    "rgb_firmware_executable_running": true,
+    "rgb_physical_colors_after_boot": "not separately confirmed",
+    "collectors_fresh_and_errors_empty": true,
+    "browser_validation": {
+      "status": "PASSED_READ_ONLY_CHROME_ACCEPTANCE",
+      "report": "evidence/kernel9-ui1/chrome-observations.json",
+      "independent_login_after_reload": true,
+      "terms_dialog_encountered": false,
+      "controller_wired_uplink_display": "乙太網路",
+      "controller_connection_quality": "強",
+      "dashboard_CCR_data_fresh": true,
+      "dashboard_ports_connected": 5,
+      "dashboard_ports_total": 7,
+      "history_samples_displayed": true,
+      "wifi_insight_current_and_history_displayed": true,
+      "ai_hostname_input_editable": true,
+      "ai_hostname_unchanged": true,
+      "ai_containers_running": 3,
+      "configuration_changed": false
+    },
+    "no_panic_oops_bug_seen": true,
+    "observed_uptime_seconds": 405.62,
+    "acceleration": {
+      "flow_activation_success": 70740,
+      "flow_activation_failure": 0,
+      "flow_refresh_success": 146694,
+      "flow_refresh_failure": 0,
+      "throughput_benchmark": false
+    },
+    "authenticated_new_boot_observed_after_seconds": 155.9,
+    "ai_internal_link_packets": {
+      "sent": 2,
+      "received": 2
+    },
+    "boot_log_review": "reports/kernel9/boot-log-review.json",
+    "wired_bond": {
+      "mode": "802.3ad",
+      "members": 2,
+      "member_speeds_mbps": [
+        1000,
+        1000
+      ],
+      "member_link_failure_counts": [
+        0,
+        0
+      ],
+      "all_members_up_full_duplex": true
+    },
+    "startup_convergence": {
+      "early_sample_seconds": 159.65,
+      "early_cfg_client_and_master_not_ready": true,
+      "confirmed_sample_seconds": 229.43,
+      "cfg_client_and_expected_controller_present": true,
+      "wall_clock_synchronized_to_current_date": true,
+      "same_boot_id": true,
+      "time_sync_daemon_independently_identified": false
+    },
+    "ai_container_uptimes_reported": [
+      "Up 16 hours",
+      "Up 4 hours",
+      "Up 19 hours"
+    ],
+    "ai_board_reboot_not_indicated_by_container_uptimes": true,
+    "final_stock_slot2_hashes_rechecked": true,
+    "final_cleanup_marker": "KERNEL9_FINAL_STATE_AND_CLEANUP_PASS"
+  },
+  "boot_state": {
+    "status": "ONE_TIME_TRIAL_ACTIVE",
+    "booted_slot": 1,
+    "slot1_committed": false,
+    "next_boot_slot": 2,
+    "slot2_committed": true,
+    "metadata_partitions_read_only": true,
+    "permanent_commit_performed": false,
+    "boot_id": "00000000-0000-4000-8000-000000000013",
+    "policy": "Kernel9 is a one-time trial. Git commit does not commit the boot slot. Permanent slot selection remains pending clarification of user intent.",
+    "fallback_semantics": "The next reset selects original slot2; one-time selection alone does not guarantee a hung kernel resets itself."
+  },
+  "persistent_hooks": {
+    "integrated_start_services_sha256": "f54313162e5a4ff518e92500e646da56fd4c0600bbb8a7866c88048fc6146408",
+    "services_start_sha256": "67a43f70c891f094e7181988e6bf01a427b617e577c811382d432c62e8f46ee8",
+    "old_integrated_versions_and_JFFS_fallback_retained": true,
+    "ledg_ensure_unchanged": true,
+    "ledg_ensure_sha256": "38cad6313bafeb635848ba9dc8775616fc53aab1d322c245d6f325d6d21167f9"
+  },
+  "limitations": [
+    "Bounded boot acceptance through 405.62 seconds in the saved final state capture; not a long soak, repeated-reboot or throughput benchmark.",
+    "Existing virtual-BSS, regulatory and vendor licensing diagnostics also occur in earlier accepted and stock baselines. Physical radio isup does not establish recovery of every SSID, IoT client or port.",
+    "Physical RGB colour was not separately confirmed after this boot; the integrated executable is running.",
+    "AIO remains disabled; its expected ENOSYS is distinct from enabled time64 calls.",
+    "Global clock mutation and complete Y2038 coverage of legacy socket timestamps/ioctls are outside hardware validation.",
+    "SL1680 firmware, kernel, modules, userspace and memory policy are unchanged.",
+    "No permanent boot-slot commit was performed; next reboot selects original slot2."
+  ],
+  "evidence": {
+    "evidence/kernel9-ui1/image-manifest.json": "f1a68bf58dba2ab8b2d9f0c3924c78a7c57e6515561fdadd70ce59c1d5fd9d2e",
+    "evidence/kernel9-ui1/rootfs-changes.json": "9dcbf5ad1e0d49deca0877d52a166ce95724014551d2cf81933133110a945e7b",
+    "build/qemu/kernel9-ui1-integrated-final/result.json": "680f892954cb6a828d685fa345a7e80b711190701cb1260a0653be904bbb41c6",
+    "build/qemu/kernel9-ui1-trial-guard/result.json": "b8958ec439ab6f6533e30206bde0e648fc672adcf0fca9c0bf426c8b1aea1f21",
+    "evidence/kernel9-ui1/flash-readback.txt": "44bbbb88085112a7266600fee019b297ad32c40d0a08c258eaaec2e95d9408ca",
+    "evidence/kernel9-ui1/hook-and-arm-once.txt": "834d187b76a3fa470d4ba97c1eb02ee184836d57df7522b199375b89a72ee3e5",
+    "evidence/kernel9-ui1/kernel9-first-boot.json": "fe56c7c80cc6e2b98447d6001e50aa6b485567ce85960ec5c766ac953acf8731",
+    "evidence/kernel9-ui1/kernel9-first-boot.txt": "93111258f47c04c1536e512e6296b15007acc72c2a12ae89fce69284aab0c45a",
+    "evidence/kernel9-ui1/health-first.txt": "5a5200c902c887508e9c0da4e6f3d7a84b35b87c08a56492f781d2fad67bd782",
+    "evidence/kernel9-ui1/health-and-dmesg-confirmed.txt": "d10a44fb310a71a641105b6cc2d47135c5d046a8ea8f0e5afa831edd82e5fc16",
+    "evidence/kernel9-ui1/health-final-cleanup.txt": "8d01ed2772f1426dca8bb0bd00349a389733484f5444c95ed2ec53527cd9ac32",
+    "evidence/kernel9-ui1/time64-raw.txt": "fd3087508cc16205163f4a3cb63f0f865cbd9d3b5045a6a2ac0912fe14be8c17",
+    "evidence/kernel9-ui1/time64-glibc-loader.txt": "08b6aeabcbb75f189a6ade8812840dc44fbbe6abc86454315ab2710e6e9fadb0",
+    "evidence/kernel9-ui1/time64-glibc.txt": "d9a565987970cf745ac9f398ec306b596c42c9d774addfddb26480b5d1d48c66",
+    "evidence/kernel9-ui1/chrome-observations.json": "63cd887cdb7d144143774e4320eabb2e5ffc9fbea79369a169e60c12983f087e",
+    "evidence/kernel9-ui1/final-state.txt": "4ff0cfac5f399939dc2fef8c37bd634b06a8968d17e97fb42f575871965bb329"
+  },
+  "privacy": "This record includes selected results and artifact hashes only. Raw device logs, NVRAM, JFFS backups, credentials and private payloads remain excluded from version control.",
+  "fallback_hashes": {
+    "bootfs2_full": "ecda0c1ad0dab3fbe28ef93ab9500e713e19b2b238a055d1fd3971ede03a0256",
+    "rootfs2_full": "51128dda31033fb34ef315e25b767f1b4557967bb1168bbdb8636c1e79b76465"
+  },
+  "diagnostic_corrections": [
+    "The first file-age diagnostic used unavailable stock stat; it stopped that diagnostic command and was rerun with the isolated test BusyBox. This was a diagnostic-tool issue, not a kernel defect.",
+    "At the first health sample cfg_client and wall-clock synchronization were still starting. Both converged within the same boot; no extra reboot was observed."
+  ],
+  "package_record_note": "The ignored image-manifest.json is an immutable packaging-time record and correctly retains hardware_validated=false at that stage. This later hardware-acceptance.json records the completed physical deployment separately."
+}

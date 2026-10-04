@@ -1,0 +1,50 @@
+{
+  "reviewed_at_utc": "2026-10-04T10:46:58.881258+00:00",
+  "status": "passed",
+  "run": "build/qemu/psi7-io-baseline/result.json",
+  "kernel_sha256": "9819ebd69792190a9d178fd802782fe4de4a9866c411949f24e15fd1724187c3",
+  "initramfs_sha256": "8ab1c11bb686666b4bedae53cbe4414752d3877d046756f117decae922a8fc31",
+  "log_sha256": "10de3ec3db5a22135b03f61960031c7c8d0ea2415efb62c47d2308100875b81c",
+  "source_sha256": "b5010cb439fe10d6ac24f9c608510bb452cd71575665ee0a808a70734a0deceb",
+  "elapsed_seconds": 9.42,
+  "kernel_diagnostics": [],
+  "non_guest_guard_exit": 125,
+  "io_event_count": 7,
+  "io_events": [
+    "LAB_PSI_IO_EVENT kind=poll name=cgroup_a_io_some flags=0x2",
+    "LAB_PSI_IO_EVENT kind=epoll name=cgroup_a_io_full flags=0x2",
+    "LAB_PSI_IO_EVENT kind=poll name=global_io_some flags=0x2",
+    "LAB_PSI_IO_EVENT kind=poll name=cgroup_a_io_some_rearm flags=0x2",
+    "LAB_PSI_IO_EVENT kind=epoll name=cgroup_a_io_full_rearm flags=0x2",
+    "LAB_PSI_IO_EVENT kind=poll name=cgroup_b_io_some_after_migration flags=0x2",
+    "LAB_PSI_IO_EVENT kind=epoll name=cgroup_b_io_full_after_migration flags=0x2"
+  ],
+  "qualified_cross_cpu_stalled_migrations": 8,
+  "migration_evidence": [
+    "LAB_PSI_IO_MIGRATION operation=3 observed_state=D remained_D=1 before_cpu=0 target_cpu=1 resumed_cpu=1 cgroup=/sys/fs/cgroup/unified/psi-io/b wchan=__blkdev_direct_IO_simple",
+    "LAB_PSI_IO_MIGRATION operation=4 observed_state=D remained_D=1 before_cpu=1 target_cpu=0 resumed_cpu=0 cgroup=/sys/fs/cgroup/unified/psi-io/a wchan=__blkdev_direct_IO_simple",
+    "LAB_PSI_IO_MIGRATION operation=5 observed_state=D remained_D=1 before_cpu=0 target_cpu=1 resumed_cpu=1 cgroup=/sys/fs/cgroup/unified/psi-io/b wchan=__blkdev_direct_IO_simple",
+    "LAB_PSI_IO_MIGRATION operation=6 observed_state=D remained_D=1 before_cpu=1 target_cpu=0 resumed_cpu=0 cgroup=/sys/fs/cgroup/unified/psi-io/a wchan=__blkdev_direct_IO_simple",
+    "LAB_PSI_IO_MIGRATION operation=7 observed_state=D remained_D=1 before_cpu=0 target_cpu=1 resumed_cpu=1 cgroup=/sys/fs/cgroup/unified/psi-io/b wchan=__blkdev_direct_IO_simple",
+    "LAB_PSI_IO_MIGRATION operation=8 observed_state=D remained_D=1 before_cpu=1 target_cpu=0 resumed_cpu=0 cgroup=/sys/fs/cgroup/unified/psi-io/a wchan=__blkdev_direct_IO_simple",
+    "LAB_PSI_IO_MIGRATION operation=9 observed_state=D remained_D=1 before_cpu=0 target_cpu=1 resumed_cpu=1 cgroup=/sys/fs/cgroup/unified/psi-io/b wchan=__blkdev_direct_IO_simple",
+    "LAB_PSI_IO_MIGRATION operation=10 observed_state=D remained_D=1 before_cpu=1 target_cpu=0 resumed_cpu=0 cgroup=/sys/fs/cgroup/unified/psi-io/a wchan=__blkdev_direct_IO_simple"
+  ],
+  "io_result": "LAB_PSI_IO_PASS actual_some_full_notifications_rearm a_some_delta=6607493 a_full_delta=6607493 b_some_delta=872525 b_full_delta=872525 global_some_delta=6500712 global_full_delta=6427326 bytes=2097152 throttle_seconds=7.975 qualified_cross_cpu_migrations=8",
+  "assertion_review": {
+    "io_events": "Each wait requires PRI and rejects ERR/HUP (poll also NVAL); observed flags exactly 0x2. Both cgroup some poll and full epoll notify again after read/rearm.",
+    "real_io_wait": "Worker uses O_DIRECT pread with a buffer overwritten by 0xa5 before each operation and verifies zero-filled guest loop data. 2MiB took 7.975 seconds under 256KiB/s throttle.",
+    "cpu_migration": "For eight operations, worker was D before and remained D after affinity plus cgroup change; the same in-flight operation then completed on the requested different CPU. Wchan identifies __blkdev_direct_IO_simple.",
+    "cgroup_migration": "A/B membership alternated via checked cgroup.procs writes, while the worker stayed in the v1 blkio throttle group; A and B each recorded positive some/full totals.",
+    "bounded_scope": "One IO child, 8MiB loop image on a 16MiB guest tmpfs, no network or host disks; parent watchdog 45s and child watchdog 35s."
+  },
+  "supersedes_prior_limits": [
+    "Actual IO pressure some/full event generation and rearm are now verified.",
+    "Deliberate cross-CPU IO-stalled wake migration is now verified."
+  ],
+  "remaining_limits": [
+    "Memory-reclaim/refault-stalled cross-CPU migration is not covered by this IO workload.",
+    "Real hardware/storage performance is not tested.",
+    "A bounded test does not prove absence of every possible scheduler or lifetime race."
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "source": "scripts/hardware-psi8-probe.c",
+  "source_sha256": "d52c7328c7e4a1146ec9688846dbe4e4865550c776a46ee6a66283cbdd9a5df5",
+  "binary": "build/kernel8-ui1-psi-probe",
+  "binary_sha256": "c22aeb16277d6ad950aa638bfb53ef1788dee4f2e5aee0d548c12f44a120a5bd",
+  "binary_bytes": 837856,
+  "command": [
+    "/home/leonpano/br-sdk/br-aarch64/output/host/bin/aarch64-buildroot-linux-gnu-gcc",
+    "-static",
+    "-O2",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-std=gnu11",
+    "-o",
+    "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/kernel8-ui1-psi-probe",
+    "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/scripts/hardware-psi8-probe.c"
+  ],
+  "compile_returncode": 0,
+  "file": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/kernel8-ui1-psi-probe: ELF 64-bit LSB executable, ARM aarch64, version 1 (GNU/Linux), statically linked, for GNU/Linux 4.19.0, with debug_info, not stripped",
+  "static_no_interp": true,
+  "parser_selftest": {
+    "returncode": 0,
+    "stdout": "HARDWARE_PSI8_PARSER_PASS cases=10 no_kernel_interfaces_opened=1\n"
+  },
+  "normal_probe_run_on_host": false,
+  "hardware_run": false,
+  "kernel_source_modified": false,
+  "watchdog_seconds": 15,
+  "poll_timeout_ms": 0,
+  "epoll_timeout_ms": 0,
+  "scope": [
+    "read system PSI some/full and bounded format validation",
+    "per-open valid/invalid trigger and poll/epoll API",
+    "optional existing cgroup2 pressure interfaces"
+  ],
+  "does_not": [
+    "mount filesystems",
+    "create cgroups",
+    "move processes",
+    "change limits or configuration",
+    "create stress workers",
+    "assert actual pressure notification delivery"
+  ],
+  "caller_guard": "Verify nvram productid GT-BE19000AI before executing; probe enforces uname 4.19.294 #8 aarch64.",
+  "example": "/tmp/kernel8-ui1-psi-probe --cgroup-path /sys/fs/cgroup"
+}

@@ -1,0 +1,52 @@
+{
+  "updated_at": "2026-10-04T06:25:28.756696+00:00",
+  "status": "Direct CCR2216 collection installed and verified in Chrome",
+  "data_path": [
+    "BE19000AI /jffs/ccr-status/collect.sh directly reads fixed CCR2216 REST endpoints at 192.168.100.1",
+    "GET resources and read-only one-shot Ethernet monitor; no setters",
+    "Single RAM SQLite row in /tmp/.diag/ccr_status.db",
+    "Existing authenticated ASUS diagnostic API",
+    "Dashboard refreshes every 15 seconds; collector samples approximately every 30 seconds"
+  ],
+  "credentials": {
+    "user": "netpanel",
+    "group": "netpanel",
+    "policy_verified": "ssh,read,test,api,rest-api,!local,!telnet,!ftp,!reboot,!write,!policy,!winbox,!password,!web,!sniff,!sensitive,!romon",
+    "path": "/jffs/ccr-status/curl.conf",
+    "file_mode": "0600",
+    "directory_mode": "0700",
+    "authorization": "User explicitly requested storing the dedicated read-only netpanel credential on BE19000AI",
+    "transfer": "Existing .51 credential exported over SSH and streamed to ASUS over SSH; no local credential file, source copy or frontend exposure"
+  },
+  "checks": [
+    "10 counter/reset/missing-data/serialization regression checks",
+    "Live direct collection returned status ok, 21 logical interfaces, expected 25G WAN and 100G/10G links",
+    "Private credential permissions verified",
+    "ASUS boot ID and HTTP/Wi-Fi/config/RGB process IDs unchanged",
+    "Retired .51 CCR proxy returned HTTP 404 while direct snapshots continued to advance",
+    "Original .51 netpanel still returns 15 devices and 7 switches",
+    "Unauthenticated ASUS telemetry request returned login page, no payload",
+    "Chrome shows direct-source label and changing throughput/timestamp",
+    "Bounded RAM database contains one snapshot"
+  ],
+  "proxy_retired": {
+    "endpoint": "http://192.168.100.51/cgi-bin/ccr-status.cgi",
+    "http_status": 404,
+    "hook_removed": true,
+    "backup": "/root/netpanel-before-ccr-direct-20261004",
+    "dependency": false
+  },
+  "limitations": [
+    "Some RouterOS interfaces omit error/drop counters; displayed as unknown",
+    "Startup hook retained; no physical router reboot performed for testing"
+  ],
+  "rollback": {
+    "disable_entire_ccr_card": "configs/ccr-status/rollback-node.sh",
+    "direct_change_backup": "/jffs/node-web-fix/before-ccr-direct-20261004",
+    "note": "Proxy-mode backup requires restoring the retired .51 proxy to work; use full-card rollback to disable without that dependency"
+  },
+  "approval_review": "Earlier credential-deployment rejection was followed by explicit user authorization; this direct deployment was allowed and completed.",
+  "firmware_packaged": false,
+  "firmware_flashed": false,
+  "committed": false
+}

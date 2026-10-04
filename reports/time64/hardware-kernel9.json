@@ -1,0 +1,26 @@
+{
+  "status": "passed",
+  "kernel": "4.19.294 #9",
+  "boot_id": "00000000-0000-4000-8000-000000000013",
+  "raw_abi_summaries": [
+    "TIME64_SUMMARY abi=aarch64-native64 available=17 ENOSYS=0 behavior_pass=11 failures=0 global_clock_writes=0",
+    "TIME64_SUMMARY abi=arm32-softfloat-direct-time64 available=17 ENOSYS=0 behavior_pass=11 failures=0 global_clock_writes=0",
+    "TIME64_SUMMARY abi=arm32-hardfloat-direct-time64 available=17 ENOSYS=0 behavior_pass=11 failures=0 global_clock_writes=0"
+  ],
+  "glibc_abis": [
+    "armel",
+    "armhf"
+  ],
+  "glibc_version": "2.44",
+  "glibc_time_t_bytes": 8,
+  "timer_seconds": 2147483664,
+  "private_file_timestamp_year": 2100,
+  "global_clock_writes": 0,
+  "temporary_payload_removed": true,
+  "evidence": {
+    "evidence/kernel9-ui1/time64-raw.txt": "fd3087508cc16205163f4a3cb63f0f865cbd9d3b5045a6a2ac0912fe14be8c17",
+    "evidence/kernel9-ui1/time64-glibc-loader.txt": "08b6aeabcbb75f189a6ade8812840dc44fbbe6abc86454315ab2710e6e9fadb0",
+    "evidence/kernel9-ui1/time64-glibc.txt": "d9a565987970cf745ac9f398ec306b596c42c9d774addfddb26480b5d1d48c66",
+    "evidence/kernel9-ui1/health-final-cleanup.txt": "8d01ed2772f1426dca8bb0bd00349a389733484f5444c95ed2ec53527cd9ac32"
+  }
+}

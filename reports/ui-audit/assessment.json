@@ -1,0 +1,94 @@
+{
+  "assessed_at": "2026-10-03T17:36:53.619863+00:00",
+  "firmware": "GT-BE19000AI Merlin 3006.102.9",
+  "status": "Diagnosis only; no router files, settings or services changed during this UI audit.",
+  "user_symptom": "Text has insufficient contrast against background; old standalone page appears visually broken and lacks the expected ROG theme.",
+  "live_verification": {
+    "checked_at": "2026-10-03T17:35:01.914126+00:00",
+    "files": {
+      "www/js/basic.js": {
+        "sha256": "b2d73bab83b1c0df7029047174218a3eaef962d2aa669d957ecaefac016f504b",
+        "matches_extracted_stock": true
+      },
+      "www/state.js": {
+        "sha256": "752d1e38748c6ab101ee9586fac2d05a8199b7a68910c4b1eb0f277bdb3b498a",
+        "matches_extracted_stock": true
+      },
+      "www/SDN/sdn.html": {
+        "sha256": "a5d3f44b0060195f62c05f6489749fea126765e5a43256f8437698f05b527f62",
+        "matches_extracted_stock": true
+      },
+      "www/js/dashboard.module.js": {
+        "sha256": "8747bc29f7c51bcb1a944cba68e53c5aff2869357b459805d0d3dd228faef018",
+        "matches_extracted_stock": true
+      },
+      "usr/sbin/httpd": {
+        "sha256": "df7d10e24231ccc2f994f4b89c7e73c20264746e06ec8c19e1aba7579d313201",
+        "matches_extracted_stock": true
+      }
+    },
+    "httpd_api_strings": {
+      "get_diag_raw_data.cgi": false,
+      "get_diag_content_data.cgi": true,
+      "get_diag_latest_content_data.cgi": true
+    },
+    "runtime": "productid=GT-BE19000AI\n\nsw_mode=3\n\nre_mode=1\n\nre_upgrade=1\n\ncfg_alive=1\n\n00000000-0000-4000-8000-000000000003\n5188.59 19992.52\n"
+  },
+  "findings": [
+    {
+      "id": "dark-logo",
+      "confidence": "confirmed",
+      "observed": "New wrapper has data-asuswrt-color=dark and theme=rog, but uses unfiltered images/merlin-logo-dark.png (black lettering).",
+      "source": "build/stock-rootfs/www/js/basic.js:252",
+      "cause": "Logo asset is hardcoded regardless of selected color mode.",
+      "repair_direction": "Choose the existing light-lettered asset in dark mode, including live theme changes."
+    },
+    {
+      "id": "legacy-standalone-theme",
+      "confidence": "confirmed source path and visual symptom",
+      "observed": "Direct Tools_Sysinfo.asp?noWrapper shows a white legacy page with old ROG header and dark title band; live CPU/memory values still load.",
+      "source": "build/stock-rootfs/www/state.js:1",
+      "cause": "UI4 pages inherit color/theme only when embedded; standalone initialization for these attributes is skipped. noWrapper bypasses navigation, not a supported full legacy-theme restoration.",
+      "operator_action": "Opened this direct URL for comparison, then returned the Chrome tab to index.html?page=settings. No firmware mode/theme setting changed.",
+      "repair_direction": "Initialize standalone pages with consistent UI4 theme values or keep supported pages inside the wrapper; restoring the complete old ROG interface requires more than a URL switch."
+    },
+    {
+      "id": "missing-dashboard-api",
+      "confidence": "confirmed",
+      "observed": "Browser logs Invalid JSON for sys/wifiDetect/dfs; response is HTML meta redirect to cloud_sync.asp?flag=.",
+      "source": [
+        "build/stock-rootfs/www/js/dashboard.module.js:2888",
+        "build/service-scope-audit/source/httpd/httpd.c:1831",
+        "build/service-scope-audit/source/httpd/web.c:28911"
+      ],
+      "cause": "Frontend calls get_diag_raw_data.cgi; the live stock httpd binary and this source route table lack that endpoint. Unknown long URLs hit a historical cloud-link fallback.",
+      "limitations": "This explains the associated chart errors, not yet every zero CPU/RAM value. Existing get_diag_content_data.cgi uses different time-query parameters, so renaming the URL alone is not a verified fix."
+    },
+    {
+      "id": "jquery-ui-amd",
+      "confidence": "confirmed console error and conflicting script order",
+      "observed": "RequireJS reports Mismatched anonymous define with jQuery UI 1.13.2 factory.",
+      "source": [
+        "build/stock-rootfs/www/state.js:55",
+        "build/stock-rootfs/www/SDN/sdn.html:15",
+        "build/stock-rootfs/www/SDN/sdn.html:18"
+      ],
+      "cause": "state.js installs RequireJS before deferred direct jQuery UI script, whose anonymous AMD definition conflicts with later require calls.",
+      "repair_direction": "Load jQuery UI through one consistent loader path; verify SDN widgets after any change."
+    },
+    {
+      "id": "node-sdn-data",
+      "confidence": "confirmed blank UI and prior runtime profile audit; full frontend cause not exhaustively proven",
+      "observed": "Node SDN main/guest cards and SSID form are blank, whereas live wl interfaces are configured by AiMesh.",
+      "context": "re_upgrade=1 enables authenticated local access but does not implement controller-equivalent SDN support on a node.",
+      "repair_direction": "Use node-aware runtime data for status and controller-owned profiles for configuration. Do not apply blank/default node SDN forms."
+    }
+  ],
+  "attribution": "All five audited live web/backend files are byte-identical to the extracted unmodified Merlin image. The custom kernel has no demonstrated causal role in these frontend issues. Enabling local node access exposed UI paths that are not fully adapted to node use.",
+  "limits": [
+    "Only documented symptoms/paths were inspected; not a complete GUI audit.",
+    "No firmware UI patch deployed or committed.",
+    "Browser extension logs are present but were not used to explain the router-specific confirmed issues.",
+    "Last new-wrapper Settings page displayed an ASUS privacy-update notice; it was not accepted."
+  ]
+}

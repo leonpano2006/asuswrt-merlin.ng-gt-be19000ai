@@ -1,0 +1,76 @@
+{
+  "finding": "The BE98 PSI backport deliberately omitted pagecache-thrashing accounting to avoid renumbering page flags baked into Broadcom blobs. The users recollection is confirmed by the original commit, including its Claude co-author trailer.",
+  "original_commit": {
+    "sha": "574cafe29c47efbdefaa9b476bba5d2fd2c5ca0b",
+    "parent": "878b025327221f53a4cd45512d64caf957fec4a9",
+    "title": "sched/psi: backport pressure stall information from 4.20",
+    "author": "leonpano2006",
+    "committer": "leonpano2006",
+    "authored_and_committed_utc": "2026-08-15T21:46:31Z",
+    "co_author_trailer": "Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+    "url": "https://github.com/leonpano2006/asuswrt-merlin.ng-gt-be98/commit/574cafe29c47efbdefaa9b476bba5d2fd2c5ca0b",
+    "source_commit": "eb414681d5a0",
+    "prerequisites": [
+      "8508cf3ffad4",
+      "5c54f5b9edb1",
+      "246b3b3342c9"
+    ],
+    "changed_files": 18,
+    "filemap_changed": false,
+    "page_flags_changed": false
+  },
+  "historical_constraints": [
+    {
+      "object": "task_struct.psi_flags",
+      "upstream_risk": "Inserting the 4-byte field in the upstream location shifts pre-existing task fields",
+      "historical_solution": "Use padding at offset1908, after pagefault_disabled1904 and before oom_reaper_list1912",
+      "task_size": 2688,
+      "claimed_preexisting_offsets_checked": 150
+    },
+    {
+      "object": "task_struct.sched_psi_wake_requeue",
+      "historical_solution": "Use spare bit in existing32-bit word at offset932; old bits retained"
+    },
+    {
+      "object": "mm/filemap.c and PG_workingset",
+      "deliberate_omission": "Drop filemap PSI hunks because adding PG_workingset in the middle of enum pageflags renumbers old flags used as immediate constants in prebuilt Broadcom code",
+      "consequence": "Reclaim, compaction and swap stalls counted; pagecache-thrash stalls not counted"
+    },
+    {
+      "object": "vm_event_item",
+      "related_documented_constraint": "The separate zswap meminfo backport dropped its vmstat half because growing vm_event_item resizes a per-CPU array; avoid casually extending enums while filling PSI coverage."
+    }
+  ],
+  "local_evidence": {
+    "historical_head": "b4101d004fdf5eac0a4d3f94fd787786c167e0c7",
+    "readme": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/leon-cgroup-20260915/archive/worktree/gt-be98/README.md",
+    "readme_sha256": "116ecd3d5267c9e712cd671d4554636fa0c6a549c0878b77ca8b7e1a98c51347",
+    "relevant_lines": [
+      281,
+      293,
+      299,
+      303,
+      306
+    ],
+    "archive_git_objects_available": false,
+    "local_upstream_clone": "/home/leonpano/amng-build is a shallow upstream checkout, not the BE98 modification history",
+    "verification_method": "Read original published GitHub commit through read-only public API after locating matching local archived README; confirmed exact task patch and absence of mm/filemap.c in the18-file change."
+  },
+  "comparison_with_kernel7": {
+    "solved": [
+      "Original task layout remains2688 bytes; psi_flags1908 unchanged; newin_memstall uses existing word936 bit5",
+      "Cgroup PSI state lives after dynamic ancestor_ids allocation instead of expanding856-byte cgroup",
+      "Poll dispatch preserves cftype208 and kernfs_ops88; avoids API-structure growth"
+    ],
+    "not_solved_by_tail_allocation": "Cgroup tail allocation does not implement PG_workingset marking/refault semantics or filemap waiting/bio I/O PSI charging. Those were the original intentionally omitted MM features.",
+    "attribution_limit": "Only filemap/PG_workingset omission is explicitly attributed to the blob rule in this commit. Do not claim every missing cgroup/poll/modern PSI feature was deliberately deleted by Claude; later upstream PSI features did not yet exist in the selected4.20 implementation."
+  },
+  "concrete_followup_for_kernel8": [
+    "Append PG_workingset at the end of existing pageflags with every old enum value unchanged; independently prove free low bit and no collision with zone/node/section/last_cpupid high-bit packing.",
+    "Carry working-set state through refault/eviction/activation and page migration before enabling filemap wait accounting, so repeated thrashing is identified rather than charging every file read.",
+    "Introduce BIO_WORKINGSET only in an available existing bio flag bit; preserve BVEC_POOL_OFFSET, all existing bio flags, and sizeof/offsets of struct bio.",
+    "Do not add WORKINGSET_RESTORE or resize the vm-event/node-stat arrays solely for this PSI backport; capture baseline enums/counts in compile-only ABI probe.",
+    "Verify exact final kernel page/bio layouts, enum encodings, PSI refault and bounded file-I/O notifications in QEMU, then rerun stock modules before any hardware trial."
+  ],
+  "hardware_or_source_changes_by_audit": false
+}

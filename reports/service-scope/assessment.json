@@ -1,0 +1,295 @@
+{
+  "date": "2026-10-03T16:22:52.983013+00:00",
+  "source": {
+    "repository": "https://github.com/RMerl/asuswrt-merlin.ng",
+    "commit": "69838e4a60564e5550e97f11d8a8cf2c6260c4f0",
+    "version": "3006.102.9 source snapshot"
+  },
+  "request": "將 BE98/BE19000AI 視為可持續運作的主機，修改 Wi-Fi 或交換器設定時限制影響範圍，保持 BCM 與 AI 單板電腦系統及無關工作不中斷。",
+  "status": "Source audit and proposed design complete; no firmware patch, flash, router configuration or service changes performed.",
+  "findings": [
+    {
+      "id": "wifi-ui",
+      "finding": "一般無線設定明確送 restart_wireless，沒有在此套用步驟指定整機 reboot。",
+      "evidence": {
+        "file": "release/src/router/www/Advanced_Wireless_Content.asp",
+        "local_snapshot": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/service-scope-audit/source/www/Advanced_Wireless_Content.asp",
+        "line": 3556,
+        "needle": "postObject.rc_service = \"restart_wireless\";"
+      }
+    },
+    {
+      "id": "cfgsync-actions",
+      "finding": "AiMesh 無線類別對應 restart_wireless；LACP 對應 reboot。MLO 參數與 MLD enable 的映射不同，不能混成所有 Wi-Fi 設定都要 reboot。",
+      "evidence": [
+        {
+          "file": "release/src/router/cfg_mnt/cfg_param.h",
+          "local_snapshot": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/service-scope-audit/source/cfg_mnt/cfg_param.h",
+          "line": 146,
+          "needle": "{ \"wireless\","
+        },
+        {
+          "file": "release/src/router/cfg_mnt/cfg_param.h",
+          "local_snapshot": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/service-scope-audit/source/cfg_mnt/cfg_param.h",
+          "line": 164,
+          "needle": "{ \"link_aggregation\","
+        },
+        {
+          "file": "release/src/router/cfg_mnt/cfg_param.h",
+          "local_snapshot": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/service-scope-audit/source/cfg_mnt/cfg_param.h",
+          "line": 132,
+          "needle": "#define RESTART_MLO"
+        }
+      ]
+    },
+    {
+      "id": "httpd-dispatch",
+      "finding": "一般 apply API 傳遞 rc_service 給 cfgsync 或 notify_rc；config_changed 依 re_mac 發出每節點設定事件。舊 form apply 的 DUALWAN 特定旗標分支會附加 reboot，並非每次 apply 都附加。",
+      "evidence": [
+        {
+          "file": "release/src/router/httpd/web.c",
+          "local_snapshot": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/service-scope-audit/source/httpd/web.c",
+          "line": 4290,
+          "needle": "action_para = get_cgi_json(\"rc_service\",root);"
+        },
+        {
+          "file": "release/src/router/httpd/web.c",
+          "local_snapshot": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/service-scope-audit/source/httpd/web.c",
+          "line": 6136,
+          "needle": "NVRAM_MODIFIED_DUALWAN_REBOOT) == NVRAM_MODIFIED_DUALWAN_REBOOT"
+        },
+        {
+          "file": "release/src/router/httpd/web.c",
+          "local_snapshot": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/service-scope-audit/source/httpd/web.c",
+          "line": 14590,
+          "needle": "else if (!strcmp(action_mode, \"config_changed\"))"
+        }
+      ]
+    },
+    {
+      "id": "wireless-global-state",
+      "finding": "restart_wireless 呼叫 stop_lan_wl/start_lan_wl。stop_lan_wl 在 ebtables 條件成立時清除全表；HND 分支在 AP 模式呼叫 fc_fini，routing 模式執行 fc flush；啟用 BONDING 或 LACP 時呼叫 bonding_uninit。start_lan_wl 的 HND+LACP 分支再 bonding_init。不能將現有動作保證為只影響 Wi-Fi。",
+      "evidence": [
+        {
+          "file": "release/src/router/rc/lan.c",
+          "local_snapshot": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/service-scope-audit/source/rc/lan.c",
+          "line": 6615,
+          "needle": "void restart_wireless(void)"
+        },
+        {
+          "file": "release/src/router/rc/lan.c",
+          "local_snapshot": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/service-scope-audit/source/rc/lan.c",
+          "line": 5040,
+          "needle": "void stop_lan_wl(void)"
+        },
+        {
+          "file": "release/src/router/rc/lan.c",
+          "local_snapshot": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/service-scope-audit/source/rc/lan.c",
+          "line": 5302,
+          "needle": "void start_lan_wl(void)"
+        }
+      ],
+      "limit": "只證明來源呼叫範圍；未實機量測此動作造成的有線流量中斷。"
+    },
+    {
+      "id": "net-and-phy",
+      "finding": "停止 httpd/sshd、dnsmasq、Wi-Fi 服務、cfgsync、WAN、LAN、LAN ports；再 config_lacp/start_lan 等重建。這是全網路重設，不符合單埠局部套用目標。",
+      "evidence": {
+        "file": "release/src/router/rc/services.c",
+        "local_snapshot": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/service-scope-audit/source/rc/services.c",
+        "line": 17446,
+        "needle": "else if (strcmp(script, \"net_and_phy\") == 0)"
+      }
+    },
+    {
+      "id": "port-reset",
+      "finding": "lanport_ctrl 迭代 lanports 對各 ethN 執行 phy-power/phy-reset，BCM4912/6813/6765 在 re_mode 等模式還會重設 eth0。無法直接拿它當單一埠操作。底層已有逐介面 ethctl 和 Realtek 指定埠 ioctl，可供新局部流程使用，尚未動態測試。",
+      "evidence": [
+        {
+          "file": "release/src/router/shared/boardapi.c",
+          "local_snapshot": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/service-scope-audit/source/shared/boardapi.c",
+          "line": 1450,
+          "needle": "int lanport_ctrl(int ctrl)"
+        },
+        {
+          "file": "release/src/router/shared/sysdeps/broadcom/rtkswitch.c",
+          "local_snapshot": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/service-scope-audit/source/shared/sysdeps/broadcom/rtkswitch.c",
+          "line": 107,
+          "needle": "case 12:"
+        }
+      ]
+    },
+    {
+      "id": "dhcp",
+      "finding": "DHCP 一般套用可走 restart_dnsmasq；DNS/WINS/gateway/domain 變更被網頁升級成 restart_net_and_phy。這是明確可重新評估範圍的地方。",
+      "evidence": {
+        "file": "release/src/router/www/Advanced_DHCP_Content.asp",
+        "local_snapshot": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/service-scope-audit/source/www/Advanced_DHCP_Content.asp",
+        "line": 407,
+        "needle": "// Only restart the whole network if needed"
+      }
+    },
+    {
+      "id": "vlan",
+      "finding": "VLAN Switch 頁面的套用動作為 restart_net_and_phy。單 VLAN/埠變更目前會走全網路流程。",
+      "evidence": {
+        "file": "release/src/router/www/Advanced_VLAN_Switch_Content.asp",
+        "local_snapshot": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/service-scope-audit/source/www/Advanced_VLAN_Switch_Content.asp",
+        "line": 1634,
+        "needle": "vlanSwitchPost.rc_service = \"restart_net_and_phy\";"
+      }
+    },
+    {
+      "id": "physical-port-identity",
+      "finding": "BE98 外部交換器的多個實體 LAN 埠共用 eth1；BE19000AI 的 LAN eth1/eth2/eth3/eth4 和內部 eth.ai 各列為獨立介面。實體埠操作必須使用每型號 port mapping，不能假定同一 ethN 對應同一插孔或只有一個插孔。",
+      "evidence": [
+        {
+          "file": "release/src/router/shared/sysdeps/broadcom/broadcom.c",
+          "local_snapshot": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/service-scope-audit/source/shared/sysdeps/broadcom/broadcom.c",
+          "line": 2988,
+          "needle": "#elif defined(GTBE98) || defined(GTBE98_PRO) || defined(GTBE96) || defined(GTBE19000)"
+        },
+        {
+          "file": "release/src/router/shared/sysdeps/broadcom/broadcom.c",
+          "local_snapshot": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/service-scope-audit/source/shared/sysdeps/broadcom/broadcom.c",
+          "line": 3008,
+          "needle": ".label_name = \"AI\""
+        }
+      ]
+    },
+    {
+      "id": "ai-separation",
+      "finding": "AI 板有獨立 start_ai_reboot -> GPIO 動作；stop_ai_service/start_ai_service 僅管理 response checker 與 TFTP。一般 Wi-Fi/net_and_phy 分支未見直接呼叫 AI reboot。不過 stop_lan 會移除 LAN bridge 成員，AI 內部介面在該 bridge 時其連線仍受影響。",
+      "evidence": [
+        {
+          "file": "release/src/router/rc/ai_service.c",
+          "local_snapshot": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/service-scope-audit/source/rc/ai_service.c",
+          "line": 1223,
+          "needle": "int start_ai_reboot(void)"
+        },
+        {
+          "file": "release/src/router/rc/ai_service.c",
+          "local_snapshot": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/service-scope-audit/source/rc/ai_service.c",
+          "line": 1280,
+          "needle": "void stop_ai_service(void)"
+        },
+        {
+          "file": "release/src/router/rc/lan.c",
+          "local_snapshot": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/service-scope-audit/source/rc/lan.c",
+          "line": 2851,
+          "needle": "void stop_lan(void)"
+        },
+        {
+          "file": "release/src/router/rc/lan.c",
+          "local_snapshot": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/service-scope-audit/source/rc/lan.c",
+          "line": 1377,
+          "needle": "\"eth.ai-10\""
+        }
+      ],
+      "limit": "未測 AI 板實際電源/硬體 reset 耦合；AI IP 暫時不通不等於單板電腦也重新開機。"
+    },
+    {
+      "id": "opaque-components",
+      "finding": "cfg_mnt 未提供主要 C 實作，Makefile 在無 C 來源時拷貝預編譯 cfg_client/cfg_server；聚合使用 agg_brcm.o 預編譯物件。只改 cfg_param.h 不足以改變已編譯客戶端。",
+      "evidence": [
+        {
+          "file": "release/src/router/cfg_mnt/Makefile",
+          "local_snapshot": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/service-scope-audit/source/cfg_mnt/Makefile",
+          "line": 280,
+          "needle": "ifeq ($(wildcard $(SRCBASE)/router/cfg_mnt/*.c),)"
+        },
+        {
+          "file": "release/src/router/rc/Makefile",
+          "local_snapshot": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/service-scope-audit/source/rc/Makefile",
+          "line": 2364,
+          "needle": "agg_brcm.o:"
+        }
+      ]
+    }
+  ],
+  "target_apply_scopes": [
+    {
+      "change": "DHCP pool/reservation/options",
+      "target": "dnsmasq only; preserve bridge/PHY/Wi-Fi/AI link",
+      "existing": "restart_dnsmasq; some option changes currently use net_and_phy"
+    },
+    {
+      "change": "Wi-Fi SSID/security/channel",
+      "target": "affected radio/BSS and necessary authentication/MLO group only",
+      "existing": "restart_wireless affects wireless-wide daemons and shared flow-cache/bond state"
+    },
+    {
+      "change": "single wired PHY speed/enable",
+      "target": "identified physical port; preserve other switch ports and CPU uplink",
+      "existing": "low-level controls exist; broad lanport_ctrl must not be reused as single-port apply"
+    },
+    {
+      "change": "LACP create/remove/policy",
+      "target": "selected bond, its members, required bridge membership and affected offload entries",
+      "existing": "UI/cfgsync reboot; existing config_lacp path nested in full net_and_phy"
+    },
+    {
+      "change": "VLAN membership/PVID",
+      "target": "affected VLAN/member ports/required bridge interfaces",
+      "existing": "UI full net_and_phy"
+    },
+    {
+      "change": "AI application/service",
+      "target": "selected AI service/container; preserve BCM system and unrelated AI processes",
+      "existing": "separate AI service and hardware reboot entries exist; SBC-side application management not audited here"
+    }
+  ],
+  "proposed_patch_sequence": [
+    "先加入套用決策記錄：輸入來源、實際變更的鍵名（不記錄密碼值）、節點、請求動作、最後執行动作、擴大範圍原因；缺乏依據不把所有設定一律升級成 reboot。",
+    "建立有差異檢查的局部動作：無變更不操作；每節點及相關 radio/port/bond/VLAN 使用具體資源識別，避免以共享 eth 介面代替實體埠。",
+    "Wi-Fi 路徑拆出無關的有線 bonding/bridge/全域 flow cache 動作；保留真實依賴的 authentication、MLO group 與所需的失效項目處理，不能直接刪除所有加速清理。",
+    "加入 LACP 與埠/VLAN 專用流程；保留 br0、管理上聯、eth.ai/eth.ai-10、其他埠與工作負載。先核實 Broadcom 聚合/加速器的執行時行為。 BE98 僅先支援原本 BCM 直聯的合法 LACP 埠組，不把外部 Realtek 四個 2.5G 埠納入。",
+    "同時接通一般網頁與 AiMesh 的每節點入口；不能只改 UI 或僅改未重編的 cfgsync 標頭。閉源來源路徑須以可核對的變更上下文處理，不能把所有 reboot 全域改寫。",
+    "AI 重啟保持獨立操作；一般網路套用不呼叫 AI reset GPIO，並保護 AI 內部網路。",
+    "與核心優先的韌體基線分開；明確需 driver reload/開機初始化的項目另列範圍，尚未驗證的能力不宣稱零中斷。"
+  ],
+  "acceptance_checks_not_yet_run": [
+    "BCM 與 AI 兩側 boot ID/uptime；容器 PID/start time 在一般設定套用前後保持。",
+    "未受修改的實體埠、管理上聯、eth.ai link state 不發生重置，持續流量及遠端管理可用。",
+    "QEMU/離線 command recorder 驗證局部動作不派送 reboot、stop_lan、stop_lan_port 或无關全域重設。",
+    "實機驗證 radio/MLO 依賴、LACP 收斂、VLAN/bridge 轉送及 Runner/RDPA 加速；QEMU 不能代替這些硬體測試。",
+    "AiMesh 重連/重同步不把已套用設定蓋回或額外重啟；錯誤可復原舊局部配置。"
+  ],
+  "historical_comparison_limit": "此輪定位既有源碼行為與可修改邊界，仍不證明為何先前 BE98/AXE16000 同項設定曾免整機重啟；缺少當次 HTTP/cfgsync/rc 事件對照。",
+  "validation": "Every quoted source anchor checked against the pinned source snapshot. Current firmware Wi-Fi page also contains rc_service=restart_wireless. No runtime action executed. The pinned generic source and shipped/generated webpage formatting or model overrides need not be byte-identical; only the quoted common behavior was compared. The observed reboot origin remains supported by live logs and the previously hash-verified shipped Switch Control page.",
+  "platform_constraints": {
+    "BE98_LACP": {
+      "supported_stock_ui_pairs": [
+        {
+          "ports": [
+            "1G LAN5",
+            "10G LAN6"
+          ],
+          "netdevs": [
+            "eth2",
+            "eth3"
+          ]
+        },
+        {
+          "ports": [
+            "10G WAN/LAN1",
+            "10G LAN6"
+          ],
+          "netdevs": [
+            "eth0",
+            "eth3"
+          ],
+          "condition": "WAN role conflict checks apply"
+        }
+      ],
+      "excluded": "外部 Realtek 交換晶片上的四個 2.5G 插孔不屬於此預設 LACP 支援範圍。存在 Realtek 指定埠控制入口不等於有其 LACP 支援。",
+      "sources": [
+        "archived BE98 /www/Advanced_SwitchCtrl_Content.asp:819,821 and lacp_ifnames_x eth0 eth3",
+        "shared/sysdeps/broadcom/broadcom.c BE98 port mapping"
+      ]
+    },
+    "BE19000AI_LACP": "須依 BE19000AI 本機支援與實際 port mapping 實作；不能套用 BE98 的 ethN 組合或推定外部交換晶片相同。",
+    "scope": "本次目的為縮小既有設定的套用影響，未新增 BE98 外部交換晶片 LACP 功能。"
+  },
+  "user_policy_clarification": "以類似 MikroTik 的即時套用體驗為目標：變更只影響有依賴的資源，只有已證明需要整機初始化的變更才要求重開；BCM/AI 主機及無關容器維持運作。"
+}

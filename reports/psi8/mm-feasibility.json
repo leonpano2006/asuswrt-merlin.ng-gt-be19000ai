@@ -1,0 +1,217 @@
+{
+  "audit_date": "2026-10-04",
+  "status": "file-subset-implemented; full-swap-series-mapped-but-not-applied",
+  "selection_rule": "Do not tag every read or every swapin as memory pressure. Preserve struct page/bio size, existing flag numbers and all vendor-visible VM stat array dimensions.",
+  "abi_findings": {
+    "page_flags": "Append PG_workingset at old __NR_PAGEFLAGS (selected config bit21), rather than upstream enum reorder. Old PG_waiters remains7, PG_error remains1, PG_mlocked remains20. New generated NR_PAGEFLAGS=22 must be tested against top-down fields; core struct page has no new member.",
+    "bio_flags": "BIO_WORKINGSET can occupy unused bit12 with existing BVEC_POOL_OFFSET=13; retain existing values1..11 and bvec pool bits13..15. Root agent owns this implementation.",
+    "vm_stat": "Do not append even a new node_stat_item blindly: growing NR_VM_NODE_STAT_ITEMS enlarges arrays embedded in pglist_data/mem_cgroup and moves subsequent fields. Full anon statistics require private storage or deliberate ABI-preserving adaptation; no array enlargement in implemented subset.",
+    "remaining_blob_limit": "Compiled layout/value guards prove C-level encoding preservation. They do not prove a proprietary module never applies a hard-coded all-page-flags mask; review relevant blob callsites if a real regression appears."
+  },
+  "implemented_file_subset": [
+    "95f9ab2d596e8cbb388315e78c82b9a131bf2928",
+    "1899ad18c6072d689896badafb81267b0a1092a4",
+    "eb414681d5a07d28d2ff90dc05f69ec6b232ebd2"
+  ],
+  "implemented_report": "reports/psi8/mm-port.json",
+  "upstream_anon_series": [
+    {
+      "sha": "ccc5dc67340c109e624e07e02790e9fbdec900d6",
+      "title": "mm/vmscan: make active/inactive ratio as 1:1 for anon lru",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=ccc5dc67340c109e624e07e02790e9fbdec900d6",
+      "role": "Temporary1:1 anon ratio; cancels with final4002570, omit both when squashing.",
+      "files": [
+        "mm/vmscan.c"
+      ]
+    },
+    {
+      "sha": "b518154e59aab3ad0780a169c5cc84bd4ee4357e",
+      "title": "mm/vmscan: protect the workingset on anonymous LRU",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=b518154e59aab3ad0780a169c5cc84bd4ee4357e",
+      "role": "Semantic prerequisite: newly allocated/first-swapin anon pages start inactive; repeated-reference promotion distinguishes actual hot pages. Without this,4.19 initially-active anon pages make historical-active classification misleading.",
+      "files": [
+        "include/linux/swap.h",
+        "kernel/events/uprobes.c",
+        "mm/huge_memory.c",
+        "mm/khugepaged.c",
+        "mm/memory.c",
+        "mm/migrate.c",
+        "mm/swap.c",
+        "mm/swapfile.c",
+        "mm/userfaultfd.c",
+        "mm/vmscan.c"
+      ]
+    },
+    {
+      "sha": "170b04b7ae49634df103810dad67b22cf8a99aa6",
+      "title": "mm/workingset: prepare the workingset detection infrastructure for anon LRU",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=170b04b7ae49634df103810dad67b22cf8a99aa6",
+      "role": "Separate anon/file refault observations and inactive-list decisions. Literal patch changes VM enum and struct lruvec.refaults to array; needs private storage/adaptation, not direct application.",
+      "files": [
+        "include/linux/mmzone.h",
+        "mm/memcontrol.c",
+        "mm/vmscan.c",
+        "mm/vmstat.c",
+        "mm/workingset.c"
+      ]
+    },
+    {
+      "sha": "3852f6768ede542ed48b9077bedf482c7ecb6327",
+      "title": "mm/swapcache: support to handle the shadow entries",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=3852f6768ede542ed48b9077bedf482c7ecb6327",
+      "role": "Swapcache shadow install/lookup/remove and slot-free cleanup. Upstream uses XArray; current4.19 uses radix tree and nrexceptional, requiring semantic rewrite.",
+      "files": [
+        "include/linux/swap.h",
+        "mm/shmem.c",
+        "mm/swap_state.c",
+        "mm/swapfile.c",
+        "mm/vmscan.c"
+      ]
+    },
+    {
+      "sha": "aae466b0052e1888edd1d7f473d4310d64936196",
+      "title": "mm/swap: implement workingset detection for anonymous LRU",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=aae466b0052e1888edd1d7f473d4310d64936196",
+      "role": "Connect anon eviction shadows, asynchronous swapcache reads and synchronous swapin bypass to workingset classification.",
+      "files": [
+        "include/linux/swap.h",
+        "mm/memory.c",
+        "mm/swap_state.c",
+        "mm/vmscan.c",
+        "mm/workingset.c"
+      ]
+    },
+    {
+      "sha": "4002570c5c585c4c9a889e45dd104ed663257eec",
+      "title": "mm/vmscan: restore active/inactive ratio for anonymous LRU",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=4002570c5c585c4c9a889e45dd104ed663257eec",
+      "role": "Restores original active/inactive ratio; net with first patch is zero.",
+      "files": [
+        "mm/vmscan.c"
+      ]
+    }
+  ],
+  "correctness_and_instrumentation": [
+    {
+      "sha": "cad8320b4b395702e49578580c70026c8271ea88",
+      "title": "mm/swap: don't SetPageWorkingset unconditionally during swapin",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=cad8320b4b395702e49578580c70026c8271ea88",
+      "role": "Mandatory: remove unconditional swapin PageWorkingset tagging, including readahead/used-once tmpfs.",
+      "files": [
+        "mm/swap_state.c"
+      ]
+    },
+    {
+      "sha": "937790699be9c8100e5358625e7dfa8b32bd33f2",
+      "title": "mm/page_io.c: annotate refault stalls from swap_readpage",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=937790699be9c8100e5358625e7dfa8b32bd33f2",
+      "role": "Instrument swap_readpage synchronous CPU/decompression/submission cost, only together with d8c47 guard.",
+      "files": [
+        "mm/page_io.c"
+      ]
+    },
+    {
+      "sha": "d8c47cc7bf602ef73384a00869a70148146c1191",
+      "title": "mm: page_io: fix psi memory pressure error on cold swapins",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=d8c47cc7bf602ef73384a00869a70148146c1191",
+      "role": "Mandatory: swap_readpage enter/leave only for PageWorkingset, preventing cold zram/zswap false memory pressure.",
+      "files": [
+        "mm/page_io.c"
+      ]
+    },
+    {
+      "sha": "eea4a5011ae520c98d0a14474ecde44f29659861",
+      "title": "swap: check mapping_empty() for swap cache before being freed",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=eea4a5011ae520c98d0a14474ecde44f29659861",
+      "role": "Add swapoff/exit assertion that all real pages and shadows are gone before address_space destruction.",
+      "files": [
+        "mm/swap_state.c"
+      ]
+    },
+    {
+      "sha": "b8e24a9300b0836a9d39f6b20746766b3b81f1bd",
+      "title": "block: annotate refault stalls from IO submission",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=b8e24a9300b0836a9d39f6b20746766b3b81f1bd",
+      "role": "Working-set read submission cost, using ABI-safe bit12 and retaining cloned/split propagation; implemented by root.",
+      "files": [
+        "block/bio.c",
+        "block/blk-core.c",
+        "include/linux/blk_types.h"
+      ]
+    }
+  ],
+  "modern_algorithm_context": [
+    {
+      "sha": "b910718a948a9120d90faf632b33ed23c70e266a",
+      "title": "mm: vmscan: detect file thrashing at the reclaim root",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=b910718a948a9120d90faf632b33ed23c70e266a",
+      "role": "For modern5.15-equivalent cross-cgroup classification, eviction shadow records reclaim root and age propagates to ancestors. This is broader than file-only4.19 instrumentation.",
+      "files": [
+        "include/linux/memcontrol.h",
+        "include/linux/swap.h",
+        "mm/vmscan.c",
+        "mm/workingset.c"
+      ]
+    },
+    {
+      "sha": "34e58cac6d8f2a76b609b3510ff0c4468a220e61",
+      "title": "mm: workingset: let cache workingset challenge anon",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=34e58cac6d8f2a76b609b3510ff0c4468a220e61",
+      "role": "When file+anon compete, refault threshold includes anon only if swap is available.",
+      "files": [
+        "mm/workingset.c"
+      ]
+    },
+    {
+      "sha": "31d8fcac00fcf4007f3921edc69ab4dcb3abcd4d",
+      "title": "mm: workingset: age nonresident information alongside anonymous pages",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=31d8fcac00fcf4007f3921edc69ab4dcb3abcd4d",
+      "role": "Required partner of expanded threshold: drive nonresident_age with anon aging as well, otherwise false recency/LRU churn. Existing inactive_age field can be retained in-place by name/type; do not add a second field.",
+      "files": [
+        "include/linux/mmzone.h",
+        "include/linux/swap.h",
+        "mm/vmscan.c",
+        "mm/workingset.c"
+      ]
+    },
+    {
+      "sha": "0add0c77a9bd0ce7cd3b53894fb08154881402a4",
+      "title": "memcg: charge before adding to swapcache on swapin",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=0add0c77a9bd0ce7cd3b53894fb08154881402a4",
+      "role": "Not intrinsically required for PSI; warns that upstream has different memcg charging timing.4.19 swapcache page can lack page_memcg until do_swap_page; do not dereference it as if modern charge-before-refault ordering existed. Either adapt classification to eviction owner while preserving old charging, or coherently port charge/cancel/error handling.",
+      "files": [
+        "include/linux/memcontrol.h",
+        "mm/memcontrol.c",
+        "mm/memory.c",
+        "mm/swap_state.c"
+      ]
+    },
+    {
+      "sha": "8c647dd1e39573f23a4ca25c09f82716b70e702c",
+      "title": "mm/swap: optimise get_shadow_from_swap_cache",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=8c647dd1e39573f23a4ca25c09f82716b70e702c",
+      "role": "Optimization only;4.19 can retain safe find_get_entry/exceptional check and put_page for real entries instead of importing xa_load.",
+      "files": [
+        "mm/swap_state.c"
+      ]
+    }
+  ],
+  "radix_tree_adaptation_contract": [
+    "Retain existing exported add_to_swap_cache and __delete_from_swap_cache signatures if present in Module.symvers; add private shadow-aware helpers and compatibility wrappers, updating only core callers.",
+    "On swap reclaim, replace the existing radix-tree page slot with exceptional shadow under address_space i_pages lock; do not delete then allocate a fresh node in atomic reclaim. Update node exceptional counts and address_space.nrexceptional exactly once.",
+    "On swapcache insertion, recognize shadow as replaceable rather than EEXIST, return it to classifier, reduce nrexceptional, retain page refs/SwapCache/private fields. For multi-page insert failure, preserve or restore replaced shadows and roll back all partially inserted page slots.",
+    "Clear every shadow in swap_range_free before the slot can be reallocated to unrelated data. Split cleanup at SWAP_ADDRESS_SPACE_SHIFT boundaries; never iterate a radix_tree while freeing its current node without its supported iterator restart rules.",
+    "Swapoff exit must leave zero pages and zero exceptional entries. Do not attach swapper address_space shadows to file-cache shadow_nodes shrinker unless its lifetime/locking contract is deliberately extended.",
+    "Both __read_swap_cache_async and SWP_SYNCHRONOUS_IO do_swap_page bypass must restore classification before swap_readpage; otherwise zram and disk backends diverge.",
+    "Remove file-only guards in filemap/vmscan only after proper anon new-page policy, shadow classification and cold-swap guard are present together.",
+    "Do not import full XArray merely to apply3852 literally; existing4.19 radix-tree exceptional infrastructure can implement the required state transitions with unchanged struct page/bio/address_space layouts."
+  ],
+  "test_requirements": [
+    "Cold file read with ample memory: IO PSI increases, memory PSI remains near baseline; hot cache refault under reclaim must increase memory PSI above v7.",
+    "Cold first swapin/readahead vs repeated hot anonymous refault, on raw swap, swapfile, zram and zswap; guard must make classification consistent across backends.",
+    "Swap slot reuse, swapoff under load, reclaim memcg deletion/ID reuse, swap read error and allocation failure, interrupted waits, compound page migration/split.",
+    "No LRU aging regression: compare major faults, anon/file refault counts and throughput with mixed hot anon/cold sequential file workload.",
+    "ABI probes must assert all pre-existing page/bio flags, zone/node/section offsets, NR_VM_* counts and sizeof/offsetof(page,bio,pglist_data,lruvec,mem_cgroup) unchanged."
+  ],
+  "decision": "Ship only after full build and A/B validation. File subset is already implemented rather than merely recommended. Full anonymous/swap classification is feasible but crosses LRU admission, swapcache lifetime and memcg charge assumptions; it is not represented as completed by adding a lone swap_readpage hook."
+}

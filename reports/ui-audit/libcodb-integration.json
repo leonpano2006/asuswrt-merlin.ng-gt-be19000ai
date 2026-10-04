@@ -1,0 +1,13 @@
+{
+  "status": "excluded_from_rc1",
+  "reason": "Pinned public source lacks three ABI symbols present in the shipped stock library. The rebuilt candidate is not safe as a drop-in replacement.",
+  "missing_symbols": [
+    "codb_content_query_json_field_ex",
+    "cosql_get_column_values_ex",
+    "cosql_remove_data_keep_one_per_group_by_columns"
+  ],
+  "stock_library_retained": true,
+  "existing_mitigation": "NULL-free node-history schema remains selected and validated; this does not fix all possible vendor diagnostic queries",
+  "build_log": "build/codb-candidate/build.log",
+  "deployed": false
+}

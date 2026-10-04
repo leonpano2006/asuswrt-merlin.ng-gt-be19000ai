@@ -1,0 +1,168 @@
+{
+  "baseline_vmlinux_sha256": "76778f142fae0e3c68908718b19b6ade234ac726aef035076c41214e21a4dabe",
+  "candidate_vmlinux_sha256": "b319c7880df88a4f0ab879201ba054655b1770b7d5d7a8dc3b58f6209008aa05",
+  "baseline_aggregate_types": 543,
+  "aggregate_layout_differences": [],
+  "old_dispatch_differences": [],
+  "native_table_count_unchanged": true,
+  "compat_table_424": true,
+  "unused_slots_still_ni": true,
+  "new_entries": [
+    {
+      "number": 403,
+      "expected_handler": "__arm64_sys_clock_gettime",
+      "matches_exact_handler": true,
+      "is_ni": false,
+      "stub_expected_by_config": false
+    },
+    {
+      "number": 404,
+      "expected_handler": "__arm64_sys_clock_settime",
+      "matches_exact_handler": true,
+      "is_ni": false,
+      "stub_expected_by_config": false
+    },
+    {
+      "number": 405,
+      "expected_handler": "__arm64_sys_clock_adjtime",
+      "matches_exact_handler": true,
+      "is_ni": false,
+      "stub_expected_by_config": false
+    },
+    {
+      "number": 406,
+      "expected_handler": "__arm64_sys_clock_getres",
+      "matches_exact_handler": true,
+      "is_ni": false,
+      "stub_expected_by_config": false
+    },
+    {
+      "number": 407,
+      "expected_handler": "__arm64_sys_clock_nanosleep",
+      "matches_exact_handler": true,
+      "is_ni": false,
+      "stub_expected_by_config": false
+    },
+    {
+      "number": 408,
+      "expected_handler": "__arm64_sys_timer_gettime",
+      "matches_exact_handler": true,
+      "is_ni": false,
+      "stub_expected_by_config": false
+    },
+    {
+      "number": 409,
+      "expected_handler": "__arm64_sys_timer_settime",
+      "matches_exact_handler": true,
+      "is_ni": false,
+      "stub_expected_by_config": false
+    },
+    {
+      "number": 410,
+      "expected_handler": "__arm64_sys_timerfd_gettime",
+      "matches_exact_handler": true,
+      "is_ni": false,
+      "stub_expected_by_config": false
+    },
+    {
+      "number": 411,
+      "expected_handler": "__arm64_sys_timerfd_settime",
+      "matches_exact_handler": true,
+      "is_ni": false,
+      "stub_expected_by_config": false
+    },
+    {
+      "number": 412,
+      "expected_handler": "__arm64_sys_utimensat",
+      "matches_exact_handler": true,
+      "is_ni": false,
+      "stub_expected_by_config": false
+    },
+    {
+      "number": 413,
+      "expected_handler": "__arm64_compat_sys_pselect6_time64",
+      "matches_exact_handler": true,
+      "is_ni": false,
+      "stub_expected_by_config": false
+    },
+    {
+      "number": 414,
+      "expected_handler": "__arm64_compat_sys_ppoll_time64",
+      "matches_exact_handler": true,
+      "is_ni": false,
+      "stub_expected_by_config": false
+    },
+    {
+      "number": 416,
+      "expected_handler": "__arm64_compat_sys_io_pgetevents_time64",
+      "matches_exact_handler": true,
+      "is_ni": true,
+      "stub_expected_by_config": true
+    },
+    {
+      "number": 417,
+      "expected_handler": "__arm64_compat_sys_recvmmsg_time64",
+      "matches_exact_handler": true,
+      "is_ni": false,
+      "stub_expected_by_config": false
+    },
+    {
+      "number": 418,
+      "expected_handler": "__arm64_sys_mq_timedsend",
+      "matches_exact_handler": true,
+      "is_ni": false,
+      "stub_expected_by_config": false
+    },
+    {
+      "number": 419,
+      "expected_handler": "__arm64_sys_mq_timedreceive",
+      "matches_exact_handler": true,
+      "is_ni": false,
+      "stub_expected_by_config": false
+    },
+    {
+      "number": 420,
+      "expected_handler": "__arm64_sys_semtimedop",
+      "matches_exact_handler": true,
+      "is_ni": false,
+      "stub_expected_by_config": false
+    },
+    {
+      "number": 421,
+      "expected_handler": "__arm64_compat_sys_rt_sigtimedwait_time64",
+      "matches_exact_handler": true,
+      "is_ni": false,
+      "stub_expected_by_config": false
+    },
+    {
+      "number": 422,
+      "expected_handler": "__arm64_sys_futex",
+      "matches_exact_handler": true,
+      "is_ni": false,
+      "stub_expected_by_config": false
+    },
+    {
+      "number": 423,
+      "expected_handler": "__arm64_sys_sched_rr_get_interval",
+      "matches_exact_handler": true,
+      "is_ni": false,
+      "stub_expected_by_config": false
+    }
+  ],
+  "new_entries_dispatch_valid": true,
+  "old_export_differences": [],
+  "actual_vmlinux_exports_compared": 7998,
+  "baseline_crc_symbol_count": 0,
+  "candidate_crc_symbol_count": 0,
+  "crc_status": "Unavailable: CONFIG_MODVERSIONS=n; actual ELF has no __crc_* symbols.",
+  "symvers_note": "The manifest may predate this build; acceptance uses actual ELF __ksymtab export names/sections.",
+  "config_differences": [],
+  "full_evidence": "build/time64-abi/candidate-full.json",
+  "main_make_invoked": false,
+  "limits": [
+    "Only complete surviving DWARF types are compared; not proof of every proprietary ABI.",
+    "Export symbol checks do not prove binary compatibility when MODVERSIONS is disabled.",
+    "Table dispatch checks do not prove semantic correctness; direct ABI probes and QEMU tests remain required."
+  ],
+  "pass": true
+}

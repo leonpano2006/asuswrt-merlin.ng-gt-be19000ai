@@ -1,0 +1,81 @@
+{
+  "patch": "patches/0005-psi-cgroup-monitoring-abi.patch",
+  "sha256": "e2ee130ef931ba8d5737edcf9d4a3a265dbccdf81bb7fb4aae74644f9ba73737",
+  "files": [
+    {
+      "path": "Documentation/accounting/psi.txt",
+      "before_sha256": "1dc3fae02a0c59ae1547bffb7dbc64d6608b4c2685b626355ef0f181cbd8854a",
+      "after_sha256": "c13cb07327f106313fd32adfef8a49d8e37d02f6ddc6d3fe5d1cfeb3fed593f9"
+    },
+    {
+      "path": "fs/kernfs/file.c",
+      "before_sha256": "4d62ea8f1ff4c6e1889866a670fe87036b4c8b2abac0c67c1a2b0653a7a301b5",
+      "after_sha256": "5092b7407da2ba179c233b099a04d9e4fd17e44ee55d274f6c9fabc429e4cc1b"
+    },
+    {
+      "path": "include/linux/cgroup.h",
+      "before_sha256": "fdfef2b681342ecffeb81a0d823d472d2af3e4c294d375605eb981ebaea48fa6",
+      "after_sha256": "3a4617fdd26c106537dd34c0a6b77a821bc24f57c0501ad644bf8a29d9ef5b7e"
+    },
+    {
+      "path": "include/linux/kernfs.h",
+      "before_sha256": "5db0ef372452de93c6fb288615ba4e69888245482ce1b139afe3fd190bf521ee",
+      "after_sha256": "fec3915c6f9db04377384f71c2526c6c3d424b99e53a765c2a59dbe023f9137b"
+    },
+    {
+      "path": "include/linux/psi.h",
+      "before_sha256": "d29d4e1e020e6a10e4893450c4d51556de28def176c1420443465a3e21402501",
+      "after_sha256": "46d350dbe3aeceb33e1f660b024db871c3ba23937de2bfb795e91387edff0314"
+    },
+    {
+      "path": "include/linux/psi_types.h",
+      "before_sha256": "130274f5d4026b9119858cd4ab561bac6109ed8d65c99f69929404cab5d0e8a7",
+      "after_sha256": "ad2d02cd0b4acfd9dc3f90a1e250c03566981a3859f10fc50a98f63d79aa9ef8"
+    },
+    {
+      "path": "include/linux/sched.h",
+      "before_sha256": "b89f6757557c210046fd72f9463bf6935af90c64da0f874d24fd8030a3c4177f",
+      "after_sha256": "4655dc681052de94312e0de6b05431735437cb3fba3aa0ca6a3254ec82266241"
+    },
+    {
+      "path": "init/Kconfig",
+      "before_sha256": "45cef90f60da36fc313f5dd36b6c4c3a5497de0522d7027b9d7633ff3dff42e6",
+      "after_sha256": "502655abf2f98a5cf3c4cd9a77f2312763a43028149a7572f1e63398f692d510"
+    },
+    {
+      "path": "kernel/cgroup/cgroup.c",
+      "before_sha256": "a1f5c3c17514f0265348d75eaa4892cfa339c35f1f310c32595da99f08e137e0",
+      "after_sha256": "be10247a9353f6fc2f18c205ac022d193737d0e5ad84e899c2da09a43e30dd17"
+    },
+    {
+      "path": "kernel/fork.c",
+      "before_sha256": "7a8bc3476bd4c485117c7d7837b854a6fb66a145cacd05aca42027f46bbab536",
+      "after_sha256": "1ec86dbef5bb09016b0cf3f5a9323e97a5bb38194ecd4b9b5c1b60534ee7e683"
+    },
+    {
+      "path": "kernel/sched/core.c",
+      "before_sha256": "dd63baecbea6a55d4b2105bc498aa2631cd6b5d8d7e2536f05787f85bd3627f8",
+      "after_sha256": "10824701ac69321fe466afe4998f03b42d91a08d53d91a86e1f244171e08a0ed"
+    },
+    {
+      "path": "kernel/sched/psi.c",
+      "before_sha256": "26d8286f4567288a251fc0ecf1a10fd7dee0775d2a692b79b4265b28852dc11d",
+      "after_sha256": "5699e00fe70a674d142f8944664da653890174f98f3d28d23f9d9e91b1d62a9d"
+    },
+    {
+      "path": "kernel/sched/stats.h",
+      "before_sha256": "32b6ccba2681c8264412ef6e9e1be7a5cb1a0a17195f9e4e7deff7ad3884527a",
+      "after_sha256": "e526707f9a35948700fbf580f6976bff4c79f0eaf8decae3b77107a2ec267c13"
+    },
+    {
+      "path": "kernel/workqueue.c",
+      "before_sha256": "b9c465ff6587279d6bfecac2da6b07e25022a4839b3bfe4f5023b0394392494b",
+      "after_sha256": "4d2280bef784c2e512882356195b0bc33532fec224582691ec84122d5b852d37"
+    },
+    {
+      "path": "kernel/workqueue_internal.h",
+      "before_sha256": "35feaf463cb5dca4326720cb658d95e25b360fb8e40cee4aced3f8131331424d",
+      "after_sha256": "f278cd450eec7ec34daa39f34a1c0b85027611868abed3f32c3b9bb9299861a3"
+    }
+  ]
+}

@@ -1,0 +1,416 @@
+From: GT-BE19000AI kernel development
+Subject: [PATCH 7/7] arm64: backport AArch32 time64 syscall ABI
+
+Add Linux v5.1 ARM EABI time64 entry numbers without changing the old
+vendor time32 ABI. Reuse native 64-bit time handlers only where the whole
+argument layout matches. Preserve compat fd sets, signal masks, siginfo,
+message headers and nested pointers for compound interfaces. The new AIO
+signal descriptor explicitly uses a 32-bit pointer; CONFIG_AIO remains off.
+
+Mask compat timespec nanosecond padding in get_timespec64 and make the
+shared native futex handler use that helper. Do not alter task, scheduler,
+network, block or vendor module-facing structure layouts.
+
+ABI references: Linux v5.1; upstream y2038-new-syscalls tag
+48166e6ea47d23984f0b481ca199250e1ce0730a. This is a scoped ARM64 compat
+backport, not a wholesale rename of time32 functions or kernel upgrade.
+
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/asm/unistd.h b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/asm/unistd.h
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/asm/unistd.h
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/asm/unistd.h
+@@ -44,7 +44,7 @@
+ #define __ARM_NR_compat_set_tls		(__ARM_NR_COMPAT_BASE + 5)
+ #define __ARM_NR_COMPAT_END		(__ARM_NR_COMPAT_BASE + 0x800)
+ 
+-#define __NR_compat_syscalls		399
++#define __NR_compat_syscalls		424
+ #endif
+ 
+ #define __ARCH_WANT_SYS_CLONE
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/asm/unistd32.h b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/asm/unistd32.h
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/asm/unistd32.h
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/asm/unistd32.h
+@@ -821,6 +821,53 @@
+ __SYSCALL(__NR_rseq, sys_rseq)
+ 
+ /*
++ * ARM EABI time64 additions (Linux v5.1 ABI). Keep legacy time32 entries
++ * unchanged for vendor userspace. Native handlers already use 64-bit time
++ * on arm64; compound compat pointer/siginfo layouts need separate handlers.
++ * 399-402 and 415 remain reserved in this backport.
++ */
++#define __NR_clock_gettime64 403
++__SYSCALL(__NR_clock_gettime64, sys_clock_gettime)
++#define __NR_clock_settime64 404
++__SYSCALL(__NR_clock_settime64, sys_clock_settime)
++#define __NR_clock_adjtime64 405
++__SYSCALL(__NR_clock_adjtime64, sys_clock_adjtime)
++#define __NR_clock_getres_time64 406
++__SYSCALL(__NR_clock_getres_time64, sys_clock_getres)
++#define __NR_clock_nanosleep_time64 407
++__SYSCALL(__NR_clock_nanosleep_time64, sys_clock_nanosleep)
++#define __NR_timer_gettime64 408
++__SYSCALL(__NR_timer_gettime64, sys_timer_gettime)
++#define __NR_timer_settime64 409
++__SYSCALL(__NR_timer_settime64, sys_timer_settime)
++#define __NR_timerfd_gettime64 410
++__SYSCALL(__NR_timerfd_gettime64, sys_timerfd_gettime)
++#define __NR_timerfd_settime64 411
++__SYSCALL(__NR_timerfd_settime64, sys_timerfd_settime)
++#define __NR_utimensat_time64 412
++__SYSCALL(__NR_utimensat_time64, sys_utimensat)
++#define __NR_pselect6_time64 413
++__SYSCALL(__NR_pselect6_time64, compat_sys_pselect6_time64)
++#define __NR_ppoll_time64 414
++__SYSCALL(__NR_ppoll_time64, compat_sys_ppoll_time64)
++#define __NR_io_pgetevents_time64 416
++__SYSCALL(__NR_io_pgetevents_time64, compat_sys_io_pgetevents_time64)
++#define __NR_recvmmsg_time64 417
++__SYSCALL(__NR_recvmmsg_time64, compat_sys_recvmmsg_time64)
++#define __NR_mq_timedsend_time64 418
++__SYSCALL(__NR_mq_timedsend_time64, sys_mq_timedsend)
++#define __NR_mq_timedreceive_time64 419
++__SYSCALL(__NR_mq_timedreceive_time64, sys_mq_timedreceive)
++#define __NR_semtimedop_time64 420
++__SYSCALL(__NR_semtimedop_time64, sys_semtimedop)
++#define __NR_rt_sigtimedwait_time64 421
++__SYSCALL(__NR_rt_sigtimedwait_time64, compat_sys_rt_sigtimedwait_time64)
++#define __NR_futex_time64 422
++__SYSCALL(__NR_futex_time64, sys_futex)
++#define __NR_sched_rr_get_interval_time64 423
++__SYSCALL(__NR_sched_rr_get_interval_time64, sys_sched_rr_get_interval)
++
++/*
+  * Please add new compat syscalls above this comment and update
+  * __NR_compat_syscalls in asm/unistd.h.
+  */
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/fs/aio.c b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/fs/aio.c
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/fs/aio.c
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/fs/aio.c
+@@ -2343,4 +2343,57 @@
+ 
+ 	return ret;
+ }
++
++/*
++ * The time64 ABI still passes a pair of 32-bit words for the signal mask.
++ * Do not reuse the old local descriptor's native-sized pointer member.
++ */
++struct __compat_aio_sigset_time64 {
++	compat_uptr_t		sigmask;
++	compat_size_t		sigsetsize;
++};
++
++COMPAT_SYSCALL_DEFINE6(io_pgetevents_time64,
++		compat_aio_context_t, ctx_id,
++		compat_long_t, min_nr,
++		compat_long_t, nr,
++		struct io_event __user *, events,
++		struct __kernel_timespec __user *, timeout,
++		const struct __compat_aio_sigset_time64 __user *, usig)
++{
++	struct __compat_aio_sigset_time64 ksig = { 0, };
++	sigset_t ksigmask, sigsaved;
++	struct timespec64 t;
++	int ret;
++
++	if (timeout && get_timespec64(&t, timeout))
++		return -EFAULT;
++
++	if (usig && copy_from_user(&ksig, usig, sizeof(ksig)))
++		return -EFAULT;
++
++	if (ksig.sigmask) {
++		if (ksig.sigsetsize != sizeof(compat_sigset_t))
++			return -EINVAL;
++		if (get_compat_sigset(&ksigmask, compat_ptr(ksig.sigmask)))
++			return -EFAULT;
++		sigdelsetmask(&ksigmask, sigmask(SIGKILL) | sigmask(SIGSTOP));
++		sigprocmask(SIG_SETMASK, &ksigmask, &sigsaved);
++	}
++
++	ret = do_io_getevents(ctx_id, min_nr, nr, events, timeout ? &t : NULL);
++	if (signal_pending(current)) {
++		if (ksig.sigmask) {
++			current->saved_sigmask = sigsaved;
++			set_restore_sigmask();
++		}
++		if (!ret)
++			ret = -ERESTARTNOHAND;
++	} else {
++		if (ksig.sigmask)
++			sigprocmask(SIG_SETMASK, &sigsaved, NULL);
++	}
++
++	return ret;
++}
+ #endif
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/fs/select.c b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/fs/select.c
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/fs/select.c
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/fs/select.c
+@@ -1422,4 +1422,125 @@
+ 
+ 	return ret;
+ }
++
++/*
++ * time64 changes the timeout only: fd sets and signal-mask arguments retain
++ * their AArch32 layout. Keep the legacy time32 entry points above unchanged.
++ */
++static long do_compat_pselect_time64(int n, compat_ulong_t __user *inp,
++	compat_ulong_t __user *outp, compat_ulong_t __user *exp,
++	struct __kernel_timespec __user *tsp, compat_sigset_t __user *sigmask,
++	compat_size_t sigsetsize)
++{
++	sigset_t ksigmask, sigsaved;
++	struct timespec64 ts, end_time, *to = NULL;
++	int ret;
++
++	if (tsp) {
++		if (get_timespec64(&ts, tsp))
++			return -EFAULT;
++
++		to = &end_time;
++		if (poll_select_set_timeout(to, ts.tv_sec, ts.tv_nsec))
++			return -EINVAL;
++	}
++
++	if (sigmask) {
++		if (sigsetsize != sizeof(compat_sigset_t))
++			return -EINVAL;
++		if (get_compat_sigset(&ksigmask, sigmask))
++			return -EFAULT;
++
++		sigdelsetmask(&ksigmask, sigmask(SIGKILL)|sigmask(SIGSTOP));
++		sigprocmask(SIG_SETMASK, &ksigmask, &sigsaved);
++	}
++
++	ret = compat_core_sys_select(n, inp, outp, exp, to);
++	ret = poll_select_copy_remaining(&end_time, tsp, 0, ret);
++
++	if (ret == -ERESTARTNOHAND) {
++		/*
++		 * Don't restore the signal mask yet. Let do_signal() deliver
++		 * the signal on the way back to userspace, before the signal
++		 * mask is restored.
++		 */
++		if (sigmask) {
++			memcpy(&current->saved_sigmask, &sigsaved,
++					sizeof(sigsaved));
++			set_restore_sigmask();
++		}
++	} else if (sigmask)
++		sigprocmask(SIG_SETMASK, &sigsaved, NULL);
++
++	return ret;
++}
++
++COMPAT_SYSCALL_DEFINE6(pselect6_time64, int, n, compat_ulong_t __user *, inp,
++	compat_ulong_t __user *, outp, compat_ulong_t __user *, exp,
++	struct __kernel_timespec __user *, tsp, void __user *, sig)
++{
++	compat_size_t sigsetsize = 0;
++	compat_uptr_t up = 0;
++
++	if (sig) {
++		if (!access_ok(VERIFY_READ, sig,
++				sizeof(compat_uptr_t)+sizeof(compat_size_t)) ||
++		    	__get_user(up, (compat_uptr_t __user *)sig) ||
++		    	__get_user(sigsetsize,
++				(compat_size_t __user *)(sig+sizeof(up))))
++			return -EFAULT;
++	}
++	return do_compat_pselect_time64(n, inp, outp, exp, tsp, compat_ptr(up),
++				 sigsetsize);
++}
++
++COMPAT_SYSCALL_DEFINE5(ppoll_time64, struct pollfd __user *, ufds,
++	unsigned int,  nfds, struct __kernel_timespec __user *, tsp,
++	const compat_sigset_t __user *, sigmask, compat_size_t, sigsetsize)
++{
++	sigset_t ksigmask, sigsaved;
++	struct timespec64 ts, end_time, *to = NULL;
++	int ret;
++
++	if (tsp) {
++		if (get_timespec64(&ts, tsp))
++			return -EFAULT;
++
++		to = &end_time;
++		if (poll_select_set_timeout(to, ts.tv_sec, ts.tv_nsec))
++			return -EINVAL;
++	}
++
++	if (sigmask) {
++		if (sigsetsize != sizeof(compat_sigset_t))
++			return -EINVAL;
++		if (get_compat_sigset(&ksigmask, sigmask))
++			return -EFAULT;
++
++		sigdelsetmask(&ksigmask, sigmask(SIGKILL)|sigmask(SIGSTOP));
++		sigprocmask(SIG_SETMASK, &ksigmask, &sigsaved);
++	}
++
++	ret = do_sys_poll(ufds, nfds, to);
++
++	/* We can restart this syscall, usually */
++	if (ret == -EINTR) {
++		/*
++		 * Don't restore the signal mask yet. Let do_signal() deliver
++		 * the signal on the way back to userspace, before the signal
++		 * mask is restored.
++		 */
++		if (sigmask) {
++			memcpy(&current->saved_sigmask, &sigsaved,
++				sizeof(sigsaved));
++			set_restore_sigmask();
++		}
++		ret = -ERESTARTNOHAND;
++	} else if (sigmask)
++		sigprocmask(SIG_SETMASK, &sigsaved, NULL);
++
++	ret = poll_select_copy_remaining(&end_time, tsp, 0, ret);
++
++	return ret;
++}
+ #endif
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/futex.c b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/futex.c
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/futex.c
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/futex.c
+@@ -3916,10 +3916,10 @@
+ 
+ 
+ SYSCALL_DEFINE6(futex, u32 __user *, uaddr, int, op, u32, val,
+-		struct timespec __user *, utime, u32 __user *, uaddr2,
++		struct __kernel_timespec __user *, utime, u32 __user *, uaddr2,
+ 		u32, val3)
+ {
+-	struct timespec ts;
++	struct timespec64 ts;
+ 	ktime_t t, *tp = NULL;
+ 	u32 val2 = 0;
+ 	int cmd = op & FUTEX_CMD_MASK;
+@@ -3929,12 +3929,12 @@
+ 		      cmd == FUTEX_WAIT_REQUEUE_PI)) {
+ 		if (unlikely(should_fail_futex(!(op & FUTEX_PRIVATE_FLAG))))
+ 			return -EFAULT;
+-		if (copy_from_user(&ts, utime, sizeof(ts)) != 0)
++		if (get_timespec64(&ts, utime))
+ 			return -EFAULT;
+-		if (!timespec_valid(&ts))
++		if (!timespec64_valid(&ts))
+ 			return -EINVAL;
+ 
+-		t = timespec_to_ktime(ts);
++		t = timespec64_to_ktime(ts);
+ 		if (cmd == FUTEX_WAIT)
+ 			t = ktime_add_safe(ktime_get(), t);
+ 		tp = &t;
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/signal.c b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/signal.c
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/signal.c
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/signal.c
+@@ -3266,6 +3266,36 @@
+ 
+ 	return ret;
+ }
++
++/* New timeout layout does not change ARM32 sigset/siginfo layout. */
++COMPAT_SYSCALL_DEFINE4(rt_sigtimedwait_time64,
++		const compat_sigset_t __user *, uthese,
++		struct compat_siginfo __user *, uinfo,
++		const struct __kernel_timespec __user *, uts,
++		compat_size_t, sigsetsize)
++{
++	sigset_t s;
++	struct timespec64 ts64;
++	struct timespec ts;
++	siginfo_t info;
++	int ret;
++
++	if (sigsetsize != sizeof(compat_sigset_t))
++		return -EINVAL;
++	if (get_compat_sigset(&s, uthese))
++		return -EFAULT;
++	if (uts) {
++		if (get_timespec64(&ts64, uts))
++			return -EFAULT;
++		ts = timespec64_to_timespec(ts64);
++	}
++
++	ret = do_sigtimedwait(&s, &info, uts ? &ts : NULL);
++	if (ret > 0 && uinfo && copy_siginfo_to_user32(uinfo, &info))
++		return -EFAULT;
++	return ret;
++}
++
+ #endif
+ 
+ /**
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/sys_ni.c b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/sys_ni.c
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/sys_ni.c
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/sys_ni.c
+@@ -46,6 +46,7 @@
+ COND_SYSCALL(io_pgetevents);
+ COND_SYSCALL_COMPAT(io_getevents);
+ COND_SYSCALL_COMPAT(io_pgetevents);
++COND_SYSCALL_COMPAT(io_pgetevents_time64);
+ 
+ /* fs/xattr.c */
+ 
+@@ -286,6 +287,7 @@
+ COND_SYSCALL(accept4);
+ COND_SYSCALL(recvmmsg);
+ COND_SYSCALL_COMPAT(recvmmsg);
++COND_SYSCALL_COMPAT(recvmmsg_time64);
+ 
+ /*
+  * Architecture specific syscalls: see further below
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/time/time.c b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/time/time.c
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/time/time.c
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/time/time.c
+@@ -866,7 +866,8 @@
+ 	ts->tv_sec = kts.tv_sec;
+ 
+ 	/* Zero out the padding for 32 bit systems or in compat mode */
+-	if (IS_ENABLED(CONFIG_64BIT_TIME) && (!IS_ENABLED(CONFIG_64BIT) || in_compat_syscall()))
++	if ((IS_ENABLED(CONFIG_64BIT_TIME) && !IS_ENABLED(CONFIG_64BIT)) ||
++	    in_compat_syscall())
+ 		kts.tv_nsec &= 0xFFFFFFFFUL;
+ 
+ 	ts->tv_nsec = kts.tv_nsec;
+diff --git a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/net/compat.c b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/net/compat.c
+--- a/release/src-rt-5.04behnd.4916/kernel/linux-4.19/net/compat.c
++++ b/release/src-rt-5.04behnd.4916/kernel/linux-4.19/net/compat.c
+@@ -843,6 +843,32 @@
+ 	return __compat_sys_recvmmsg(fd, mmsg, vlen, flags, timeout);
+ }
+ 
++/* 64-bit timeout, but ARM32 message/iovec/control-message layouts. */
++COMPAT_SYSCALL_DEFINE5(recvmmsg_time64, int, fd,
++		       struct compat_mmsghdr __user *, mmsg,
++		       unsigned int, vlen, unsigned int, flags,
++		       struct __kernel_timespec __user *, timeout)
++{
++	struct timespec64 ts64;
++	struct timespec ts;
++	int ret;
++
++	if (timeout) {
++		if (get_timespec64(&ts64, timeout))
++			return -EFAULT;
++		ts = timespec64_to_timespec(ts64);
++	}
++
++	ret = __sys_recvmmsg(fd, (struct mmsghdr __user *)mmsg, vlen,
++			    flags | MSG_CMSG_COMPAT, timeout ? &ts : NULL);
++	if (ret > 0 && timeout) {
++		ts64 = timespec_to_timespec64(ts);
++		if (put_timespec64(&ts64, timeout))
++			return -EFAULT;
++	}
++	return ret;
++}
++
+ COMPAT_SYSCALL_DEFINE2(socketcall, int, call, u32 __user *, args)
+ {
+ 	u32 a[AUDITSC_ARGS];

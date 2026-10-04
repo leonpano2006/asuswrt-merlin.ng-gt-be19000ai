@@ -1,0 +1,286 @@
+{
+  "schema_version": 1,
+  "reviewed_at_utc": "2026-10-04T13:16:53.863602+00:00",
+  "task": "kernel9_boot_commit_review",
+  "scope": "Independent read-only review of saved kernel9 boot and service evidence, accepted kernel8 boot evidence, and stock fallback baseline. No SSH or device operation.",
+  "verdict": "BOUNDED_BOOT_LOG_ACCEPTED_NO_NEW_FATAL_KERNEL_FAULT_OR_NEW_ERROR_FAMILY_FOUND",
+  "recommended_summary": "Kernel9 reached normal services within the observed startup window. No new kernel fault or driver ABI error was found; the pre-existing wireless/regulatory/license diagnostic families remain. This supports bounded boot acceptance, not all-SSID or long-duration stability certification.",
+  "sources": {
+    "kernel9_confirmed": {
+      "path": "evidence/kernel9-ui1/health-and-dmesg-confirmed.txt",
+      "bytes": 89121,
+      "sha256": "d10a44fb310a71a641105b6cc2d47135c5d046a8ea8f0e5afa831edd82e5fc16"
+    },
+    "kernel9_first": {
+      "path": "evidence/kernel9-ui1/kernel9-first-boot.txt",
+      "bytes": 89623,
+      "sha256": "93111258f47c04c1536e512e6296b15007acc72c2a12ae89fce69284aab0c45a"
+    },
+    "kernel9_health_early": {
+      "path": "evidence/kernel9-ui1/health-first.txt",
+      "bytes": 7247,
+      "sha256": "5a5200c902c887508e9c0da4e6f3d7a84b35b87c08a56492f781d2fad67bd782"
+    },
+    "kernel9_health_intermediate": {
+      "path": "evidence/kernel9-ui1/health-and-dmesg.txt",
+      "bytes": 187,
+      "sha256": "347833d7e64f59fd2e236129627b8f6eef9a67e2d0e374cb48f3b76805a55c8a"
+    },
+    "kernel8_dmesg": {
+      "path": "evidence/kernel8-ui1/dmesg-final.txt",
+      "bytes": 89172,
+      "sha256": "cd0cb4e9b821bf83a835cf879e37657bea30a8a149f94b9392c45995cfe7a194"
+    },
+    "kernel8_health": {
+      "path": "evidence/kernel8-ui1/health-final-confirmed.txt",
+      "bytes": 5561,
+      "sha256": "e6a816641194e2d8e83e6c376c3a73412bc780059bd5ea39eb3edf251bf01bc9"
+    },
+    "kernel8_review": {
+      "path": "reports/kernel8/boot-log-review.json",
+      "bytes": 9843,
+      "sha256": "c7e05561b7afa6627ff0aecbce2ded468e4ba1d4f954a3b7b9a58a239af800ee"
+    },
+    "stock_dmesg": {
+      "path": "evidence/trial78-first-ssh.txt",
+      "bytes": 89835,
+      "sha256": "7277c61ef6957e8982779c481d53ae258724160781ed13f76281f9a4674c8e79"
+    }
+  },
+  "identity": {
+    "kernel": "4.19.294 #9 SMP PREEMPT aarch64",
+    "source_build_date": "Sat Oct 3 12:00:00 UTC 2026",
+    "root": "/dev/mmcblk0p4",
+    "same_boot_id_across_four_captures": true,
+    "boot_id": "00000000-0000-4000-8000-000000000013",
+    "observed_uptimes_seconds": [
+      126.0,
+      159.65,
+      223.13,
+      229.43
+    ],
+    "config_sha256": "1c495c39d80319246f26a38192eb481b54860ea938d46bbc8156b4fa676a8216",
+    "config_matches_kernel8": true,
+    "trial_metadata": {
+      "booted_slot": 1,
+      "next_boot_slot": 2,
+      "committed": 2,
+      "valid": [
+        1,
+        2
+      ],
+      "sequence": [
+        5,
+        4
+      ],
+      "read_only_partitions": [
+        1,
+        2
+      ]
+    },
+    "permanent_boot_commit_observed": false
+  },
+  "fatal_kernel_fault_scan": {
+    "pattern": "Kernel panic|\\bOops:|\\bBUG:|WARNING: CPU:|Unable to handle kernel|Call trace:|soft lockup|hard LOCKUP|rcu.*stall|INFO: task.*blocked for more than|Out of memory:|oom-kill|segfault|SQUASHFS error|EXT4-fs error|Buffer I/O error|blk_update_request: I/O error|disagrees about version of symbol|Unknown symbol|invalid module format|bad page state|refcount_t:|list_del corruption",
+    "matching_line_numbers": {
+      "kernel9_confirmed": [],
+      "kernel9_first": [],
+      "kernel8_dmesg": [],
+      "stock_dmesg": []
+    },
+    "conclusion": "No panic, Oops, BUG, warning backtrace, lockup/stall, OOM, kernel access fault, explicit filesystem/block I/O failure, or module symbol/version failure was observed.",
+    "false_positive_handling": "oops_mmc is a crash-capture module name; proprietary/out-of-tree taint and the temperature-warning interrupt registration are not crash reports."
+  },
+  "baseline_error_comparison": {
+    "counts": {
+      "AP Bring up failed": {
+        "kernel9_confirmed": 4,
+        "kernel9_first": 4,
+        "kernel8_dmesg": 4,
+        "stock_dmesg": 4
+      },
+      "Get event_msgs error": {
+        "kernel9_confirmed": 3,
+        "kernel9_first": 3,
+        "kernel8_dmesg": 3,
+        "stock_dmesg": 3
+      },
+      "failed to set WLC_E_CAC_STATE_CHANGE bit": {
+        "kernel9_confirmed": 3,
+        "kernel9_first": 3,
+        "kernel8_dmesg": 3,
+        "stock_dmesg": 3
+      },
+      "ocv_cap unsupported": {
+        "kernel9_confirmed": 8,
+        "kernel9_first": 8,
+        "kernel8_dmesg": 8,
+        "stock_dmesg": 8
+      },
+      "IGMP Query send failed": {
+        "kernel9_confirmed": 8,
+        "kernel9_first": 8,
+        "kernel8_dmesg": 8,
+        "stock_dmesg": 8
+      },
+      "scan abort  failed": {
+        "kernel9_confirmed": 4,
+        "kernel9_first": 4,
+        "kernel8_dmesg": 4,
+        "stock_dmesg": 3
+      },
+      "WLC_SCB_DEAUTHORIZE error": {
+        "kernel9_confirmed": 2,
+        "kernel9_first": 1,
+        "kernel8_dmesg": 1,
+        "stock_dmesg": 0
+      },
+      "Cannot open /etc/licenses": {
+        "kernel9_confirmed": 1,
+        "kernel9_first": 1,
+        "kernel8_dmesg": 1,
+        "stock_dmesg": 1
+      },
+      "Failed to load default development license": {
+        "kernel9_confirmed": 1,
+        "kernel9_first": 1,
+        "kernel8_dmesg": 1,
+        "stock_dmesg": 1
+      },
+      "OUI mismatch": {
+        "kernel9_confirmed": 3,
+        "kernel9_first": 3,
+        "kernel8_dmesg": 3,
+        "stock_dmesg": 3
+      },
+      "BP3 status - provisioned": {
+        "kernel9_confirmed": 1,
+        "kernel9_first": 1,
+        "kernel8_dmesg": 1,
+        "stock_dmesg": 1
+      },
+      "HTOA license present": {
+        "kernel9_confirmed": 2,
+        "kernel9_first": 2,
+        "kernel8_dmesg": 2,
+        "stock_dmesg": 2
+      },
+      "regulatory.db": {
+        "kernel9_confirmed": 2,
+        "kernel9_first": 2,
+        "kernel8_dmesg": 2,
+        "stock_dmesg": 2
+      },
+      "invalid rsv node name": {
+        "kernel9_confirmed": 1,
+        "kernel9_first": 1,
+        "kernel8_dmesg": 1,
+        "stock_dmesg": 1
+      },
+      "bridge configuration invalid": {
+        "kernel9_confirmed": 3,
+        "kernel9_first": 3,
+        "kernel8_dmesg": 3,
+        "stock_dmesg": 3
+      },
+      "Link DOWN.": {
+        "kernel9_confirmed": 2,
+        "kernel9_first": 2,
+        "kernel8_dmesg": 2,
+        "stock_dmesg": 2
+      },
+      "Link Up at 10000": {
+        "kernel9_confirmed": 4,
+        "kernel9_first": 4,
+        "kernel8_dmesg": 4,
+        "stock_dmesg": 4
+      }
+    },
+    "normalization": "Removed ANSI color; replaced MAC addresses, SSID strings and long hexadecimal pointers for comparison. Error codes and operation text were preserved.",
+    "new_normalized_error_warning_lines_vs_kernel8_and_stock": [],
+    "new_error_warning_lines_between_kernel9_first_and_confirmed": [],
+    "method_limit": "Equality of message families does not prove every runtime operation is correct or establish long-run performance."
+  },
+  "findings": [
+    {
+      "id": "startup_convergence",
+      "classification": "early_snapshot_resolved_in_same_boot",
+      "observation": "At 159.65 s the early snapshot has no cfg_client process, an empty master value and a 2024 pre-sync wall clock. By 223.13 s and again 229.43 s, cfg_client PID 10680 and the expected controller are present; wall clock reads 2026-10-04. The boot_id is unchanged.",
+      "assessment": "The early service gap resolved during the observed startup; do not label it persistent AiMesh failure or an extra reboot. The capture does not independently identify which time-sync daemon performed the update."
+    },
+    {
+      "id": "collectors",
+      "classification": "fresh_and_no_reported_errors",
+      "observation": "At the confirmed capture, node-history and CCR error files are 0 bytes; sample/result ages are 26 and 22 seconds respectively against 2026-10-04 13:14:46 UTC.",
+      "assessment": "Collectors resumed and produced fresh data after clock convergence. Full semantic correctness of every reported topology/device/port is outside this log audit."
+    },
+    {
+      "id": "virtual_bss",
+      "classification": "pre_existing_in_kernel8_and_stock",
+      "observation": "Exactly 4 AP bring-up failures: bssidx 1 twice and bssidx 2 twice, matching kernel8 and stock.",
+      "assessment": "No new time64-related virtual-BSS failure family appears. Existing failure messages are still unresolved signals; physical-radio isup does not validate every Guest/IoT SSID or client."
+    },
+    {
+      "id": "regulatory",
+      "classification": "pre_existing",
+      "observation": "The same 2 regulatory.db missing/load-failure lines occur in all baselines.",
+      "assessment": "Not introduced by kernel9; effective proprietary channel/country policy is not established by these messages."
+    },
+    {
+      "id": "bp3_licensing",
+      "classification": "pre_existing_with_positive_provisioning",
+      "observation": "Same missing default-license/OUI candidate-load failures, followed by BP3 provisioned and 2 HTOA-license-present messages.",
+      "assessment": "No evidence of lost active acceleration licensing. This is not a throughput benchmark."
+    },
+    {
+      "id": "driver_diagnostics",
+      "classification": "same_error_families",
+      "observation": "Event-buffer errors 3, CAC setup failures 3, unsupported OCV 8, IGMP send failures 8 and scan aborts 4 match kernel8. Deauthorize failures are 2 versus kernel8=1; kernel8 review records 2 in its kernel6 baseline.",
+      "assessment": "Extra deauthorize occurrence is not a newly observed failure family and separate-boot count variance does not isolate a kernel9 regression. Existing transient connection behavior remains outside a long-soak guarantee."
+    },
+    {
+      "id": "wired_startup",
+      "classification": "baseline_transitions_with_positive_link_state",
+      "observation": "Both 10 Gbps physical links show startup down/up transitions, as in kernel8 and stock. Early health has a 2-member 802.3ad aggregate, both members up at 1 Gbps full duplex with 0 link-failure counts.",
+      "assessment": "No persistent wired-down or LACP failure is shown. Link-transition counts are boot observations, not a sustained traffic test."
+    },
+    {
+      "id": "modules_filesystems",
+      "classification": "no_new_failure_observed",
+      "observation": "Root SquashFS mounted read-only; existing ext4 data/JFFS/AI partitions mounted read-write. Tuxera modules report running on #9 without accompanying invalid-module-format or symbol/version failures.",
+      "assessment": "No boot-time storage or module ABI failure found. No claim of exercised I/O for every filesystem module."
+    }
+  ],
+  "positive_health_evidence": {
+    "physical_radio_isup": {
+      "wl0": 1,
+      "wl1": 1,
+      "wl2": 1
+    },
+    "ai_internal_link": "eth.ai UP/LOWER_UP, 2/2 ping responses, 0% loss",
+    "http_services_running": true,
+    "history_and_ccr_collectors_running": true,
+    "firmware_integrated_rgb_executable_observed": true,
+    "physical_rgb_color_separately_verified": false,
+    "candidate_live_file_hash_checks_passed": 27,
+    "read_only_rootfs": true,
+    "pressure_cpu_memory_io_files_readable": true,
+    "flow_activation_success": 24039,
+    "flow_activation_failure": 0,
+    "flow_refresh_success": 49015,
+    "flow_refresh_failure": 0,
+    "throughput_benchmark_performed": false
+  },
+  "sanitization": {
+    "raw_log_embedded": false,
+    "credentials_embedded": false,
+    "client_MAC_or_SSID_embedded": false,
+    "source_evidence_retained_privately": true
+  },
+  "limitations": [
+    "Observation ends at 229.43 seconds of this boot; no long-duration load, roaming or repeated-reboot stability claim.",
+    "Time64 correctness is covered by separate raw-syscall/glibc tests, not proved by a quiet boot log.",
+    "Per-SSID beacon/client recovery, every Ethernet port and physical RGB color require their own checks.",
+    "Bootloader automatic fallback behavior and permanent boot-slot commit are not established or performed by this review."
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "method": "Clang AArch64 syntax-only layout of exact struct declarations extracted from preserved kernel8 UAPI and upstream v5.1; no object or main make",
+  "command": [
+    "clang",
+    "--target=aarch64-none-elf",
+    "-std=gnu11",
+    "-ffreestanding",
+    "-fsyntax-only",
+    "-Xclang",
+    "-fdump-record-layouts-complete",
+    "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/time64-abi/timex-layout-syntax.c"
+  ],
+  "returncode": 0,
+  "native_timex_bytes": 208,
+  "upstream_kernel_timex_bytes": 208,
+  "all_named_fields_matching_offsets_and_widths": [
+    "modes",
+    "offset",
+    "freq",
+    "maxerror",
+    "esterror",
+    "status",
+    "constant",
+    "precision",
+    "tolerance",
+    "time",
+    "tick",
+    "ppsfreq",
+    "jitter",
+    "shift",
+    "stabil",
+    "jitcnt",
+    "calcnt",
+    "errcnt",
+    "stbcnt",
+    "tai"
+  ],
+  "nested_time_fields_matching": [
+    "tv_sec",
+    "tv_usec"
+  ],
+  "upstream_source": "/tmp/be19000ai-time64-upstream-v5.1/include/uapi/linux/timex.h",
+  "upstream_source_sha256": "9aeb1fcfac4ac692da7efcc32e0babc8b8f1c7f82aa75b0be5da9ad99fef9244",
+  "upstream_url": "https://raw.githubusercontent.com/torvalds/linux/v5.1/include/uapi/linux/timex.h",
+  "source": "build/time64-abi/timex-layout-syntax.c",
+  "full_layout": "build/time64-abi/timex-record-layouts.txt",
+  "pass": true
+}

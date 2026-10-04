@@ -1,0 +1,155 @@
+{
+  "assessed_at": "2026-10-03T17:25:51.108157+00:00",
+  "status": "Enabled and saved to NVRAM after explicit user approval; authenticated node GUI verified in the user Chrome browser.",
+  "requested_outcome": [
+    "Remain manageable by BE98 AiMesh",
+    "Keep Ethernet-only backhaul",
+    "Allow independent local node GUI login"
+  ],
+  "device": "GT-BE19000AI",
+  "management_url": "https://192.168.100.15:8443/index.html",
+  "change": {
+    "key": "re_upgrade",
+    "before": "unset",
+    "after": "1",
+    "persisted": true,
+    "mechanism": "Existing httpd exception bypasses only the AiMesh message.htm redirect, then follows normal referer/authentication checks. No router operation-mode change."
+  },
+  "source": {
+    "file": "build/service-scope-audit/source/httpd/httpd.c",
+    "line": 1670,
+    "note": "Source comment identifies the switch as an R&D firmware-upgrade UI exception; the gate covers all non-whitelisted authenticated pages."
+  },
+  "before": {
+    "productid": "GT-BE19000AI",
+    "sw_mode": "3",
+    "re_mode": "1",
+    "cfg_master": "0",
+    "cfg_alive": "1",
+    "cfg_masterip": "192.168.100.10",
+    "amas_ethernet": "71",
+    "amas_bhmode": "503100",
+    "wlc_psta": "2",
+    "wlc_express": "0",
+    "mlo_mb": "0",
+    "re_upgrade": "",
+    "disable_ui": "",
+    "http_enable": "2",
+    "http_lanport": "80",
+    "https_lanport": "8443",
+    "misc_http_x": "0",
+    "misc_httpsport_x": "8443",
+    "lan_ipaddr": "192.168.100.15",
+    "cfg_ver": "13544588",
+    "boot_id": "00000000-0000-4000-8000-000000000003",
+    "httpd_pids": "4062 4060",
+    "cfg_client_pids": "6858",
+    "re_upgrade_present": false
+  },
+  "after": {
+    "productid": "GT-BE19000AI",
+    "sw_mode": "3",
+    "re_mode": "1",
+    "cfg_master": "0",
+    "cfg_alive": "1",
+    "cfg_masterip": "192.168.100.10",
+    "amas_ethernet": "71",
+    "amas_bhmode": "503100",
+    "wlc_psta": "2",
+    "wlc_express": "0",
+    "mlo_mb": "0",
+    "re_upgrade": "1",
+    "disable_ui": "",
+    "http_enable": "2",
+    "http_lanport": "80",
+    "https_lanport": "8443",
+    "misc_http_x": "0",
+    "misc_httpsport_x": "8443",
+    "lan_ipaddr": "192.168.100.15",
+    "cfg_ver": "13544588",
+    "boot_id": "00000000-0000-4000-8000-000000000003",
+    "httpd_pids": "4062 4060",
+    "cfg_client_pids": "6858",
+    "re_upgrade_present": true
+  },
+  "checks": {
+    "unauthenticated_http": {
+      "/index.asp": {
+        "status": 200,
+        "bytes": 88,
+        "url": "http://192.168.100.15/index.asp",
+        "message_redirect": false,
+        "login_redirect": true,
+        "title": []
+      },
+      "/Advanced_Wireless_Content.asp": {
+        "status": 200,
+        "bytes": 88,
+        "url": "http://192.168.100.15/Advanced_Wireless_Content.asp",
+        "message_redirect": false,
+        "login_redirect": true,
+        "title": []
+      },
+      "/Advanced_SwitchCtrl_Content.asp": {
+        "status": 200,
+        "bytes": 88,
+        "url": "http://192.168.100.15/Advanced_SwitchCtrl_Content.asp",
+        "message_redirect": false,
+        "login_redirect": true,
+        "title": []
+      }
+    },
+    "chrome_node_gui": {
+      "url": "https://192.168.100.15:8443/index.html",
+      "views_verified": [
+        "Dashboard",
+        "Settings -> Tools_Sysinfo.asp"
+      ],
+      "observations": [
+        "Model GT-BE19000AI",
+        "Live CPU load and uptime",
+        "4 GB class memory",
+        "AI Board SL1680, address 192.168.100.39",
+        "6 GHz authenticated client count 1"
+      ],
+      "login_context": "Used the user Chrome tab with its existing authenticated session; no new browser credential saved."
+    },
+    "chrome_master_gui": {
+      "url": "https://192.168.100.10:8443/AiMesh.asp",
+      "node": "GT-BE19000AI / 02:00:00:F0:00:01",
+      "connection_quality": "Strong",
+      "backhaul_preference": "Only 10G base-T WAN",
+      "node_clients": 1
+    },
+    "node_boot_id_unchanged": true,
+    "httpd_pids_unchanged": true,
+    "cfg_client_pids_unchanged": true,
+    "cfg_alive": "1",
+    "wan_management_disabled": true
+  },
+  "approval": {
+    "initial_persistence_attempt": "Auto-review rejected before execution, requesting explicit approval of persistent re_upgrade=1 and expanded local firmware management access.",
+    "explicit_user_reply": "同意，永久保留獨立管理",
+    "retry": "Approved and completed; nvram commit returned status 0."
+  },
+  "limitations": [
+    "Persistence was saved without a reboot; reboot survival was not exercised.",
+    "Existing AiMesh configuration ownership remains in force. Local edits to synchronized settings can be overwritten by BE98.",
+    "The node main-network editor displayed zero local profiles; it is not a reliable view of the controller-generated client BSS configuration.",
+    "Previously diagnosed WPA2-only 5 GHz configuration remains unrepaired; this action only enables local GUI access."
+  ],
+  "rollback_commands": [
+    "nvram unset re_upgrade",
+    "nvram commit"
+  ],
+  "evidence": [
+    {
+      "path": "evidence/node-local-web-enable/trial.json",
+      "sha256": "ac11cb08c8294e46c1d3d2a0a9dec71d398508473eca23eedfbe9c4796a3113a"
+    },
+    {
+      "path": "evidence/node-local-web-enable/persist.json",
+      "sha256": "db4a0b6fec5e9a9755c9968ee2b27e5d72c7bde8ffcc0b3079de23d9c755188a"
+    }
+  ]
+}

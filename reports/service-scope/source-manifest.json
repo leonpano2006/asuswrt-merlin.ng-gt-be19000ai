@@ -1,0 +1,67 @@
+[
+  {
+    "file": "release/src/router/www/Advanced_Wireless_Content.asp",
+    "bytes": 192837,
+    "sha256": "73087eec1ea9684015fb647ce7ead1b2caf263a4d8612f168f537f02c984fb73"
+  },
+  {
+    "file": "release/src/router/cfg_mnt/cfg_param.h",
+    "bytes": 215055,
+    "sha256": "c1b6d0020aef018ae18e7b63770fcac186a43e70cf2bb5bbd9981b07bf41ddb6"
+  },
+  {
+    "file": "release/src/router/httpd/web.c",
+    "bytes": 1392901,
+    "sha256": "6e5d071c9246520a5376a5c20e8033f99301a8dd71590ebf8784e183c5c3c911"
+  },
+  {
+    "file": "release/src/router/rc/lan.c",
+    "bytes": 213950,
+    "sha256": "383664aad7fcd86ee5987406d41d284ffab9995e1b814132f88ace7b973e600d"
+  },
+  {
+    "file": "release/src/router/rc/services.c",
+    "bytes": 720250,
+    "sha256": "667a87807e299a1911d81973c94cf9e6b41ab4af85df100fbbc2df6e1b6a8664"
+  },
+  {
+    "file": "release/src/router/shared/boardapi.c",
+    "bytes": 49332,
+    "sha256": "91f879d43de5a3471687646d286b12c5809bf1026b069eb7dca1630daecdb383"
+  },
+  {
+    "file": "release/src/router/shared/sysdeps/broadcom/rtkswitch.c",
+    "bytes": 30547,
+    "sha256": "eaa753ea6693d713e414ebc4b076af0b61917d609ff744246ce6fd21f2962afb"
+  },
+  {
+    "file": "release/src/router/www/Advanced_DHCP_Content.asp",
+    "bytes": 47285,
+    "sha256": "5842d0c1b1d2cd9ae7d80900afac6465e342cb2d3afcf08f5aca1956296a9bdd"
+  },
+  {
+    "file": "release/src/router/www/Advanced_VLAN_Switch_Content.asp",
+    "bytes": 67971,
+    "sha256": "38391e764b8c733401bff715a1cc227481ac6fc5b97cc970684b81cc5cac5346"
+  },
+  {
+    "file": "release/src/router/shared/sysdeps/broadcom/broadcom.c",
+    "bytes": 171135,
+    "sha256": "7648d001d035f597f584df1eb989c59d173a88e5e71caedec5ad2abeb7439494"
+  },
+  {
+    "file": "release/src/router/rc/ai_service.c",
+    "bytes": 49964,
+    "sha256": "2dd0013fb961494965ce6d6030c9f46957b1ca34fcba2c6bd31f202f348b86ea"
+  },
+  {
+    "file": "release/src/router/cfg_mnt/Makefile",
+    "bytes": 9477,
+    "sha256": "bc58cb76ae69f503e499e9c4709b16cb2f978610f34edad337361295706d698e"
+  },
+  {
+    "file": "release/src/router/rc/Makefile",
+    "bytes": 76488,
+    "sha256": "a45a47574bdf62207c16e1c781af63f60f6715f482bbfc2bc055ab025b0ae6ce"
+  }
+]

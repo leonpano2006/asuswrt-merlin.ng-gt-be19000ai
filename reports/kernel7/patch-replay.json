@@ -1,0 +1,6 @@
+{
+  "returncode": 0,
+  "output": "Verified patch prefix 5/5 across 127 source files",
+  "patch_sha256": "e2ee130ef931ba8d5737edcf9d4a3a265dbccdf81bb7fb4aae74644f9ba73737",
+  "meaning": "Current touched source unwinds through all five patches to pinned upstream HEAD; no source files changed by verification."
+}

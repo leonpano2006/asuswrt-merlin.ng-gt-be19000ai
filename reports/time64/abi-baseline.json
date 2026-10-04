@@ -1,0 +1,11 @@
+{
+  "baseline_vmlinux_sha256": "76778f142fae0e3c68908718b19b6ade234ac726aef035076c41214e21a4dabe",
+  "config_sha256": "1c495c39d80319246f26a38192eb481b54860ea938d46bbc8156b4fa676a8216",
+  "complete_aggregate_types": 543,
+  "compat_table_entries": 399,
+  "native_table_entries": 294,
+  "vmlinux_exports": 7998,
+  "modversions": "n",
+  "full_evidence": "build/time64-abi/kernel8-full.json",
+  "main_make_invoked": false
+}

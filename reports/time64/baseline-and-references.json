@@ -1,0 +1,20 @@
+{
+  "collected_at": "2026-10-04T12:15:17.712446+00:00",
+  "baseline": {
+    "build/Image-v8": "bd866bd952a79092126e31a15e123d6286f6e10b92ddf3b1e81d553ccb790234",
+    "configs/kernel8.config": "1c495c39d80319246f26a38192eb481b54860ea938d46bbc8156b4fa676a8216",
+    "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/vmlinux": "76778f142fae0e3c68908718b19b6ade234ac726aef035076c41214e21a4dabe"
+  },
+  "upstream_references": [
+    {
+      "url": "https://sourceware.org/glibc/manual/2.44/html_node/Feature-Test-Macros.html",
+      "relevance": "_TIME_BITS=64 requires _FILE_OFFSET_BITS=64; traditional32bit APIs can fall back to legacy syscalls."
+    },
+    {
+      "url": "https://kernel.googlesource.com/pub/scm/linux/kernel/git/arnd/playground/+/refs/tags/y2038-new-syscalls",
+      "relevance": "Author tag lists time64 syscall ABI additions for32bit architectures. Final numbering cross-checked with installed UAPI."
+    }
+  ],
+  "device_clock_changes": false,
+  "kernel_source_changes": false
+}

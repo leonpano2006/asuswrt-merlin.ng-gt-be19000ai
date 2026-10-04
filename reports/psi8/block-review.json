@@ -1,0 +1,51 @@
+{
+  "audit_date": "2026-10-04",
+  "status": "read-only-review-passed-with-explicit-scope-limits",
+  "required_fixes_found": [],
+  "files": [
+    {
+      "path": "block/bio.c",
+      "sha256": "75cabdb0c00dbb001eecd5a1f473a41b9365a0114ddc3e50c61553a28c2eb9eb"
+    },
+    {
+      "path": "block/blk-core.c",
+      "sha256": "26ff2e88a24bb2c0d501dc2cafe498673ffe4c672d54acaab5174fa70ecb3c92"
+    },
+    {
+      "path": "block/blk-cgroup.c",
+      "sha256": "ba89404ffcf5fa4aad2f51c21c924b3e246000574787d757ab785da4f5c3e527"
+    },
+    {
+      "path": "include/linux/blk_types.h",
+      "sha256": "f4fd69a29eb29911b0eda68abdc628cb06d4fd2ea642f746d156a9ebb96f4f95"
+    }
+  ],
+  "references": [
+    {
+      "commit": "b8e24a9300b0836a9d39f6b20746766b3b81f1bd",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=b8e24a9300b0836a9d39f6b20746766b3b81f1bd"
+    },
+    {
+      "commit": "a051a4bf909f76f470ccb3761ee0cf6e2395616e",
+      "tag": "v5.15.222",
+      "url": "https://github.com/gregkh/linux/blob/a051a4bf909f76f470ccb3761ee0cf6e2395616e/block/bio.c"
+    }
+  ],
+  "verified": {
+    "flags": "BIO_WORKINGSET12 is below BVEC_POOL_OFFSET13; existing bits1..11 and pool13..15 unchanged. bio_reset retains only bits>=13, so it clears WORKINGSET on reuse. Header rejects future overlap.",
+    "tagging": "__bio_add_page tags a newly added page only when PageWorkingset. In this MM stage only previously active file-cache pages receive this flag. Newly allocated anonymous pages and new swapin pages are not tagged.",
+    "same_page_merge": "4.19 __bio_try_merge_page accepts only the same struct page and contiguous offset; that page was tagged during its initial vector insertion. It cannot merge a different hot page unnoticed.",
+    "submission": "submit_bio only enables memory stall for BIO_WORKINGSET and bio_has_data and non-write operations. Enter and leave use a local nested-state snapshot around generic_make_request; no intervening local early return or access to bio after potential completion/free.",
+    "operation_scope": "The condition follows upstream read-direction logic (!op_is_write), not equality with REQ_OP_READ. PC/passthrough constructors bio_add_pc_page do not tag WORKINGSET in the audited code.",
+    "throttle": "blkcg returns on zero delay before entering. use_memdelay alone gates enter/leave; timeout and fatal-signal paths both pass through io_schedule_finish and psi_memstall_leave. Existing250ms cap is preserved.",
+    "clones": "__bio_clone_fast and bio_split do not copy WORKINGSET, matching pinned5.15. Normal synchronous block stacking and queue splits are processed within the original generic_make_request invocation and remain inside its parent memstall interval. No mandatory clone propagation change was identified.",
+    "direct_io": "fs/block_dev and iomap direct IO use bio_iov_iter_get_pages, which fills bvecs directly rather than calling __bio_add_page; ordinary directIO is not misrepresented as file-cache refault. Legacy fs/direct-io uses bio_add_page; ordinary anonymous user buffers still lack PageWorkingset."
+  },
+  "limits": [
+    "An unusual legacy directIO read into an already-uptodate file-backed mmap buffer carrying PageWorkingset can inherit upstream tagging despite not representing a cache refault. Not newly introduced relative to the selected upstream algorithm; a strict !PageUptodate tagging filter would be a further semantic change needing its own test.",
+    "A newly cloned bio handed to another task before its first top-level submit can lose the hint. The audited normal stack does not require clone-copy to count its caller submission interval; do not claim all arbitrary out-of-tree asynchronous clone users are covered.",
+    "bio_add_pc_page/passthrough and direct_make_request do not receive this new submit hook by construction; generic userspace directIO is IO pressure, not inherently memory pressure.",
+    "Swap/frontswap/zram MEM classification remains intentionally deferred until coherent anonymous workingset detection; IO pressure and pre-existing reclaim PSI still exist."
+  ],
+  "decision": "No source changes from this review. Keep current upstream-equivalent block hooks and root-run validation; record unusual DIO/async-clone boundaries instead of claiming universal coverage."
+}

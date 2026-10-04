@@ -1,0 +1,120 @@
+{
+  "audit_date": "2026-10-04",
+  "status": "implemented-source-ready-for-parent-build-and-QEMU",
+  "scope": "Coherent file-page-cache workingset classification plus PSI refault waits; root agent owns block submission instrumentation. Anonymous/swap workingset extension is separately mapped, not claimed implemented.",
+  "source_tree": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19",
+  "baseline": "build/psi8-baseline",
+  "source_commits": [
+    {
+      "sha": "95f9ab2d596e8cbb388315e78c82b9a131bf2928",
+      "title": "mm: workingset: don't drop refault information prematurely",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=95f9ab2d596e8cbb388315e78c82b9a131bf2928",
+      "input_json_sha256": "597b404c279de7f46c71a9e9d2284a548eef3852ed15abf4217999948be7f866"
+    },
+    {
+      "sha": "1899ad18c6072d689896badafb81267b0a1092a4",
+      "title": "mm: workingset: tell cache transitions from workingset thrashing",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=1899ad18c6072d689896badafb81267b0a1092a4",
+      "input_json_sha256": "5406befb4261534edf68235c7e1cdf5120717b4d4bf984d51394227d1cf79406"
+    },
+    {
+      "sha": "eb414681d5a07d28d2ff90dc05f69ec6b232ebd2",
+      "title": "psi: pressure stall information for CPU, memory, and IO",
+      "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=eb414681d5a07d28d2ff90dc05f69ec6b232ebd2",
+      "input_json_sha256": "4b8046fd846058f3fd0a9a134732c5fd7bfaab44c44610c31380d748ee4543c2"
+    }
+  ],
+  "changed_files": [
+    {
+      "path": "mm/workingset.c",
+      "baseline_sha256": "e06ce88d0fe9dc8969639c490084adc2f8d314bbcd4135315a17d78ac8f1c672",
+      "new_sha256": "1880d94f9c0063d7938185a189be7e6d88b8bcee331cadf86812f07cd4d98bd7"
+    },
+    {
+      "path": "mm/filemap.c",
+      "baseline_sha256": "4fe979551c61dcbf765c45f3a702a36535308f5b6a84458ab2948d0cf6fc5ff7",
+      "new_sha256": "9b22d3076e1402ba0e61b1093220ce08c464d1b32e479ac57230c7ba01aa9321"
+    },
+    {
+      "path": "mm/vmscan.c",
+      "baseline_sha256": "50c9f40a7436ce7421a6fc9c7e583f82dd60142e5d7308cab86a28b5a3a1f8e5",
+      "new_sha256": "0b42697f515bc31010ee658b4221e92fe00e14bf9d0af118038e74f6dc41e9b8"
+    },
+    {
+      "path": "mm/migrate.c",
+      "baseline_sha256": "56a6405c7c1c128e3d5e1566b45d5e3c7fdda04d63bc2624f024101cb08f9f42",
+      "new_sha256": "6c5d01304e3a948944b9a6fd0ff6e2415d0e569dd947b28ff5b2c50a28c8247c"
+    },
+    {
+      "path": "mm/huge_memory.c",
+      "baseline_sha256": "1cd9c610898f8a9d506c33d5b2ac24e3f745f398b4dca56ca6d0383aac7d24d4",
+      "new_sha256": "6fc7667863c2678250b19e67ff9c6db750b0c6f41e5b90bd9c72ea10fe2b2f9b"
+    },
+    {
+      "path": "include/linux/page-flags.h",
+      "baseline_sha256": "951c7e7859b59dc2aa5258c84a54d32d0222efb006504316a21f4ea7f7e13105",
+      "new_sha256": "8383f5df8cb78c7164a6f154a46f58d77800bc130ddd47c7fd2c07c25d558bb0"
+    },
+    {
+      "path": "include/linux/swap.h",
+      "baseline_sha256": "331e8dc27c07af6aafb2ec3f702521c4b3f4311640f07c5fabe22f8b50fac472",
+      "new_sha256": "87612ac7decb7c61c1f6f8c8b7aa66fcb5dd905fa0c479ab316cd38143c647cd"
+    },
+    {
+      "path": "include/trace/events/mmflags.h",
+      "baseline_sha256": "33a21aae1b7816441f57d5fc72739ff48433780933976b1c43f757531996dd75",
+      "new_sha256": "83acffda4eb2530ccdfdcd908b097064b9e5c9c14956d30a117f10a2f08de1ae"
+    }
+  ],
+  "review_patch": {
+    "path": "inputs/psi-mm-audit/file-refault-selected.patch",
+    "sha256": "dddf023225302323262d7f629e8cb27a087aab17d6dc62684d6f65248d0c4d68"
+  },
+  "adaptations": [
+    "Append PG_workingset immediately before __NR_PAGEFLAGS instead of upstream insertion/reordering. Selected BCM config assigns bit 21; every old enum value is retained. Rebuild generated bounds.h before ABI probe.",
+    "Do not add WORKINGSET_RESTORE diagnostic counter or modify node_stat_item. Existing values, NR_VM_NODE_STAT_ITEMS and embedded VM-stat array lengths are preserved. The counter does not drive PSI or refault decisions.",
+    "workingset_refault now accepts (page,shadow) and performs activation/restoration like upstream. It has no EXPORT_SYMBOL and is absent from the candidate Module.symvers; its only source caller is updated. No module-callable signature is replaced.",
+    "Do not apply original unconditional SetPageWorkingset(new_page) in swap_state.c. In the file-only stage, shrink_active_list marks only page_is_file_cache pages, and wait instrumentation explicitly excludes PageSwapBacked pages.",
+    "Import only PSI enter/leave from original filemap hook, not its separate delayacct/taskstats extension; this avoids enlarging task_delay_info and does not reduce PSI accounting.",
+    "Copy PG_workingset during migration and compound-page split. PAGE_FLAGS_CHECK_AT_PREP automatically includes the appended flag, and existing free_pages_prepare clears it before page reuse.",
+    "Keep existing 4.19 refault-distance algorithm and inactive_age layout. Shadow entries gain one private in-memory historical-active bit; no persistent storage format changes. Full-cache transition and cold reads are not automatically memory stalls."
+  ],
+  "semantic_path": [
+    "File page becomes active through actual repeated access/refault.",
+    "When active file page is deactivated, set PageWorkingset.",
+    "On reclaim, pack historical-active bit into existing shadow entry alongside memcg/node/eviction timestamp.",
+    "On eligible refault within active_file distance, activate replacement page and restore PageWorkingset only if shadow says previously active.",
+    "Waiting for PG_locked on a not-yet-uptodate, non-swap-backed PageWorkingset page enters memory stall; completion and interrupted wait converge on the same leave."
+  ],
+  "verified_static_checks": {
+    "git_diff_check": "pass for owned files",
+    "existing_pageflag_values": "enum text identical after removing appended flag",
+    "struct_page_definition": "mm_types.h byte-identical to baseline",
+    "vm_stat_enum_and_lruvec_layout": "mmzone.h byte-identical to baseline",
+    "wait_enter_leave_pairs": 1,
+    "wait_return_paths": 1,
+    "flag_reuse_cleanup": "page_alloc.c clears PAGE_FLAGS_CHECK_AT_PREP on all inspected normal/compound free preparation paths",
+    "migration_and_split": "flag explicitly copied"
+  },
+  "validation_not_claimed": [
+    "Parent full kernel build",
+    "Compiled page/zone/node flag and struct layout guard",
+    "QEMU cold/hot file refault A/B",
+    "Hardware boot or firmware flash"
+  ],
+  "remaining_scope": [
+    "Anonymous/swap workingset detection and guarded swap_readpage/frontswap/zram PSI are not implemented here.",
+    "4.19 refault distance remains based on its existing local active-file LRU; later cross-cgroup/reclaim-root and file-versus-anon balancing algorithms are not silently imported.",
+    "No new workingset_restore statistic is exposed; PSI behavior does not require that statistic."
+  ],
+  "final_lifecycle_review": {
+    "status": "no-mandatory-fix-found",
+    "normal_and_compound_free": "free_pages_prepare clears PAGE_FLAGS_CHECK_AT_PREP on head and constituent pages; appended flag is included in NR_PAGEFLAGS-generated mask.",
+    "migration": "migrate_page_states explicitly copies PageWorkingset; old page is cleared by normal allocator recycle.",
+    "compound_split": "__split_huge_page_tail includes PG_workingset in its copied flag mask before publishing the noncompound page.",
+    "page_cache_replacement": "No extra field allocation or resource ownership is introduced; metadata remains within the page and existing refault shadow, and original upstream selected series does not require a new replacement destructor.",
+    "interrupted_wait": "The only wait return occurs after finish_wait and conditional psi_memstall_leave. No PageWorkingset re-test on exit can accidentally skip leave.",
+    "swap_boundary": "swap_state has no SetPageWorkingset; vmscan tag and filemap wait retain file-only guards until an anon-coherent extension exists.",
+    "validated_elsewhere": "Root and test agent report full build and cold/hot A/B pass; ABI agent reports old field sizes/offsets/flag values preserved. Detailed validation belongs to their independently generated reports."
+  }
+}
