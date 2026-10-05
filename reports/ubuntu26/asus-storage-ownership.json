@@ -1,0 +1,185 @@
+{
+  "schema_version": 1,
+  "status": "native kernel10 namespace/NSS/storage ownership fixture passed; actual ASUS services and hardware activation remain gated",
+  "source_pin": "9b25e55ca5c56a6f01d6a56264c0f6c47459ada0",
+  "base": "build/asus-private-etc/asuswrt6-v1/source",
+  "patch": {
+    "path": "patches/ubuntu26/asuswrt6/0009-asus-native-storage-ownership.patch",
+    "sha256": "25f3a329dc4bfddad760cc142657a2c4c363bc41768b1b74897cb747c11f7010"
+  },
+  "source_changes": [
+    {
+      "path": "release/src/router/rc/Makefile",
+      "before_sha256": "a9964277289f2d71316a4604bba3fe8adaceb9108592c8b80db77faabbfea5a9",
+      "after_sha256": "9e542c5f4486a585a0d48c6c5f4d46db0d6d7870d475742fc661a7dc9242c8bb"
+    },
+    {
+      "path": "release/src/router/rc/init.c",
+      "before_sha256": "6e74d8235954defc61010b60168b767a5aea133e3518ef0cd460bc8ad4ac2abe",
+      "after_sha256": "cbc3f94bf71ff7dd5500eaf25e1e3bde9f9c4647224f47a7e57a29f576056534"
+    },
+    {
+      "path": "release/src/router/rc/rc-storage.c",
+      "before_sha256": null,
+      "after_sha256": "7925b40419c62794c7adc0883027f7c2d261e3e11c252d14121cad854d7fd033"
+    },
+    {
+      "path": "release/src/router/rc/rc-storage.h",
+      "before_sha256": null,
+      "after_sha256": "face11d0792c0e5dbb941d590fae92755911df09907fd366277c455adac0d763"
+    }
+  ],
+  "apply": {
+    "returncode": 0,
+    "stdout": "patching file release/src/router/rc/Makefile\npatching file release/src/router/rc/init.c\npatching file release/src/router/rc/rc-storage.c\npatching file release/src/router/rc/rc-storage.h\n",
+    "fuzz": 0
+  },
+  "native_verifier": {
+    "path": "scripts/asus-integration/storage-owner.c",
+    "sha256": "b9b96179a4a61aa486e15b317a3ee3e94f831587892c8a787efd7ee50f762c25",
+    "command": "/usr/libexec/asus/storage-owner --prepare",
+    "runs_in": "PID1 mount namespace before broker/ASUS launcher",
+    "policy": "/etc/asus/storage-ownership.conf, root-owned regular0600; explicit data+jffs UUIDs, no guessed device names",
+    "proof": "/run/asus/storage-owned, root0600 atomic record of boot_id/UUID/filesystem/device/inode",
+    "behavior": "Only reads actual block-device UUID via native blkid; never mounts/formats/erases. Wrong/missing policy revokes stale proof and fails125."
+  },
+  "rc_changes": [
+    "All init_main paths require native attestation before /data/NVRAM work. Inline mount /data removed; original bcm_knvram load order remains.",
+    "Ubuntu Makefile excludes closed ext4fs.o and supplies its two exact public exports from rc-storage.c.",
+    "start_ext4fs checks private namespace/native proof/destructive NVRAM flags; original rc.h setup_jffs_dirs and later startup hooks remain.",
+    "stop_ext4fs syncs the filesystem, never unmounts shared JFFS; no clean/format/erase/reboot fallback exists in replacement.",
+    "RTCONFIG_JFFS_NVRAM marker/init behavior retained under its exact compile guard."
+  ],
+  "hard_activation_requirements": [
+    "Verified data/jffs UUID policy is prepared offline from successful v2 read-only capture; install root0600 only with native mount ownership and startup ordering.",
+    "Native data.mount/jffs.mount ownership and BindsTo/After ordering; do not use PrivateMounts for storage-owner helper.",
+    "Matching ext4fs.o removal must be verified in actual linked rc; source patch application alone is insufficient.",
+    "Other manufacturing reset, firmware flash, or arbitrary privileged shell commands remain separate hardware policy; this patch governs normal filesystem start/stop ownership."
+  ],
+  "board_storage_context": "Earlier audit: p7 data100MiB, p9 jffs200MiB; p10 AI board12GiB must remain untouched. Partition numbers are not used as UUID verification.",
+  "actual_devices_accessed": false,
+  "actual_asus_services_executed": false,
+  "flash_allowed": false,
+  "target_runtime_fixture": {
+    "status": "passed_kernel10_private_etc_and_storage_fixture",
+    "scope": "Real kernel10/systemd PID1, production mount checks and real PID1 references; only backend is synthetic. Private ext4 is an image wholly inside guest RAM, no host disks or NIC.",
+    "evidence": [
+      {
+        "path": "build/asus-private-etc/qemu-v5/manifest.json",
+        "sha256": "5d5702ab3d83113e6908137abedc0e7b29aa36853d3ff4634bfca7c6c3584d3e"
+      },
+      {
+        "path": "build/qemu/asus-private-etc-v5/result.json",
+        "sha256": "3b9a9c01f4cdf4a2181aa331919253a638bb4127d78445cce2f7d54c886c6a71"
+      },
+      {
+        "path": "build/qemu/asus-private-etc-v5/serial.log",
+        "sha256": "dc5ef813fa8a081922a5b75d2ec37a26d84ba69dd1b978d6587a083bebadca71"
+      },
+      {
+        "path": "build/asus-private-etc/native-v2/result.json",
+        "sha256": "74e943305cd775bea5d9e136350c1c6ff9c473dea69ac0e613d099cdf55540b5"
+      }
+    ],
+    "kernel_sha256": "4a15601eada042576aed2a3680dcc48e9228eea70f70c478840767aaa89a9f8e",
+    "initramfs_sha256": "220d294b15b5aa1eaa94249ee94ef2faf23b316f53053efea7a8a680ae5170d3",
+    "rootfs_sha256": "057c52f70d8974691179235c4e273a6be0d474edde11d6c1cb85b09b11b250a4",
+    "native_compiler": "gcc-16 (Ubuntu 16.2.0-3ubuntu1+leonb53.1) 16.2.0",
+    "native_libc": "glibc 2.44",
+    "matched_asus_busybox": {
+      "source": "build/asus-private-shell/native-v4/busybox-native",
+      "target": "usr/libexec/asus/busybox",
+      "sha256": "686d6f8557891d97814415092daac5a7b176a94aeacd76c6b96e2a0a868d20c6"
+    },
+    "production_guards": "Real PID1 namespace and /proc/1/root/etc references; production ext4 mount checks; only backend path is replaced by benign probe.",
+    "verified": [
+      "Actual guest ext4 block-device UUID accepted and atomic boot/device/inode attestation consumed before and inside the ASUS namespace.",
+      "Wrong UUID rejects with status125 and removes a previously valid attestation; removing mounts invalidates previously valid proof.",
+      "ASUS private passwd/shadow/group lookups and regenerated hosts work without modifying nine protected Ubuntu files or adding host ld.so.preload.",
+      "A native dynamic child loads the private notify shim, sees private NSS, and executes through matching ASUS ash with inherited signal mask cleared.",
+      "Writes to data, jffs and run remain shared; the launcher refuses missing persistence mounts.",
+      "Native journald, udev and dbus remain active; real systemd PID1 completes the fixture."
+    ],
+    "marker_counts": {
+      "LAB_PRIVATE_ETC_STORAGE_UUID_ATTESTATION_PASS": 1,
+      "LAB_PRIVATE_ETC_HOST_IDENTITY_PASS": 2,
+      "LAB_PRIVATE_ETC_DESCENDANT_NSS_SHELL_MASK_PASS": 1,
+      "LAB_PRIVATE_ETC_NSS_ACCOUNT_HOSTS_SHARED_PASS": 1,
+      "LAB_PRIVATE_ETC_QEMU_NATIVE_HOST_UNCHANGED_PASS": 1,
+      "LAB_PRIVATE_ETC_STORAGE_WRONG_UUID_REVOKED_PASS": 1,
+      "LAB_PRIVATE_ETC_STORAGE_STALE_MOUNT_REJECTED_PASS": 1,
+      "LAB_PRIVATE_ETC_QEMU_PERSISTENT_MOUNT_REQUIRED_PASS": 1,
+      "LAB_PRIVATE_ETC_KERNEL10_COMPLETE": 1,
+      "LAB_PRIVATE_ETC_QEMU_EXIT_code=0": 1,
+      "LAB_SYSTEMD_FULL_PROBE_EXIT_code=0": 1
+    },
+    "limitations": [
+      "No actual ASUS rc/service/hardware execution; synthetic account operations exercise the same guard and libc/NSS interfaces.",
+      "ARMEL shim is a checked prerequisite but this fixture runs no ARMEL program; ABI-specific preload proof is separate.",
+      "Fixture data and jffs deliberately share one guest-RAM ext4 filesystem; actual board UUID policy is still unset.",
+      "No real router device, secret, network interface or persistent storage is passed through."
+    ],
+    "actual_asus_services_executed": false,
+    "actual_devices_accessed": false,
+    "flash_allowed": false,
+    "checker_sha256": "dd1025ebace08e43d5d2a71df4600f29309e89c6c7671f07aca7690488cc999c"
+  },
+  "combined_source_evidence": {
+    "path": "reports/ubuntu26/asuswrt6-combined-port.json",
+    "sha256": "651edad9988b572d6865621ced5c32371e7b3ce1dc332672e7e079fa28695412"
+  },
+  "verified_device_policy": {
+    "path": "configs/ubuntu26/asus-storage-ownership.be19000ai-verified.conf",
+    "sha256": "8b36f4b8bbe5c9418a14e396173c539877f59dca4ca64d3a4eaed317e8e9ba2b",
+    "evidence": [
+      {
+        "path": "evidence/ubuntu26/storage-identity/20261004-v2/result.json",
+        "sha256": "5d519f8ca85d1ac3d1bacd001f450ef107ec669b182c569f9afc5ec65c124676"
+      },
+      {
+        "path": "evidence/ubuntu26/storage-identity/20261004-v2/capture.txt",
+        "sha256": "d670ca0b2fc1c992d13a58fb1e10ecd66fa7d6e2acf941ded797365a6b553328"
+      },
+      {
+        "path": "evidence/ubuntu26/storage-identity/20261004-v2/capture-meta.json",
+        "sha256": "9c7647d776cf672ae0ef5d4db68f9d629df6bf5bf488b5d6813dbebb87be931d"
+      }
+    ],
+    "status": "prepared offline only; not installed or activated",
+    "scope": "Exact BCM data and jffs UUIDs only. No AI-board partition or guessed device policy.",
+    "runtime_requirement": "Native helper still reads and compares actual mounted block-device UUIDs on each activation."
+  },
+  "verified_bsp_device_policy": {
+    "path": "configs/ubuntu26/asus-bsp-storage-ownership.be19000ai-verified.conf",
+    "sha256": "920ac40dd0e68d30b0d6591943399bcf06f4c0fc01a19a0872bc36be33a60a7c",
+    "identities": [
+      {
+        "name": "defaults",
+        "device": "/dev/mmcblk0p8",
+        "uuid": "b33c1d3a-f5a1-4beb-b0fe-edfdecba957d",
+        "filesystem": "ext4",
+        "observed_mounts": [
+          "22 18 179:8 / /tmp/mnt/defaults rw,relatime - ext4 /dev/defaults rw",
+          "27 26 179:8 / /tmp/mnt/defaults rw,relatime - ext4 /dev/defaults rw"
+        ],
+        "candidate_access": "native read-only /mnt/defaults"
+      },
+      {
+        "name": "ai",
+        "device": "/dev/mmcblk0p10",
+        "uuid": "d6754055-3be0-4b1d-8dc4-3c3bb8493fbe",
+        "filesystem": "ext4",
+        "observed_mounts": [
+          "25 14 179:10 / /ai rw,relatime - ext4 /dev/aiboard rw"
+        ],
+        "candidate_access": "native read-write /ai"
+      }
+    ],
+    "capture": {
+      "path": "evidence/ubuntu26/storage-identity/20261004-v3/capture.txt",
+      "sha256": "5ec2e8a014daf0be977eb2031c4aa0d3ceb613d277de9097fbdc127e1b8a2358"
+    },
+    "status": "offline candidate only; no existing mounts changed",
+    "differences": "Native defaults has one canonical mount at /mnt/defaults, read-only. Stock has two stacked rw mounts at /tmp/mnt/defaults and a dangling /mnt/nvram -> /mnt/defaults/wl. Do not reproduce duplicate mounts or assume calibration files exist."
+  }
+}

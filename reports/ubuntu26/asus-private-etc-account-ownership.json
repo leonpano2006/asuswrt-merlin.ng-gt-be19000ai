@@ -1,0 +1,406 @@
+{
+  "schema_version": 1,
+  "status": "native kernel10 namespace/NSS/storage ownership fixture passed; actual ASUS services and hardware activation remain gated",
+  "source_pin": "69838e4a60564e5550e97f11d8a8cf2c6260c4f0",
+  "verified_source_files": 118,
+  "prerequisite_patches": [
+    {
+      "path": "patches/ubuntu26/0003-asus-rc-systemd-manager.patch",
+      "sha256": "466074a96ce4e24f92f2055bc25d03230381ba19f650243cc75c7d2d94b6cb0f",
+      "output": "patching file release/src/router/rc/Makefile\npatching file release/src/router/rc/ai_service.c\npatching file release/src/router/rc/alt_watchdog.c\npatching file release/src/router/rc/btnsetup.c\npatching file release/src/router/rc/firewall.c\npatching file release/src/router/rc/fwupg_flashing.c\npatching file release/src/router/rc/init.c\npatching file release/src/router/rc/jffs2.c\npatching file release/src/router/rc/mtd.c\npatching file release/src/router/rc/natnl_api.c\npatching file release/src/router/rc/ntpd.c\npatching file release/src/router/rc/qmacc.c\npatching file release/src/router/rc/rc-bridge.h\npatching file release/src/router/rc/rc-client.c\npatching file release/src/router/rc/rc-legacy.c\npatching file release/src/router/rc/rc-manager.c\npatching file release/src/router/rc/rc-shell-boundary.c\npatching file release/src/router/rc/rc-systemd-select.h\npatching file release/src/router/rc/rc.c\npatching file release/src/router/rc/sched_daemon.c\npatching file release/src/router/rc/sdn.c\npatching file release/src/router/rc/services.c\npatching file release/src/router/rc/snmpd.c\npatching file release/src/router/rc/ssh.c\npatching file release/src/router/rc/sysdeps/init-broadcom.c\npatching file release/src/router/rc/sysdeps/wps-broadcom.c\npatching file release/src/router/rc/timemachine.c\npatching file release/src/router/rc/udhcpc.c\npatching file release/src/router/rc/usb.c\npatching file release/src/router/rc/vpn.c\npatching file release/src/router/rc/wanduck.c\npatching file release/src/router/rc/watchdog.c\npatching file release/src/router/rc/wtfast.c\n"
+    },
+    {
+      "path": "patches/ubuntu26/0004-asus-rc-persistent-layout.patch",
+      "sha256": "ce649ba8cfa84c0fec86fdd3ac87a85a765f863ed65a47a2babf7f65f5c6746a",
+      "output": "patching file release/src/router/rc/init.c\nHunk #1 succeeded at 13 (offset 1 line).\nHunk #2 succeeded at 25388 (offset 16 lines).\nHunk #3 succeeded at 25414 (offset 16 lines).\nHunk #4 succeeded at 25435 (offset 16 lines).\nHunk #5 succeeded at 25484 (offset 16 lines).\nHunk #6 succeeded at 25548 (offset 16 lines).\nHunk #7 succeeded at 25605 (offset 16 lines).\nHunk #8 succeeded at 25636 (offset 16 lines).\nHunk #9 succeeded at 25658 (offset 16 lines).\nHunk #10 succeeded at 26269 (offset 16 lines).\nHunk #11 succeeded at 26281 (offset 16 lines).\nHunk #12 succeeded at 26686 (offset 23 lines).\nHunk #13 succeeded at 27402 (offset 30 lines).\npatching file release/src/router/rc/services.c\nHunk #1 succeeded at 20 (offset 1 line).\nHunk #2 succeeded at 1443 (offset 1 line).\nHunk #3 succeeded at 1545 (offset 1 line).\nHunk #4 succeeded at 1830 (offset 1 line).\npatching file release/src/router/rc/rc-persistent.h\n"
+    },
+    {
+      "path": "patches/ubuntu26/0005-asus-rc-openssh-ownership.patch",
+      "sha256": "ffa29ff0875cd23402608aad901745d1dabf1b88e7e4bc29fbc07acd544478be",
+      "output": "patching file release/src/router/rc/ssh.c\n"
+    },
+    {
+      "path": "patches/ubuntu26/0006-asus-libovpn-systemd-manager.patch",
+      "sha256": "ea37ab0969bc36b1fe7bdbe7684b6d05bac256b2a1faa42c550edff2420c48f6",
+      "output": "patching file release/src/router/libovpn/Makefile\npatching file release/src/router/libovpn/openvpn_control.c\npatching file release/src/router/libovpn/ovpn-manager.h\n"
+    }
+  ],
+  "patch": {
+    "path": "patches/ubuntu26/0007-asus-private-etc-account-ownership.patch",
+    "sha256": "005a0a0328deab2b57da60e75fbd9065d20339b696639bdc798ebb20eb35303b"
+  },
+  "source": "build/asus-private-etc/v2/source",
+  "source_changes": [
+    {
+      "path": "release/src/router/rc/rc.c",
+      "before_sha256": "7232eb9bc441023dddd869b769fe584db10c500315321e9bb768f54a5f1e321d",
+      "after_sha256": "f582ef11d56bf788ead4d62bddc77f79d61aec1922e6154d4989590653cf6dbf",
+      "guards": [
+        {
+          "function": "int main(int argc, char **argv)",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "release/src/router/rc/init.c",
+      "before_sha256": "765e5525f5f8c1bbf27292ba0e2f7a2da23ba23f86ba61aa0c4fd8fdfe27c65f",
+      "after_sha256": "2cd34ccba6a7da037243577eb53dd6f57895ad99deb4c0448a0c94a2520e62d0",
+      "guards": [
+        {
+          "function": "static void sysinit(void)",
+          "count": 1
+        },
+        {
+          "function": "int init_main(int argc, char *argv[])",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "release/src/router/rc/services.c",
+      "before_sha256": "81f66e0011328a759e0fba1568c1d4baf59cd12942f3939ec61765623fb9cdb0",
+      "after_sha256": "57a5746405ae897efd0041bd275aed834c9494ac3f8e4d5059353a0916521dd5",
+      "guards": [
+        {
+          "function": "void setup_passwd(void)",
+          "count": 1
+        },
+        {
+          "function": "void create_passwd(void)",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "release/src/router/rc/usb.c",
+      "before_sha256": "82ea70a2ec5f3d4096851060d37afb29c17de6842f40af38e7f9ead44c32d6a3",
+      "after_sha256": "47f0a0229d80a33d1d5523274bfd03c282bc67179236a56f15eba0b9d3cff901",
+      "guards": [
+        {
+          "function": "void create_custom_passwd(void)",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "path": "release/src/router/rc/ovpn.c",
+      "before_sha256": "15a765e1bb8f89bb566408b7bf5c1f41267f1c9c2ad9ba1fd16a3906bc055e95",
+      "after_sha256": "dcffab5b15fd3bb398f1d0fa94b2ddd56e0e77faeb3f6da09252799dcfc9e65c",
+      "guards": [
+        {
+          "function": "void create_ovpn_passwd()",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "implementation": [
+    {
+      "path": "scripts/asus-integration/private-etc-launch.c",
+      "sha256": "be525d331b397ea33e9978c841fb4db79af3c4170807a18b38fca30d4fddf2dd"
+    },
+    {
+      "path": "scripts/asus-integration/rc-private-etc.h",
+      "sha256": "e1b2fb3afcda3f119661f24e26c25d16e8a6851b9bd6027e9874014b8f47e140"
+    },
+    {
+      "path": "scripts/asus-integration/prepare-private-etc-port.py",
+      "sha256": "5c423d4a47c1e131289f4fc388a7d18cb877bea7baab1dbcfc556019e97eeff4"
+    }
+  ],
+  "account_policy": {
+    "native_ubuntu": "Ubuntu/OpenSSH passwd/shadow/group/gshadow, system users and SSH credentials remain outside the ASUS mount namespace. No SSH credential synchronization is performed.",
+    "asus": "Original create_passwd/create_custom_passwd/create_ovpn_passwd semantics and UID/GID assignments are preserved in a private /etc overlay; NAS/FTP/PAM/OpenVPN consumers inherit that exact namespace and files NSS view.",
+    "failure": "All guarded account entrypoints and the rc dispatcher exit125 if private overlay identity is absent. No host identity fallback or successful no-op.",
+    "atomicity": "Vendor account writers retain their original multi-file update behavior. This implementation prevents host corruption; it does not claim transactional updates of the four private account files.",
+    "custom_hooks": "JFFS passwd/shadow/group hooks execute inside the private view. They remain privileged trusted code and are not confined against deliberate /proc/1/root access."
+  },
+  "namespace": {
+    "launcher": "/usr/libexec/asus/etc-launch --leon-systemd",
+    "backend": "/usr/libexec/asus/rc",
+    "argv0": "/sbin/init",
+    "new_namespaces": [
+      "mount"
+    ],
+    "unchanged_namespaces": [
+      "pid",
+      "network",
+      "user"
+    ],
+    "propagation": "recursive slave: child mounts do not propagate to host; existing persistent and runtime mounts remain the same objects",
+    "lower": "read-only bind of Ubuntu /etc",
+    "upper_work": "unique /run/asus/etc-ns/generation.*/{upper,work}",
+    "required_shared_mounts": [
+      "/run",
+      "/data",
+      "/jffs"
+    ],
+    "persistent_requirement": "/data and /jffs must already be writable mounts; production rejects tmpfs/ramfs/overlay.",
+    "private_shell": "verified /usr/libexec/asus/ash binds read-only onto canonical /usr/bin/dash only in child namespace",
+    "private_preload": "/usr/$LIB/leon-asus/libleon-rc-notify.so; both native and armel package libraries required; ABI expansion/loading proof owned by root",
+    "hosts": "private /etc/hosts symlinks to /run/asus/etc/hosts, allowing libc files NSS and dnsmasq to see the same dynamically regenerated ASUS table",
+    "nsswitch": "private files passwd/group/shadow/gshadow; hosts files dns; no systemd identity injection into vendor view"
+  },
+  "kernel": {
+    "config": "configs/kernel10.config",
+    "CONFIG_OVERLAY_FS": "m",
+    "module": "build/kernel10-module-root/lib/modules/4.19.294/kernel/fs/overlayfs/overlay.ko",
+    "module_sha256": "5c3b87c54430a351bf7cbd91d1217950457055817c97a6a79d7e03be9483793e",
+    "requirement": "native manager loads the exact kernel10 overlay module before launcher"
+  },
+  "remaining_integration": [
+    "Native package wiring and actual board-specific rc build/link remain required.",
+    "Vendor units started separately by systemd do not automatically inherit this mount namespace; explicitly join the rc namespace before activation.",
+    "Private /etc lower includes Ubuntu defaults, not all missing ASUS /rom/etc defaults; seed required vendor config files explicitly.",
+    "Existing JFFS/data mounting, BCM boot scripts, mdev/hotplug2 and direct hardware operations still require ownership integration.",
+    "No new network namespace: ASUS DHCP/DNS/firewall still share host networking and require explicit service ownership.",
+    "Old generation directories remain in volatile /run until reboot; a safe stopped-service cleanup policy is still required.",
+    "This is mount ownership separation for trusted root services, not a sandbox for malicious vendor code."
+  ],
+  "runtime_fixture": {
+    "status": "passed_host_namespace_fixture",
+    "scope": "Host kernel user/mount/PID namespace plus empty synthetic chroot, production launcher compiled but not run. Test launcher permits synthetic persistence mounts with a fixture marker. Parent namespace and etc identity use read-only bind references because subordinate usernamespace cannot read /proc/1/root; production keeps real PID1 reference paths.",
+    "builds": [
+      {
+        "command": [
+          "gcc",
+          "-std=gnu11",
+          "-O2",
+          "-static",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-I/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/scripts/asus-integration",
+          "-DLEON_ETC_HOST_DIRECTORY=\"/fixture-origin-etc\"",
+          "-DLEON_ETC_TEST_FIXTURE=1",
+          "-DLEON_ASUS_BACKEND=\"/probe\"",
+          "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/scripts/asus-integration/private-etc-launch.c",
+          "-o",
+          "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/asus-private-etc/fixture-v6/launcher"
+        ],
+        "returncode": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "gcc",
+          "-std=gnu11",
+          "-O2",
+          "-static",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-I/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/scripts/asus-integration",
+          "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/scripts/asus-integration/private-etc-launch.c",
+          "-o",
+          "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/asus-private-etc/fixture-v6/launcher-production-not-executed"
+        ],
+        "returncode": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "gcc",
+          "-std=gnu11",
+          "-O2",
+          "-static",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-I/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/scripts/asus-integration",
+          "-DLEON_ETC_HOST_DIRECTORY=\"/fixture-origin-etc\"",
+          "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/scripts/asus-integration/private-etc-fixture.c",
+          "-o",
+          "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/asus-private-etc/fixture-v6/probe"
+        ],
+        "returncode": 0,
+        "stdout": "",
+        "stderr": "/usr/bin/ld: /tmp/ccIgI6xk.o: in function `main':\nprivate-etc-fixture.c:(.text.startup+0x15c): warning: Using 'getgrnam' in statically linked applications requires at runtime the shared libraries from the glibc version used for linking\n/usr/bin/ld: private-etc-fixture.c:(.text.startup+0x1d4): warning: Using 'getaddrinfo' in statically linked applications requires at runtime the shared libraries from the glibc version used for linking\n/usr/bin/ld: private-etc-fixture.c:(.text.startup+0x134): warning: Using 'getpwnam' in statically linked applications requires at runtime the shared libraries from the glibc version used for linking\n/usr/bin/ld: private-etc-fixture.c:(.text.startup+0x174): warning: Using 'getspnam' in statically linked applications requires at runtime the shared libraries from the glibc version used for linking\n"
+      },
+      {
+        "command": [
+          "gcc",
+          "-std=gnu11",
+          "-O2",
+          "-static",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-I/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/scripts/asus-integration",
+          "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/scripts/asus-integration/ash-entry.c",
+          "-o",
+          "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/asus-private-etc/fixture-v6/ash"
+        ],
+        "returncode": 0,
+        "stdout": "",
+        "stderr": ""
+      }
+    ],
+    "namespace": {
+      "command": [
+        "mmdebstrap",
+        "--unshare-helper",
+        "/bin/sh",
+        "-c",
+        "set -eu\nleon_private_root=$(mktemp -d /tmp/asus-private-etc-root.XXXXXXXX)\ncleanup() {\n umount -R \"$leon_private_root/proc\" 2>/dev/null || :\n umount \"$leon_private_root/run\" 2>/dev/null || :\n umount \"$leon_private_root/data\" 2>/dev/null || :\n umount \"$leon_private_root/jffs\" 2>/dev/null || :\n umount \"$leon_private_root/fixture-origin-etc\" 2>/dev/null || :\n umount \"$leon_private_root\" 2>/dev/null || :\n rm -rf \"$leon_private_root\"\n}\ntrap cleanup EXIT\nmkdir -p \"$leon_private_root/etc\" \"$leon_private_root/proc\" \"$leon_private_root/run\" \"$leon_private_root/data\" \"$leon_private_root/jffs\" \"$leon_private_root/persistent-data\" \"$leon_private_root/persistent-jffs\" \"$leon_private_root/usr/bin\" \"$leon_private_root/usr/libexec/asus\"\nln -s usr/bin \"$leon_private_root/bin\"\nln -s dash \"$leon_private_root/usr/bin/sh\"\ncp \"$1/launcher\" \"$leon_private_root/launcher\"\ncp \"$1/probe\" \"$leon_private_root/probe\"\ncp \"$1/ash\" \"$leon_private_root/usr/libexec/asus/ash\"\ncp \"$1/busybox\" \"$leon_private_root/usr/libexec/asus/busybox\"\ncp \"$1/dash\" \"$leon_private_root/usr/bin/dash\"\nfor abi in aarch64-linux-gnu arm-linux-gnueabi; do mkdir -p \"$leon_private_root/usr/lib/$abi/leon-asus\"; done\ncp \"$1/shim-arm64\" \"$leon_private_root/usr/lib/aarch64-linux-gnu/leon-asus/libleon-rc-notify.so\"\ncp \"$1/shim-armel\" \"$leon_private_root/usr/lib/arm-linux-gnueabi/leon-asus/libleon-rc-notify.so\"\nprintf 'root:x:0:0:Ubuntu root:/root:/bin/sh\\nubuntuonly:x:1000:1000:Ubuntu user:/home/ubuntuonly:/bin/sh\\n' > \"$leon_private_root/etc/passwd\"\nprintf 'root:!native-locked:1:0:99999:7:::\\nubuntuonly:!native-locked:1:0:99999:7:::\\n' > \"$leon_private_root/etc/shadow\"\nprintf 'root:x:0:\\nubuntuonly:x:1000:\\n' > \"$leon_private_root/etc/group\"\nprintf 'root:*::\\nubuntuonly:*::\\n' > \"$leon_private_root/etc/gshadow\"\nprintf 'passwd: files\\ngroup: files\\nshadow: files\\nhosts: files\\n' > \"$leon_private_root/etc/nsswitch.conf\"\nprintf '127.0.0.1 localhost\\n' > \"$leon_private_root/etc/hosts\"\nprintf 'native-persistent-configuration\\n' > \"$leon_private_root/etc/fstab\"\nprintf 'nameserver 192.0.2.1\\n' > \"$leon_private_root/etc/resolv.conf\"\nchmod 600 \"$leon_private_root/etc/shadow\" \"$leon_private_root/etc/gshadow\"\ntouch \"$leon_private_root/ASUS_ETC_LAB_FIXTURE\"\nmount --bind \"$leon_private_root\" \"$leon_private_root\"\nmkdir \"$leon_private_root/fixture-origin-etc\"\nmount --bind \"$leon_private_root/etc\" \"$leon_private_root/fixture-origin-etc\"\nmount -o remount,bind,ro \"$leon_private_root/fixture-origin-etc\"\nmount -t proc proc \"$leon_private_root/proc\"\nmount -t tmpfs -o mode=0755 tmpfs \"$leon_private_root/run\"\nmount --bind \"$leon_private_root/persistent-data\" \"$leon_private_root/data\"\nmount --bind \"$leon_private_root/persistent-jffs\" \"$leon_private_root/jffs\"\n(cd \"$leon_private_root\"; sha256sum etc/passwd etc/shadow etc/group etc/gshadow etc/nsswitch.conf etc/hosts etc/fstab etc/resolv.conf usr/bin/dash) > \"$leon_private_root/protected-before\"\nchroot \"$leon_private_root\" /probe --outside\nchroot \"$leon_private_root\" /launcher --leon-systemd\nchroot \"$leon_private_root\" /probe --outside\n(cd \"$leon_private_root\"; sha256sum etc/passwd etc/shadow etc/group etc/gshadow etc/nsswitch.conf etc/hosts etc/fstab etc/resolv.conf usr/bin/dash) > \"$leon_private_root/protected-after\"\ncmp \"$leon_private_root/protected-before\" \"$leon_private_root/protected-after\"\ntest ! -e \"$leon_private_root/etc/ld.so.preload\"\ntest ! -e \"$leon_private_root/etc/.asus-private-etc\"\ntest ! -e \"$leon_private_root/etc/pam-private-fixture\"\ntest -s \"$leon_private_root/persistent-data/shared-proof\"\ntest -s \"$leon_private_root/persistent-jffs/shared-proof\"\ntest -s \"$leon_private_root/run/shared-proof\"\ngrep -qx '/usr/$LIB/leon-asus/libleon-rc-notify.so' \"$leon_private_root\"/run/asus/etc-ns/generation.*/upper/ld.so.preload\numount \"$leon_private_root/data\"\nstatus=0\nchroot \"$leon_private_root\" /launcher --leon-systemd || status=$?\ntest \"$status\" = 125\necho LAB_PRIVATE_ETC_HOST_PROTECTED_AND_MISSING_DATA_REFUSED_PASS\n",
+        "private-etc-fixture",
+        "/tmp/asus-private-etc-inputs-qk_57usq"
+      ],
+      "returncode": 0,
+      "stdout": "LAB_PRIVATE_ETC_HOST_IDENTITY_PASS\nLAB_PRIVATE_ETC_DESCENDANT_NSS_SHELL_MASK_PASS\nLAB_PRIVATE_ETC_NSS_ACCOUNT_HOSTS_SHARED_PASS\nLAB_PRIVATE_ETC_HOST_IDENTITY_PASS\nLAB_PRIVATE_ETC_HOST_PROTECTED_AND_MISSING_DATA_REFUSED_PASS\n",
+      "stderr": "/data: No such device\n",
+      "expected_markers": [
+        "LAB_PRIVATE_ETC_HOST_IDENTITY_PASS",
+        "LAB_PRIVATE_ETC_DESCENDANT_NSS_SHELL_MASK_PASS",
+        "LAB_PRIVATE_ETC_NSS_ACCOUNT_HOSTS_SHARED_PASS",
+        "LAB_PRIVATE_ETC_HOST_PROTECTED_AND_MISSING_DATA_REFUSED_PASS"
+      ]
+    },
+    "static_fixture_preload_loading_tested": false,
+    "host_kernel": "7.0.0-1019-nvidia",
+    "inputs": [
+      {
+        "path": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/scripts/asus-integration/private-etc-launch.c",
+        "sha256": "be525d331b397ea33e9978c841fb4db79af3c4170807a18b38fca30d4fddf2dd"
+      },
+      {
+        "path": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/scripts/asus-integration/rc-private-etc.h",
+        "sha256": "e1b2fb3afcda3f119661f24e26c25d16e8a6851b9bd6027e9874014b8f47e140"
+      },
+      {
+        "path": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/scripts/asus-integration/private-etc-fixture.c",
+        "sha256": "2dcb9c70eb2f93c6c275b284dd26441acf0efa68d931dc22d8451dcd8bab0c5b"
+      },
+      {
+        "path": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/scripts/asus-integration/ash-entry.c",
+        "sha256": "c7675106e977f07fa7e18fcc2e07b3d525207fd6bd9091e7e16b97ee14c6dedd"
+      },
+      {
+        "path": "/usr/bin/busybox",
+        "sha256": "52151e7f322f926b64049cdaa1410dc3ea6485525e0624b05813791c219ae933"
+      },
+      {
+        "path": "/usr/bin/dash",
+        "sha256": "c883d9c27228339580994a1d0ea960645368c7d1b960a712bd0c655860c2d0d7"
+      }
+    ],
+    "actual_asus_services_executed": false,
+    "flash_allowed": false
+  },
+  "actual_asus_services_executed": false,
+  "full_rc_compiled": false,
+  "flash_allowed": false,
+  "asuswrt6_rebase": {
+    "source_pin": "9b25e55ca5c56a6f01d6a56264c0f6c47459ada0",
+    "verified_input_files": 166,
+    "source_receipt_sha256": "65b77def96bd7b7fea9ff69694981fd116d17cb2caac2d52ffff980094f1fea1",
+    "combined_source": "build/asus-private-etc/asuswrt6-v1/source",
+    "patch_order": [
+      {
+        "path": "patches/ubuntu26/asuswrt6/0003-asus-rc-systemd-manager.patch",
+        "sha256": "a28637ff79cb7a9a1f4f4dcb04e7790d076ac2768f6fb3a7347613176cd3f754",
+        "apply_stdout": "patching file release/src/router/rc/Makefile\npatching file release/src/router/rc/alt_watchdog.c\npatching file release/src/router/rc/btnsetup.c\npatching file release/src/router/rc/firewall.c\npatching file release/src/router/rc/fwupg_flashing.c\npatching file release/src/router/rc/init.c\npatching file release/src/router/rc/jffs2.c\npatching file release/src/router/rc/mtd.c\npatching file release/src/router/rc/multi_wan.c\npatching file release/src/router/rc/natnl_api.c\npatching file release/src/router/rc/ntpd.c\npatching file release/src/router/rc/qmacc.c\npatching file release/src/router/rc/rc-bridge.h\npatching file release/src/router/rc/rc-client.c\npatching file release/src/router/rc/rc-legacy.c\npatching file release/src/router/rc/rc-manager.c\npatching file release/src/router/rc/rc-shell-boundary.c\npatching file release/src/router/rc/rc-systemd-select.h\npatching file release/src/router/rc/rc.c\npatching file release/src/router/rc/sched_daemon.c\npatching file release/src/router/rc/sdn.c\npatching file release/src/router/rc/services.c\npatching file release/src/router/rc/snmpd.c\npatching file release/src/router/rc/ssh.c\npatching file release/src/router/rc/timemachine.c\npatching file release/src/router/rc/udhcpc.c\npatching file release/src/router/rc/usb.c\npatching file release/src/router/rc/vpn.c\npatching file release/src/router/rc/wanduck.c\npatching file release/src/router/rc/watchdog.c\npatching file release/src/router/rc/wtfast.c\n"
+      },
+      {
+        "path": "patches/ubuntu26/asuswrt6/0004-asus-rc-persistent-layout.patch",
+        "sha256": "5169a9a06827b545dc832809d53b4304fb48f0bbfe65e803a75e4548c6b3478b",
+        "apply_stdout": "patching file release/src/router/rc/init.c\nHunk #1 succeeded at 13 (offset 1 line).\nHunk #2 succeeded at 25963 (offset 16 lines).\nHunk #3 succeeded at 25988 (offset 16 lines).\nHunk #4 succeeded at 26018 (offset 16 lines).\nHunk #5 succeeded at 26067 (offset 16 lines).\nHunk #6 succeeded at 26131 (offset 16 lines).\nHunk #7 succeeded at 26191 (offset 16 lines).\nHunk #8 succeeded at 26222 (offset 16 lines).\nHunk #9 succeeded at 26244 (offset 16 lines).\nHunk #10 succeeded at 26865 (offset 16 lines).\nHunk #11 succeeded at 26877 (offset 16 lines).\nHunk #12 succeeded at 27281 (offset 23 lines).\nHunk #13 succeeded at 27995 (offset 30 lines).\npatching file release/src/router/rc/services.c\nHunk #1 succeeded at 20 (offset 1 line).\nHunk #2 succeeded at 1443 (offset 1 line).\nHunk #3 succeeded at 1545 (offset 1 line).\nHunk #4 succeeded at 1858 (offset 1 line).\npatching file release/src/router/rc/rc-persistent.h\n"
+      },
+      {
+        "path": "patches/ubuntu26/asuswrt6/0005-asus-rc-openssh-ownership.patch",
+        "sha256": "ffa29ff0875cd23402608aad901745d1dabf1b88e7e4bc29fbc07acd544478be",
+        "apply_stdout": "patching file release/src/router/rc/ssh.c\n"
+      },
+      {
+        "path": "patches/ubuntu26/asuswrt6/0006-asus-libovpn-systemd-manager.patch",
+        "sha256": "ea37ab0969bc36b1fe7bdbe7684b6d05bac256b2a1faa42c550edff2420c48f6",
+        "apply_stdout": "patching file release/src/router/libovpn/Makefile\npatching file release/src/router/libovpn/openvpn_control.c\npatching file release/src/router/libovpn/ovpn-manager.h\n"
+      },
+      {
+        "path": "patches/ubuntu26/asuswrt6/0007-asus-private-etc-account-ownership.patch",
+        "sha256": "40d95ecb536afd5426106224006f0e9c3f9c3afab18b4e6dbdb599773c729725",
+        "apply_stdout": "patching file release/src/router/rc/rc.c\npatching file release/src/router/rc/init.c\npatching file release/src/router/rc/services.c\npatching file release/src/router/rc/usb.c\npatching file release/src/router/rc/ovpn.c\npatching file release/src/router/rc/rc-private-etc.h\n"
+      }
+    ],
+    "fuzz": 0,
+    "rejects": false,
+    "guarded_entrypoints": 8,
+    "vendor_account_algorithm_preserved_except_namespace_guard": true,
+    "old_pin_patches_modified": false,
+    "actual_asus_services_executed": false,
+    "full_rc_compiled": false,
+    "flash_allowed": false,
+    "generator_sha256": "e4f094e73044115b8bf523d39c7be79a35460c209f841e28df847afb3943b8b4"
+  },
+  "target_runtime_fixture": {
+    "status": "passed_kernel10_private_etc_and_storage_fixture",
+    "scope": "Real kernel10/systemd PID1, production mount checks and real PID1 references; only backend is synthetic. Private ext4 is an image wholly inside guest RAM, no host disks or NIC.",
+    "evidence": [
+      {
+        "path": "build/asus-private-etc/qemu-v5/manifest.json",
+        "sha256": "5d5702ab3d83113e6908137abedc0e7b29aa36853d3ff4634bfca7c6c3584d3e"
+      },
+      {
+        "path": "build/qemu/asus-private-etc-v5/result.json",
+        "sha256": "3b9a9c01f4cdf4a2181aa331919253a638bb4127d78445cce2f7d54c886c6a71"
+      },
+      {
+        "path": "build/qemu/asus-private-etc-v5/serial.log",
+        "sha256": "dc5ef813fa8a081922a5b75d2ec37a26d84ba69dd1b978d6587a083bebadca71"
+      },
+      {
+        "path": "build/asus-private-etc/native-v2/result.json",
+        "sha256": "74e943305cd775bea5d9e136350c1c6ff9c473dea69ac0e613d099cdf55540b5"
+      }
+    ],
+    "kernel_sha256": "4a15601eada042576aed2a3680dcc48e9228eea70f70c478840767aaa89a9f8e",
+    "initramfs_sha256": "220d294b15b5aa1eaa94249ee94ef2faf23b316f53053efea7a8a680ae5170d3",
+    "rootfs_sha256": "057c52f70d8974691179235c4e273a6be0d474edde11d6c1cb85b09b11b250a4",
+    "native_compiler": "gcc-16 (Ubuntu 16.2.0-3ubuntu1+leonb53.1) 16.2.0",
+    "native_libc": "glibc 2.44",
+    "matched_asus_busybox": {
+      "source": "build/asus-private-shell/native-v4/busybox-native",
+      "target": "usr/libexec/asus/busybox",
+      "sha256": "686d6f8557891d97814415092daac5a7b176a94aeacd76c6b96e2a0a868d20c6"
+    },
+    "production_guards": "Real PID1 namespace and /proc/1/root/etc references; production ext4 mount checks; only backend path is replaced by benign probe.",
+    "verified": [
+      "Actual guest ext4 block-device UUID accepted and atomic boot/device/inode attestation consumed before and inside the ASUS namespace.",
+      "Wrong UUID rejects with status125 and removes a previously valid attestation; removing mounts invalidates previously valid proof.",
+      "ASUS private passwd/shadow/group lookups and regenerated hosts work without modifying nine protected Ubuntu files or adding host ld.so.preload.",
+      "A native dynamic child loads the private notify shim, sees private NSS, and executes through matching ASUS ash with inherited signal mask cleared.",
+      "Writes to data, jffs and run remain shared; the launcher refuses missing persistence mounts.",
+      "Native journald, udev and dbus remain active; real systemd PID1 completes the fixture."
+    ],
+    "marker_counts": {
+      "LAB_PRIVATE_ETC_STORAGE_UUID_ATTESTATION_PASS": 1,
+      "LAB_PRIVATE_ETC_HOST_IDENTITY_PASS": 2,
+      "LAB_PRIVATE_ETC_DESCENDANT_NSS_SHELL_MASK_PASS": 1,
+      "LAB_PRIVATE_ETC_NSS_ACCOUNT_HOSTS_SHARED_PASS": 1,
+      "LAB_PRIVATE_ETC_QEMU_NATIVE_HOST_UNCHANGED_PASS": 1,
+      "LAB_PRIVATE_ETC_STORAGE_WRONG_UUID_REVOKED_PASS": 1,
+      "LAB_PRIVATE_ETC_STORAGE_STALE_MOUNT_REJECTED_PASS": 1,
+      "LAB_PRIVATE_ETC_QEMU_PERSISTENT_MOUNT_REQUIRED_PASS": 1,
+      "LAB_PRIVATE_ETC_KERNEL10_COMPLETE": 1,
+      "LAB_PRIVATE_ETC_QEMU_EXIT_code=0": 1,
+      "LAB_SYSTEMD_FULL_PROBE_EXIT_code=0": 1
+    },
+    "limitations": [
+      "No actual ASUS rc/service/hardware execution; synthetic account operations exercise the same guard and libc/NSS interfaces.",
+      "ARMEL shim is a checked prerequisite but this fixture runs no ARMEL program; ABI-specific preload proof is separate.",
+      "Fixture data and jffs deliberately share one guest-RAM ext4 filesystem; actual board UUID policy is still unset.",
+      "No real router device, secret, network interface or persistent storage is passed through."
+    ],
+    "actual_asus_services_executed": false,
+    "actual_devices_accessed": false,
+    "flash_allowed": false,
+    "checker_sha256": "dd1025ebace08e43d5d2a71df4600f29309e89c6c7671f07aca7690488cc999c"
+  },
+  "combined_source_evidence": {
+    "path": "reports/ubuntu26/asuswrt6-combined-port.json",
+    "sha256": "651edad9988b572d6865621ced5c32371e7b3ce1dc332672e7e079fa28695412"
+  }
+}

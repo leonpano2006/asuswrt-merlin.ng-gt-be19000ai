@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "status": "complete production-loop QEMU validated; explicit gate-enabled artifact built; physical validation pending",
+  "automatic_commit_allowed": false,
+  "physical_reset_and_fallback_proven": false,
+  "sole_hardware_owner": {
+    "owner": "static native guardian started by SquashFS PID1 after pivot and before exec systemd",
+    "device": "/dev/watchdog0",
+    "identity": "BCM96xxx Watchdog timer",
+    "timeout_seconds": 40,
+    "pretimeout_seconds": 0,
+    "feed_period_seconds": 5,
+    "readback_required": "Exact timeout 40 and pretimeout 0, WDIOF_MAGICCLOSE/KEEPALIVEPING/SETTIMEOUT/PRETIMEOUT, sole open succeeds",
+    "systemd_settings": {
+      "RuntimeWatchdogSec": 0,
+      "RebootWatchdogSec": 0,
+      "KExecWatchdogSec": 0
+    },
+    "vendor_change_required": "In LEON_SYSTEMD_RC, start_hw_wdt must query authenticated native guardian ownership and never launch wdtctl -d. Preserve ASUS software watchdog daemon.",
+    "rc_patch_reservation": "0019 implemented in rc07 af9b497f7791d75031772c894d17f886ba99dbac687262d9933133aa65a752fe; native branch requires authenticated trial-health --assert-armed and never starts vendor hardware wdtd"
+  },
+  "handoff": {
+    "point": "After successful pivot and before final exec; static guardian is loaded from immutable old SquashFS, using the new root and moved /dev and /run",
+    "parent": "PID1 only; root-owned immutable executable and policy must be verified before child launch",
+    "transport": "Private AF_UNIX SOCK_SEQPACKET socketpair, guardian FD3; parent end FD_CLOEXEC, no inherited duplicate held by other processes",
+    "abi": "scripts/asus-integration/trial-guard/trial-handoff.h, fixed 56-byte messages, per-boot getrandom nonce",
+    "armed": "Two phase: PREPARED_UNARMED follows bounded 15-second read-only preflight. No hardware open is possible before nonce-bound ARM_REQUEST. Then ARMED exact timeout 40 must arrive within 3 seconds.",
+    "exec_success": "EOF at guardian control FD starts nonextendable 300-second startup deadline; no unit-start dependency",
+    "exec_failure": "While parent still owns preexec FD, send nonce-bound ABORT_PREEXEC. Only confirmed hardware disable and ABORTED authorize rollback mounts and vendor exec.",
+    "abort_failure": "Unknown post-ARM state selects verified proc SysRq b emergency reset first. Normal service shutdown is prohibited; reboot syscall is a last resort that may stop the hardware timer through device_shutdown and cannot promise watchdog backup.",
+    "unexpected_parent_close": "Treat like exec: require verified health before startup deadline, never silently disarm"
+  },
+  "health": {
+    "startup_deadline_seconds": 300,
+    "stable_samples": 3,
+    "minimum_sample_span_seconds": 10,
+    "local_freshness_seconds": 15,
+    "lan_ack_freshness_seconds": 60,
+    "clock": "Guard-owned CLOCK_BOOTTIME, not wall clock or peer timestamps; regression fails closed",
+    "required_local": [
+      "Native broker PING accepted only after direct child HELLO+READY, current executable/ancestry/private overlay/shared storage verified; not a Wi-Fi/AI functional test",
+      "Native ssh.service current MainPID/executable/cgroup and canonical running argv plus sshd -T exact private policy; actual authentication separately required by fresh external SSH ACK",
+      "Expected native br0 LAN IPv4 and management policy; IPv6 supported by the applied SSH policy and ACK parser"
+    ],
+    "required_external": "Each lease requires a new authenticated SSH challenge/ACK session from the real LAN observer, with approved account and strictly provisioned device hostkey. Loopback SSH is an explicit QEMU substitute and does not prove physical LAN reachability.",
+    "trust_boundary": "Implemented native read-only collector validates current broker/direct rc child PID/starttime/inode/private mount namespace/storage proof; exact active sshd argv and effective policy; br0 address. Root armed query additionally pins immutable old-SquashFS guardian inode/native PID1 namespace. External acknowledgement requires approved account, native sshd-session ancestry, current boot, fresh challenge/sequence and LAN endpoint.",
+    "replay": "Wrong boot nonce, zero/duplicate/regressing sequences and peer timestamps cannot refresh leases",
+    "after_ready": "Continue all checks indefinitely through the trial; first explicit failed check or expired lease latches expiry. Healthy does not mean accepted and never writes boot metadata.",
+    "intentional_disable": "Trial requires management SSH enabled. An intentional SSH shutdown ends this trial through a separate explicit operator workflow; no silent relaxation is implemented.",
+    "collector_process": "One disposable worker at a time, 6-second alarm and independent 6.5-second supervisor deadline; PID retained until actual waitpid. Successfully killed and reaped helper timeout yields incomplete health, retryable only during original300-second STARTING deadline. HEALTHY incomplete health fails closed; uncollectable worker is fatal."
+  },
+  "failure": {
+    "action": "Latch failure, retain open watchdog FD, cease keepalives and await hardware expiry; never run normal shutdown, whose driver shutdown callback stops WDT",
+    "service_restart": "No systemd Restart=always or automatic guardian replacement; failure cannot obtain a fresh startup deadline",
+    "signals": "SIGTERM/SIGINT/SIGHUP latch expiry and retain ownership. SIGKILL unexpectedly releases fd; current core gives one final ping then leaves active timer, subject to physical proof and no competing opener.",
+    "budget": "Nominal reset no later than startup deadline plus accepted hardware timeout, with a bounded preexec phase. BCM interrupt/time-left quirks and physical reset must be separately measured.",
+    "metadata": "RO metadata partitions prevent ordinary rc auto-commit, not raw whole-disk writes or privileged BLKROSET. Trial slot must differ from verified committed known-good slot and one-shot next-boot choice must be read back.",
+    "guardian_lifetime": "Real PID1 SquashFS-to-ext4 handoff fixtures show immutable static child survives exec into systemd init.scope and ownership query rejects forged root server. Device hardware lifetime/reset remains unproven.",
+    "prearm_limit": "Kernel4.19 watchdog core may keep feeding a bootloader-active watchdog before a userspace owner opens it; no open_timeout is present. Arbitrary pre-ARM userspace/D-state hangs are not covered by a claimed40-second hardware reset. Bounded preflight and parent fallback/emergency paths only cover processes that can progress or be reaped."
+  },
+  "remaining_before_activation": [
+    "Device-local ordinary admin account/selected hash migration and unique hostkeys, trusted external observer hostkey provisioning",
+    "Final postflash readback token proving two identicalCRC-valid metadata copies, committed known-good slot2 and exact stock p5/p6 hashes; no offline token",
+    "Verify real board sole hardware ownership, timeout readback, intentional failure reset and stock-slot fallback before trusting unattended recovery",
+    "Verify actual ASUS Wi-Fi/AiMesh/switch/AI functionality during guarded trial; broker READY alone is insufficient"
+  ],
+  "default_build_deployment_gate_enabled": false,
+  "device_deployment_performed": false,
+  "explicit_gate_enabled_receipt": "build/asus-trial-runtime/native-v17-enabled/guardian-receipt.json",
+  "production_loop_report": "reports/ubuntu26/asus-trial-loop-production-loop-v6.json"
+}

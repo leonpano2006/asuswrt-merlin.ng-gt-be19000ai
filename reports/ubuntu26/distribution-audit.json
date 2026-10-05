@@ -1,0 +1,447 @@
+{
+  "schema_version": 1,
+  "audited_at_utc": "2026-10-04T13:54:23.314518+00:00",
+  "scope": "Read-only official Ubuntu26.04 distribution audit for GT-BE19000AI BCM6813 kernel9; no router writes, host package installs, chroot execution, or Git changes.",
+  "release": {
+    "name": "Ubuntu26.04 LTS Resolute Raccoon",
+    "codename": "resolute",
+    "release_metadata_url": "https://ports.ubuntu.com/ubuntu-ports/dists/resolute/Release",
+    "archive_architectures": [
+      "amd64",
+      "amd64v3",
+      "arm64",
+      "armhf",
+      "i386",
+      "ppc64el",
+      "riscv64",
+      "s390x"
+    ],
+    "native": "arm64",
+    "supported_foreign": "armhf",
+    "armel": "Not in release Architectures or archive binary indices. dpkg recognizes armel but that does not create official Ubuntu armel packages. libc6-armel-cross is a cross-development sysroot package, not a native armel archive."
+  },
+  "trust": {
+    "keyring": "/usr/share/keyrings/ubuntu-archive-keyring.gpg",
+    "keyring_sha256": "80a36b0a6de2f69f49d2df75ef473ccde121e9e190b9ea01d20a4f63778d5c31",
+    "inrelease_signature_verified": true,
+    "package_indices_verified_against_signed_sha256": true,
+    "downloaded_debs_verified_against_package_index_sha256": true,
+    "source_tarballs_verified_against_signed_sources_index": true,
+    "archives": [
+      {
+        "suite": "resolute",
+        "url": "https://ports.ubuntu.com/ubuntu-ports/dists/resolute/InRelease",
+        "sha256": "45f95ce276cdba3e41870516a130e03c58b8b7a79e9546b0efe9e526d255740c",
+        "signature_verification": "gpgv: Signature made Thu Apr 23 19:07:30 2026 CEST\ngpgv:                using RSA key F6ECB3762474EDA9D21B7022871920D1991BC93C\ngpgv: Good signature from \"Ubuntu Archive Automatic Signing Key (2018) <ftpmaster@ubuntu.com>\"",
+        "release": {
+          "Origin": "Ubuntu",
+          "Label": "Ubuntu",
+          "Suite": "resolute",
+          "Version": "26.04",
+          "Codename": "resolute",
+          "Date": "Thu, 23 Apr 2026 17:07:15 UTC",
+          "Architectures": "amd64 amd64v3 arm64 armhf i386 ppc64el riscv64 s390x",
+          "Components": "main restricted universe multiverse"
+        }
+      },
+      {
+        "suite": "resolute-updates",
+        "url": "https://ports.ubuntu.com/ubuntu-ports/dists/resolute-updates/InRelease",
+        "sha256": "98cdfd908c422570b43437377070602f7a3fba43b66c22d263738eff04f7bfed",
+        "signature_verification": "gpgv: Signature made Sun Oct  4 14:43:37 2026 CEST\ngpgv:                using RSA key F6ECB3762474EDA9D21B7022871920D1991BC93C\ngpgv: Good signature from \"Ubuntu Archive Automatic Signing Key (2018) <ftpmaster@ubuntu.com>\"",
+        "release": {
+          "Origin": "Ubuntu",
+          "Label": "Ubuntu",
+          "Suite": "resolute-updates",
+          "Version": "26.04",
+          "Codename": "resolute",
+          "Date": "Sun, 04 Oct 2026 12:43:20 UTC",
+          "Architectures": "amd64 amd64v3 arm64 armhf i386 ppc64el riscv64 s390x",
+          "Components": "main restricted universe multiverse"
+        }
+      },
+      {
+        "suite": "resolute-security",
+        "url": "https://ports.ubuntu.com/ubuntu-ports/dists/resolute-security/InRelease",
+        "sha256": "578358f7b5e41ad069fc209bfa8ab45410f24d241be80255bdd94dbf3c11dc98",
+        "signature_verification": "gpgv: Signature made Sun Oct  4 13:12:50 2026 CEST\ngpgv:                using RSA key F6ECB3762474EDA9D21B7022871920D1991BC93C\ngpgv: Good signature from \"Ubuntu Archive Automatic Signing Key (2018) <ftpmaster@ubuntu.com>\"",
+        "release": {
+          "Origin": "Ubuntu",
+          "Label": "Ubuntu",
+          "Suite": "resolute-security",
+          "Version": "26.04",
+          "Codename": "resolute",
+          "Date": "Sun, 04 Oct 2026 11:12:38 UTC",
+          "Architectures": "amd64 amd64v3 arm64 armhf i386 ppc64el riscv64 s390x",
+          "Components": "main restricted universe multiverse"
+        }
+      }
+    ]
+  },
+  "verified_packages": {
+    "arm64": {
+      "apt": {
+        "version": "3.2.0",
+        "suite": "resolute",
+        "multi_arch": null,
+        "essential": false,
+        "depends": "base-passwd (>= 3.6.1) | adduser, gpgv, libapt-pkg7.0 (>= 3.2.0), ubuntu-keyring, libc6 (>= 2.38), libgcc-s1 (>= 3.3.1), libseccomp2 (>= 2.4.2), libssl3t64 (>= 3.0.0), libstdc++6 (>= 13.1), libsystemd0",
+        "url": "https://ports.ubuntu.com/ubuntu-ports/pool/main/a/apt/apt_3.2.0_arm64.deb",
+        "sha256": "a221b5c6c74c6d457cf8ddffa4e8dcfc551eddf70daf31a4a1f56212f2f73535"
+      },
+      "base-files": {
+        "version": "14ubuntu6.2",
+        "suite": "resolute-updates",
+        "multi_arch": "foreign",
+        "essential": true,
+        "depends": "libc6 (>= 2.34), libcrypt1 (>= 1:4.4.10-10ubuntu3)",
+        "url": "https://ports.ubuntu.com/ubuntu-ports/pool/main/b/base-files/base-files_14ubuntu6.2_arm64.deb",
+        "sha256": "46780208ad92d556de726928529a9421822c37925d8ef0895bd95db210256c8e"
+      },
+      "binutils": {
+        "version": "2.46-3ubuntu2",
+        "suite": "resolute",
+        "multi_arch": null,
+        "essential": false,
+        "depends": "libbinutils (= 2.46-3ubuntu2), libc6 (>= 2.38), libgcc-s1 (>= 3.0), libgprofng0 (>= 2.45.50), libstdc++6 (>= 13.1), binutils-common (= 2.46-3ubuntu2), binutils-aarch64-linux-gnu (= 2.46-3ubuntu2)",
+        "url": "https://ports.ubuntu.com/ubuntu-ports/pool/main/b/binutils/binutils_2.46-3ubuntu2_arm64.deb",
+        "sha256": "1b5105f405c42b7e336a16f450bb30f3f589ffe28faf55db84a9dc9a4aeeee1b"
+      },
+      "dpkg": {
+        "version": "1.23.7ubuntu1",
+        "suite": "resolute",
+        "multi_arch": "foreign",
+        "essential": true,
+        "depends": "tar (>= 1.28-1)",
+        "url": "https://ports.ubuntu.com/ubuntu-ports/pool/main/d/dpkg/dpkg_1.23.7ubuntu1_arm64.deb",
+        "sha256": "61de2440d5da66bb284756b8ee58a6b9ad603200fb3b6293fff21bcbc95570a9"
+      },
+      "libc-bin": {
+        "version": "2.43-2ubuntu2.4",
+        "suite": "resolute-security",
+        "multi_arch": "foreign",
+        "essential": true,
+        "depends": "libc6 (>> 2.43), libc6 (<< 2.44)",
+        "url": "https://ports.ubuntu.com/ubuntu-ports/pool/main/g/glibc/libc-bin_2.43-2ubuntu2.4_arm64.deb",
+        "sha256": "7dae6f6c5b11fb6a8acf9f8e6cba29a06a034759a9849ba96bd340ac40400545"
+      },
+      "libc-dev-bin": {
+        "version": "2.43-2ubuntu2.4",
+        "suite": "resolute-security",
+        "multi_arch": "foreign",
+        "essential": false,
+        "depends": "libc6 (>> 2.43), libc6 (<< 2.44)",
+        "url": "https://ports.ubuntu.com/ubuntu-ports/pool/main/g/glibc/libc-dev-bin_2.43-2ubuntu2.4_arm64.deb",
+        "sha256": "273f996f4325719c300e2095de5b698ac4de5cf13f3d910a48e9e4994a5cb31c"
+      },
+      "libc-gconv-modules-extra": {
+        "version": "2.43-2ubuntu2.4",
+        "suite": "resolute-security",
+        "multi_arch": "same",
+        "essential": false,
+        "depends": null,
+        "url": "https://ports.ubuntu.com/ubuntu-ports/pool/main/g/glibc/libc-gconv-modules-extra_2.43-2ubuntu2.4_arm64.deb",
+        "sha256": "9d4d8cfb9e75eb6c7324c5d9c548eb5eaa4ea584fe27627069a9bdad35818eda"
+      },
+      "libc6": {
+        "version": "2.43-2ubuntu2.4",
+        "suite": "resolute-security",
+        "multi_arch": "same",
+        "essential": false,
+        "depends": "libgcc-s1, libc-gconv-modules-extra (= 2.43-2ubuntu2.4)",
+        "url": "https://ports.ubuntu.com/ubuntu-ports/pool/main/g/glibc/libc6_2.43-2ubuntu2.4_arm64.deb",
+        "sha256": "1652597c8c3419b298d8a87dd3d8eea1fdc5a1abd9bccb5a66b928f92ec463c9"
+      },
+      "libc6-dev": {
+        "version": "2.43-2ubuntu2.4",
+        "suite": "resolute-security",
+        "multi_arch": "same",
+        "essential": false,
+        "depends": "libc6 (= 2.43-2ubuntu2.4), libc-dev-bin (= 2.43-2ubuntu2.4), linux-libc-dev, rpcsvc-proto",
+        "url": "https://ports.ubuntu.com/ubuntu-ports/pool/main/g/glibc/libc6-dev_2.43-2ubuntu2.4_arm64.deb",
+        "sha256": "f6f7705d3e6bb982c173a42cc5b2516eddebe2d846c4861ee7d7c9d66ebee916"
+      },
+      "systemd": {
+        "version": "259.5-0ubuntu3.4",
+        "suite": "resolute-security",
+        "multi_arch": "foreign",
+        "essential": false,
+        "depends": "libc6 (>= 2.41), libssl3t64 (>= 3.4.0), libsystemd0 (= 259.5-0ubuntu3.4), mount",
+        "url": "https://ports.ubuntu.com/ubuntu-ports/pool/main/s/systemd/systemd_259.5-0ubuntu3.4_arm64.deb",
+        "sha256": "ff995fbcdc49dab7e101b42011f2970db62cfafd1c03ae832fc0370f94acd547"
+      },
+      "ubuntu-keyring": {
+        "version": "2023.11.28.1build1",
+        "suite": "resolute",
+        "multi_arch": "foreign",
+        "essential": false,
+        "depends": null,
+        "url": "https://ports.ubuntu.com/ubuntu-ports/pool/main/u/ubuntu-keyring/ubuntu-keyring_2023.11.28.1build1_all.deb",
+        "sha256": "c377ccf26964f4c206c05c0bc7adb708e031beb919bb9a0ff63af983d064cd66"
+      }
+    },
+    "armhf": {
+      "apt": {
+        "version": "3.2.0",
+        "suite": "resolute",
+        "multi_arch": null,
+        "essential": false,
+        "depends": "base-passwd (>= 3.6.1) | adduser, gpgv, libapt-pkg7.0 (>= 3.2.0), ubuntu-keyring, libc6 (>= 2.38), libgcc-s1 (>= 3.5), libseccomp2 (>= 2.4.2), libssl3t64 (>= 3.0.0), libstdc++6 (>= 13.1), libsystemd0",
+        "url": "https://ports.ubuntu.com/ubuntu-ports/pool/main/a/apt/apt_3.2.0_armhf.deb",
+        "sha256": "188115456dea3c9cb0969cb91fae810d4058a573168bb157eb6f52a3a0bdded8"
+      },
+      "base-files": {
+        "version": "14ubuntu6.2",
+        "suite": "resolute-updates",
+        "multi_arch": "foreign",
+        "essential": true,
+        "depends": "libc6 (>= 2.34), libcrypt1 (>= 1:4.4.10-10ubuntu3)",
+        "url": "https://ports.ubuntu.com/ubuntu-ports/pool/main/b/base-files/base-files_14ubuntu6.2_armhf.deb",
+        "sha256": "3aea1d502832b9b6dc98504131a33deab19c7b36fcb20e9749bac01eb3c294ac"
+      },
+      "binutils": {
+        "version": "2.46-3ubuntu2",
+        "suite": "resolute",
+        "multi_arch": null,
+        "essential": false,
+        "depends": "libc6 (>= 2.34), zlib1g (>= 1:1.2.0), binutils-common (= 2.46-3ubuntu2), libbinutils (= 2.46-3ubuntu2), binutils-arm-linux-gnueabihf (= 2.46-3ubuntu2)",
+        "url": "https://ports.ubuntu.com/ubuntu-ports/pool/main/b/binutils/binutils_2.46-3ubuntu2_armhf.deb",
+        "sha256": "6fbf59e0f007887a8145e13abf5760efbd4ce2681f487cf3765baa90c94108a1"
+      },
+      "dpkg": {
+        "version": "1.23.7ubuntu1",
+        "suite": "resolute",
+        "multi_arch": "foreign",
+        "essential": true,
+        "depends": "tar (>= 1.28-1)",
+        "url": "https://ports.ubuntu.com/ubuntu-ports/pool/main/d/dpkg/dpkg_1.23.7ubuntu1_armhf.deb",
+        "sha256": "2055723289b2fb0cb421cb491af4379d2e89b2f3409be75fd0d0697b5a188977"
+      },
+      "libc-bin": {
+        "version": "2.43-2ubuntu2.4",
+        "suite": "resolute-security",
+        "multi_arch": "foreign",
+        "essential": true,
+        "depends": "libc6 (>> 2.43), libc6 (<< 2.44)",
+        "url": "https://ports.ubuntu.com/ubuntu-ports/pool/main/g/glibc/libc-bin_2.43-2ubuntu2.4_armhf.deb",
+        "sha256": "7f9f84e41370e561025aee621e15f6c6e4b370405b9ee4e39bd7cbd8e318550f"
+      },
+      "libc-dev-bin": {
+        "version": "2.43-2ubuntu2.4",
+        "suite": "resolute-security",
+        "multi_arch": "foreign",
+        "essential": false,
+        "depends": "libc6 (>> 2.43), libc6 (<< 2.44)",
+        "url": "https://ports.ubuntu.com/ubuntu-ports/pool/main/g/glibc/libc-dev-bin_2.43-2ubuntu2.4_armhf.deb",
+        "sha256": "a310c672633f5efdfc81816b4bfbe308b89d2d36fb614df0d3747c58fb632454"
+      },
+      "libc-gconv-modules-extra": {
+        "version": "2.43-2ubuntu2.4",
+        "suite": "resolute-security",
+        "multi_arch": "same",
+        "essential": false,
+        "depends": null,
+        "url": "https://ports.ubuntu.com/ubuntu-ports/pool/main/g/glibc/libc-gconv-modules-extra_2.43-2ubuntu2.4_armhf.deb",
+        "sha256": "a7682de74d6eff311dd6369c895a7b1f34af00a9c036c2d8b6ad0c16cc314954"
+      },
+      "libc6": {
+        "version": "2.43-2ubuntu2.4",
+        "suite": "resolute-security",
+        "multi_arch": "same",
+        "essential": false,
+        "depends": "libgcc-s1, libc-gconv-modules-extra (= 2.43-2ubuntu2.4)",
+        "url": "https://ports.ubuntu.com/ubuntu-ports/pool/main/g/glibc/libc6_2.43-2ubuntu2.4_armhf.deb",
+        "sha256": "e158f6864c82488ac1e99d5619910a746870828de02dfbf021aeddf991b64891"
+      },
+      "libc6-dev": {
+        "version": "2.43-2ubuntu2.4",
+        "suite": "resolute-security",
+        "multi_arch": "same",
+        "essential": false,
+        "depends": "libc6 (= 2.43-2ubuntu2.4), libc-dev-bin (= 2.43-2ubuntu2.4), linux-libc-dev, rpcsvc-proto",
+        "url": "https://ports.ubuntu.com/ubuntu-ports/pool/main/g/glibc/libc6-dev_2.43-2ubuntu2.4_armhf.deb",
+        "sha256": "3ac2a9d437fa1ab09aef35c3d1d46946ddbd4e178a4dece3316403687d90deb2"
+      },
+      "systemd": {
+        "version": "259.5-0ubuntu3.4",
+        "suite": "resolute-security",
+        "multi_arch": "foreign",
+        "essential": false,
+        "depends": "libc6 (>= 2.41), libssl3t64 (>= 3.4.0), libsystemd0 (= 259.5-0ubuntu3.4), mount",
+        "url": "https://ports.ubuntu.com/ubuntu-ports/pool/main/s/systemd/systemd_259.5-0ubuntu3.4_armhf.deb",
+        "sha256": "88770c31ef062ec68300ef1d02f8581ebd5a7560a3da21591cadc27ef6fcf357"
+      },
+      "ubuntu-keyring": {
+        "version": "2023.11.28.1build1",
+        "suite": "resolute",
+        "multi_arch": "foreign",
+        "essential": false,
+        "depends": null,
+        "url": "https://ports.ubuntu.com/ubuntu-ports/pool/main/u/ubuntu-keyring/ubuntu-keyring_2023.11.28.1build1_all.deb",
+        "sha256": "c377ccf26964f4c206c05c0bc7adb708e031beb919bb9a0ff63af983d064cd66"
+      }
+    }
+  },
+  "cpu_compatibility": {
+    "official_baseline_url": "https://ubuntu.com/project/docs/how-ubuntu-is-made/concepts/supported-architectures/",
+    "official_baseline_page_updated": "2026-09-23",
+    "arm64": "ARMv8-A, no optional extensions; ARMv8.1-A is not assumed. LSE is therefore not an archive-wide prerequisite.",
+    "armhf": "ARMv7 + VFPv3-D16; NEON not required by generic archive.",
+    "bcm6813_assessment": "CPU baseline matches B53/Cortex-A53. Actual runtime validation on kernel9 remains separate from archive compatibility. Optimized local packages may use cortex-a53+crypto+crc after feature verification.",
+    "glibc_arm64_packaging_flags": [
+      "--enable-multi-arch",
+      "--enable-memory-tagging",
+      "-mbranch-protection=standard"
+    ],
+    "note": "Optional IFUNC implementations and BTI/PAC notes are not proof of an ARMv8.1/LSE-only baseline. Do not reject a library solely because disassembly contains optional ISA instructions."
+  },
+  "glibc": {
+    "archive_version": "2.43-2ubuntu2.4",
+    "source_packaging_url": "https://ports.ubuntu.com/ubuntu-ports/pool/main/g/glibc/glibc_2.43-2ubuntu2.4.debian.tar.xz",
+    "source_minimum_kernel_option": "--enable-kernel=3.2 from debian/sysdeps/linux.mk; upstream architecture floor may raise it.",
+    "binary_abi_notes": {
+      "arm64": "3.7.0",
+      "armhf": "3.2.0"
+    },
+    "loader_and_runtime_files": {
+      "arm64": [
+        "usr/lib/ld-linux-aarch64.so.1",
+        "usr/lib/aarch64-linux-gnu/ld-linux-aarch64.so.1",
+        "usr/lib/aarch64-linux-gnu/libc.so.6"
+      ],
+      "armhf": [
+        "usr/lib/ld-linux-armhf.so.3",
+        "usr/lib/arm-linux-gnueabihf/ld-linux-armhf.so.3",
+        "usr/lib/arm-linux-gnueabihf/libc.so.6"
+      ]
+    },
+    "conclusion": "The official libc package does not impose Linux5.x minimum. This is not a promise that every Ubuntu package or service works on4.19. Custom BE98 glibc2.44 still needs Ubuntu-format rebuild/package integration and actual tests.",
+    "local_rebuild_contract": [
+      "Use Debian/Ubuntu source packaging, symbols, triggers, maintainer scripts and dependency semantics; do not copy loose libc/ld binaries over dpkg-owned files.",
+      "Keep libc6, libc6-dev, libc-bin, libc-dev-bin and libc-gconv-modules-extra versions mutually consistent.",
+      "All coinstalled Multi-Arch:same libc6 architectures must use the same package version and identical shared-file content. Upgrade nativearm64 + anyenabledarmhf + customarmel in one coordinated transaction.",
+      "Preserve vendor armel library/runtime identity until actual ASUS blobs are validated. Newglibc success with a probe does not prove all vendor private symbols and dlopen plugins work."
+    ]
+  },
+  "layout": {
+    "usrmerge_confirmed_from_package": "base-files14ubuntu6.2",
+    "symlinks": {
+      "/bin": "usr/bin",
+      "/sbin": "usr/sbin",
+      "/lib": "usr/lib"
+    },
+    "runtime_aliases": {
+      "/var/run": "/run",
+      "/var/lock": "/run/lock"
+    },
+    "multiarch": [
+      {
+        "dpkg_arch": "arm64",
+        "tuple": "aarch64-linux-gnu",
+        "libraries": "/usr/lib/aarch64-linux-gnu",
+        "arch_headers": "/usr/include/aarch64-linux-gnu",
+        "elf_interpreter": "/lib/ld-linux-aarch64.so.1"
+      },
+      {
+        "dpkg_arch": "armhf",
+        "tuple": "arm-linux-gnueabihf",
+        "libraries": "/usr/lib/arm-linux-gnueabihf",
+        "arch_headers": "/usr/include/arm-linux-gnueabihf",
+        "elf_interpreter": "/lib/ld-linux-armhf.so.3"
+      },
+      {
+        "dpkg_arch": "armel",
+        "tuple": "arm-linux-gnueabi",
+        "libraries": "/usr/lib/arm-linux-gnueabi",
+        "arch_headers": "/usr/include/arm-linux-gnueabi",
+        "elf_interpreter": "/lib/ld-linux.so.3",
+        "availability": "custom local packages only"
+      }
+    ],
+    "details": [
+      "ld.so remains reachable at ABI-defined /lib path through usrmerge symlink; the actual loader is in the matching multiarch directory.",
+      "Generic headers live under /usr/include and architecture-specific headers under /usr/include/<tuple>.",
+      "libc-bin owns /usr/sbin/ldconfig. Keep ld.so.conf.d, loader cache, libc linker scripts, crt objects, GCC search paths and pkg-config multiarch paths coherent.",
+      "Do not use /usr/lib64 or old /lib32 as the primary multiarch layout."
+    ],
+    "references": [
+      "https://www.debian.org/doc/debian-policy/ch-opersys.html#file-system-structure",
+      "https://www.debian.org/doc/manuals/maint-guide/advanced.en.html#multiarch"
+    ]
+  },
+  "systemd": {
+    "archive_version": "259.5-0ubuntu3.4",
+    "source_url": "https://ports.ubuntu.com/ubuntu-ports/pool/main/s/systemd/systemd_259.5.orig.tar.gz",
+    "source_sha256": "80ed55a8a69c4bd1fb12a36659303372b37baf9ee224ef4f032db4b748be0f76",
+    "upstream_readme_minimum_kernel": "5.4",
+    "recommended_kernel": "5.7",
+    "build_minimum_glibc": "2.31 in exact259.5 README",
+    "binary_runtime_glibc_dependency": "libc6 (>= 2.41), libssl3t64 (>= 3.4.0), libsystemd0 (= 259.5-0ubuntu3.4), mount",
+    "future_requirement_distinction": "259.5 NEWS announces Linux5.10/glibc2.34 as a planned v260 minimum. Do not apply systemd262 baseline as though it described Ubuntu26.04 systemd259.5.",
+    "exact_source_findings": [
+      {
+        "file": "src/basic/mountpoint-util.c",
+        "line": 231,
+        "finding": "Retains fallback when STATX_ATTR_MOUNT_ROOT unavailable; prior262 firstboot blocker is not automatically applicable."
+      },
+      {
+        "file": "src/shared/mount-setup.c",
+        "line": 53,
+        "finding": "Probes memory_recursiveprot and memory_hugetlb_accounting; omits unsupported mount options."
+      },
+      {
+        "file": "src/basic/pidref.c",
+        "line": 103,
+        "finding": "pidfd_open error falls back only for resource exhaustion; ENOSYS propagates."
+      }
+    ],
+    "kernel9_status": "Full systemd259 PID1 compatibility not established by this audit. Kernel9 time64 work does not implement pidfd; do not replace ASUS PID1 on the device before exact-package QEMU boot/service tests and kernel API backports. Existing systemd262 evidence shows API gaps but is not an actual259 test.",
+    "migration_rules": [
+      "Use cgroupv2 as required by modern systemd; reconcile vendor cgroup ownership and Docker controllers.",
+      "Use native ASUS service units and explicitly retain network ownership; avoid enabling systemd-networkd, resolved or NetworkManager to take over existing router interfaces implicitly.",
+      "Kernel API backports must preserve proprietary module ABI and behavior; a fake uname or unconditional success stub is not a compatibility solution."
+    ]
+  },
+  "bootstrap": {
+    "recommended": "mmdebstrap --variant=essential --architectures=arm64 with apt, ca-certificates and ubuntu-keyring, signed resolute + resolute-updates + resolute-security, isolated output root. Run dpkg configure/apt tests in target architecture environment.",
+    "mirror": "https://ports.ubuntu.com/ubuntu-ports",
+    "mirror_note": "All three suites and both arm64/armhf package indices verified from this mirror. Official Canonical ARM summer2026 article says arm64 also moved to archive.ubuntu.com; keep armhf onports if choosing splitmirrors. Oneportsstanza is currently verified forboth.",
+    "deb822_example": "Types: deb\nURIs: https://ports.ubuntu.com/ubuntu-ports\nSuites: resolute resolute-updates resolute-security\nComponents: main restricted universe multiverse\nArchitectures: arm64 armhf\nSigned-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg\n",
+    "foreign_architecture_policy": "Register armhf only when needed or explicitly provisioned; never add armel to the Ubuntu stanza. Use a separately signed local repository restricted to custom package architectures.",
+    "custom_repository_rules": [
+      "Retain official repository signature validation; no trusted=yes or allow-unauthenticated.",
+      "Publish optimizedtoolchain/glibc/vendor packages from a signed local feed with explicit package pins and versioning.",
+      "Do not globally freeze security updates; pin only custom replacement packages.",
+      "No proposed/development suite needed for essentialbase. Backports can be opt-in later."
+    ],
+    "acceptance_gates": [
+      "dpkg --print-architecture=arm64; intendedforeignarchlist; dpkg --audit empty",
+      "apt-get update validates current Release signatures; apt-get check succeeds",
+      "file ownership, usrmerge links, loaderpaths and allthreeABI ELF attributes correct",
+      "Install/reinstall/remove a harmless .deb and exercise dpkg triggers/conffiles offline in disposable rootfs",
+      "arm64 native and optional32-bit libc/time64/thread/DNS/TLS/apt tests under exactImage9 QEMU cortex-a53",
+      "systemd package boot/reexec/restart/cgroup tests separately; ASUS rc/blob/httpd/Wi-Fi/Runner/AiMesh/AI/RGB acceptance before switching realroot"
+    ]
+  },
+  "limits": [
+    "Noclaim that stockUbuntu26.04 PID1 boots onvendor4.19.294.",
+    "Noofficialarmelarchive wasfound; dpkg ABI support isdistinctfromarchiveavailability.",
+    "No change to router filesystem, network, firmware, AIboard or hostinstalledpackages.",
+    "Latestupstreamglibc/GCC/binutils and BE98 reuse are reviewed by a separate toolchain audit."
+  ],
+  "evidence": [
+    "build/ubuntu26-audit/archive.json",
+    "build/ubuntu26-audit/libc6-inspection.json",
+    "build/ubuntu26-audit/layout-package-inspection.json",
+    "build/ubuntu26-audit/source-records.json"
+  ],
+  "primary_urls": [
+    "https://ports.ubuntu.com/ubuntu-ports/dists/resolute/Release",
+    "https://packages.ubuntu.com/resolute/libc6",
+    "https://packages.ubuntu.com/resolute/systemd",
+    "https://ubuntu.com/project/docs/how-ubuntu-is-made/concepts/supported-architectures/",
+    "https://discourse.ubuntu.com/t/ubuntu-on-arm-summer-26-update/84872",
+    "https://raw.githubusercontent.com/systemd/systemd/v259/README",
+    "https://manpages.ubuntu.com/manpages/resolute/man5/sources.list.5.html"
+  ]
+}

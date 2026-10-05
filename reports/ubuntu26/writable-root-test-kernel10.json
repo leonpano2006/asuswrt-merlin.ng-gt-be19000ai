@@ -1,0 +1,156 @@
+{
+  "rootfs_tar_sha256": "b29e45106d9aa00437295bf1aaf1cb4db20396fbedd23ee1ab2abd65c2ad7262",
+  "kernel_sha256": "4a15601eada042576aed2a3680dcc48e9228eea70f70c478840767aaa89a9f8e",
+  "image_sha256": "c52f300a09cb32fcbcdffb6a278f5e33a8b650fd519abaa485bcb048aacd52f1",
+  "image_unchanged_after_guests": true,
+  "initramfs_sha256": "dba5b0be672f8a187cfe292876e3cddbed5ded3227f03eee7b94655777196855",
+  "filesystem": {
+    "uuid": "97aa2c4a-7631-4bd3-aaec-916ab91a5017",
+    "feature_profile": [
+      "has_journal",
+      "ext_attr",
+      "resize_inode",
+      "dir_index",
+      "filetype",
+      "extent",
+      "flex_bg",
+      "sparse_super",
+      "large_file",
+      "huge_file",
+      "dir_nlink",
+      "extra_isize",
+      "metadata_csum"
+    ],
+    "identity_sha256": "d2631cd6b318d3aa3731b42a8afec51f715f837c3b29652ef8be16f21e003407",
+    "rootfs_tar_sha256": "b29e45106d9aa00437295bf1aaf1cb4db20396fbedd23ee1ab2abd65c2ad7262",
+    "kernel_sha256": "4a15601eada042576aed2a3680dcc48e9228eea70f70c478840767aaa89a9f8e",
+    "final_init_sha256": "28a0c246bfc5583295991a6fe1d645ed425ce20543f239599e6ee37a966076b7",
+    "namespace_uid_map": "         0       1000          1\n         1     100000      65536\n",
+    "image_bytes": 402653184,
+    "device_inodes_created_offline": 8
+  },
+  "metadata_audit": {
+    "archive_entries_checked": 9424,
+    "uid_gid_mode_verified": true,
+    "hardlinks_verified": 116,
+    "xattrs": [
+      {
+        "path": "./var/log/journal",
+        "name": "system.posix_acl_default",
+        "preserved": true,
+        "comparison": "same ACL tags, permissions, named IDs; unused IDs ignored"
+      },
+      {
+        "path": "./var/log/journal",
+        "name": "system.posix_acl_access",
+        "preserved": true,
+        "comparison": "same ACL tags, permissions, named IDs; unused IDs ignored"
+      }
+    ],
+    "errors": []
+  },
+  "host_e2fsck_clean": true,
+  "qemu_runs": [
+    {
+      "scenario": "positive",
+      "command": [
+        "qemu-system-aarch64",
+        "-machine",
+        "virt-8.2,gic-version=2",
+        "-accel",
+        "tcg,thread=multi",
+        "-cpu",
+        "cortex-a53",
+        "-smp",
+        "2",
+        "-m",
+        "2048",
+        "-nodefaults",
+        "-nic",
+        "none",
+        "-display",
+        "none",
+        "-monitor",
+        "none",
+        "-serial",
+        "stdio",
+        "-no-reboot",
+        "-sandbox",
+        "on,obsolete=deny,elevateprivileges=deny,spawn=deny,resourcecontrol=deny",
+        "-kernel",
+        "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/Image-v10",
+        "-initrd",
+        "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/ubuntu26-writable-root-kernel10/ubuntu-writable.cpio.gz",
+        "-append",
+        "console=ttyAMA0 earlycon=pl011,mmio32,0x09000000 rdinit=/init panic=0 oops=panic nokaslr loglevel=6 initcall_blacklist=bcm_pmc_drv_reg,bcm_ubus_drv_init,pmc_xrdp_init,pmc_wan_initcall,bcmbca_vreg_sync_drv_reg"
+      ],
+      "stop_reason": "qemu-exit",
+      "elapsed_seconds": 12.41,
+      "complete": true,
+      "panic": false,
+      "lab_lines": [
+        "LAB_EXT4_BOOTSTRAP_ROOT_VALIDATED",
+        "LAB_APT_INSTALL_ON_EXT4_PASS",
+        "LAB_EXT4_FULL_UNMOUNT_PASS",
+        "LAB_EARLY_SWITCH_ROOT_BEGIN",
+        "LAB_SWITCH_ROOT_EXT4_PID1_PASS",
+        "LAB_APT_STATE_SURVIVED_UNMOUNT_PASS",
+        "LAB_APT_REMOVE_ON_EXT4_PASS",
+        "LAB_EXT4_REMOUNT_RO_RW_PASS"
+      ],
+      "log_sha256": "3f158b2680a43290ca9c5a2a838e1a26f7a2e9e8f7f488d6fe6be836c7f5d32b"
+    },
+    {
+      "scenario": "bad-uuid",
+      "command": [
+        "qemu-system-aarch64",
+        "-machine",
+        "virt-8.2,gic-version=2",
+        "-accel",
+        "tcg,thread=multi",
+        "-cpu",
+        "cortex-a53",
+        "-smp",
+        "2",
+        "-m",
+        "2048",
+        "-nodefaults",
+        "-nic",
+        "none",
+        "-display",
+        "none",
+        "-monitor",
+        "none",
+        "-serial",
+        "stdio",
+        "-no-reboot",
+        "-sandbox",
+        "on,obsolete=deny,elevateprivileges=deny,spawn=deny,resourcecontrol=deny",
+        "-kernel",
+        "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/Image-v10",
+        "-initrd",
+        "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/ubuntu26-writable-root-kernel10/ubuntu-writable.cpio.gz",
+        "-append",
+        "console=ttyAMA0 earlycon=pl011,mmio32,0x09000000 rdinit=/init panic=0 oops=panic nokaslr loglevel=6 initcall_blacklist=bcm_pmc_drv_reg,bcm_ubus_drv_init,pmc_xrdp_init,pmc_wan_initcall,bcmbca_vreg_sync_drv_reg lab_bad_uuid=1"
+      ],
+      "stop_reason": "qemu-exit",
+      "elapsed_seconds": 3.6,
+      "complete": true,
+      "panic": false,
+      "lab_lines": [
+        "LAB_REJECTED_WRONG_ROOT_UUID",
+        "LAB_SAFE_FALLBACK_SELECTED"
+      ],
+      "log_sha256": "8d7a3a45813e39012d52b56801dbc4dca7a00dfdac4e0b2d5c6dfdba6b438ce1",
+      "safe_guard_passed": true
+    }
+  ],
+  "limitations": [
+    "Image is RAM-backed inside QEMU; verifies real ext4 unmount/remount persistence, not host-file persistence across QEMU boots or power loss.",
+    "No physical disk, partition, boot setting or ASUS service was modified.",
+    "Early transition is an initramfs switch_root test; starting from an already mounted SquashFS would need a separately tested pivot_root path.",
+    "Final init is a bounded lab script; this does not validate systemd or proprietary ASUS service integration.",
+    "Bad UUID selects a safe marker and powers off; it does not emulate the complete vendor recovery path."
+  ],
+  "passed": true
+}

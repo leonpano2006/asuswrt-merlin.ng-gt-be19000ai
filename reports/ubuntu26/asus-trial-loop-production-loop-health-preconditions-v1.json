@@ -1,0 +1,323 @@
+{
+  "schema_version": 1,
+  "status": "component_validated_with_explicit_synthetic_adapters",
+  "passed": true,
+  "production_loop_fixture_validation_passed": true,
+  "all_six_scenarios_passed": true,
+  "native_guardian_gate_enabled": false,
+  "physical_watchdog_opened": false,
+  "physical_reset_and_stock_fallback_proven": false,
+  "ASUS_hardware_services_validated": false,
+  "runtime_accepted": false,
+  "automatic_commit_allowed": false,
+  "router_accessed": false,
+  "fixture": {
+    "path": "build/asus-trial-runtime/production-loop-health-preconditions-v1/manifest.json",
+    "sha256": "abe996f1bfe9891d9980ea965dd1771c0f518aa72e0e64d61ab2a4d9cea70bb5"
+  },
+  "pivot": {
+    "path": "build/ubuntu26-pivot-qemu/production-loop-health-preconditions-v1/manifest.json",
+    "sha256": "ddb958dc3aaa08aef41114f07b649467322990b90c6339c7dba45f0de058292f"
+  },
+  "native_build": {
+    "path": "build/asus-trial-runtime/native-v25-health-preconditions/manifest.json",
+    "sha256": "d0d98d9d3d141256cd93de58ced2e69bc3c9d0b27f52e7ba77c8a6c60a855230"
+  },
+  "shared_production_sources": {
+    "production.c": "85ae3a711ecb0ed34c76cb6d8087089a80845524a65aeb8aa0be5e11c3c1c337",
+    "trial-policy.c": "9d93784cbaadfee68b41791c357091e1fec4a28b51f53247d756c3d831c38db3",
+    "trial-policy.h": "8e1c2d3d5260bf1bf13f93f24d9bdad339249a353dd54f8b1271a89121d82837",
+    "trial-handoff.h": "4de3b81e120df030daf6bf939ec42977588afeea70dfc0d7bca35151d2f93089",
+    "preflight.c": "834a66f46630e3274cbaa305b34e61c9aa903dca07d15d4947fb024311067130",
+    "control-server.c": "b92a3067881a31fa00bda27210cf71dc671375f94576dc95c034a98273d3579b",
+    "control-server.h": "25d6cf12fb4636ede609ae404d5c9c616f316d6cd6916be76d8011327431c771",
+    "process-auth.c": "2215d497686449df385f16d79bfef0037bab3f720c20001db606b7846bab9d76",
+    "local-health.c": "47099c90d54714079bf2fefeb5cc87b223ac03edf9b7996131d176b95a4d4115",
+    "health-worker.c": "e78b224c450f8399554e4049d05632b62f0a2c02f891f35c2e38fec73877464c",
+    "health-worker.h": "1f43b02be1efe2286b1d043c891304df57f61ce2c310b19073b598cdceb72a6f",
+    "sshd-state.h": "1e315b40f3ca04a3ae7aca73d5b62f30b0822e1f29bc4507d437aa5c8b28d8b7",
+    "diagnostic-state.c": "8727a21b37bd8daf18a6d354d5cf9168870a39ab903c396c177b490d89615994",
+    "diagnostic-state.h": "65f9554d9daf4733903041cd2e7187b23116650ef2f63b71282231e38e5b8d73",
+    "boot-diagnostics.h": "6db67153c5e05327afb92d42bb20765a98e96667fad1b5af66157931bdadb1af"
+  },
+  "timings_ms": {
+    "boot": 300000,
+    "local_ttl": 15000,
+    "lan_ttl": 60000,
+    "stable": 10000,
+    "feed": 5000,
+    "mock_watchdog": 40000
+  },
+  "synthetic_seams": [
+    "regular-file metadata/UUID/slot reference, one fake module; actual parser/kernel notes/boot id",
+    "40-second process timer replaces physical watchdog; reset is a file/log sink",
+    "ASUS broker/direct-child/private-overlay test double, no vendor services",
+    "storage uses real guest ext4 dev/inodes with synthetic board UUID record",
+    "loopback-only SSH endpoints; real native daemon/key authentication/session/argv checks",
+    "fixture account and generated keys only in disposable guest"
+  ],
+  "cases": [
+    {
+      "case": "healthy-lan-expiry",
+      "checks": {
+        "complete_without_panic": true,
+        "expected_guest_stop": true,
+        "exact_initramfs": true,
+        "exact_kernel10": true,
+        "exact_log": true,
+        "no_nic": true,
+        "real_squashfs_pid1": true,
+        "no_restore_failure": true,
+        "LAB_TRIAL_LOOP_MOCK_ARMED_40S_PASS": true,
+        "LAB_TRIAL_LOOP_REAL_PID1_HANDOFF_PASS": true,
+        "LAB_TRIAL_LOOP_REAL_HEALTH_AND_SSH_ACK_PASS": true,
+        "LAB_TRIAL_LOOP_FAILURE_LATCHED_PASS": true,
+        "LAB_TRIAL_LOOP_RESET_SINK_PASS": true,
+        "LAB_TRIAL_LOOP_FAILURE_STOPS_FEEDING_PASS": true,
+        "LAB_TRIAL_LOOP_KERNEL10_COMPLETE": true,
+        "LAB_TRIAL_LOOP_DIAGNOSTIC_PREALLOCATED_ZERO_PASS": true,
+        "LAB_TRIAL_LOOP_DIAGNOSTIC_CRC_BOOT_BUILD_PASS": true,
+        "LAB_TRIAL_LOOP_DIAGNOSTIC_FIRST_FAILURE_PASS": true,
+        "LAB_TRIAL_LOOP_ACTUAL_KERNEL_NOTES_PASS": true,
+        "LAB_TRIAL_LOOP_REAL_SSH_AND_LOCAL_REJECT_PASS": true,
+        "LAB_TRIAL_LOOP_HEALTHY_KEEPS_FEEDING_PASS": true,
+        "LAB_TRIAL_LOOP_IMMUTABLE_OWNER_QUERY_PASS": true,
+        "prepared_before_armed": true,
+        "armed_exact_40": true,
+        "real_systemd": true,
+        "actual_collector_all_bits": true,
+        "healthy_before_failure_before_reset": true,
+        "no_emergency_or_fallback": true,
+        "no_failed_proof": true,
+        "lan_lease_reason": true
+      },
+      "elapsed_seconds": 165.38,
+      "result": {
+        "path": "build/qemu/ubuntu26-pivot-production-loop-health-preconditions-v1-healthy-lan-expiry/result.json",
+        "sha256": "dabc9355e4cf134bd956b9b8af21fc9d48081cc2d97553314c1598085aeccef8"
+      },
+      "serial": {
+        "path": "build/qemu/ubuntu26-pivot-production-loop-health-preconditions-v1-healthy-lan-expiry/serial.log",
+        "sha256": "c2f59883d35a9b84b1c1701aacb13f345480e4e6be8d5bebea001c4af4b471f3"
+      },
+      "fixture_completion_marker": "LAB_TRIAL_LOOP_KERNEL10_COMPLETE",
+      "original_runner_generic_complete": false,
+      "completion_evaluation": "Actual fixed fixture marker; original result/serial bytes preserved"
+    },
+    {
+      "case": "healthy-ssh-argv",
+      "checks": {
+        "complete_without_panic": true,
+        "expected_guest_stop": true,
+        "exact_initramfs": true,
+        "exact_kernel10": true,
+        "exact_log": true,
+        "no_nic": true,
+        "real_squashfs_pid1": true,
+        "no_restore_failure": true,
+        "LAB_TRIAL_LOOP_MOCK_ARMED_40S_PASS": true,
+        "LAB_TRIAL_LOOP_REAL_PID1_HANDOFF_PASS": true,
+        "LAB_TRIAL_LOOP_REAL_HEALTH_AND_SSH_ACK_PASS": true,
+        "LAB_TRIAL_LOOP_FAILURE_LATCHED_PASS": true,
+        "LAB_TRIAL_LOOP_RESET_SINK_PASS": true,
+        "LAB_TRIAL_LOOP_FAILURE_STOPS_FEEDING_PASS": true,
+        "LAB_TRIAL_LOOP_KERNEL10_COMPLETE": true,
+        "LAB_TRIAL_LOOP_DIAGNOSTIC_PREALLOCATED_ZERO_PASS": true,
+        "LAB_TRIAL_LOOP_DIAGNOSTIC_CRC_BOOT_BUILD_PASS": true,
+        "LAB_TRIAL_LOOP_DIAGNOSTIC_FIRST_FAILURE_PASS": true,
+        "LAB_TRIAL_LOOP_ACTUAL_KERNEL_NOTES_PASS": true,
+        "LAB_TRIAL_LOOP_REAL_SSH_AND_LOCAL_REJECT_PASS": true,
+        "LAB_TRIAL_LOOP_HEALTHY_KEEPS_FEEDING_PASS": true,
+        "LAB_TRIAL_LOOP_IMMUTABLE_OWNER_QUERY_PASS": true,
+        "prepared_before_armed": true,
+        "armed_exact_40": true,
+        "real_systemd": true,
+        "actual_collector_all_bits": true,
+        "healthy_before_failure_before_reset": true,
+        "no_emergency_or_fallback": true,
+        "no_failed_proof": true,
+        "real_running_wrong_config_injected": true,
+        "no_competing_capture_timeout": true,
+        "ssh_and_dependent_lan_bits_lost": true,
+        "local_failure_reason": true
+      },
+      "elapsed_seconds": 130.49,
+      "result": {
+        "path": "build/qemu/ubuntu26-pivot-production-loop-health-preconditions-v1-healthy-ssh-argv/result.json",
+        "sha256": "e2fcec3ed81d1a1aa528ba159206382911c0def455cd7a5bf2723b6f09e74aef"
+      },
+      "serial": {
+        "path": "build/qemu/ubuntu26-pivot-production-loop-health-preconditions-v1-healthy-ssh-argv/serial.log",
+        "sha256": "3c17b3dc91e659f3cce1b0ea38d7bcda507143ac27872dcc522f2a73c14da913"
+      },
+      "fixture_completion_marker": "LAB_TRIAL_LOOP_KERNEL10_COMPLETE",
+      "original_runner_generic_complete": false,
+      "completion_evaluation": "Actual fixed fixture marker; original result/serial bytes preserved"
+    },
+    {
+      "case": "healthy-worker-hang",
+      "checks": {
+        "complete_without_panic": true,
+        "expected_guest_stop": true,
+        "exact_initramfs": true,
+        "exact_kernel10": true,
+        "exact_log": true,
+        "no_nic": true,
+        "real_squashfs_pid1": true,
+        "no_restore_failure": true,
+        "LAB_TRIAL_LOOP_MOCK_ARMED_40S_PASS": true,
+        "LAB_TRIAL_LOOP_REAL_PID1_HANDOFF_PASS": true,
+        "LAB_TRIAL_LOOP_REAL_HEALTH_AND_SSH_ACK_PASS": true,
+        "LAB_TRIAL_LOOP_FAILURE_LATCHED_PASS": true,
+        "LAB_TRIAL_LOOP_RESET_SINK_PASS": true,
+        "LAB_TRIAL_LOOP_FAILURE_STOPS_FEEDING_PASS": true,
+        "LAB_TRIAL_LOOP_KERNEL10_COMPLETE": true,
+        "LAB_TRIAL_LOOP_DIAGNOSTIC_PREALLOCATED_ZERO_PASS": true,
+        "LAB_TRIAL_LOOP_DIAGNOSTIC_CRC_BOOT_BUILD_PASS": true,
+        "LAB_TRIAL_LOOP_DIAGNOSTIC_FIRST_FAILURE_PASS": true,
+        "LAB_TRIAL_LOOP_ACTUAL_KERNEL_NOTES_PASS": true,
+        "LAB_TRIAL_LOOP_REAL_SSH_AND_LOCAL_REJECT_PASS": true,
+        "LAB_TRIAL_LOOP_HEALTHY_KEEPS_FEEDING_PASS": true,
+        "LAB_TRIAL_LOOP_IMMUTABLE_OWNER_QUERY_PASS": true,
+        "prepared_before_armed": true,
+        "armed_exact_40": true,
+        "real_systemd": true,
+        "actual_collector_all_bits": true,
+        "healthy_before_failure_before_reset": true,
+        "no_emergency_or_fallback": true,
+        "no_failed_proof": true,
+        "worker_injected_after_healthy": true,
+        "worker_abnormal_evidence": true,
+        "diagnostic_waitpid_status": true
+      },
+      "elapsed_seconds": 116.67,
+      "result": {
+        "path": "build/qemu/ubuntu26-pivot-production-loop-health-preconditions-v1-healthy-worker-hang/result.json",
+        "sha256": "860e8456266ab63a2738d2ff9b4cfb8921db51c46d9da52ec08dd3e5aab21aa0"
+      },
+      "serial": {
+        "path": "build/qemu/ubuntu26-pivot-production-loop-health-preconditions-v1-healthy-worker-hang/serial.log",
+        "sha256": "adef3f0712d28cfbf1ced731ddd3f18b7f6a4440b6230dbee3506b504e6d5fee"
+      },
+      "fixture_completion_marker": "LAB_TRIAL_LOOP_KERNEL10_COMPLETE",
+      "original_runner_generic_complete": false,
+      "completion_evaluation": "Actual fixed fixture marker; original result/serial bytes preserved"
+    },
+    {
+      "case": "healthy-metadata-change",
+      "checks": {
+        "complete_without_panic": true,
+        "expected_guest_stop": true,
+        "exact_initramfs": true,
+        "exact_kernel10": true,
+        "exact_log": true,
+        "no_nic": true,
+        "real_squashfs_pid1": true,
+        "no_restore_failure": true,
+        "LAB_TRIAL_LOOP_MOCK_ARMED_40S_PASS": true,
+        "LAB_TRIAL_LOOP_REAL_PID1_HANDOFF_PASS": true,
+        "LAB_TRIAL_LOOP_REAL_HEALTH_AND_SSH_ACK_PASS": true,
+        "LAB_TRIAL_LOOP_FAILURE_LATCHED_PASS": true,
+        "LAB_TRIAL_LOOP_RESET_SINK_PASS": true,
+        "LAB_TRIAL_LOOP_FAILURE_STOPS_FEEDING_PASS": true,
+        "LAB_TRIAL_LOOP_KERNEL10_COMPLETE": true,
+        "LAB_TRIAL_LOOP_DIAGNOSTIC_PREALLOCATED_ZERO_PASS": true,
+        "LAB_TRIAL_LOOP_DIAGNOSTIC_CRC_BOOT_BUILD_PASS": true,
+        "LAB_TRIAL_LOOP_DIAGNOSTIC_FIRST_FAILURE_PASS": true,
+        "LAB_TRIAL_LOOP_ACTUAL_KERNEL_NOTES_PASS": true,
+        "LAB_TRIAL_LOOP_REAL_SSH_AND_LOCAL_REJECT_PASS": true,
+        "LAB_TRIAL_LOOP_HEALTHY_KEEPS_FEEDING_PASS": true,
+        "LAB_TRIAL_LOOP_IMMUTABLE_OWNER_QUERY_PASS": true,
+        "prepared_before_armed": true,
+        "armed_exact_40": true,
+        "real_systemd": true,
+        "actual_collector_all_bits": true,
+        "healthy_before_failure_before_reset": true,
+        "no_emergency_or_fallback": true,
+        "no_failed_proof": true,
+        "metadata_injected_after_healthy": true,
+        "metadata_recheck_failed": true
+      },
+      "elapsed_seconds": 110.85,
+      "result": {
+        "path": "build/qemu/ubuntu26-pivot-production-loop-health-preconditions-v1-healthy-metadata-change/result.json",
+        "sha256": "6efccde6fe9ecb422aa8428395609e8e8334fc0bc89f9f47e003f4325f66650f"
+      },
+      "serial": {
+        "path": "build/qemu/ubuntu26-pivot-production-loop-health-preconditions-v1-healthy-metadata-change/serial.log",
+        "sha256": "72ab6b98931ed6bdc718bf54a77b4de9445366b1aa3b4cec60995ec8182f31c3"
+      },
+      "fixture_completion_marker": "LAB_TRIAL_LOOP_KERNEL10_COMPLETE",
+      "original_runner_generic_complete": false,
+      "completion_evaluation": "Actual fixed fixture marker; original result/serial bytes preserved"
+    },
+    {
+      "case": "prearm-refuse",
+      "checks": {
+        "complete_without_panic": true,
+        "expected_guest_stop": true,
+        "exact_initramfs": true,
+        "exact_kernel10": true,
+        "exact_log": true,
+        "no_nic": true,
+        "real_squashfs_pid1": true,
+        "no_restore_failure": true,
+        "prearm_refused": true,
+        "never_armed": true,
+        "safe_vendor_fallback": true,
+        "no_emergency": true
+      },
+      "elapsed_seconds": 25.24,
+      "result": {
+        "path": "build/qemu/ubuntu26-pivot-production-loop-health-preconditions-v1-prearm-refuse/result.json",
+        "sha256": "110c7bdf23cf67834d0cca3f640919d787bbdc1be9bf2c2a9989a3da1191914a"
+      },
+      "serial": {
+        "path": "build/qemu/ubuntu26-pivot-production-loop-health-preconditions-v1-prearm-refuse/serial.log",
+        "sha256": "1064984f2e7e1e96f43a26e6a1b91751e1c36342b48f20841a8c67eaa2f793b5"
+      },
+      "fixture_completion_marker": "QEMU_UBUNTU26_PIVOT_COMPLETE",
+      "original_runner_generic_complete": false,
+      "completion_evaluation": "Actual fixed fixture marker; original result/serial bytes preserved"
+    },
+    {
+      "case": "arm-failure",
+      "checks": {
+        "complete_without_panic": true,
+        "expected_guest_stop": true,
+        "exact_initramfs": true,
+        "exact_kernel10": true,
+        "exact_log": true,
+        "no_nic": true,
+        "real_squashfs_pid1": true,
+        "no_restore_failure": true,
+        "arm_failure": true,
+        "verified_sysrq_selected": true,
+        "no_vendor_exec_or_restored_root": true,
+        "emergency_sink": true
+      },
+      "elapsed_seconds": 180.41,
+      "result": {
+        "path": "build/qemu/ubuntu26-pivot-production-loop-health-preconditions-v1-arm-failure/result.json",
+        "sha256": "26fc97b5cdce6d9023494315693a494959088e9cd5f59187a3e1ff1b956f3da8"
+      },
+      "serial": {
+        "path": "build/qemu/ubuntu26-pivot-production-loop-health-preconditions-v1-arm-failure/serial.log",
+        "sha256": "14e7eb02bb38aea0d52fce4f553375e420881cdf44dc8f73a7fc651bf24030d4"
+      },
+      "fixture_completion_marker": "LEON_ROOT_EMERGENCY_FIXTURE_SINK stage=guardian-handoff code=0",
+      "original_runner_generic_complete": false,
+      "completion_evaluation": "Actual fixed fixture marker; original result/serial bytes preserved"
+    }
+  ],
+  "errors": [],
+  "limits": [
+    "Actual production control loop, worker, parser and native SSH session checks are exercised; board storage, ASUS backend and hardware watchdog/reset are explicit substitutes.",
+    "Kernel core may keep feeding a bootloader-started watchdog before userspace opens it. These results do not promise a 40-second reset for arbitrary pre-ARM hangs.",
+    "A bounded external SSH observer is required for trial only; permanent acceptance and physical functional tests remain separate."
+  ],
+  "checker": {
+    "path": "scripts/check-asus-trial-health-preconditions-loop.py",
+    "sha256": "5cb66a59bb57ff4452efb4b4a40b54a9625a47f288c30da091984d43dfb1e199"
+  }
+}

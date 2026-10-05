@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "checked_at_utc": "2026-10-04T14:13:03.371321+00:00",
+  "status": "local_candidate_prepared_and_partially_validated_not_ready_for_device_root_switch",
+  "scope": "BCM only; separate AI board unchanged; no device userspace deployment, partition change, format or reboot in this preparation",
+  "time64_policy": {
+    "new_or_rebuilt_armel_armhf": "_TIME_BITS=64 and _FILE_OFFSET_BITS=64 by default",
+    "arm64": "native 64-bit time_t",
+    "fallback": "Only at a reproduced named legacy ABI boundary after attempting a narrow repair; no architecture-wide time32 exception",
+    "policy_file": "configs/ubuntu26/layout-profile.json"
+  },
+  "rootfs": {
+    "base": "Ubuntu 26.04 resolute essential plus apt/systemd-sysv/udev",
+    "base_libc6": "2.43-2ubuntu2.4 arm64",
+    "apt": "3.2.0",
+    "systemd": "259.5-0ubuntu3.4",
+    "sources": [
+      "resolute",
+      "resolute-updates",
+      "resolute-security"
+    ],
+    "signed_official_archive_architectures": [
+      "arm64",
+      "armhf"
+    ],
+    "registered_foreign_architectures": [
+      "armel",
+      "armhf"
+    ],
+    "foreign_runtime_packages_installed": false,
+    "custom_armel_repository_enabled": false,
+    "custom_config_deb_installed": true,
+    "usrmerge": {
+      "/bin": "usr/bin",
+      "/sbin": "usr/sbin",
+      "/lib": "usr/lib"
+    },
+    "original_tar_preserved": true
+  },
+  "qemu_apt": {
+    "result": "build/qemu/ubuntu26-kernel9-time64-busybox/result.json",
+    "serial_log": "build/qemu/ubuntu26-kernel9-time64-busybox/serial.log",
+    "passed": true,
+    "passed_checks": [
+      "LAB_DPKG_AUDIT_PASS",
+      "LAB_USRMERGE_PASS",
+      "LAB_APT_INSTALL_PASS",
+      "LAB_APT_REMOVE_PASS",
+      "LAB_ROOTFS_WRITABLE_PASS",
+      "LAB_GLIBC244_TIME64_armel_PASS",
+      "LAB_GLIBC244_TIME64_armhf_PASS",
+      "LAB_GLIBC244_UBUNTU_APT_PASS",
+      "LAB_BUSYBOX_OLD_TIME64_BUG_REPRODUCED",
+      "LAB_BUSYBOX_PATCH_armel-time64_PASS",
+      "LAB_BUSYBOX_PATCH_armel-time32_PASS",
+      "LAB_BUSYBOX_PATCH_armhf-time64_PASS",
+      "LAB_BUSYBOX_PATCH_aarch64-time64_PASS"
+    ],
+    "offline": true,
+    "local_deb_install_remove": true,
+    "writable_root_scope": "Guest RAM-backed initramfs only; does not prove persistent ext4 storage",
+    "date_2100_scope": "Native userspace date parsing, not an ARM32 kernel time64 syscall test"
+  },
+  "isolated_glibc244": {
+    "source": "BE98 multiarch-loader-20260916 runtime",
+    "armel_time_t_bits": 64,
+    "armhf_time_t_bits": 64,
+    "timerfd_absolute_seconds": 2147483664,
+    "both_arm32_tests_passed": true,
+    "syscall_evidence": "__timerfd_settime64 symbol binding; glibc uses timerfd_settime64 syscall for this out-of-time32-range value, with no vDSO path",
+    "arm64_apt_test": "Explicit glibc2.44 loader runs Ubuntu apt-get --version; full apt transaction used official glibc2.43",
+    "globally_installed_or_deb_packaged": false,
+    "reference": "reports/ubuntu26/build-reliability-review.json"
+  },
+  "systemd259": {
+    "result": "build/qemu/ubuntu26-kernel9-systemd/result.json",
+    "serial_log": "build/qemu/ubuntu26-kernel9-systemd/serial.log",
+    "manager_started": true,
+    "service_started": false,
+    "audit_completion_marker_is_boot_success": false,
+    "observed_failure": "Failed to spawn executor: Function not implemented",
+    "source_audit": "reports/ubuntu26/systemd259-kernel9-audit.json",
+    "blocks_full_os_switch": true,
+    "syscall_trace_result": "build/qemu/ubuntu26-kernel9-systemd-trace/result.json",
+    "syscall_trace_log": "build/qemu/ubuntu26-kernel9-systemd-trace/serial.log",
+    "confirmed_gate": "waitid(P_PIDFD, INT_MAX, NULL, WNOHANG|WEXITED, ...) returns EINVAL; libc pidfd_spawn returns ENOSYS before clone3",
+    "repair_requirement": "Implement real pidfd semantics including CLONE_PIDFD and waitid P_PIDFD; never fake the capability probe return"
+  },
+  "storage": {
+    "gpt_audit": "reports/ubuntu26/storage-layout.json",
+    "design": "reports/ubuntu26/storage-boot-plan.json",
+    "unallocated_tail_bytes": 17601117696,
+    "proposed_new_root_gib": 12,
+    "partition_created": false,
+    "filesystem_tested": false,
+    "vendor_upgrade_preservation_guaranteed": false
+  },
+  "not_completed": [
+    "Ubuntu-layout GCC16.2 Debian rebuild",
+    "binutils2.47 optimized Debian rebuild and benchmark",
+    "glibc2.44 full matching Multi-Arch Debian package family and signed project repository",
+    "Persistent ext4 rootfs image test and protected boot transition",
+    "ASUS rc /etc and /var ownership integration",
+    "AI-model-specific shared-memory layout measurement and rfctime ABI adapters",
+    "Full systemd259 service boot compatibility"
+  ],
+  "reports": [
+    "reports/ubuntu26/distribution-audit.json",
+    "reports/ubuntu26/toolchain-audit.json",
+    "reports/ubuntu26/asus-integration-audit.json",
+    "reports/ubuntu26/time64-migration-audit.json",
+    "reports/ubuntu26/be98-time64-history.json",
+    "reports/ubuntu26/build-reliability-review.json"
+  ],
+  "harness_corrections": [
+    "Preserve 116 tar hardlinks in newc; avoid expanding multicall coreutils beyond guest RAM",
+    "Use Ubuntu /bin/sh so BusyBox standalone applets do not shadow real dpkg",
+    "Mount devpts; allow apt to acquire a local deb path in the fully offline guest instead of --no-download"
+  ],
+  "artifact_hashes": {
+    "build/ubuntu26-rootfs/ubuntu26-bcm-candidate.tar": {
+      "bytes": 166438400,
+      "sha256": "b29e45106d9aa00437295bf1aaf1cb4db20396fbedd23ee1ab2abd65c2ad7262"
+    },
+    "build/ubuntu26/config-deb/leon-bcm-rootfs-config_0.1_all.deb": {
+      "bytes": 8432,
+      "sha256": "7a7417905be9d0d2fb98f1b81b8c606a0b39a3292665bcb226bd10571f18a2dd"
+    },
+    "build/ubuntu26-rootfs/ubuntu26-apt.cpio.gz": {
+      "bytes": 57000847,
+      "sha256": "02b8194bc20e7b4be2ed76713a955377b158e0bf0f655ff1a1d75a6b5f5f7868"
+    },
+    "build/ubuntu26-rootfs/ubuntu26-systemd.cpio.gz": {
+      "bytes": 54420674,
+      "sha256": "c00f25834592e326cbc577b2a59dc39ca6e7904a0e3ad7c3a4e35a48d72f5369"
+    },
+    "build/Image-v9": {
+      "bytes": 12851208,
+      "sha256": "cf4f036d1ff03cb4d13e6f41aedb1b31665d6921a0dd93ff0b8fc951ae18e073"
+    },
+    "patches/ubuntu26/0001-busybox-time64-clock.patch": {
+      "bytes": 1375,
+      "sha256": "d8097772237a59d532c6bdd1bbdf7a11aeba35eef9c8140c1a83bb274613bc72"
+    },
+    "build/ubuntu26-rootfs/ubuntu26-systemd-trace.cpio.gz": {
+      "bytes": 54985711,
+      "sha256": "89388b15b22a100b73727b42490d80940a1405a93e45700a5b10cb44af07bac9"
+    }
+  },
+  "busybox_time64_patch": {
+    "patch": "patches/ubuntu26/0001-busybox-time64-clock.patch",
+    "manifest": "configs/ubuntu26/userspace-patches.json",
+    "focused_report": "reports/ubuntu26/busybox-time64-patch-test.json",
+    "kernel9_system_mode_result": "build/qemu/ubuntu26-kernel9-time64-busybox/result.json",
+    "original_bug_reproduced": true,
+    "patched_armel64_armhf64_arm64_and_legacy32_passed": true,
+    "newer_BE98_multiarch_glibc244_used_in_system_mode": true,
+    "full_busybox_rebuild_or_device_deployment": false
+  },
+  "record_scope": "Historical kernel9 preparation baseline; see kernel10_followup for later completed local repairs and tests.",
+  "kernel10_followup": {
+    "candidate_report": "reports/kernel10/candidate.json",
+    "real_pidfd_backport_and_296_assertions_passed": true,
+    "original_ubuntu_systemd_minimal_service_passed": true,
+    "ext4_switch_root_apt_unmount_remount_and_systemd_passed": true,
+    "ext4_report": "reports/ubuntu26/writable-root-test-writable-systemd-kernel10.json",
+    "physical_partition_or_root_switch": false,
+    "remaining": "Full ASUS integration, real storage/recovery, matching multiarch package families and distribution repository remain separate acceptance work."
+  }
+}

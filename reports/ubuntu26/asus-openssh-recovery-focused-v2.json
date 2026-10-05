@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "status": "focused_no_nic_qemu_pass_physical_acceptance_pending",
+  "design_receipt": "reports/ubuntu26/asus-openssh-recovery-design-v1.json",
+  "runner_result": {
+    "label": "openssh-recovery-focused-v2",
+    "command": [
+      "qemu-system-aarch64",
+      "-machine",
+      "virt-8.2,gic-version=2",
+      "-accel",
+      "tcg,thread=multi",
+      "-cpu",
+      "cortex-a53",
+      "-smp",
+      "2",
+      "-m",
+      "6144",
+      "-nodefaults",
+      "-nic",
+      "none",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-no-reboot",
+      "-sandbox",
+      "on,obsolete=deny,elevateprivileges=deny,spawn=deny,resourcecontrol=deny",
+      "-kernel",
+      "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/Image-v10",
+      "-initrd",
+      "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/asus-ssh-recovery/recovery-fixture-v2/initramfs.cpio.gz",
+      "-append",
+      "console=ttyAMA0 earlycon=pl011,mmio32,0x09000000 rdinit=/init panic=0 oops=panic nokaslr loglevel=8 initcall_debug initcall_blacklist=bcm_pmc_drv_reg,bcm_ubus_drv_init,pmc_xrdp_init,pmc_wan_initcall,bcmbca_vreg_sync_drv_reg "
+    ],
+    "stop_reason": "complete",
+    "exit_code": 0,
+    "elapsed_seconds": 61.6,
+    "kernel_sha256": "4a15601eada042576aed2a3680dcc48e9228eea70f70c478840767aaa89a9f8e",
+    "initramfs_sha256": "80dacfeb343fbf8a6f5beaf7d77a10ed5ddea04c62cbf8851d81f3eb46a69182",
+    "log_sha256": "51b7164c78de96665545c81564a64a824268948f5adeead1b0949117a09391f5",
+    "init_reached": true,
+    "guest_complete": true,
+    "panic": false,
+    "lab_lines": [
+      "LAB_ARCHIVE_ROOT_METADATA_PASS",
+      "LAB_SSH_RECOVERY_VENDOR_CONTROL_UNAVAILABLE_PASS",
+      "LAB_SSH_RECOVERY_LATE_BR0_DEVICE_ACTIVATION_PASS",
+      "LAB_SSH_RECOVERY_PINNED_KEY_ONLY_LOGIN_PASS",
+      "LAB_SSH_RECOVERY_PASSWORD_ROOT_OTHER_KEY_SOURCE_INTERFACE_REJECT_PASS",
+      "LAB_SSH_RECOVERY_MAIN_SSH_STOP_LIVE_AND_NEW_LOGIN_PASS",
+      "LAB_SSH_RECOVERY_SOCKET_RESTART_BR0_RECREATE_NO_ACCOUNT_CONFIG_CHANGE_PASS",
+      "LAB_SSH_RECOVERY_EXIT_code=0 stage=restart-and-device-recreation"
+    ]
+  },
+  "proof_source": "scripts/asus-integration/openssh-recovery/proof.sh",
+  "proof_sha256": "08b62fb7c86afc27f27b25e58d8165ab4757db431dd85452d7217c1574a3f9d2",
+  "preparation_source": "scripts/prepare-asus-openssh-recovery-qemu.py",
+  "fixture_manifest": "build/asus-ssh-recovery/recovery-fixture-v2/manifest.json",
+  "source_only_package": {
+    "path": "build/asus-ssh-recovery/recovery-source-v1/leon-asus-openssh-recovery_0.1+leonb53.1_all.deb",
+    "sha256": "30d10fe3b809c95bc5018024a029a8058e77dcff1c5ad249ebd12bf435e23bff",
+    "architecture": "all",
+    "contents": "Five configuration/documentation files only; no keys/accounts/enabling symlinks/maintainer scripts",
+    "native_unit_validation": "systemd-analyze verify --man=no --generators=no passed for socket and service"
+  },
+  "scope": {
+    "fresh_boot_count": 1,
+    "synthetic_existing_fixture_identities_only": true,
+    "new_private_keys_generated": false,
+    "production_private_keys_read": false,
+    "device_access": false,
+    "root07_changed": false,
+    "physical_native_acceptance": false,
+    "full_apt_or_old_baseline_run": false
+  },
+  "validated": [
+    "No-NIC existing-identity fixture reached multi-user with br0 absent; recovery socket enabled only through br0.device.wants and activated after bridge creation",
+    "Absent public authorization rejected a connection while listener remained active; installing persistent public authorization enabled the next connection without restarting vendor control",
+    "Pinned key-only login returned UID2000 and PID1 systemd with ordinary SSH stopped, vendor control socket masked, broker/rc absent and ordinary imported authorized_keys absent",
+    "Password-only authentication, root, unapproved key, non-LAN source and separate non-br0 ingress all rejected",
+    "Stopping ordinary ssh.service preserved /run/sshd, an existing recovery session and a new recovery login",
+    "Recovery socket restart and br0 removal/recreation each permitted subsequent key login",
+    "Native passwd/shadow/group/gshadow and ordinary sshd_config checksums unchanged"
+  ],
+  "remaining_gate": [
+    "Provision exact already enrolled h0 public key only; retain existing valid native account/shadow/PAM and stable existing ed25519 host key",
+    "Enable br0.device.wants during candidate provisioning; explicitly start once only when installing into an already active bridge",
+    "From authorized .51 client use existing netpanel private identity and separately pinned native host key to establish MastermixStudios@candidate:2222 after native boot",
+    "Repeat after a fresh native reboot and ordinary SSH/vendor control restart; assert PID1 systemd/actual slot and stable host/key identities without outputting secrets",
+    "Assert native public-key access survives unavailable vendor password import; confirm LAN firewall/interface limits on actual target",
+    "Preserve existing sudo authentication policy; public-key access alone does not promise privileged recovery when the native sudo password is lost"
+  ],
+  "limitations": [
+    "Public-key login still requires a valid native account and successful PAM account/session checks",
+    "Existing sudo can require the native password; no unrestricted passwordless root recovery is granted",
+    "Missing br0, LAN/firewall failure, filesystem damage or systemd failure remain outside this recovery path"
+  ]
+}

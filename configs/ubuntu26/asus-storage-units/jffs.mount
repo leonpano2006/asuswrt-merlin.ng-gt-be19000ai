@@ -1,0 +1,14 @@
+[Unit]
+Description=Verified BE19000AI BCM jffs filesystem
+# Device identity was read-only verified; this unit never repairs or formats.
+Before=leon-asus-storage.target
+
+[Mount]
+What=/dev/disk/by-uuid/7575e860-48ee-493e-bb5b-a1ca270b8512
+Where=/jffs
+Type=ext4
+Options=rw
+TimeoutSec=30s
+
+[Install]
+WantedBy=leon-asus-storage.target

@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "scope": "BE19000AI BCM Ubuntu integration; separate SL1680 OS unchanged",
+  "strategy": "Let native Ubuntu systemd own PID1 and lifecycle. Keep the board-specific ARMEL ASUS rc responsible for hardware initialization before splitting individual vendor services.",
+  "process_chain": [
+    {"component": "Ubuntu systemd", "abi": "arm64", "role": "PID1, cgroups, native services, global reboot and shutdown"},
+    {"component": "ASUS broker", "abi": "arm64", "role": "Authenticated manager handshake, readiness, notification forwarding and ordered stop"},
+    {"component": "Rebuilt BE19000AI ASUS rc", "abi": "armel softfp", "role": "Existing board, NVRAM, Wi-Fi, wired AiMesh, bridge/Runner and AI-link initialization order"}
+  ],
+  "ssh": {
+    "implementation": "Ubuntu openssh-server and openssh-sftp-server, arm64",
+    "lifecycle_owner": "systemd ssh.service",
+    "stock_rc_must_not": ["launch Dropbear", "kill or restart OpenSSH as a side effect of ASUS service restarts", "replace Ubuntu account databases", "overwrite OpenSSH host keys or authorized_keys"],
+    "bootstrap_policy": "Local candidate has key-only configuration, locked root password and no migrated login identity; service/socket activation stays disabled until deployment configuration is validated.",
+    "pending": ["Map the intended ASUS SSH web controls to OpenSSH policy and lifecycle", "Migrate the selected management identity without clobbering Ubuntu users", "Provision device-specific host keys and authorized access before any device cutover"],
+    "current_router_ssh_changed": false
+  },
+  "first_stage": {
+    "full_Ubuntu_systemd_boot": "passed in kernel10 QEMU",
+    "native_and_armel_mock_manager_lifecycle": "passed in kernel10 QEMU; see reports/ubuntu26/asus-systemd-lifecycle.json",
+    "real_ASUS_rc_source_port": "staged source patches; complete board build and account/path integration still required",
+    "actual_ASUS_service_boot": "not run",
+    "physical_acceptance": "not run for this Ubuntu candidate"
+  },
+  "ownership": {
+    "ubuntu": ["/etc/passwd", "/etc/shadow", "/etc/group", "/etc/gshadow", "/etc/fstab", "/etc/hosts", "/etc/resolv.conf policy", "/var/lib/dpkg", "/var/lib/apt", "udev and API filesystem lifecycle"],
+    "asus": ["board-specific initialization policy", "NVRAM semantics", "explicitly assigned ASUS runtime and persistent files", "AI-link controls with AI reboot/upgrade kept separate"]
+  },
+  "activation_requirements": [
+    "Actual board-matched rc build with the registered Ubuntu patches and matching ARM32 runtime",
+    "No missing-marker fallback to legacy PID1 behavior",
+    "ASUS account, shell, DNS, device and persistent-file ownership integration completed",
+    "Actual ASUS service acceptance and recoverable boot/update integration",
+    "Production OpenSSH authentication and service policy verified before replacing access"
+  ],
+  "enable_actual_rc": false,
+  "flash_allowed": false
+}

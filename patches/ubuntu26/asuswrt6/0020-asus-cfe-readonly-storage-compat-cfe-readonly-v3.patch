@@ -1,0 +1,213 @@
+diff --git a/release/src/router/rc/ate.c b/release/src/router/rc/ate.c
+--- a/release/src/router/rc/ate.c
++++ b/release/src/router/rc/ate.c
+@@ -12,6 +12,9 @@
+ #include <qca.h>
+ #endif
+ #include "ate.h"
++#if defined(LEON_SYSTEMD_RC) && LEON_SYSTEMD_RC == 1
++#include "rc-cfe-readonly.h"
++#endif
+ #ifdef RTCONFIG_INTERNAL_GOBI
+ #include <at_cmd.h>
+ #endif
+@@ -5872,6 +5875,20 @@
+ }
+ 
+ int start_envrams(void) {
++#if defined(LEON_SYSTEMD_RC) && LEON_SYSTEMD_RC == 1
++	leon_cfe_defaults_require();
++	if (!pids("envrams")) {
++		/* Keep the native RO /mnt/defaults mounted throughout the daemon's
++		 * lifetime. No /dev/defaults mount or compatibility-path unmount. */
++		if (system("/usr/sbin/envrams >/dev/null"))
++			leon_cfe_readonly_refuse("envrams-start");
++		sleep(1);
++		if (!pids("envrams"))
++			leon_cfe_readonly_refuse("envrams-not-ready");
++		return 1;
++	}
++	return 0;
++#else
+ 	int ret;
+ 
+ 	ret = 0;
+@@ -5904,15 +5921,18 @@
+ 	}
+ #endif
+ 	return ret;
++#endif
+ }
+ 
+ void stop_envrams(void) {
+ 	killall_tk("envrams");
++#if !defined(LEON_SYSTEMD_RC) || LEON_SYSTEMD_RC != 1
+ #if defined(RTCONFIG_HND_ROUTER_AX_6756) || defined(RTCONFIG_HND_ROUTER_BE_4916)
+ #ifdef RTCONFIG_USB
+ 	system("umount /tmp/mnt/defaults &> /dev/null");
+ #else
+ 	system("umount /mnt/defaults &> /dev/null");
++#endif
+ #endif
+ #endif
+ }
+diff --git a/release/src/router/rc/sysdeps/init-broadcom.c b/release/src/router/rc/sysdeps/init-broadcom.c
+--- a/release/src/router/rc/sysdeps/init-broadcom.c
++++ b/release/src/router/rc/sysdeps/init-broadcom.c
+@@ -15,6 +15,9 @@
+ #include "shared.h"
+ #include "version.h"
+ #include "interface.h"
++#if defined(LEON_SYSTEMD_RC) && LEON_SYSTEMD_RC == 1
++#include "rc-cfe-readonly.h"
++#endif
+ 
+ #include <sched.h>
+ #include <termios.h>
+@@ -9574,6 +9577,12 @@
+ {
+ 	char *ptr;
+ 	int model;
++#if defined(LEON_SYSTEMD_RC) && LEON_SYSTEMD_RC == 1
++	/* Preserve refresh_cfe_nvram's original local daemon transport prerequisite. */
++	config_loopback();
++	/* Fail before refresh_cfe_nvram or default identity writes. */
++	leon_cfe_readonly_require(0);
++#endif
+ 
+ 	nvram_set("firmver", rt_version);
+ 	nvram_set("productid", rt_buildname);
+@@ -9829,7 +9838,12 @@
+ 
+ #if defined(RTCONFIG_HND_ROUTER_AX_6756) || defined(RTCONFIG_HND_ROUTER_BE_4916) \
+ 		|| defined(RTAX86U)
++#if defined(LEON_SYSTEMD_RC) && LEON_SYSTEMD_RC == 1
++	/* Never call the blob fallback that ATE-commits a default MAC. */
++	leon_cfe_readonly_require(1);
++#else
+ 	sync_cfe_mac();
++#endif
+ #endif
+ 
+ #ifdef RTCONFIG_ODMPID
+diff --git a/release/src/router/rc/rc-storage.c b/release/src/router/rc/rc-storage.c
+--- a/release/src/router/rc/rc-storage.c
++++ b/release/src/router/rc/rc-storage.c
+@@ -10,6 +10,17 @@
+ #error "This storage port is specifically for the verified BE19000AI eMMC profile"
+ #endif
+ 
++static int legacy_jffs2_clean_is_inapplicable(void)
++{
++    /* The eMMC backend consumes ext4fs_clean_fs. Older normal configurations
++     * can retain jffs2_clean_fs=1 even though no filesystem reset was requested.
++     * Do not clear that NVRAM value or accept it during reset/schema migration. */
++    return nvram_match("jffs2_clean_fs", "1") &&
++           nvram_match("restore_defaults", "0") &&
++           nvram_match("nvramver", "1") &&
++           (!nvram_get("ext4fs_clean_fs") || nvram_match("ext4fs_clean_fs", "0"));
++}
++
+ static void storage_ready(void)
+ {
+     static const char *const destructive[] = {
+@@ -17,16 +28,24 @@
+         "ubifs_clean_fs", "ubifs_format", "force_erase_jffs2"
+     };
+     unsigned int i;
++    int legacy_jffs2_clean=0;
+     leon_rc_private_etc_require();
+     leon_storage_require();
+     for (i=0;i<sizeof(destructive)/sizeof(destructive[0]);i++) {
+         if (nvram_get_int(destructive[i])) {
++            if (!strcmp(destructive[i], "jffs2_clean_fs") &&
++                legacy_jffs2_clean_is_inapplicable()) {
++                legacy_jffs2_clean=1;
++                continue;
++            }
+             logmessage("storage", "Refused ASUS storage reset request %s; native storage manager owns this filesystem", destructive[i]);
+             errno=EOPNOTSUPP;
+             perror("ASUS storage reset is not an rc startup action");
+             _exit(125);
+         }
+     }
++    if (legacy_jffs2_clean)
++        logmessage("storage", "Legacy jffs2_clean_fs=1 is inapplicable to the ext4 backend; flag retained, no filesystem reset");
+ }
+ 
+ /* Replaces the closed ext4fs.o exports. The rc.h caller still runs the original
+diff --git a/release/src/router/rc/rc-cfe-readonly.h b/release/src/router/rc/rc-cfe-readonly.h
+--- /dev/null
++++ b/release/src/router/rc/rc-cfe-readonly.h
+@@ -0,0 +1,71 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++#ifndef LEON_RC_CFE_READONLY_H
++#define LEON_RC_CFE_READONLY_H
++#if !defined(LEON_SYSTEMD_RC) || LEON_SYSTEMD_RC != 1
++#error "CFE read-only ownership is only for the Ubuntu profile"
++#endif
++#include <errno.h>
++#include <stdio.h>
++#include <string.h>
++#include <unistd.h>
++
++/* This device-specific candidate must never manufacture a replacement identity
++ * when the factory environment cannot be read. No CFE/NVRAM writes occur here. */
++static inline void leon_cfe_readonly_refuse(const char *stage)
++{
++    logmessage("cfe", "CFE readonly refused stage=%s", stage);
++    /* The native broker captures stderr even before vendor syslog starts. */
++    fprintf(stderr,"ASUS_CFE_READONLY_REFUSED_STAGE=%s\n",stage);
++    errno=EPERM;
++    _exit(125);
++}
++
++static inline void leon_cfe_defaults_require(void)
++{
++    /* Existing verifier checks the enrolled UUID, native mount identity and RO
++     * defaults mode. --require does not start BSP or populate calibration. */
++    if (eval("/usr/libexec/asus/bsp-ownership", "--require"))
++        leon_cfe_readonly_refuse("defaults-ownership");
++}
++
++static inline int leon_cfe_hex(unsigned char c)
++{
++    if (c>='0' && c<='9') return c-'0';
++    if (c>='a' && c<='f') return c-'a'+10;
++    if (c>='A' && c<='F') return c-'A'+10;
++    return -1;
++}
++
++static inline int leon_cfe_mac_parse(const char *text, unsigned char mac[6])
++{
++    unsigned int i;
++    int hi,lo,nonzero=0;
++    if (!text || strnlen(text,18)!=17) return -1;
++    for (i=0;i<6;i++) {
++        hi=leon_cfe_hex((unsigned char)text[3*i]);
++        lo=leon_cfe_hex((unsigned char)text[3*i+1]);
++        if (hi<0 || lo<0 || (i<5 && text[3*i+2]!=':')) return -1;
++        mac[i]=(unsigned char)((hi<<4)|lo); nonzero|=mac[i];
++    }
++    return !nonzero || (mac[0]&1) ? -1 : 0;
++}
++
++static inline void leon_cfe_readonly_require(int require_nvram_match)
++{
++    static const unsigned char enrolled[6]={0x02,0x00,0x00,0xf0,0x00,0x01};
++    unsigned char cfe[6],nvram[6];
++    /* Explicitly verify/start the daemon even if the raw getter has a cached
++     * snapshot. The getter's own repeated start_envrams calls are harmless. */
++    start_envrams();
++    if (leon_cfe_mac_parse(cfe_nvram_safe_get_raw("et0macaddr"),cfe))
++        leon_cfe_readonly_refuse("cfe-mac-invalid");
++    if (memcmp(cfe,enrolled,sizeof(cfe)))
++        leon_cfe_readonly_refuse("cfe-mac-not-enrolled");
++    if (require_nvram_match) {
++        if (leon_cfe_mac_parse(nvram_get("et0macaddr"),nvram))
++            leon_cfe_readonly_refuse("nvram-mac-invalid");
++        if (memcmp(cfe,nvram,sizeof(cfe)))
++            leon_cfe_readonly_refuse("nvram-cfe-mismatch");
++    }
++}
++#endif

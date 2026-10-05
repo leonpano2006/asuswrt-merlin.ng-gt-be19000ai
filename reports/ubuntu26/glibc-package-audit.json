@@ -1,0 +1,281 @@
+{
+  "status": "artifact_metadata_checks_passed",
+  "version": "2.44-1ubuntu1+leonb53.1",
+  "packages": [
+    {
+      "file": "build/ubuntu26-glibc/results/glibc-doc_2.44-1ubuntu1+leonb53.1_all.deb",
+      "sha256": "8fe6e38fbab266a1f88f402d9cfc190b646122bcda31998ca86f326575c396e0",
+      "control": {
+        "Package": "glibc-doc",
+        "Source": "glibc",
+        "Version": "2.44-1ubuntu1+leonb53.1",
+        "Architecture": "all",
+        "Maintainer": "GNU Libc Maintainers <debian-glibc@lists.debian.org>",
+        "Installed-Size": "4010",
+        "Depends": "glibc-doc-reference (>= 2.18)",
+        "Section": "doc",
+        "Priority": "optional",
+        "Multi-Arch": "foreign",
+        "Homepage": "https://www.gnu.org/software/libc/libc.html",
+        "Description": "GNU C Library: Documentation",
+        "Original-Vcs-Browser": "https://salsa.debian.org/glibc-team/glibc",
+        "Original-Vcs-Git": "https://salsa.debian.org/glibc-team/glibc.git"
+      }
+    },
+    {
+      "file": "build/ubuntu26-glibc/results/glibc-source_2.44-1ubuntu1+leonb53.1_all.deb",
+      "sha256": "de717a32f2ab20cb73b2829ca878e6ca27912434f0f208ccf414dd0dbfbda2dc",
+      "control": {
+        "Package": "glibc-source",
+        "Source": "glibc",
+        "Version": "2.44-1ubuntu1+leonb53.1",
+        "Architecture": "all",
+        "Maintainer": "GNU Libc Maintainers <debian-glibc@lists.debian.org>",
+        "Installed-Size": "24711",
+        "Recommends": "xz-utils",
+        "Section": "devel",
+        "Priority": "optional",
+        "Multi-Arch": "foreign",
+        "Homepage": "https://www.gnu.org/software/libc/libc.html",
+        "Description": "GNU C Library: sources",
+        "Original-Vcs-Browser": "https://salsa.debian.org/glibc-team/glibc",
+        "Original-Vcs-Git": "https://salsa.debian.org/glibc-team/glibc.git"
+      }
+    },
+    {
+      "file": "build/ubuntu26-glibc/results/libc-bin_2.44-1ubuntu1+leonb53.1_arm64.deb",
+      "sha256": "857b6618194aa259469bb4c6ec054e355c8a57f5941a147047c72ac1cbec8a94",
+      "control": {
+        "Package": "libc-bin",
+        "Source": "glibc",
+        "Version": "2.44-1ubuntu1+leonb53.1",
+        "Architecture": "arm64",
+        "Essential": "yes",
+        "Maintainer": "GNU Libc Maintainers <debian-glibc@lists.debian.org>",
+        "Installed-Size": "2305",
+        "Depends": "libc6 (>> 2.44), libc6 (<< 2.45)",
+        "Suggests": "manpages",
+        "Section": "libs",
+        "Priority": "required",
+        "Multi-Arch": "foreign",
+        "Homepage": "https://www.gnu.org/software/libc/libc.html",
+        "Description": "GNU C Library: Binaries",
+        "Original-Vcs-Browser": "https://salsa.debian.org/glibc-team/glibc",
+        "Original-Vcs-Git": "https://salsa.debian.org/glibc-team/glibc.git"
+      }
+    },
+    {
+      "file": "build/ubuntu26-glibc/results/libc-dev-bin_2.44-1ubuntu1+leonb53.1_arm64.deb",
+      "sha256": "c8d7818da166bfa78e7c3d6012678690228ac6c92493c3f5cde4f29887ee5230",
+      "control": {
+        "Package": "libc-dev-bin",
+        "Source": "glibc",
+        "Version": "2.44-1ubuntu1+leonb53.1",
+        "Architecture": "arm64",
+        "Maintainer": "GNU Libc Maintainers <debian-glibc@lists.debian.org>",
+        "Installed-Size": "155",
+        "Depends": "libc6 (>> 2.44), libc6 (<< 2.45)",
+        "Recommends": "manpages, manpages-dev",
+        "Suggests": "libc-devtools (>> 2.44)",
+        "Section": "libdevel",
+        "Priority": "optional",
+        "Multi-Arch": "foreign",
+        "Homepage": "https://www.gnu.org/software/libc/libc.html",
+        "Description": "GNU C Library: Development binaries",
+        "Original-Vcs-Browser": "https://salsa.debian.org/glibc-team/glibc",
+        "Original-Vcs-Git": "https://salsa.debian.org/glibc-team/glibc.git"
+      }
+    },
+    {
+      "file": "build/ubuntu26-glibc/results/libc-devtools_2.44-1ubuntu1+leonb53.1_arm64.deb",
+      "sha256": "7265cc958522efe540b1bcb655a2ced084f06295eaf94a17865f2c3f1468dd7c",
+      "control": {
+        "Package": "libc-devtools",
+        "Source": "glibc",
+        "Version": "2.44-1ubuntu1+leonb53.1",
+        "Architecture": "arm64",
+        "Maintainer": "GNU Libc Maintainers <debian-glibc@lists.debian.org>",
+        "Installed-Size": "244",
+        "Depends": "libc6 (>= 2.38), libgd3 (>= 2.1.0~alpha~)",
+        "Recommends": "libc-dev (= 2.44-1ubuntu1+leonb53.1), manpages, manpages-dev",
+        "Section": "devel",
+        "Priority": "optional",
+        "Multi-Arch": "foreign",
+        "Homepage": "https://www.gnu.org/software/libc/libc.html",
+        "Description": "GNU C Library: Development tools",
+        "Original-Vcs-Browser": "https://salsa.debian.org/glibc-team/glibc",
+        "Original-Vcs-Git": "https://salsa.debian.org/glibc-team/glibc.git"
+      }
+    },
+    {
+      "file": "build/ubuntu26-glibc/results/libc-gconv-modules-extra_2.44-1ubuntu1+leonb53.1_arm64.deb",
+      "sha256": "d62010757e39f4867e8b24bc3593249eee75b5d1eba528c412eec57ac1651a81",
+      "control": {
+        "Package": "libc-gconv-modules-extra",
+        "Source": "glibc",
+        "Version": "2.44-1ubuntu1+leonb53.1",
+        "Architecture": "arm64",
+        "Maintainer": "GNU Libc Maintainers <debian-glibc@lists.debian.org>",
+        "Installed-Size": "18990",
+        "Breaks": "libc6 (<< 2.42-1)",
+        "Replaces": "libc6 (<< 2.42-1)",
+        "Section": "libs",
+        "Priority": "optional",
+        "Multi-Arch": "same",
+        "Homepage": "https://www.gnu.org/software/libc/libc.html",
+        "Description": "GNU C Library: Non-essential gconv modules",
+        "Original-Vcs-Browser": "https://salsa.debian.org/glibc-team/glibc",
+        "Original-Vcs-Git": "https://salsa.debian.org/glibc-team/glibc.git"
+      }
+    },
+    {
+      "file": "build/ubuntu26-glibc/results/libc6-dbg_2.44-1ubuntu1+leonb53.1_arm64.deb",
+      "sha256": "268fa0f2584cc9811ac89367790c9ca7cae0d36e2d24c64637678d17b4ff1469",
+      "control": {
+        "Package": "libc6-dbg",
+        "Source": "glibc",
+        "Version": "2.44-1ubuntu1+leonb53.1",
+        "Architecture": "arm64",
+        "Maintainer": "GNU Libc Maintainers <debian-glibc@lists.debian.org>",
+        "Installed-Size": "9630",
+        "Depends": "libc6 (= 2.44-1ubuntu1+leonb53.1)",
+        "Provides": "libc-dbg, libc6-dbgsym",
+        "Section": "debug",
+        "Priority": "optional",
+        "Multi-Arch": "same",
+        "Homepage": "https://www.gnu.org/software/libc/libc.html",
+        "Description": "GNU C Library: detached debugging symbols",
+        "Build-Ids": "0446f10104d5049c3ba823de6f9bcea926698c5b 23af608bb8a23439e0e4ddf1ce7599b9f321f456 26c75b14b2837be512ee91ada9824cbca36f7b17 294cbd9d49404bc84a249152e8825491bb88db8a 2cd2d23068637a3a77067c6cb3b0593d0897a4cd 35569595517be7aef4383d2154d913b4da175a6c 3b99863ece149d1457bc35a738969da3f2e1bc2e 3e2f3286b9fab1b6d6c90afabf7203128f33282d 4e99c929c60c70d01dca3c5574637b623dbc9165 5a1ecb620fa8f0b5729e815180f347fb4d9e522f 5c83ccb30770d44ec91d6b033a52c4cb31487d90 60292188f9288912be8465de9928dfda204ba059 628491a828f8bcee49144e02cbc895266a03eaa2 6338172ff264f351014bf5bf4beb3a1c6e56ec4a 73cb764800da0ef52c8f45decafd6b172e31929f 78a6697fe3cad273224f38a431f6635f71743d91 84133b5f4cf36e3c5762727713d0fc042c5d52ac 8552326513437429d5bc7fe836e7f53f8662047d 982a7fe87e32ae48aa1083b76c17970f1b853b87 9861d91cf4ad467f6fec33911b47b4c19c5437b0 a93c5e7c5d077e5db34be04efc12ac7c9ced3771 bbf908183ad5463e758de3598825748659aec543 bbfce2f3fc0ea2afe9d2d95307f3505206310bce cc045fdca2b3be20c5bd170e6806e1270f831479 cd50b331fe96beb2389fc929eff483a56ace10c0 d981154cbcd9a6cd244699eeba8ae49885aee0bd ed2be006d6d0ac90dcf247cc08e0b215419e2430 ee0d3494fea8f9c072b6bd91961bc6f8fbd908bd",
+        "Original-Vcs-Browser": "https://salsa.debian.org/glibc-team/glibc",
+        "Original-Vcs-Git": "https://salsa.debian.org/glibc-team/glibc.git"
+      }
+    },
+    {
+      "file": "build/ubuntu26-glibc/results/libc6-dev_2.44-1ubuntu1+leonb53.1_arm64.deb",
+      "sha256": "de3e9def4f97f2c28873aba5fcad93d70595c04a4ab8039a453f78a8ac098d8d",
+      "control": {
+        "Package": "libc6-dev",
+        "Source": "glibc",
+        "Version": "2.44-1ubuntu1+leonb53.1",
+        "Architecture": "arm64",
+        "Maintainer": "GNU Libc Maintainers <debian-glibc@lists.debian.org>",
+        "Installed-Size": "10817",
+        "Depends": "libc6 (= 2.44-1ubuntu1+leonb53.1), libc-dev-bin (= 2.44-1ubuntu1+leonb53.1), linux-libc-dev",
+        "Suggests": "glibc-doc, manpages-dev",
+        "Conflicts": "libc0.3-dev, libc6.1-dev",
+        "Breaks": "catch (<< 1.12.2-0.1), libc6-dev-arm64-cross (<< 2.44~), libmysqlclient-dev (<= 8.0.29-1)",
+        "Provides": "libc-dev (= 2.44-1ubuntu1+leonb53.1)",
+        "Section": "libdevel",
+        "Priority": "optional",
+        "Multi-Arch": "same",
+        "Homepage": "https://www.gnu.org/software/libc/libc.html",
+        "Description": "GNU C Library: Development Libraries and Header Files",
+        "Original-Vcs-Browser": "https://salsa.debian.org/glibc-team/glibc",
+        "Original-Vcs-Git": "https://salsa.debian.org/glibc-team/glibc.git"
+      }
+    },
+    {
+      "file": "build/ubuntu26-glibc/results/libc6_2.44-1ubuntu1+leonb53.1_arm64.deb",
+      "sha256": "e3c6fb808d4d57e6fcacdcbc2a03f671eed88e7cde3626316f63419edb4ca46c",
+      "control": {
+        "Package": "libc6",
+        "Source": "glibc",
+        "Version": "2.44-1ubuntu1+leonb53.1",
+        "Architecture": "arm64",
+        "Maintainer": "GNU Libc Maintainers <debian-glibc@lists.debian.org>",
+        "Installed-Size": "5137",
+        "Depends": "libgcc-s1, libc-gconv-modules-extra (= 2.44-1ubuntu1+leonb53.1)",
+        "Recommends": "libidn2-0 (>= 2.0.5~)",
+        "Suggests": "glibc-doc, debconf | debconf-2.0, locales, libnss-nis",
+        "Conflicts": "libc6-lse",
+        "Breaks": "base-files (<< 13.3~), dhcpcd (<< 1:10.1.0-7~), libamdhip64-5 (<< 5.7.1-5+b1), libhiprtc-builtins5 (<< 5.7.1-5+b1), librccl1 (<< 5.4.3-3build1), libswupdate0.1 (<< 2024.12.1+dfsg-1+b3), locales (<< 2.44), locales-all (<< 2.44), lua-swupdate (<< 2024.12.1+dfsg-1+b3), nscd (<< 2.44), pd-scaf (<< 1:0.14.1+darcs20180201-6build5), postgresql-15-pllua (<< 1:2.0.12-4), postgresql-17-pllua (<< 1:2.0.12-3+b2), python3-mrgingham (<< 1.25-1), python3-onnxruntime (<< 1.20.1+dfsg-2~), sysvinit (<< 3.09-2~), sysvinit-core (<< 3.09-2~), uwsgi-plugin-pypy3 (<< 0.0.2+b1)",
+        "Replaces": "libc6-lse",
+        "Provides": "libc6-lse",
+        "Section": "libs",
+        "Priority": "optional",
+        "Multi-Arch": "same",
+        "Homepage": "https://www.gnu.org/software/libc/libc.html",
+        "Description": "GNU C Library: Shared libraries",
+        "Original-Vcs-Browser": "https://salsa.debian.org/glibc-team/glibc",
+        "Original-Vcs-Git": "https://salsa.debian.org/glibc-team/glibc.git"
+      }
+    },
+    {
+      "file": "build/ubuntu26-glibc/results/locales-all_2.44-1ubuntu1+leonb53.1_arm64.deb",
+      "sha256": "d58cac4eceaa2d77357dfb0229662ac074a7d2e33ef67c1cdda4225d39b792b9",
+      "control": {
+        "Package": "locales-all",
+        "Source": "glibc",
+        "Version": "2.44-1ubuntu1+leonb53.1",
+        "Architecture": "arm64",
+        "Maintainer": "GNU Libc Maintainers <debian-glibc@lists.debian.org>",
+        "Installed-Size": "236307",
+        "Section": "localization",
+        "Priority": "optional",
+        "Multi-Arch": "foreign",
+        "Homepage": "https://www.gnu.org/software/libc/libc.html",
+        "Description": "GNU C Library: Precompiled locale data",
+        "Original-Vcs-Browser": "https://salsa.debian.org/glibc-team/glibc",
+        "Original-Vcs-Git": "https://salsa.debian.org/glibc-team/glibc.git"
+      }
+    },
+    {
+      "file": "build/ubuntu26-glibc/results/locales_2.44-1ubuntu1+leonb53.1_all.deb",
+      "sha256": "040c83d8aa85e1cb459050a17d529365a40ecb0a1d8d8f15a13e120ba140f8a0",
+      "control": {
+        "Package": "locales",
+        "Source": "glibc",
+        "Version": "2.44-1ubuntu1+leonb53.1",
+        "Architecture": "all",
+        "Maintainer": "GNU Libc Maintainers <debian-glibc@lists.debian.org>",
+        "Installed-Size": "15810",
+        "Depends": "libc-bin (>> 2.44), debconf (>= 0.5) | debconf-2.0",
+        "Section": "localization",
+        "Priority": "standard",
+        "Homepage": "https://www.gnu.org/software/libc/libc.html",
+        "Description": "GNU C Library: National Language (locale) data [support]",
+        "Original-Vcs-Browser": "https://salsa.debian.org/glibc-team/glibc",
+        "Original-Vcs-Git": "https://salsa.debian.org/glibc-team/glibc.git"
+      }
+    },
+    {
+      "file": "build/ubuntu26-glibc/results/nscd_2.44-1ubuntu1+leonb53.1_arm64.deb",
+      "sha256": "11b9bd63e1df5e30d0838089d7694f2544319523d51c510c08c270e771bb76b0",
+      "control": {
+        "Package": "nscd",
+        "Source": "glibc",
+        "Version": "2.44-1ubuntu1+leonb53.1",
+        "Architecture": "arm64",
+        "Maintainer": "GNU Libc Maintainers <debian-glibc@lists.debian.org>",
+        "Installed-Size": "249",
+        "Depends": "libaudit1 (>= 1:2.2.1), libc6 (>> 2.44), libc6 (<< 2.45), libcap2 (>= 1:2.10), libselinux1 (>= 3.1~)",
+        "Conflicts": "unscd",
+        "Section": "admin",
+        "Priority": "optional",
+        "Multi-Arch": "foreign",
+        "Homepage": "https://www.gnu.org/software/libc/libc.html",
+        "Description": "GNU C Library: Name Service Cache Daemon",
+        "Original-Vcs-Browser": "https://salsa.debian.org/glibc-team/glibc",
+        "Original-Vcs-Git": "https://salsa.debian.org/glibc-team/glibc.git"
+      }
+    }
+  ],
+  "libc_notes": "\nDisplaying notes found in: .note.gnu.build-id\n  Owner                Data size \tDescription\n  GNU                  0x00000014\tNT_GNU_BUILD_ID (unique build ID bitstring)\n    Build ID: 2cd2d23068637a3a77067c6cb3b0593d0897a4cd\n\nDisplaying notes found in: .note.gnu.property\n  Owner                Data size \tDescription\n  GNU                  0x00000010\tNT_GNU_PROPERTY_TYPE_0\n      Properties: AArch64 feature: BTI, PAC, <unknown: 4>\n\nDisplaying notes found in: .note.ABI-tag\n  Owner                Data size \tDescription\n  GNU                  0x00000010\tNT_GNU_ABI_TAG (ABI version tag)\n    OS: Linux, ABI: 4.19.0\n\nDisplaying notes found in: .note.stapsdt\n  Owner                Data size \tDescription\n  stapsdt              0x00000035\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: setjmp\n    Location: 0x0000000000038154, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x0 -4@x1 8@x30\n  stapsdt              0x00000036\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: longjmp\n    Location: 0x00000000000382bc, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x0 -4@x1 8@x30\n  stapsdt              0x0000003d\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: longjmp_target\n    Location: 0x0000000000038344, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x0 -4@x1 8@x30\n  stapsdt              0x00000039\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: lll_lock_wait_private\n    Location: 0x0000000000087710, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x19\n  stapsdt              0x00000031\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: lll_lock_wait\n    Location: 0x0000000000087794, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x19\n  stapsdt              0x00000031\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: cond_broadcast\n    Location: 0x00000000000894f8, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x0\n  stapsdt              0x0000002f\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: cond_destroy\n    Location: 0x0000000000089830, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x0\n  stapsdt              0x00000031\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: cond_init\n    Location: 0x0000000000089900, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x0 8@x1\n  stapsdt              0x0000002e\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: cond_signal\n    Location: 0x0000000000089938, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x0\n  stapsdt              0x00000033\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: cond_wait\n    Location: 0x0000000000089f7c, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x19 8@x22\n  stapsdt              0x00000033\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: cond_wait\n    Location: 0x000000000008a170, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x19 8@x21\n  stapsdt              0x00000033\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: cond_wait\n    Location: 0x000000000008a3cc, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x19 8@x21\n  stapsdt              0x0000004a\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: pthread_start\n    Location: 0x000000000008aa54, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x4 8@[x4, 1088] 8@[x4, 1096]\n  stapsdt              0x0000004c\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: pthread_create\n    Location: 0x000000000008b2e8, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x0 8@x20 8@[sp, 8] 8@[sp, 16]\n  stapsdt              0x00000030\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: pthread_join\n    Location: 0x000000000008c788, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x20\n  stapsdt              0x00000040\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: pthread_join_ret\n    Location: 0x000000000008c834, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x20 -4@x0 8@x19\n  stapsdt              0x00000032\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: mutex_acquired\n    Location: 0x000000000008ccb4, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x21\n  stapsdt              0x0000002e\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: mutex_entry\n    Location: 0x000000000008d288, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x0\n  stapsdt              0x00000032\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: mutex_acquired\n    Location: 0x000000000008d2cc, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x19\n  stapsdt              0x00000030\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: mutex_destroy\n    Location: 0x000000000008d71c, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x0\n  stapsdt              0x0000002d\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: mutex_init\n    Location: 0x000000000008d86c, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x4\n  stapsdt              0x00000032\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: mutex_acquired\n    Location: 0x000000000008dab8, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x21\n  stapsdt              0x0000002e\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: mutex_entry\n    Location: 0x000000000008e0bc, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x0\n  stapsdt              0x00000031\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: mutex_acquired\n    Location: 0x000000000008e134, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x2\n  stapsdt              0x0000003c\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: mutex_timedlock_acquired\n    Location: 0x000000000008e6d8, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x19\n  stapsdt              0x0000003c\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: mutex_timedlock_acquired\n    Location: 0x000000000008ec8c, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x19\n  stapsdt              0x0000003c\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: mutex_timedlock_acquired\n    Location: 0x000000000008ef90, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x19\n  stapsdt              0x00000043\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: mutex_clocklock_entry\n    Location: 0x000000000008f104, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x0 -4@x1 8@x2\n  stapsdt              0x0000003d\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: mutex_timedlock_entry\n    Location: 0x000000000008f140, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x0 8@x1\n  stapsdt              0x00000030\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: mutex_release\n    Location: 0x000000000008f894, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x4\n  stapsdt              0x00000030\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: mutex_release\n    Location: 0x000000000008f9c0, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x4\n  stapsdt              0x00000030\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: mutex_release\n    Location: 0x000000000008fce4, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x2\n  stapsdt              0x00000031\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: rwlock_destroy\n    Location: 0x0000000000090d0c, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x0\n  stapsdt              0x0000002f\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: rdlock_entry\n    Location: 0x0000000000090d94, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x0\n  stapsdt              0x00000037\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: rdlock_acquire_read\n    Location: 0x0000000000090e60, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x19\n  stapsdt              0x00000030\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: rwlock_unlock\n    Location: 0x00000000000919d8, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x0\n  stapsdt              0x0000002f\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: wrlock_entry\n    Location: 0x0000000000091c48, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x0\n  stapsdt              0x00000038\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: wrlock_acquire_write\n    Location: 0x0000000000091cd4, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x19\n  stapsdt              0x00000046\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: memory_mallopt_arena_max\n    Location: 0x00000000000982a8, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x1 8@[x0, 32]\n  stapsdt              0x00000047\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: memory_mallopt_arena_test\n    Location: 0x00000000000982d8, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x1 8@[x0, 24]\n  stapsdt              0x0000004e\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: memory_tunable_tcache_max_bytes\n    Location: 0x0000000000098338, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x1 8@[x4, 120]\n  stapsdt              0x0000004a\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: memory_tunable_tcache_count\n    Location: 0x00000000000983a4, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x0 8@[x1, 128]\n  stapsdt              0x00000053\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: memory_mallopt_mmap_max\n    Location: 0x00000000000984b8, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: -4@x1 -4@[x0, 72] -4@[x0, 80]\n  stapsdt              0x00000053\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: memory_mallopt_trim_threshold\n    Location: 0x00000000000984f8, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x2 8@[x0] -4@[x0, 80]\n  stapsdt              0x00000054\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: memory_mallopt_perturb\n    Location: 0x0000000000098534, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: -4@x1 -4@[x0, #:lo12:.LANCHOR2]\n  stapsdt              0x0000004f\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: memory_mallopt_top_pad\n    Location: 0x0000000000098568, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x1 8@[x0, 8] -4@[x0, 80]\n  stapsdt              0x00000057\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: memory_mallopt_mmap_threshold\n    Location: 0x00000000000985a8, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x1 8@[x0, 16] -4@[x0, 80]\n  stapsdt              0x00000039\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: memory_heap_new\n    Location: 0x0000000000098f3c, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x19 8@x20\n  stapsdt              0x00000040\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: memory_arena_reuse_free_list\n    Location: 0x00000000000991b8, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x19\n  stapsdt              0x0000003c\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: memory_arena_reuse\n    Location: 0x00000000000992f4, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x19 8@x25\n  stapsdt              0x00000047\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: memory_arena_reuse_wait\n    Location: 0x00000000000993c8, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x19 8@x19 8@x25\n  stapsdt              0x0000003a\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: memory_arena_new\n    Location: 0x0000000000099498, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x21 8@x24\n  stapsdt              0x0000003a\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: memory_arena_retry\n    Location: 0x000000000009963c, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x1 8@x0\n  stapsdt              0x00000039\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: memory_sbrk_less\n    Location: 0x0000000000099980, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x0 -8@x1\n  stapsdt              0x0000003e\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: memory_heap_free\n    Location: 0x0000000000099b4c, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x0 8@[x0, 16]\n  stapsdt              0x0000003a\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: memory_heap_less\n    Location: 0x0000000000099c84, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x24 8@x21\n  stapsdt              0x0000004a\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: memory_mallopt_free_dyn_thresholds\n    Location: 0x000000000009a078, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x4 8@x0\n  stapsdt              0x00000039\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: memory_heap_more\n    Location: 0x000000000009a1cc, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x26 8@x3\n  stapsdt              0x00000039\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: memory_sbrk_more\n    Location: 0x000000000009a698, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x3 8@x26\n  stapsdt              0x00000037\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: memory_malloc_retry\n    Location: 0x000000000009b420, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x20\n  stapsdt              0x00000037\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: memory_calloc_retry\n    Location: 0x000000000009b654, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x20\n  stapsdt              0x00000059\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: memory_mallopt_mmap_threshold\n    Location: 0x000000000009c080, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x0 8@[x19, 16] -4@[x19, 80]\n  stapsdt              0x0000003e\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: memory_memalign_retry\n    Location: 0x000000000009c648, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x9 8@x11\n  stapsdt              0x00000041\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: memory_tcache_double_free\n    Location: 0x000000000009c934, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x0 8@x6\n  stapsdt              0x0000003c\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: memory_realloc_retry\n    Location: 0x000000000009ce30, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x5 8@x4\n  stapsdt              0x0000003a\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: memory_mallopt\n    Location: 0x000000000009d994, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: -4@x19 -4@x20\n  stapsdt              0x00000047\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: memory_mallopt_arena_max\n    Location: 0x000000000009d9d0, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x20 8@[x0, 32]\n  stapsdt              0x00000058\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: memory_mallopt_mmap_threshold\n    Location: 0x000000000009da24, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x20 8@[x0, 16] -4@[x0, 80]\n  stapsdt              0x00000054\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: memory_mallopt_trim_threshold\n    Location: 0x000000000009da70, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x20 8@[x0] -4@[x0, 80]\n  stapsdt              0x00000055\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: memory_mallopt_perturb\n    Location: 0x000000000009da88, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: -4@x20 -4@[x0, #:lo12:.LANCHOR2]\n  stapsdt              0x00000054\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: memory_mallopt_mmap_max\n    Location: 0x000000000009da9c, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: -4@x20 -4@[x0, 72] -4@[x0, 80]\n  stapsdt              0x00000048\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: memory_mallopt_arena_test\n    Location: 0x000000000009dac0, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x20 8@[x0, 24]\n  stapsdt              0x00000050\tNT_STAPSDT (SystemTap probe descriptors)\n    Provider: libc\n    Name: memory_mallopt_top_pad\n    Location: 0x000000000009dad4, Base: 0x00000000001753a6, Semaphore: 0x0000000000000000\n    Arguments: 8@x20 8@[x0, 8] -4@[x0, 80]\n",
+  "ldconfig_triggers": {
+    "libc6": "# Triggers added by dh_makeshlibs/13.31ubuntu1\nactivate-noawait ldconfig\n",
+    "libc-bin": "# For standard directories the ldconfig call can be delayed, the dynamic\n# linker will search the standard directories itself, which will incur a\n# small performance penalty.\n#\n# For non-standard directories listed in /etc/ld.so.conf or in a file in\n# /etc/ld.so.conf.d/, the call to ldconfig is essential and can not be\n# skipped, otherwise libraries won't be found. Therefore declare ldconfig\n# as interest-await.\ninterest-await ldconfig\n"
+  },
+  "ubuntu_packaging_preserved": [
+    "symbols",
+    "shlibs",
+    "preinst",
+    "postinst",
+    "ldconfig triggers"
+  ],
+  "minimum_kernel": "4.19.0",
+  "foreign_abis": "armel/armhf same-version packages remain pending",
+  "limitations": [
+    "Package metadata inspection is not a hardware acceptance test.",
+    "Full upstream glibc testsuite was not requested for the initial candidate."
+  ]
+}

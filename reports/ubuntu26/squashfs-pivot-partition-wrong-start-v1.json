@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "passed": true,
+  "errors": [],
+  "scenarios": [
+    {
+      "scenario": "bad-start",
+      "checks": {
+        "complete": true,
+        "exact_initramfs": true,
+        "log_unchanged": true,
+        "readonly_squashfs_start": true,
+        "no_restore_failure": true,
+        "no_vendor_exec_failure": true,
+        "real_partition_sysfs_start": true,
+        "exact_failure_stage": true,
+        "vendor_fixture_pid1": true,
+        "exact_vendor_exec": true,
+        "did_not_start_ubuntu": true,
+        "no_pivot_exec": true
+      },
+      "elapsed_seconds": 12.25,
+      "serial_sha256": "19572bba926adc11ccbeef763d0d3a92e3ed0e6c5679274176a64a7017989b7c",
+      "result_path": "build/qemu/ubuntu26-pivot-partition-wrong-start-v1-bad-start/result.json",
+      "result_sha256": "1fb66dc45ee792acb12bbddc3f88f35be9012b43e62dae7a56648c9c11d52a9c"
+    }
+  ],
+  "fixture_manifest_sha256": "304e6daa8253629f4ebe3ff6085859bb39c835ebbd9e0ba1524b80930ca6c124",
+  "helper_source_sha256": "412d92c10820c4c2774791fa12fd14f93e4f83ba7ed02fa7a25d805016e45018",
+  "helper_sha256": "834f4db911c9e3eb6ad75ef992a50b11af7e684d12315fe77f218a40498c5eeb",
+  "input_disk_images_unchanged": true,
+  "limitations": [
+    "RAM-backed loop devices, no host block device or network; not power-loss or physical eMMC validation.",
+    "Vendor rc is an explicit fixture; fallback proves restoration and PID1 exec, not ASUS networking.",
+    "Positive run starts real native systemd and apt on ext4; no ASUS driver or daemon starts.",
+    "The helper can restore only before successful systemd exec; later failures require the separate board trial/watchdog policy.",
+    "Generation marker identifies the selected root; it is not a signature over a writable filesystem."
+  ],
+  "router_accessed": false,
+  "flash_or_boot_commit_accepted": false
+}

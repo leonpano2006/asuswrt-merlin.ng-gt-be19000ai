@@ -1,0 +1,70 @@
+{
+  "compile_count": 0,
+  "device_accessed": false,
+  "expected_case_count": 21,
+  "expected_cases": [
+    "literal-pid1-zero-start-pass",
+    "literal-pid1-positive-start-pass",
+    "start-uint64-max-pass",
+    "last-close-parenthesis-comm-pass",
+    "embedded-newline-comm-pass",
+    "nonzero-parent-refused",
+    "negative-parent-refused",
+    "negative-start-refused",
+    "plus-start-refused",
+    "start-uint64-overflow-refused",
+    "nondecimal-start-refused",
+    "zombie-pid1-refused",
+    "unknown-state-refused",
+    "other-pid-zero-start-refused",
+    "embedded-nul-refused",
+    "missing-comm-close-refused",
+    "missing-field22-refused",
+    "missing-field22-delimiter-refused",
+    "capacity4096-refused-before-parse",
+    "empty-input-refused",
+    "missing-comm-open-refused"
+  ],
+  "fixture": {
+    "bytes": 4247,
+    "path": "scripts/asus-integration/accepted-guard/v32-pid1-stat-fixture-v1.c",
+    "sha256": "71038d81edf1006d670f1ae5a5787ef33bf9ab750b51030539c9cff381c4188d"
+  },
+  "fixture_run_count": 0,
+  "inputs": {
+    "accepted_core": {
+      "bytes": 3976,
+      "path": "scripts/asus-integration/accepted-guard/v32-runtime/accepted-core.c",
+      "sha256": "c8172b73b9e8db0e3e9a62d6a7ef379830fb3f90a8f05f92681f7ab8c12358ab"
+    },
+    "source_report": {
+      "bytes": 12531,
+      "path": "reports/ubuntu26/guardian-v32-pid1-zero-time-source-v1.json",
+      "sha256": "a7cc84a3ecebefd9522cadc693a0948c750d8eaf52af0f633c0b6163762e4ee1"
+    }
+  },
+  "limits": [
+    "Synthetic parser cases only; repeated real PID1 UID/namespace/systemd-inode guards are source-reviewed, not fixture-executed.",
+    "Host compiler recipe reused without version probe; ARM production helper still requires separately authorized native build.",
+    "No current boot acceptance or permanent CFE change is attempted."
+  ],
+  "old_25_cached_callback_and_14_purpose_cases_reused_not_reexecuted": true,
+  "parser_implementation_duplicated": false,
+  "proc_volume_namespace_control_guardian_or_watchdog_functions_executed": false,
+  "production_parser_called_directly": true,
+  "required_success_counters": {
+    "compile_count": 1,
+    "fixture_run_count": 1,
+    "returncode": 0
+  },
+  "result_path": "build/asus-accepted-runtime/pid1-zero-time-fixture-v1/result.json",
+  "result_returncode_key": "returncode",
+  "result_status": "pure_production_pid1_zero_start_parser_fixture_passed",
+  "runner": {
+    "bytes": 7035,
+    "path": "scripts/run-guardian-v32-pid1-stat-fixture-v1.py",
+    "sha256": "cacb0285080511497e691aa9e206309f99fbf65210f5c5a51092ffdfc846db4a"
+  },
+  "schema": 1,
+  "status": "source_only_production_pid1_zero_start_parser_fixture_prepared"
+}

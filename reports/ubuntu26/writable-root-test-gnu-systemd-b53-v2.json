@@ -1,0 +1,117 @@
+{
+  "rootfs_tar_sha256": "31b600f69ab6975fd3a73d5d0add0c911b951924553d5d833afc60957fb9c432",
+  "kernel_sha256": "4a15601eada042576aed2a3680dcc48e9228eea70f70c478840767aaa89a9f8e",
+  "image_sha256": "56dc7b7f67f7e3fa48c7655be856f7d75e9daed27eefd12ad94885306083f977",
+  "image_unchanged_after_guests": true,
+  "initramfs_sha256": "beae4c38cc7a91b0d8cce95aaed4281c509d68b2d53017805ab18f31a5d8b023",
+  "filesystem": {
+    "uuid": "25af72c9-41a4-4ced-a868-a88e8e86dc34",
+    "feature_profile": [
+      "has_journal",
+      "ext_attr",
+      "resize_inode",
+      "dir_index",
+      "filetype",
+      "extent",
+      "flex_bg",
+      "sparse_super",
+      "large_file",
+      "huge_file",
+      "dir_nlink",
+      "extra_isize",
+      "metadata_csum"
+    ],
+    "identity_sha256": "be004bea1d0da849d314fb4728a13d42b574aab4499230fff0cfc6af449fc7dc",
+    "rootfs_tar_sha256": "31b600f69ab6975fd3a73d5d0add0c911b951924553d5d833afc60957fb9c432",
+    "kernel_sha256": "4a15601eada042576aed2a3680dcc48e9228eea70f70c478840767aaa89a9f8e",
+    "final_init_sha256": "4efcca563c3285cc58c51feec2ea615264afb268f39b345aba5fefdf33b3413b",
+    "systemd_service_proof": true,
+    "namespace_uid_map": "         0       1000          1\n         1     100000      65536\n",
+    "image_bytes": 1073741824,
+    "device_inodes_created_offline": 8
+  },
+  "metadata_audit": {
+    "archive_entries_checked": 13271,
+    "uid_gid_mode_verified": true,
+    "hardlinks_verified": 116,
+    "xattrs": [
+      {
+        "path": "./var/log/journal",
+        "name": "system.posix_acl_default",
+        "preserved": true,
+        "comparison": "same ACL tags, permissions, named IDs; unused IDs ignored"
+      },
+      {
+        "path": "./var/log/journal",
+        "name": "system.posix_acl_access",
+        "preserved": true,
+        "comparison": "same ACL tags, permissions, named IDs; unused IDs ignored"
+      }
+    ],
+    "errors": []
+  },
+  "host_e2fsck_clean": true,
+  "qemu_runs": [
+    {
+      "scenario": "systemd",
+      "command": [
+        "qemu-system-aarch64",
+        "-machine",
+        "virt-8.2,gic-version=2",
+        "-accel",
+        "tcg,thread=multi",
+        "-cpu",
+        "cortex-a53",
+        "-smp",
+        "2",
+        "-m",
+        "4096",
+        "-nodefaults",
+        "-nic",
+        "none",
+        "-display",
+        "none",
+        "-monitor",
+        "none",
+        "-serial",
+        "stdio",
+        "-no-reboot",
+        "-sandbox",
+        "on,obsolete=deny,elevateprivileges=deny,spawn=deny,resourcecontrol=deny",
+        "-kernel",
+        "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/Image-v10",
+        "-initrd",
+        "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/ubuntu26-writable-root-gnu-systemd-b53-v2/ubuntu-writable.cpio.gz",
+        "-append",
+        "console=ttyAMA0 earlycon=pl011,mmio32,0x09000000 rdinit=/init panic=0 oops=panic nokaslr loglevel=6 initcall_blacklist=bcm_pmc_drv_reg,bcm_ubus_drv_init,pmc_xrdp_init,pmc_wan_initcall,bcmbca_vreg_sync_drv_reg"
+      ],
+      "stop_reason": "complete",
+      "elapsed_seconds": 99.31,
+      "complete": true,
+      "panic": false,
+      "lab_lines": [
+        "LAB_EXT4_BOOTSTRAP_ROOT_VALIDATED",
+        "LAB_APT_INSTALL_ON_EXT4_PASS",
+        "LAB_EXT4_FULL_UNMOUNT_PASS",
+        "LAB_EARLY_SWITCH_ROOT_BEGIN",
+        "LAB_SWITCH_ROOT_EXT4_PID1_PASS",
+        "LAB_APT_STATE_SURVIVED_UNMOUNT_PASS",
+        "LAB_APT_REMOVE_ON_EXT4_PASS",
+        "LAB_EXT4_REMOUNT_RO_RW_PASS",
+        "LAB_WRITABLE_SYSTEMD_SERVICE_STARTED",
+        "LAB_WRITABLE_SYSTEMD_SERVICE_PROOF_PRESENT"
+      ],
+      "log_sha256": "361bc198ee4bdb8c1adc7024ab10c52005874b5a2be67833110a8459dabef1a6",
+      "systemd_service_proof_passed": true
+    }
+  ],
+  "limitations": [
+    "Image is RAM-backed inside QEMU; verifies real ext4 unmount/remount persistence, not host-file persistence across QEMU boots or power loss.",
+    "No physical disk, partition, boot setting or ASUS service was modified.",
+    "Early transition is an initramfs switch_root test; starting from an already mounted SquashFS would need a separately tested pivot_root path.",
+    "Optional systemd proof covers one minimal oneshot service only; no proprietary ASUS service integration is validated.",
+    "Bad UUID selects a safe marker and powers off; it does not emulate the complete vendor recovery path."
+  ],
+  "systemd_service_proof": true,
+  "passed": true
+}

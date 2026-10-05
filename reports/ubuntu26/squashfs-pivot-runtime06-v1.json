@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "passed": true,
+  "errors": [],
+  "scenarios": [
+    {
+      "scenario": "positive",
+      "checks": {
+        "complete": true,
+        "exact_initramfs": true,
+        "log_unchanged": true,
+        "readonly_squashfs_start": true,
+        "no_restore_failure": true,
+        "no_vendor_exec_failure": true,
+        "real_systemd_started": true,
+        "apt_real_writable_root": true,
+        "ext4_pid1": true,
+        "no_fallback": true,
+        "actual_exec": true,
+        "private_fsck_with_stock_loader_untouched": true
+      },
+      "elapsed_seconds": 50.75,
+      "serial_sha256": "75ee90cabf8606cb2ae9351c72a14238e4a0b862c023505e199122f3b95d3838",
+      "result_path": "build/qemu/ubuntu26-pivot-runtime06-v1-positive/result.json",
+      "result_sha256": "89075c5beabc0838a3342efc571c54ee06eb1152a180f8989f8da119ec9433d8"
+    },
+    {
+      "scenario": "exec-error",
+      "checks": {
+        "complete": true,
+        "exact_initramfs": true,
+        "log_unchanged": true,
+        "readonly_squashfs_start": true,
+        "no_restore_failure": true,
+        "no_vendor_exec_failure": true,
+        "exact_failure_stage": true,
+        "vendor_fixture_pid1": true,
+        "exact_vendor_exec": true,
+        "did_not_start_ubuntu": true,
+        "after_pivot_failure": true
+      },
+      "elapsed_seconds": 21.05,
+      "serial_sha256": "f8a851248e338d7875f7e067cb9eae778a9693a9220de8ead9b57508fcec6a80",
+      "result_path": "build/qemu/ubuntu26-pivot-runtime06-v1-exec-error/result.json",
+      "result_sha256": "fc998873b90ca9cc60c7acfd0a6d768cf41c4849d822e5c902f981771f47eb05"
+    }
+  ],
+  "fixture_manifest_sha256": "5db6a69729e7b7d590442bfc0db8aa62349df0e704c3b154926adb4374c5e332",
+  "helper_source_sha256": "412d92c10820c4c2774791fa12fd14f93e4f83ba7ed02fa7a25d805016e45018",
+  "helper_sha256": "70808569975f71b84d9efaffe6a2abd413428134d55c2c98fbf5625ff086f779",
+  "input_disk_images_unchanged": true,
+  "limitations": [
+    "RAM-backed loop devices, no host block device or network; not power-loss or physical eMMC validation.",
+    "Vendor rc is an explicit fixture; fallback proves restoration and PID1 exec, not ASUS networking.",
+    "Positive run starts real native systemd and apt on ext4; no ASUS driver or daemon starts.",
+    "The helper can restore only before successful systemd exec; later failures require the separate board trial/watchdog policy.",
+    "Generation marker identifies the selected root; it is not a signature over a writable filesystem."
+  ],
+  "router_accessed": false,
+  "flash_or_boot_commit_accepted": false
+}

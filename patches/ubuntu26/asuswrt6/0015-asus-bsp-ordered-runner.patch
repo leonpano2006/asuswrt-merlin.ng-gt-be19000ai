@@ -1,0 +1,45 @@
+diff --git a/release/src/router/rc/init.c b/release/src/router/rc/init.c
+--- a/release/src/router/rc/init.c
++++ b/release/src/router/rc/init.c
+@@ -3289,7 +3289,10 @@
+ 	if (!nvram_get_int("stop_bcm_boot_launcher")) {
+ 		nvram_set_int("stop_bcm_boot_launcher", 1);
+ 		printf("\nStopping bcm_boot_launcher ...\n");
+-		system("bcm_boot_launcher stop");
++		if (eval("/usr/libexec/asus/bsp-runner", "stop")) {
++		fprintf(stderr, "ASUS BSP stop failed; inspect ASUS_BSP_STAGE diagnostics\n");
++		_exit(125);
++	}
+ 	}
+ #endif
+ #ifdef LEON_SYSTEMD_RC
+@@ -26007,9 +26010,15 @@
+ 	_dprintf("\nstart_hw_wdt() before bcm_boot_launcher start...\n");
+ 	start_hw_wdt();
+ 	sleep(1);
+-	system("bcm_boot_launcher start");
++	if (eval("/usr/libexec/asus/bsp-runner", "start")) {
++		fprintf(stderr, "ASUS BSP start failed; inspect ASUS_BSP_STAGE diagnostics\n");
++		_exit(125);
++	}
+ #else
+-	system("bcm_boot_launcher start");
++	if (eval("/usr/libexec/asus/bsp-runner", "start")) {
++		fprintf(stderr, "ASUS BSP start failed; inspect ASUS_BSP_STAGE diagnostics\n");
++		_exit(125);
++	}
+ 	start_hw_wdt();
+ #endif
+ 
+@@ -28293,7 +28302,10 @@
+ 		if (!nvram_get_int("stop_bcm_boot_launcher")) {
+ 			nvram_set_int("stop_bcm_boot_launcher", 1);
+ 			printf("\nStopping bcm_boot_launcher...\n");
+-			system("bcm_boot_launcher stop");
++			if (eval("/usr/libexec/asus/bsp-runner", "stop")) {
++		fprintf(stderr, "ASUS BSP stop failed; inspect ASUS_BSP_STAGE diagnostics\n");
++		_exit(125);
++	}
+ 		}
+ #endif
+ 		f_write("/proc/sysrq-trigger", "b", 1, 0 , 0); /* machine reset */

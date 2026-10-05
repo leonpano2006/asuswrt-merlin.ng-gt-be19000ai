@@ -1,0 +1,11 @@
+--- a/release/src/router/busybox/coreutils/rm.c
++++ b/release/src/router/busybox/coreutils/rm.c
+@@ -28,6 +28,8 @@
+ 
+ #include "libbb.h"
+ #include <rtconfig.h>
++
++int f_exists(const char *path);
+ 
+ #if (defined(RTCONFIG_HND_ROUTER_AX_6756) || defined(RTCONFIG_HND_ROUTER_BE_4916)) && !defined(RTCONFIG_BCM_MFG)
+ #include <sys/types.h>

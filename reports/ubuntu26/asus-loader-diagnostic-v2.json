@@ -1,0 +1,213 @@
+{
+  "schema_version": 1,
+  "scope": "Target kernel QEMU, loader trace with LD_WARN and immediate relocations; no ASUS main/constructors, daemon startup or hardware acceptance.",
+  "kernel_sha256": "4a15601eada042576aed2a3680dcc48e9228eea70f70c478840767aaa89a9f8e",
+  "initramfs_sha256": "709c55c89077f297256202603394d0324838b9cba450ca439b73d210f8badc04",
+  "log_sha256": "4b6d47334260722ba9d910f021a4a7762e6b782e645a20b0f86033d3c2430cd6",
+  "result": "build/qemu/kernel10-asus-loader-diagnostic-v2/result.json",
+  "fixture_manifest": "build/asus-loader-qemu/v2/manifest.json",
+  "fixture_initial_failure": "build/qemu/kernel10-asus-loader-diagnostic/result.json",
+  "fixture_initial_failure_cause": "Static BusyBox harness copied with non-executable source mode; kernel could not execute /init. Fixed only the harness executable mode in v2.",
+  "runs": [
+    {
+      "runtime": "vendor",
+      "program": "sbin/rc",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "04caf3f93ce1cba43bdce86ef6a33d05b6074d0aed5ed01a81d8c59b3f585be8"
+    },
+    {
+      "runtime": "vendor",
+      "program": "usr/sbin/httpd",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "e55f8d87a4cca4318cd538367d9e96e5eae705cebd96756fa794f0ece8d45800"
+    },
+    {
+      "runtime": "vendor",
+      "program": "usr/sbin/cfg_client",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "bdc89214725f6da4b832c01008c4047aada44fc9faf812711583efe3e961558b"
+    },
+    {
+      "runtime": "vendor",
+      "program": "usr/sbin/cfg_server",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "19ba954d23b09790f7ff901e73fb3ef4296819c9a1d89f8a6987940b42840747"
+    },
+    {
+      "runtime": "vendor",
+      "program": "usr/sbin/wl",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "98cc13bac56b611d70a910707599f5032112d14e3c19ccebb135efd4b3c495a7"
+    },
+    {
+      "runtime": "vendor",
+      "program": "usr/sbin/wlconf",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "27a63ba54d6be8071a47d81a5adaf17127ba5ddd19fa32dca029aa5f772e731b"
+    },
+    {
+      "runtime": "vendor",
+      "program": "usr/sbin/hostapd",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "7b2e6b74b9a685b76aa8b8a1add5d9190d08646dded99a12f6fd34d31001b484"
+    },
+    {
+      "runtime": "vendor",
+      "program": "usr/sbin/wpa_supplicant",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "816124b5e0e9532f88345ae8e291c041f3a7caaa51d3ee3bfee395df9b63cc80"
+    },
+    {
+      "runtime": "vendor",
+      "program": "usr/sbin/eapd",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "78c9d37778e06ea0d599204872fd2f702acb1565fdae1fa9d1f32bf879a8f9d8"
+    },
+    {
+      "runtime": "vendor",
+      "program": "usr/sbin/acsd2",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "844a1e65007d91a06cd4a0fe0e55d20f247ec3d0e1d315965a1ff3abb08c7661"
+    },
+    {
+      "runtime": "vendor",
+      "program": "usr/libexec/ledg-node/rc",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "6762f2951ed20b8d59a9099ce709761e794eb99e891df544f5675cd5d730dccc"
+    },
+    {
+      "runtime": "glibc244",
+      "program": "sbin/rc",
+      "returncode": 0,
+      "diagnostics": [
+        "undefined symbol: __snprintf, version GLIBC_PRIVATE\t(/vendor/lib/libcrypt.so.1)"
+      ],
+      "loader_preflight_passed": false,
+      "output_sha256": "61c003a1246c48e730b1d0b8d2c199cd9b7670c6767e6a888a71ad0a094a8ebd"
+    },
+    {
+      "runtime": "glibc244",
+      "program": "usr/sbin/httpd",
+      "returncode": 0,
+      "diagnostics": [
+        "undefined symbol: __snprintf, version GLIBC_PRIVATE\t(/vendor/lib/libcrypt.so.1)"
+      ],
+      "loader_preflight_passed": false,
+      "output_sha256": "9b4f06376fb000dff999c4152135ce99fb58c2e9dfc1de07af2bf09497303407"
+    },
+    {
+      "runtime": "glibc244",
+      "program": "usr/sbin/cfg_client",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "7e4e117f782e1539d91f325a8d77b6ed6caac017d79e753b07d00aa98b86e842"
+    },
+    {
+      "runtime": "glibc244",
+      "program": "usr/sbin/cfg_server",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "d5834a6a5aed99999bb66e4bdf926f6cf34040eda6f8a55c7f5f23d6f5b2a97a"
+    },
+    {
+      "runtime": "glibc244",
+      "program": "usr/sbin/wl",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "ef3b181bd420a50ed1ebd705f555ffc6b108bea751e2c68bade71b1d8ec7188d"
+    },
+    {
+      "runtime": "glibc244",
+      "program": "usr/sbin/wlconf",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "dfab28898dab6d704e3dc97dfba9986342d3037eeef4751079995af2a68db103"
+    },
+    {
+      "runtime": "glibc244",
+      "program": "usr/sbin/hostapd",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "8e893663f605ee9bf79f81d9bcc739bd96e20fa134d5df5a03cbd001715030b0"
+    },
+    {
+      "runtime": "glibc244",
+      "program": "usr/sbin/wpa_supplicant",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "7c2593bc1bf0806a7cd709f99b5cc60343d2fbcfd797ba7057732bfa7a4465bf"
+    },
+    {
+      "runtime": "glibc244",
+      "program": "usr/sbin/eapd",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "765b7a8a870d9d1b1b4b794987b4ab356a91d803db93e2de716656fa8fac7bcc"
+    },
+    {
+      "runtime": "glibc244",
+      "program": "usr/sbin/acsd2",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "193568a5b1252d8bb26ff16efb23f3bbc378783f58c784fac8c9e3acab6b0e09"
+    },
+    {
+      "runtime": "glibc244",
+      "program": "usr/libexec/ledg-node/rc",
+      "returncode": 0,
+      "diagnostics": [
+        "undefined symbol: __snprintf, version GLIBC_PRIVATE\t(/vendor/lib/libcrypt.so.1)"
+      ],
+      "loader_preflight_passed": false,
+      "output_sha256": "0bc3ac92d6924cc7a188543011633118c7bfb4402c57cc9c463f191da79463d7"
+    }
+  ],
+  "summary": {
+    "vendor": {
+      "total": 11,
+      "passed": 11
+    },
+    "glibc244": {
+      "total": 11,
+      "passed": 8
+    }
+  },
+  "crypt_probes": [],
+  "asus_functional_acceptance": false,
+  "ubuntu_integration_ready": false,
+  "limitations": [
+    "The new armel libc is an isolated BE98 reference, not the final matching Ubuntu libc6:armel package.",
+    "Dynamic plugins, structure/time ABI, configuration writes, manager notifications and physical hardware still need separate validation.",
+    "A clean trace does not mean the service has been started or works."
+  ]
+}

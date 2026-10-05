@@ -1,0 +1,54 @@
+{
+  "status": "ready_for_parent_execution_not_run_on_device",
+  "guest_source": {
+    "path": "scripts/asus-integration/acceptance/post-trial-readonly.sh",
+    "sha256": "e35571292ed8243bf94fc0207627235ffb7974263eb7019112b7f99486e25eec",
+    "bytes": 35561
+  },
+  "host_runner": {
+    "path": "scripts/run-ubuntu26-post-trial-readonly.py",
+    "sha256": "f3abb7974a34563e36d3c0c54fb6aa46b098e4400d33647b72aaa00c4d437f76",
+    "bytes": 10849
+  },
+  "offline_tests": {
+    "path": "build/ubuntu26-post-trial-readonly/v1/offline-tests.json",
+    "sha256": "688ad35bb31d7672e9d62dfbd21e786791ede30454789aedd52f3c0f7d171d97",
+    "bytes": 382
+  },
+  "kernel_modules_and_indexes": 193,
+  "kernel_module_count": 181,
+  "selected_UI_hashes": 6,
+  "apt_config_keyring_hashes": 4,
+  "expected_root": {
+    "fstype": "ext4",
+    "device": "179:11",
+    "rw_flag_required": true,
+    "write_probe": false
+  },
+  "source_root_archive": {
+    "path": "build/ubuntu26-rootfs/ubuntu26-bcm-asus-runtime07-archive-sealed-v1.tar",
+    "sha256": "2f0eafc638180019bb44b230e71877e200886e9c6afc9895bb299b0d6e4ca688"
+  },
+  "permissions": {
+    "host_log_directory": "0700",
+    "host_log_files": "0600",
+    "device_requires": "native UID1000 SSH identity, then sudo EUID0 for private namespace read-only probes"
+  },
+  "bounds": {
+    "host_network_session_seconds": 175,
+    "guest_total_seconds": 145,
+    "command_seconds": 4,
+    "command_output_bytes": 8192,
+    "total_output_bytes": 196608
+  },
+  "no_secrets_output": true,
+  "device_access_performed": false,
+  "known_hosts": "Explicit existing trusted public keys only; no TOFU or host-key autoaccept",
+  "password": "getpass -> Paramiko password and sudo stdin only; never argv/environment/log. No PTY. Guest closes stdin before commands.",
+  "acceptance_semantics": "Captures read-only structure and checks only; no guardian ACK, boot commit, service changes or functional/hardware acceptance. Missing command or hash failure makes nonzero; report includes incomplete fields.",
+  "validation": [
+    "bash -n",
+    "python py_compile/help",
+    "12 offline transport/trust/UUID/mode/quoting cases, no network"
+  ]
+}

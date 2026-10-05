@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "status": "reviewed_config_package_and_focused_no_nic_qemu_pass_physical_acceptance_pending",
+  "sources": "scripts/asus-integration/openssh-recovery",
+  "builder": "scripts/build-asus-openssh-recovery.py",
+  "mechanism": "Standard systemd Accept=yes socket and OpenSSH inetd mode; no new C helper or vendor control dependency",
+  "listener": {
+    "interface": "br0",
+    "ipv4_port": 2222,
+    "allowed_user": "MastermixStudios",
+    "allowed_source": "192.168.100.0/24",
+    "activation": "sys-subsystem-net-devices-br0.device.wants",
+    "sockets_target_ordering": false,
+    "authentication": "publickey only",
+    "root_login": false,
+    "forwarding": false
+  },
+  "authorization": {
+    "file": "/var/lib/leon-asus-ssh/recovery_authorized_keys",
+    "owner": "root:root",
+    "mode": "0644",
+    "ancestor_mode": "0755 root-owned, no group/other write",
+    "future_public_key_fingerprint": "SHA256:OGmBB2r67iuaWTCdU391rX5+CBuBFwmgxwKznXxBQMo",
+    "public_key_source": "Previously enrolled and successfully used .51 /root/.ssh/netpanel public key, copied only during separate candidate provisioning",
+    "private_key_stays": "Authorized .51 client /root/.ssh/netpanel",
+    "public_key_embedded_or_copied_now": false
+  },
+  "host_identity": {
+    "reuse": "/etc/ssh/ssh_host_ed25519_key",
+    "generation": false,
+    "target_pin": "Use the separately verified native candidate ed25519 fingerprint, not the stock Dropbear fingerprint",
+    "verified_native_ed25519_fingerprint": "SHA256:RfC1T1zKLkLwvjJG2t4UD3b0+z2+St0MhAumhVCrCMI",
+    "verification_source": "Existing native provisioning receipt; parent reports distinct plain/2222 aliases pinned on authorized .51 client"
+  },
+  "runtime": {
+    "privilege_separation_directory": "/run/sshd",
+    "recovery_runtime_directory_preserve": true,
+    "ordinary_ssh_adjustment": "Persistent ssh.service.d/95-leon-recovery-runtime.conf sets only RuntimeDirectoryPreserve=yes",
+    "ordinary_listener_execstart_or_config_changed": false,
+    "ordinary_ssh_port": 22,
+    "vendor_password_decrypt_or_import_dependency": false,
+    "native_account_and_pam_dependency": true,
+    "sudo_policy_changed": false
+  },
+  "activation_requirements": [
+    "Reviewed future native candidate only; do not modify current stock or frozen root07",
+    "Existing persistent native MastermixStudios account, home, shadow and PAM state remain valid",
+    "Existing provisioned native ed25519 host key remains stable",
+    "Provision exact enrolled public authorization separately and verify fingerprint/ownership",
+    "Enable only the br0 device-wants socket link; explicitly start once if br0 is already active",
+    "Confirm the target exposes br0 as an active systemd device and LAN firewall admits TCP2222"
+  ],
+  "one_new_focused_validation": [
+    "No-NIC existing-identity fixture reached multi-user with br0 absent; recovery socket enabled only through br0.device.wants and activated after bridge creation",
+    "Absent public authorization rejected a connection while listener remained active; installing persistent public authorization enabled the next connection without restarting vendor control",
+    "Pinned key-only login returned UID2000 and PID1 systemd with ordinary SSH stopped, vendor control socket masked, broker/rc absent and ordinary imported authorized_keys absent",
+    "Password-only authentication, root, unapproved key, non-LAN source and separate non-br0 ingress all rejected",
+    "Stopping ordinary ssh.service preserved /run/sshd, an existing recovery session and a new recovery login",
+    "Recovery socket restart and br0 removal/recreation each permitted subsequent key login",
+    "Native passwd/shadow/group/gshadow and ordinary sshd_config checksums unchanged"
+  ],
+  "limitations": [
+    "Public-key login still requires a valid native account and successful PAM account/session checks",
+    "Existing sudo can require the native password; no unrestricted passwordless root recovery is granted",
+    "Missing br0, LAN/firewall failure, filesystem damage or systemd failure remain outside this recovery path"
+  ],
+  "primary_references": [
+    "https://raw.githubusercontent.com/systemd/systemd/main/man/systemd.socket.xml",
+    "https://raw.githubusercontent.com/systemd/systemd/main/man/systemd.exec.xml",
+    "https://man.openbsd.org/sshd",
+    "https://man.openbsd.org/sshd_config"
+  ],
+  "source_peer_review": {
+    "status": "final_units_and_focused_proof_reviewed_no_findings",
+    "correction": "A private bind mount onto host /run/sshd alone is not sufficient: host vfs_rmdir can detach mounts across namespaces. Preserve the compiled-in directory in both ordinary SSH and recovery units instead.",
+    "runtime_or_target_validation": true,
+    "physical_target_validation": false
+  },
+  "build_run": true,
+  "test_run": true,
+  "device_access": false,
+  "frozen_root07_changed": false,
+  "production_ready": false,
+  "physical_native_acceptance_gate": [
+    "Provision exact already enrolled h0 public key only; retain existing valid native account/shadow/PAM and stable existing ed25519 host key",
+    "Enable br0.device.wants during candidate provisioning; explicitly start once only when installing into an already active bridge",
+    "From authorized .51 client use existing netpanel private identity and separately pinned native host key to establish MastermixStudios@candidate:2222 after native boot",
+    "Repeat after a fresh native reboot and ordinary SSH/vendor control restart; assert PID1 systemd/actual slot and stable host/key identities without outputting secrets",
+    "Assert native public-key access survives unavailable vendor password import; confirm LAN firewall/interface limits on actual target",
+    "Preserve existing sudo authentication policy; public-key access alone does not promise privileged recovery when the native sudo password is lost"
+  ],
+  "production_private_keys_read": false,
+  "existing_disposable_fixture_private_keys_reused": true,
+  "new_private_keys_generated": false,
+  "package": {
+    "path": "build/asus-ssh-recovery/recovery-source-v1/leon-asus-openssh-recovery_0.1+leonb53.1_all.deb",
+    "sha256": "30d10fe3b809c95bc5018024a029a8058e77dcff1c5ad249ebd12bf435e23bff",
+    "architecture": "all",
+    "contents": "Five configuration/documentation files only; no keys/accounts/enabling symlinks/maintainer scripts",
+    "native_unit_validation": "systemd-analyze verify --man=no --generators=no passed for socket and service"
+  },
+  "focused_qemu": {
+    "result": "build/qemu/openssh-recovery-focused-v2/result.json",
+    "serial_log": "build/qemu/openssh-recovery-focused-v2/serial.log",
+    "fixture_manifest": "build/asus-ssh-recovery/recovery-fixture-v2/manifest.json",
+    "outcome": "PASS",
+    "complete_marker": "QEMU_LEON_SSH_RECOVERY_COMPLETE",
+    "elapsed_seconds": 61.6,
+    "fresh_boot_count": 1,
+    "physical_nic_or_block_device": false,
+    "full_apt_or_old_baseline_run": false,
+    "preceding_fixture_attempt": "v1 did not complete because same-root-namespace local routing was an invalid negative-interface assumption; only new fixture proof corrected before v2",
+    "successful_inetd_process_exit_note": "Guest OpenSSH inetd parent can log exit255 after a successful client command; client status/output and subsequent listener availability are the proof assertions. CollectMode=inactive-or-failed releases instances."
+  }
+}

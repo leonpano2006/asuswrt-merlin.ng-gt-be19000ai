@@ -1,0 +1,100 @@
+{
+  "schema": 1,
+  "status": "source_only_router_review_fixes_controller_blocked",
+  "compiled": false,
+  "syntax_checked": false,
+  "tests_run": false,
+  "network_mutated": false,
+  "device_queries": "Two explicitly authorized read-only .51 capability/environment queries; no setup, binaries or private keys accessed.",
+  "prior_report": {
+    "path": "reports/ubuntu26/uplink-rescue-implementation-source-v1.json",
+    "sha256": "3cf7de7a310835742dcd1e6bc6506c95d3a3f307e9f19d0589219b6e0ec642e1"
+  },
+  "prior_source_archive": [
+    {
+      "path": "build/asus-uplink-rescue/source-v1/README.source-only",
+      "sha256": "93df8df7f1824c2df39d1053e0d9bcd60ed25e1d9dd3f4387e68e9e70fff2c03"
+    },
+    {
+      "path": "build/asus-uplink-rescue/source-v1/controller-transient.sh",
+      "sha256": "eefb681e592534b488a6d8295544f2c3125106c8bef6a766d111869e99e7a293"
+    },
+    {
+      "path": "build/asus-uplink-rescue/source-v1/implementation-v1.json",
+      "sha256": "c3c53323e4acc86df0c332ac94b8f898b45fde43c64b5647ce70c6aea1015cbc"
+    },
+    {
+      "path": "build/asus-uplink-rescue/source-v1/leon-asus-rescue-link.service.in",
+      "sha256": "7caa49d8e32e6f861d68a458845cca290b5ff6c42e8243664bbde5d0ce853487"
+    },
+    {
+      "path": "build/asus-uplink-rescue/source-v1/rescue-link.c",
+      "sha256": "fb093f06b32500d4aa0e4f8c32480bfa25b85638f68f4d00a9109773e83b9cf4"
+    }
+  ],
+  "sources": [
+    {
+      "path": "scripts/asus-integration/uplink-rescue/rescue-link.c",
+      "sha256": "65a31a0035fac93cafa8a6f7aaadacfba44533556742280d88ff681c34837850"
+    },
+    {
+      "path": "scripts/asus-integration/uplink-rescue/rescue-link-enrollment.in",
+      "sha256": "a11203eafd9b152ac7912edfc06224b780bdfc952324f0e4a937a006710ca804"
+    },
+    {
+      "path": "scripts/asus-integration/uplink-rescue/leon-asus-rescue-link.service.in",
+      "sha256": "b7d510fb34b1404e8b3903dd765d9f0be487906497275be65f5a4da11e5585aa"
+    },
+    {
+      "path": "scripts/asus-integration/uplink-rescue/leon-asus-ssh-uplink-rescue.socket.in",
+      "sha256": "e6a8a8bf40fefc9ddda2d67ac82c94348b8b34bea925fd6ae9ea46dd0ba67961"
+    },
+    {
+      "path": "scripts/asus-integration/uplink-rescue/leon-asus-ssh-uplink-rescue@.service.in",
+      "sha256": "59a57082d32b40ac9132e1349c71951888eda0008005cbc048ae5dcd56627bd1"
+    },
+    {
+      "path": "scripts/asus-integration/uplink-rescue/leon-asus-uplink-rescue.conf.in",
+      "sha256": "2177796b3c2e37fc7804300a929902dd070afc0e8aeb9f8548858b87da2ac49c"
+    },
+    {
+      "path": "scripts/asus-integration/uplink-rescue/README.source-only",
+      "sha256": "476c5b38524f5ee65a486ad4a6dbdb8c280bce0523c8f4041a8f457c9f0277c0"
+    },
+    {
+      "path": "scripts/asus-integration/uplink-rescue/implementation-v2.json",
+      "sha256": "29679832e5bb4f69444193df9ee121c393d5250cc9c941494d52c5ee7b3d5205"
+    }
+  ],
+  "three_fixes": [
+    "Peer-IP namespace collision rejected in IFA_LOCAL and IFA_ADDRESS before own-self matching.",
+    "CapabilityBoundingSet adds only CAP_SYS_PTRACE for fixed PID1 READ_FSCREDS namespace/root checks; no arbitrary process inspection.",
+    "TimeoutStartSec300/TimeoutStopSec60 replace270/30; two stop gates after old-object withdrawal and after installation prevent migration from adding another full transaction after TERM. No Restart and ambiguous intent preservation unchanged."
+  ],
+  "budget": {
+    "initial_wait_ms": 250000,
+    "install_and_ready_ms": 24000,
+    "withdraw_ms": 19000,
+    "start_unit_seconds": 300,
+    "stop_unit_seconds": 60,
+    "stop_bound_explanation": "Two explicit main-loop stop gates avoid old withdrawal + new install + readiness + cleanup chaining after TERM. In-flight installation/READY plus exact withdrawal conservatively <=43s. This is source reasoning, not a runtime timing measurement."
+  },
+  "controller_blocker": "Official BusyBox1.37 route display omits protocol despite supporting noprefixroute; .51 has no stat. Original controller script blocked, awaiting separately reviewed private official ip-full and numeric ls metadata adaptation.",
+  "capability_evidence": [
+    {
+      "path": "evidence/ubuntu26/management-uplink-rescue-design-v1/host51-ip-capability-v1/result.json",
+      "sha256": "59131b4a659b9c7b526f8ce8ceda9bf822b76ca99e8d51286496f1206897c209"
+    },
+    {
+      "path": "evidence/ubuntu26/management-uplink-rescue-design-v1/host51-openwrt-tool-source-v1/result.json",
+      "sha256": "0f0c0e35083e3f17e7319d7da0b6cae02e4e5e568a330c6b5cd265ad5dd41de1"
+    }
+  ],
+  "remaining": [
+    "No C compilation or new fixture has occurred.",
+    "Independent peer must re-read the exact two stop gates before router build.",
+    "Global IPv4LL uniqueness not proven; first physical peer requires expected MAC and strict existing native host key.",
+    "Controller original shell is not approved for execution.",
+    "No normal LAN/default route/bridge/sysctl/firewall/neighbour/guardian changes."
+  ]
+}

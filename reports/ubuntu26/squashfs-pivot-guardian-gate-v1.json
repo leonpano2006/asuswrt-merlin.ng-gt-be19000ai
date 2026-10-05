@@ -1,0 +1,55 @@
+{
+  "passed": true,
+  "errors": [],
+  "scenarios": [
+    {
+      "scenario": "guardian-refused",
+      "checks": {
+        "complete_without_panic": true,
+        "exact_initramfs": true,
+        "exact_serial": true,
+        "real_squashfs_pid1": true,
+        "no_restore_failure": true,
+        "no_vendor_exec_failure": true,
+        "reversed_to_readonly_vendor": true,
+        "no_emergency": true,
+        "no_systemd_exec_success": true,
+        "unarmed_refusal_and_exit125": true,
+        "never_sent_arm": true,
+        "never_armed": true
+      },
+      "elapsed_seconds": 9.65,
+      "serial_sha256": "9f49e239eb77b1404a0ebeb8e01899abd0f306ac9a8b260e238a30df98813ce2",
+      "result": {
+        "path": "build/qemu/ubuntu26-pivot-guardian-gate-v1-guardian-refused/result.json",
+        "sha256": "fea83b596e241e8e3adbf702620e3391c46af5d0bfef2d6e2d213fa993416f12"
+      }
+    }
+  ],
+  "fixture_manifest": {
+    "path": "build/ubuntu26-pivot-qemu/guardian-gate-v1/manifest.json",
+    "sha256": "51d912f9f19d33ddaabfe5523d96f4e98af5b20e3977f894351e1e757d967b8d"
+  },
+  "helper_source_sha256": "f39a8ea66c413cb1c8d61f39bbc34276f02401e09fe01ba496529b1c225d4d8e",
+  "helper_sha256": "a5948b9766d45cc9431dd1408525ebc822cc587b89f5e33551e63757431acf81",
+  "guardian_input": {
+    "role": "real_gate_closed_guardian",
+    "manifest_sha256": "f3228f67d8c0c2636d2df595519c1773f7430e5638c20a279be38a09a3d0e241",
+    "path": "build/asus-trial-guard/native-v5/guardian-candidate",
+    "sha256": "e49841d22cb50d68dbb7c98dc2203fc823fd15389a36a7e5c8337baecfcd7534"
+  },
+  "input_images_unchanged": true,
+  "limits": [
+    "Real kernel10 PID1 and readonly SquashFS to ext4 pivot, with RAM loop images only; no physical block device or NIC.",
+    "The mock guardian exercises the exact two-phase wire contract; it never opens a watchdog or claims hardware arming.",
+    "Emergency cases use an explicit compile-time parent fault sink; production RB_AUTOBOOT is not hardware-validated here.",
+    "Successful preexec abort requires exact nonce, ABORTED, and direct-child exit0 before reverse pivot.",
+    "A real gate-closed guardian case proves only refusal before watchdog open, not its unfinished production health collector.",
+    "Vendor rc is a test double; actual ASUS services, board reset, flash and metadata commit never execute."
+  ],
+  "hardware_watchdog_armed": false,
+  "actual_asus_services_executed": false,
+  "hardware_reset_proven": false,
+  "flash_accepted": false,
+  "checker_sha256": "7f1e41aca64068443dbea1b07d43d3026eac3d022dfc5292e48e3a2515bab1ce"
+}

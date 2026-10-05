@@ -1,0 +1,653 @@
+{
+  "status": "projected resource candidate; native helper/launcher wiring and actual BSP execution still gated",
+  "base": "build/kernel9-ui1-rootfs/rom/etc",
+  "patch": {
+    "path": "patches/ubuntu26/asuswrt6/0012-asus-bsp-resource-ownership.patch",
+    "sha256": "26a5476af11eeb36664bfa8848997e6938d24d8bdf15c1a1e0eb17febd008205"
+  },
+  "projection": "build/asus-bsp-resources/v7",
+  "changes": [
+    {
+      "path": "rom/etc/init.d/mount-fs.sh",
+      "before_sha256": "db4c12ff9738818eb578ab81136a5ccc4953b65edbc1cc836d27e012f27a3ee6",
+      "after_sha256": "b08d58dfe34bba39dd4b63dc432ae82de6a3971bc9c68838d4dd95bec20598a2"
+    },
+    {
+      "path": "rom/etc/init.d/mount-data.inc",
+      "before_sha256": "053ed6d2fbc0c02de5cde82407f4143869728d7b7137d6e9fc7bed7ffdaf16e2",
+      "after_sha256": "d7439bbb478c72891c534ab4f3bbb415d73f4156759ed138e5941e99ca12ed58"
+    },
+    {
+      "path": "rom/etc/init.d/partitioncfg",
+      "before_sha256": "45b1c150215d0238fb61a0e5e68c47e4f3425f5a958edb2e5dd7bda158daa4d9",
+      "after_sha256": "08efbe91ac01fbd95ca62a183b0abd3f26bf57d57acef97f49417e7f6eda8e98"
+    },
+    {
+      "path": "rom/etc/init.d/defaults",
+      "before_sha256": "52ffb91e7f649a0e90f897af15fd2a599eb98d83c5f47b2e3116cffd14b815e8",
+      "after_sha256": "4b4562b1966b34f8e8d2e8b53fa68e29324254da21f2ce258f966a6d2a840d8d"
+    },
+    {
+      "path": "rom/etc/init.d/check-and-restore.sh",
+      "before_sha256": "458e090cec33aded85dfc69f81deace106f2bed4fcf9bf845b959b2771df7488",
+      "after_sha256": "2a407181e80e330cd820c2326a4363abdbdacb66c852b42cc3fb5a670ac37024"
+    },
+    {
+      "path": "rom/etc/init.d/init-defaults.sh",
+      "before_sha256": "1438f56f7abe90d7b2fbd1efad377993d9a9f9de3cfb97fd552af58055949022",
+      "after_sha256": "2446caaae35188e8a64376b013b13e2a7785f204d6023a2411fb02840972eaf7"
+    },
+    {
+      "path": "rom/etc/init.d/hndmfg.sh",
+      "before_sha256": "c26926b9220d7c83c37efa87d1090452af1071e072d61484606a715608c0ef1b",
+      "after_sha256": "39845e29972a2e31efa987c6faa52d20cec51507323483052980f64b843eadf5"
+    },
+    {
+      "path": "rom/etc/init.d/hndnvram.sh",
+      "before_sha256": "a997146f454eec5e80f03e02edd26cd3a44c23d5c81c41dbc0fda9f4b39e9816",
+      "after_sha256": "6c7328049f2fe8362e8a279617c5bedf1d8433f2125636af3e96b39f21aaa1c7"
+    },
+    {
+      "path": "rom/etc/init.d/system-config.sh",
+      "before_sha256": "f49360c868cd72159b707460957eca3dd8cdf27d29868799857e1c4d5341c375",
+      "after_sha256": "e9c07db27189b420357f5f9aaab4e2fb2171b237151d58df2bfd48f2b81729a8"
+    },
+    {
+      "path": "rom/etc/profile",
+      "before_sha256": "756dfc9991ed60971f80b6eaa2f3a6079ba0ba8e8d779c612dcbb358414d3c79",
+      "after_sha256": "76ba0a40ca5bc38ae1697ccdc80f8f11980103a8fdd90c3c81fe90898c096823"
+    },
+    {
+      "path": "rom/etc/hotplug2.rules",
+      "before_sha256": "e2c195e573028c7f7e10de3e45f14f3b05da25685776b456960ba6968dd14176",
+      "after_sha256": "c4b635c9bdcffeb29f5a59278bb4eb69a1d80a776d954fe2ccd0db6bbc0734a6"
+    },
+    {
+      "path": "rom/etc/make_static_devnodes.sh",
+      "before_sha256": "8afa83f81ebaf64e262fc8b1939e5bac655cbf28f7b161b3fdecf3999364a08c",
+      "after_sha256": "8bbfc20d2e3db53debe2f2271fcc0b9d9de30a007a2a271148d817e857cacefc"
+    }
+  ],
+  "etc_top_level_policy": [
+    {
+      "path": "96813GW",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "adsl",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "adsl1",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "airiq.cfg",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "arl",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "build_profile",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "build_time",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "dbus-1",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "default.script",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "dhcp",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "dhcp6c.conf.sample",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "dhcp6s.conf.sample",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "dyndscp.sh",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "e2fsck.conf",
+      "policy": "native Ubuntu owns /etc path; vendor ROM copy retained as reference"
+    },
+    {
+      "path": "ethertypes",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "filesystems",
+      "policy": "native Ubuntu owns /etc path; vendor ROM copy retained as reference"
+    },
+    {
+      "path": "fstab",
+      "policy": "native Ubuntu owns /etc path; vendor ROM copy retained as reference"
+    },
+    {
+      "path": "fw",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "get_rootfs_dev.sh",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "group.static",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "hotplug2.rules",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "image_version",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "init.d",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "iproute2",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "ipv6_start.sample",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "ld.so.conf",
+      "policy": "native Ubuntu owns /etc path; vendor ROM copy retained as reference"
+    },
+    {
+      "path": "licenses",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "lte_start.sh",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "make_mmc_links.sh",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "make_static_devnodes.sh",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "mdev.conf",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "mdev_eth.sh",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "mdev_storage.sh",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "mdk",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "modprobe.conf",
+      "policy": "native Ubuntu owns /etc path; vendor ROM copy retained as reference"
+    },
+    {
+      "path": "motd",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "mptcp.sh",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "nsswitch.conf",
+      "policy": "native Ubuntu owns /etc path; vendor ROM copy retained as reference"
+    },
+    {
+      "path": "openssl.cnf",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "passwd.static",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "ppp",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "profile",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "protocols",
+      "policy": "native Ubuntu owns /etc path; vendor ROM copy retained as reference"
+    },
+    {
+      "path": "radvd.conf.sample",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "rc3.d",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "rdpa_init.sh",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "redsocks.sh",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "resolv.conf",
+      "policy": "native Ubuntu owns /etc path; vendor ROM copy retained as reference"
+    },
+    {
+      "path": "rt_policy_info.d",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "services",
+      "policy": "native Ubuntu owns /etc path; vendor ROM copy retained as reference"
+    },
+    {
+      "path": "sf2",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "soft_bridge",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "ssl",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "test_sig.trf",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "usb_modeswitch.conf",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "vlan",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "web",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "wgetrc",
+      "policy": "private ASUS etc lower only"
+    },
+    {
+      "path": "wlan",
+      "policy": "private ASUS etc lower only"
+    }
+  ],
+  "static_nodes": [
+    {
+      "name": "fcache",
+      "major": 302,
+      "minor": 0
+    },
+    {
+      "name": "bpm",
+      "major": 304,
+      "minor": 0
+    },
+    {
+      "name": "bcm_user_tod",
+      "major": 307,
+      "minor": 0
+    },
+    {
+      "name": "tms",
+      "major": 308,
+      "minor": 0
+    },
+    {
+      "name": "pktrunner",
+      "major": 309,
+      "minor": 0
+    },
+    {
+      "name": "ext_bonding",
+      "major": 311,
+      "minor": 0
+    },
+    {
+      "name": "bcmepon",
+      "major": 313,
+      "minor": 0
+    },
+    {
+      "name": "bcm_user_ploam",
+      "major": 317,
+      "minor": 0
+    },
+    {
+      "name": "laser_dev",
+      "major": 314,
+      "minor": 0
+    },
+    {
+      "name": "bcm_omci",
+      "major": 318,
+      "minor": 0
+    },
+    {
+      "name": "bcm_ploam",
+      "major": 319,
+      "minor": 0
+    },
+    {
+      "name": "bdmf_shell",
+      "major": 321,
+      "minor": 0
+    },
+    {
+      "name": "rgs_logger",
+      "major": 322,
+      "minor": 0
+    },
+    {
+      "name": "bcmvlan",
+      "major": 323,
+      "minor": 0
+    },
+    {
+      "name": "buzzz",
+      "major": 324,
+      "minor": 0
+    },
+    {
+      "name": "sysperf",
+      "major": 325,
+      "minor": 0
+    },
+    {
+      "name": "spdsvc",
+      "major": 328,
+      "minor": 0
+    },
+    {
+      "name": "bcmxtmcfg0",
+      "major": 329,
+      "minor": 0
+    },
+    {
+      "name": "bcm",
+      "major": 331,
+      "minor": 0
+    },
+    {
+      "name": "bcmatm0",
+      "major": 332,
+      "minor": 0
+    },
+    {
+      "name": "bcmadsl0",
+      "major": 333,
+      "minor": 0
+    },
+    {
+      "name": "bcmadsl1",
+      "major": 333,
+      "minor": 1
+    },
+    {
+      "name": "bcmphydiag",
+      "major": 334,
+      "minor": 0
+    },
+    {
+      "name": "blog",
+      "major": 338,
+      "minor": 0
+    },
+    {
+      "name": "archer",
+      "major": 339,
+      "minor": 0
+    },
+    {
+      "name": "mpm",
+      "major": 342,
+      "minor": 0
+    },
+    {
+      "name": "slicslac",
+      "major": 350,
+      "minor": 1
+    },
+    {
+      "name": "dect",
+      "major": 351,
+      "minor": 0
+    },
+    {
+      "name": "dectdbg",
+      "major": 351,
+      "minor": 1
+    },
+    {
+      "name": "ac97",
+      "major": 360,
+      "minor": 0
+    },
+    {
+      "name": "bp3",
+      "major": 380,
+      "minor": 0
+    }
+  ],
+  "syntax_checks": "BusyBox ash -n only; no vendor scripts executed",
+  "boot_order": "Original rc3.d names and relative symlinks retained exactly",
+  "dangling_original_boot_links": [
+    "rom/etc/rc3.d/S50ssl"
+  ],
+  "native_requirements": [
+    "bsp-ownership --require verifies private namespace, base storage proof, native defaults/AI mount UUID policy, udev and static nodes before any BSP script.",
+    "device-event dispatcher validates fixed callback names, waits for native udev nodes on add, then invokes rc inside the inherited private namespace.",
+    "Package ROM projection and private etc seed explicitly; never unpack this over native Ubuntu /etc.",
+    "Original S50ssl dangling link is retained as not applicable: stock launcher logs/ignores its failure; ASUS HTTPS uses start_httpd -> prepare_cert_in_etc -> httpds independently.",
+    "Stock BCM launcher logs/ignores every script failure; full boot acceptance must verify actual script and service outcomes, not launcher exit0.",
+    "Firmware rollback health acknowledgement now belongs to native final-health gate; no early boot_failed_count reset.",
+    "Manufacturing mode, erase_psi and defaults programming fail closed; normal new/old recovery writes data only. Firmware-template fallback uses a private read-only /mnt/nvram view and never writes defaults.",
+    "Package a real /mnt/nvram directory; private template view cannot mount onto the stock dangling symlink. Missing factory and ROM calibration sources still require recovery."
+  ],
+  "preserved": [
+    "hndnvram normal populate/restore-to-data logic",
+    "driver and Wi-Fi script bytes/order",
+    "USB/net callback routing",
+    "ASUS service private configuration resources"
+  ],
+  "removed_ownership_conflicts": [
+    "mount/umount-all and mount_data repair/format fallbacks",
+    "partitioncfg repartition/format/reboot",
+    "mdev/static-node mutation from projected resources",
+    "kernel modprobeX",
+    "raw-offset MMC crash writer and global VM/core settings",
+    "legacy profile remount and LD_LIBRARY_PATH"
+  ],
+  "actual_asus_services_executed": false,
+  "flash_allowed": false,
+  "builder_sha256": "446ebe12ae9d8fb4834ab99000008f99ddea5353f3f8100d57b09b3423dbe029",
+  "nvram_control_flow_fixture": {
+    "status": "passed_script_control_flow_command_doubles",
+    "projection": "build/asus-bsp-resources/v7",
+    "projected_script_sha256": "6c7328049f2fe8362e8a279617c5bedf1d8433f2125636af3e96b39f21aaa1c7",
+    "cases": [
+      {
+        "case": "existing",
+        "returncode": 0,
+        "defaults_unchanged": true,
+        "events": [
+          "ownership --require",
+          "nvram kernelset"
+        ],
+        "fixture_script_sha256": "21c4181affb26be897777be9c1d40857e79baa3429c1915f12d879abc9923052",
+        "actual_nvram_executed": false
+      },
+      {
+        "case": "new",
+        "returncode": 0,
+        "defaults_unchanged": true,
+        "events": [
+          "ownership --require",
+          "nvram kernelset"
+        ],
+        "fixture_script_sha256": "01f16cc27d0390d9ef97283aa0299ca175a606c39381806babdbddb5db29354a",
+        "actual_nvram_executed": false
+      },
+      {
+        "case": "old",
+        "returncode": 0,
+        "defaults_unchanged": true,
+        "events": [
+          "ownership --require",
+          "nvram kernelset"
+        ],
+        "fixture_script_sha256": "00e20561c0aa5b0c555890834bf94ec724d3012e74e92f9a62f88134cac3c8b9",
+        "actual_nvram_executed": false
+      },
+      {
+        "case": "firmware",
+        "returncode": 0,
+        "defaults_unchanged": true,
+        "events": [
+          "ownership --require",
+          "ownership --require",
+          "ownership --nvram-template /home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/asus-bsp-resources/test-v1/firmware/rom/etc/wlan/nvram/GT-BE19000AI.nvm",
+          "nvram restore_mfg",
+          "nvram kernelset"
+        ],
+        "fixture_script_sha256": "2c35b4d9084aa429136f45f12f65c84de8b62fa89be9a75f1c0065d58ca93a24",
+        "actual_nvram_executed": false
+      },
+      {
+        "case": "factory",
+        "returncode": 0,
+        "defaults_unchanged": true,
+        "events": [
+          "ownership --require",
+          "ownership --nvram-defaults",
+          "nvram restore_mfg",
+          "ownership --require",
+          "nvram kernelset"
+        ],
+        "fixture_script_sha256": "92baa1b49d55ef7bcdcdba232a650465dc6dd4167fe589a282d3e19c4e6ad871",
+        "actual_nvram_executed": false
+      },
+      {
+        "case": "missing-template",
+        "returncode": 125,
+        "defaults_unchanged": true,
+        "events": [
+          "ownership --require",
+          "ownership --require"
+        ],
+        "fixture_script_sha256": "c7090b92060705ec4071d2397128a1a67e9c80f8472d102239544ab9e5cedfa1",
+        "actual_nvram_executed": false
+      },
+      {
+        "case": "kernelset-failure",
+        "returncode": 125,
+        "defaults_unchanged": true,
+        "events": [
+          "ownership --require",
+          "nvram kernelset"
+        ],
+        "fixture_script_sha256": "13e5b90bcb337d6278ba638a227bb5584d5b758229679c6a97f4c9af7dad9a95",
+        "actual_nvram_executed": false
+      }
+    ],
+    "scope": "Every path is disposable and all device/NVRAM/guard commands are doubles. Does not prove native private bind or actual Broadcom nvram behavior.",
+    "existing_live_metadata": {
+      "path": "evidence/ubuntu26/storage-identity/20261004-v4/capture.txt",
+      "sha256": "23fdece006e1d3a63b1394938e03e6394d4cdd08e695f96253d70419bc58b56e"
+    },
+    "actual_asus_services_executed": false,
+    "flash_allowed": false,
+    "checker_sha256": "0bd8a4b5ae954d09522549a4a8eae16d056b6a9b673f8cbf602c96f46ba3bee1"
+  },
+  "independent_static_and_argument_validation": {
+    "path": "build/asus-bsp-resources/audit-v1/result.json",
+    "sha256": "41c7200f2b9b1993efbc702b28aae13d474b8e5015ef254e5b0fffcf195b1916",
+    "summary": {
+      "fuzz": 0,
+      "resource_files": 12,
+      "event_cases": 24
+    },
+    "scope": "No native ownership guard or production event callback executed"
+  },
+  "kernel10_ownership_fixture": {
+    "status": "passed_kernel10_systemd_private_resource_bsp_ownership_fixture",
+    "manifest": {
+      "path": "build/asus-resource-projection/qemu-defaults-alias-v4/manifest.json",
+      "sha256": "d9aaf3ef4f6d0e3185cb1f167bf88c9c6ca0da4dab172dfac25e0f2333a18404"
+    },
+    "qemu_result": {
+      "path": "build/qemu/asus-resource-defaults-alias-v4/result.json",
+      "sha256": "6174ddaa4af25d43fa2633b71e741f2c0ca61ffd3ac5a98f2c5eaf595391d9c8"
+    },
+    "serial_sha256": "333f2290be5e851a0e23eaafa3eb09e2f05506d9f9cf67629dc6566d0d1e6b2b",
+    "kernel_sha256": "4a15601eada042576aed2a3680dcc48e9228eea70f70c478840767aaa89a9f8e",
+    "rootfs_sha256": "2f0eafc638180019bb44b230e71877e200886e9c6afc9895bb299b0d6e4ca688",
+    "initramfs_sha256": "2f8a65e462df34aa8621a4aebbe29657d68f649644a98e444a0341fdbe79fbd7",
+    "expected_markers": [
+      "LAB_ASUS_RESOURCES_ROM_WEB_READONLY_ETC_COPYUP_PASS",
+      "LAB_ASUS_BSP_NATIVE_UUID_UDEV_NODES_PASS",
+      "LAB_ASUS_DEFAULTS_ALIASES_SAME_READONLY_FACTORY_MOUNT_PASS",
+      "LAB_ASUS_DEFAULTS_WRITABLE_SOURCE_REFUSED_PASS",
+      "LAB_ASUS_BSP_PRIVATE_CALIBRATION_VIEW_PASS",
+      "LAB_PRIVATE_ETC_NSS_ACCOUNT_HOSTS_SHARED_PASS",
+      "LAB_ASUS_RESOURCES_HOST_AND_SOURCES_UNCHANGED_PASS",
+      "LAB_ASUS_RESOURCES_UNTRUSTED_LOWER_REFUSED_PASS",
+      "LAB_ASUS_PRIVATE_RESOURCE_KERNEL10_COMPLETE",
+      "LAB_PRIVATE_RESOURCE_QEMU_EXIT_code=0",
+      "LAB_DEFAULTS_ALIAS_SYSTEMD_COMPLETE"
+    ],
+    "elapsed_seconds": 37.09,
+    "proven": [
+      "Real systemd PID1 and production private mount namespace; reviewed ROM/web read-only, private etc copy-up, native host/account/shell and resource source hashes unchanged",
+      "Production bsp-ownership validates RAM ext4 UUIDs for data/jffs/defaults/ai, native udev socket, event-only rules and31 synthetic char-node metadata without opening devices",
+      "Both defaults spellings bind the same root-owned read-only ext4 directory, including factory mode0777; host alias stays unchanged and writable source is refused",
+      "Missing defaults calibration is rejected for that restore command, healthy normal preflight does not require it",
+      "Actual private read-only /mnt/nvram firmware template view stays inside ASUS namespace, native mountpoint unchanged",
+      "World/group-writable resource lower is refused before ASUS backend execution"
+    ],
+    "not_proven": [
+      "Actual Broadcom nvram command, WiFi/AI/USB/storage drivers and other ASUS services never executed",
+      "No real BCM partition UUID was mounted and no real peripheral was passed through",
+      "This fixture does not exercise the ordered hardware-script runner, which has separate synthetic spawn tests",
+      "Resources injected into the disposable image, not installed through a final resource .deb"
+    ],
+    "unchanged_base_boot_apt_tests_repeated": false,
+    "actual_asus_services_executed": false,
+    "flash_allowed": false,
+    "checker_sha256": "4e263961927689f749194ce6d2475b2e6579ef7b11ee86e3779cd242f4c23152"
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "status": "one_local_https_installer_compile_inspected_not_executed",
+  "manifest": {
+    "path": "build/asus-https-helper/install-v1/manifest.json",
+    "sha256": "8909ffaa23f6046a7ffa18e85584d7debefaa5a826036e62e2e38b804601a796",
+    "bytes": 14466
+  },
+  "installer": {
+    "path": "build/asus-https-helper/install-v1/install-additions",
+    "sha256": "fa2564f1ec98217135230bf923c55b90bc9b7f70959e6b43b6c5a4b8fcb93909",
+    "bytes": 1165016
+  },
+  "builder": {
+    "path": "scripts/build-asus-https-p11-installer-v1.py",
+    "sha256": "f689c99016bf738f91d16df0fcdd5d25ab4f9fcbd5f2c367dde15037c765c65c",
+    "bytes": 13578
+  },
+  "source_delta": {
+    "path": "reports/ubuntu26/https-helper-installer-source-v1.json",
+    "sha256": "3f16e3a486e0daf3cae7138303659dc489a1fe26a79d9c2330b4be8bcc13c55c",
+    "bytes": 4390
+  },
+  "elf": {
+    "path": "build/asus-https-helper/install-v1/elf.txt",
+    "sha256": "700ef8b6d9c0502c3fdcb3c16fdc501413ef52487080d9f82d240c9a40d5ebf1",
+    "bytes": 4139
+  },
+  "returncode_record": {
+    "path": "build/asus-https-helper/install-v1/returncode.json",
+    "sha256": "55f51377eba4dad2376644e905c757a0fb5f96125f33143bf648f1fd1d50ec1c",
+    "bytes": 38
+  },
+  "compile_count": 1,
+  "source_compile_invocations": 1,
+  "returncode": 0,
+  "compiled_input_inventory_matches": true,
+  "static_pie_aarch64_no_interp_no_needed": true,
+  "installer_executed": false,
+  "device_accessed": false,
+  "expected_counts": {
+    "additions_published": 2,
+    "replacements_published": 0,
+    "links_created": 1,
+    "private_sh_links_replaced": 0,
+    "temporary_created": 2,
+    "directories_created": 1
+  },
+  "source_inventory_changed_only": [
+    "install.c",
+    "recovery-payload.h"
+  ],
+  "unchanged_sources": 19,
+  "prior_fixtures_reexecuted": false,
+  "compiler_or_environment_probes": 0,
+  "physical_parent_and_target_preflights_pending": true
+}

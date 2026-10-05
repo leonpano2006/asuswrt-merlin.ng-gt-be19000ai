@@ -6,11 +6,22 @@ Git submodule pins ASUSWRT-Merlin tag `3006.102.9` at
 through that repository; this repository records the ordered modification history
 as reviewable patches. It is not a second GitHub fork-network entry.
 
-The previously built kernel trial images change only the BCM6813 Linux 4.19.294 kernel, open-source modules, and SquashFS
-compression. All userspace files, symlinks, permissions and timestamps
-outside `lib/modules` match the original firmware. The existing BE19000AI vendor
-modules, bootloader, ATF and DTBs are retained. The AI board is not modified.
-Ubuntu 26.04 and a Docker userspace installation are outside this build.
+The BCM side currently runs kernel10 with an Ubuntu 26.04 ext4 root, systemd,
+native OpenSSH and the ASUS services in their private compatibility environment.
+The V23 image has passed actual current-boot acceptance and survival after the
+external observer stopped. The separate SL1680 AI-board OS is not modified.
+The retained original firmware in slot2 is still the permanent boot default;
+this milestone does not enable permanent Ubuntu boot.
+
+See the [V23 hardware milestone](reports/ubuntu26/v23-current-boot-milestone-v1.json)
+for the actual same-boot checks, evidence hashes and remaining limits. Raw device
+captures, credentials, keys and build artifacts stay outside this repository.
+Device-specific deployment tools deliberately refuse when their private, pinned
+inputs are absent; a source checkout alone cannot authorize flashing a device.
+
+The earlier kernel-only trial images changed the BCM6813 Linux 4.19.294 kernel,
+open-source modules and SquashFS compression while preserving ASUS userspace.
+The existing vendor modules, bootloader, ATF and DTBs remain retained.
 
 The kernel feature baseline is the running GT-BE98 kernel #36: memory/swap cgroups,
 pids/devices/freezer/cpuacct, namespaces, seccomp, veth/macvlan, OverlayFS, Btrfs,
@@ -23,7 +34,152 @@ including ICP201XX, CRC8 and MMC oops are retained. Net-device field offsets use
 by proprietary drivers are protected separately; this is not a proof of every
 proprietary driver's internal ABI.
 
-## Integrated release kernel9-ui1 — running as a one-time trial
+## Kernel10 and writable Ubuntu root — V23 current-boot hardware milestone
+
+Kernel10 backports real `pidfd_open`, `pidfd_send_signal`, `CLONE_PIDFD` and
+`waitid(P_PIDFD)` semantics while preserving the recorded vendor structure
+layouts. The 296-check QEMU suite covers native AArch64 and ARM32 callers,
+permissions, PID reuse, thread-group exit, polling, descriptor lifetime and
+fork-failure cleanup. The same fixture identifies kernel9 as unsupported.
+The config is unchanged, and the time64, PSI, resource-control and
+Docker/memory/swap/filesystem regression suites pass on the exact kernel10 image.
+
+The `peak_usb.ko` backport supports the late-2022 PCAN-USB FD MCU and includes
+the later firmware-response-type correction. It remains a module
+(`CONFIG_CAN_PEAK_USB=m`). Descriptor tests and QEMU load/unload pass;
+physical adapter enumeration and CAN FD traffic have not been tested.
+The V23 firmware includes all 181 kernel10 modules and `Image-v10`, including
+the updated `peak_usb.ko` and regenerated dependency metadata.
+
+For writable Ubuntu, keep the original SquashFS for recovery and use a separate
+ext4 root selected by filesystem UUID, device identity, size and partition start.
+The static SquashFS PID1 helper checks the root, runs bounded fsck, pivots to
+ext4 and executes Ubuntu systemd. Fourteen kernel10 QEMU cases cover the normal
+handoff and failures before and after pivot; failures before successful init
+exec restore SquashFS and execute a vendor-init test double as PID1. Additional
+real GPT-loop tests reject a correct UUID at the wrong partition start. The
+private native e2fsck closure leaves the original firmware loader intact.
+These RAM-backed tests establish the earlier handoff foundation. The later V23
+hardware milestone separately proves the writable physical root and current-boot
+service checks; it does not prove permanent-mode failure recovery.
+See [pivot evidence](reports/ubuntu26/squashfs-pivot-v4.json),
+[private fsck](reports/ubuntu26/squashfs-pivot-private-fsck-v1.json), and
+[partition refusal](reports/ubuntu26/squashfs-pivot-partition-wrong-start-v1.json).
+
+The native GNU candidate now contains glibc 2.44, GCC 16.2 and binutils 2.47
+as versioned Ubuntu-format Debian packages, built for Cortex-A53 with CRC and
+crypto. Native compilation, C++/DSO/TLS/unwind, LTO, time64/year-2100 and libc
+tests pass on kernel10. Binutils also produces runnable armel/armhf objects.
+The ARMEL runtime has matching glibc2.44 and a separately rebuilt GCC15.2
+libgcc/libstdc++ family. ARM32 compilers and shared runtimes are verified
+separately: the BE98 rollback followed a GCC15 package dependency pulling
+`16-20260322-1ubuntu1cross1` snapshot runtime. The ARMEL GCC16 build/package/compose
+entrypoints now refuse under the checked-in
+[compiler policy](configs/ubuntu26/compiler-policy.json); ARMHF remains optional
+and uses the GCC15.2 baseline. Native ARM64 GCC16.2 is a separately verified
+release-branch rebuild. The root uses Ubuntu usrmerge and multiarch paths, signed
+official resolute repositories, and the hostname `be19000ai-bcm`.
+
+Use the Ubuntu systemd source/package family, rebuilt with the narrow legacy
+credential-mount compatibility patch. The original 259 package's full boot
+failed because `fsopen` is absent; that
+[failure evidence](reports/ubuntu26/systemd259-kernel10-full-boot.json) remains.
+Version `259.5-0ubuntu3.4+leonb53.2` passes the complete basic Ubuntu boot with
+journald, udev and D-Bus active, zero failed units, transient services and apt
+service install/remove transactions. Six credential replacement cycles verify
+read-only, no-swap ramfs, mount flags, user isolation, write/chmod rejection,
+failed-exec cleanup and stop/remove cleanup. The full boot uses a RAM root;
+the separate ext4 test proves persistence and switch_root followed by a service.
+Kernel10 supplies real pidfd interfaces without spoofing the kernel version.
+Optional modern facilities, including BPF features, still have limitations.
+
+The baseline `gnu-systemd-b53-v3` rootfs includes 41 local GNU/systemd packages,
+configuration package 0.2, and official D-Bus, kmod, e2fsprogs and iproute2.
+See the [native candidate evidence](reports/ubuntu26/gnu-systemd-candidate.json).
+The rejected systemd `.1` packages, missing-D-Bus run and invalid test-account
+run are retained; fixes and successful follow-ups have distinct artifacts.
+
+Permanent activation is not implemented. The signed local APT archive
+and exact-version upgrade pins have passed signature, solver, reinstall and
+tampering tests; they must be refreshed for the complete integrated package set.
+V23 has passed 30 ASUS server-side functional checks, native and physical-uplink
+backup SSH, explicit acceptance for this boot, and observer-free survival. The
+same guardian, watchdog descriptor and boot remained active while its local
+health checks and keepalive advanced. The separate permanent boot mode still
+requires implementation and validation before changing the default from slot2.
+A later official systemd revision can
+replace the compatibility patch; official older-branch GNU updates do not
+automatically maintain these rebuilt newer versions. See
+[update readiness](reports/ubuntu26/update-readiness.json).
+The BCM root partition and inactive firmware slot1 have been provisioned and a
+one-time slot1 selection used for V23. Original slot2 remains retained; the
+AI-board OS remains unchanged.
+
+See [kernel10 evidence](reports/kernel10/candidate.json),
+[writable root and systemd proof](reports/ubuntu26/writable-root-test-writable-systemd-kernel10.json),
+[storage plan](reports/ubuntu26/storage-boot-plan.json), and
+[systemd package policy](configs/ubuntu26/systemd-policy.json).
+Regenerate the evidence summary with `python3 scripts/summarize-kernel10.py`.
+Regenerate the native userspace evidence first with
+`python3 scripts/summarize-ubuntu26-candidate.py`.
+
+## ASUS Debian payloads and compatibility preparation
+
+ASUS functionality is a prerequisite for the Ubuntu migration. The
+[acceptance requirements](configs/ubuntu26/asus-acceptance-gates.json) distinguish
+offline integration from physical radio, Ethernet/Runner, AiMesh, AI-link, web,
+RGB and USB acceptance. V23 is an integrated hardware trial with the current-boot
+acceptance listed above; the report keeps untested physical behavior explicit.
+
+The original three `0.2+kernel9ui1` packages are preserved as payload/round-trip
+evidence. The executable runtime projection now separates ABI-private libraries,
+vendor programs, native helpers, private shell, resources and storage ownership.
+It excludes stock GNU runtimes, init/power/flash tools and Dropbear from active
+command aliases; Ubuntu retains its package-owned global programs and accounts.
+
+On kernel10 QEMU, all eleven selected ASUS programs pass dependency/relocation
+tracing with their original libraries. The glibc 2.44 reference initially fails
+three because the vendor libcrypt requires `__snprintf@GLIBC_PRIVATE`. A fresh
+libxcrypt compatibility build resolves all eleven and passes hash-bound probes
+for the old versioned crypt APIs, known answers and buffer boundaries. These
+traces exit before ASUS constructors/main; they do not establish service or
+hardware operation. The ARMEL reference is not a final Ubuntu runtime package.
+
+The model-specific rc is now linked from the verified ASUSWRT6 source pin
+`9b25e55ca5c56a6f01d6a56264c0f6c47459ada0`, distinct from the original kernel
+submodule pin. It uses GCC15.2 and the Ubuntu ARMEL glibc. Closed shared layouts
+require time32/off32 at the rc boundary; new native helpers use time64/off64.
+The process chain is Ubuntu systemd, a native broker, private namespace launcher,
+then rc with its legacy init role. The narrow closed-object manager-role/RGB
+fixes retain ordinary getpid behavior and have separate ABI/behavior evidence.
+
+Kernel10 QEMU validates 634 ELF loader scopes without entering ASUS
+constructors/main. Private namespace notification, resource ownership and ordered
+BSP start/stop have separate tests. These do not establish radio/Runner behavior.
+Native OpenSSH `1:10.2p1-2ubuntu3.6` passes IPv4/IPv6 key and password login,
+legacy password-hash compatibility, root-login rejection, password-required sudo,
+host-key preservation and explicit disable tests. Its fixed non-root management
+account is provisioned from validated fields; the complete ASUS passwd/shadow is
+never copied into Ubuntu. Prototype host keys are removed from sealed candidates;
+device-local provisioning has been applied for the V23 hardware trial.
+
+These earlier preparation reports describe separate mock-manager and OpenSSH
+tests. The V23 milestone above records the later combined hardware runtime.
+See the hash-bound
+[systemd first-stage report](reports/ubuntu26/systemd-first-stage.json), generated
+by `python3 scripts/summarize-systemd-first-stage.py`.
+The older [ASUS migration report](reports/ubuntu26/asus-migration-readiness.json)
+records the initial preparation milestone. Newer evidence includes
+[ARMEL runtime](reports/ubuntu26/armel-runtime-kernel10.json),
+[native SSH control](reports/ubuntu26/asus-openssh-control.json), and
+[pre-systemd guardian](reports/ubuntu26/asus-trial-guard.json). The latter proves
+the early handoff and timeout state machine with mock hardware and synthetic
+health. V23 uses the production guardian and local health collection. Its PID1
+identity check now accepts a legitimate zero start time without weakening the
+generic SSH process checks. Acceptance remains in memory for this boot; the
+permanent mode and its rollback guarantees remain unfinished.
+
+## Historical integrated release kernel9-ui1
 
 Kernel9 adds the ARM32 time64 syscall ABI while preserving the existing ARM32
 time32 and native AArch64 interfaces. Nineteen new calls have enabled subsystems;

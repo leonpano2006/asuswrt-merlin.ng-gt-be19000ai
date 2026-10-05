@@ -1,0 +1,312 @@
+{
+  "date": "2026-10-04",
+  "scope": "Local source/artifact audit and tiny ARM32 probe builds only. No SSH, router access, kernel change, clock change, runtime execution or modification of BE98 artifacts.",
+  "status": "audit_complete; dynamic_probe_runtime_validation_pending",
+  "kernel8": {
+    "image": {
+      "path": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/Image-v8",
+      "sha256": "bd866bd952a79092126e31a15e123d6286f6e10b92ddf3b1e81d553ccb790234"
+    },
+    "config": {
+      "path": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/configs/kernel8.config",
+      "sha256": "1c495c39d80319246f26a38192eb481b54860ea938d46bbc8156b4fa676a8216"
+    },
+    "config_values": {
+      "CONFIG_64BIT": "y",
+      "CONFIG_COMPAT": "y",
+      "CONFIG_COMPAT_BINFMT_ELF": "y",
+      "CONFIG_COMPAT_32BIT_TIME": "y"
+    },
+    "native_syscall_count": 294,
+    "compat_syscall_count": 399,
+    "compat_max_regular_syscall": 398,
+    "arm32_time64_syscall_backport_present": false,
+    "basis": "arch/arm64/include/asm/unistd.h limits compat table to 399; unistd32.h ends at rseq 398 and has no time64 entries. Dispatch rejects out-of-range numbers through do_ni_syscall; compat_arm_syscall handles only ARM-private cacheflush/set_tls, not 403..423. This is source inspection of the built kernel8 tree, not inference from the 4.19 release string.",
+    "runtime_raw_probe_result": "Not performed by this audit; root has a separate raw-syscall probe task."
+  },
+  "key_distinctions": [
+    "CONFIG_COMPAT_32BIT_TIME=y enables the legacy 32-bit time_t interface in addition to the 64-bit interface; it does not disable native ARM64 time64. Keep it for existing vendor processes.",
+    "AArch64 LP64 already uses 64-bit time_t and 64-bit seconds in its established clock/timer/futex syscalls; it does not need the ARM32 numbered time64 additions.",
+    "armel/softfp and armhf are both ARM EABI/AArch32 and share the syscall numbers and time64 kernel ABI. Their floating-point function calling conventions and ELF loaders/libraries remain different.",
+    "A 64-bit kernel does not make an old 32-bit userspace ABI time64 automatically. Existing vendor glibc 2.32 and binaries keep their original ABI.",
+    "_TIME_BITS=64 with _FILE_OFFSET_BITS=64 selects glibc time64-facing application APIs on ARM32; the kernel must still implement the required 64-bit syscall or the libc fallback remains limited.",
+    "CPU tuning flags and GCC version do not change the syscall time ABI or manufacture kernel support."
+  ],
+  "native_arm64_examples": {
+    "clock_gettime": 113,
+    "clock_settime": 112,
+    "clock_nanosleep": 115,
+    "timerfd_settime": 86,
+    "utimensat": 88,
+    "futex": 98
+  },
+  "missing_arm32_time64_syscalls": {
+    "clock_gettime64": 403,
+    "clock_settime64": 404,
+    "clock_adjtime64": 405,
+    "clock_getres_time64": 406,
+    "clock_nanosleep_time64": 407,
+    "timer_gettime64": 408,
+    "timer_settime64": 409,
+    "timerfd_gettime64": 410,
+    "timerfd_settime64": 411,
+    "utimensat_time64": 412,
+    "pselect6_time64": 413,
+    "ppoll_time64": 414,
+    "io_pgetevents_time64": 416,
+    "recvmmsg_time64": 417,
+    "mq_timedsend_time64": 418,
+    "mq_timedreceive_time64": 419,
+    "semtimedop_time64": 420,
+    "rt_sigtimedwait_time64": 421,
+    "futex_time64": 422,
+    "sched_rr_get_interval_time64": 423
+  },
+  "glibc_source_review": {
+    "source_root": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/glibc244-b53-20260915/source/glibc",
+    "pinned_revision_from_build": "2d5421ffca8893534d5e02ad38c28acd8e778fa3",
+    "version": "2.44 (locally recorded build; not a claim about the latest internet release)",
+    "kernel_minimum": "This pinned source defaults Linux minimum to 3.2.0, with AArch64 override 3.7.0. Actual BE98 armel/armhf/aarch64 builds all configure --enable-kernel=4.19 and config.h confirms 4.19.0.",
+    "assume_time64_gate": "__ASSUME_TIME64_SYSCALLS is set when configured minimum Linux >= 5.1, or __WORDSIZE == 64, or syscall wordsize == 64. It is distinct from __TIMESIZE.",
+    "arm32_default": "arm/bits/timesize.h remains __TIMESIZE=32 to preserve existing ABI; _TIME_BITS=64 redirects new applications to the 64-bit versions.",
+    "macro_requirement": "features-time64.h rejects _TIME_BITS=64 without _FILE_OFFSET_BITS=64.",
+    "clock_gettime": "__clock_gettime64 tries the 64-bit syscall (unless a suitable vDSO path succeeds); with no __ASSUME_TIME64_SYSCALLS it falls back to the old 32-bit syscall on ENOSYS. Success at the current date is not post-2038 proof.",
+    "timerfd_settime": "When either seconds field is outside signed 32-bit range, __timerfd_settime64 calls timerfd_settime64. If that returns ENOSYS it returns -1/EOVERFLOW; for in-range values it may use the old syscall.",
+    "other_fallback_examples": "clock_nanosleep, utimensat and timed futex waits likewise use old interfaces for representable values and return EOVERFLOW for selected out-of-range requests when time64 is absent; do not assume every wrapper has identical fallback behavior.",
+    "minimum_version_caution": "Do not raise --enable-kernel to 5.1 merely to select time64: it removes relevant fallbacks and enables assumptions about other kernel features. A correct 4.19 time64 backport can be detected/used by a glibc build retaining the 4.19 minimum.",
+    "header_caution": "Existing glibc builds used exported 4.19.202 UAPI headers without the new ARM time64 numbers, but glibc 2.44 ships its own modern arm/arch-syscall.h containing 403..423. New headers or definitions alone never implement the missing kernel entry points.",
+    "old_app_caution": "Time-bearing structures crossing application/library interfaces must use a consistent ABI; rebuilt time64 ARM32 applications cannot blindly share private time_t-bearing structures with unchanged time32 vendor libraries."
+  },
+  "available_builds": {
+    "armel": {
+      "configuration": {
+        "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/glibc244-b53-20260915/builds/armel/configuration.json",
+        "sha256": "d8c92d5feba9ba8ec5e37e8d7608f2af1c8cdb25a9fabad7712ca2c565bdfc82"
+      },
+      "compiler_command": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/glibc244-b53-20260915/toolchains/arm32-ubuntu/usr/bin/arm-linux-gnueabi-gcc --sysroot=/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/glibc244-b53-20260915/toolchains/arm32-ubuntu",
+      "compiler_version_recorded": "13.3.0",
+      "glibc_source_commit": "2d5421ffca8893534d5e02ad38c28acd8e778fa3",
+      "glibc": "2.44",
+      "minimum_kernel": "4.19.0",
+      "configured_kernel_macro": "#define __LINUX_KERNEL_VERSION (4 * 65536 + 19 * 256 + 0)",
+      "stage": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/glibc244-b53-20260915/builds/armel/stage",
+      "loader": {
+        "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/glibc244-b53-20260915/builds/armel/stage/lib/ld-linux.so.3",
+        "sha256": "e79a2323c16afd204dc9cca028d42fd23912aca42489e41a422219572f42b4d4"
+      },
+      "libc": {
+        "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/glibc244-b53-20260915/builds/armel/stage/lib/libc.so.6",
+        "sha256": "4da295b81a9bb1038e434ff373faff6c0b84a0d95a5d312848e2e477199c380a"
+      },
+      "uapi_headers": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/github-push-20260915/dependency-sdks/arm32/arm-buildroot-linux-gnueabi/sysroot/usr/include",
+      "uapi_linux_version": "4.19.202",
+      "default_time_bits": 32,
+      "app_time_bits64_redirects_required": true
+    },
+    "armhf": {
+      "configuration": {
+        "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/glibc244-b53-20260915/builds/armhf/configuration.json",
+        "sha256": "2771e0e772d6a465fbb636010a5b1200f047454c8be2fd5d71f7f5855bcc8613"
+      },
+      "compiler_command": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/glibc244-b53-20260915/toolchains/arm32-ubuntu/usr/bin/arm-linux-gnueabihf-gcc --sysroot=/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/glibc244-b53-20260915/toolchains/arm32-ubuntu",
+      "compiler_version_recorded": "13.3.0",
+      "glibc_source_commit": "2d5421ffca8893534d5e02ad38c28acd8e778fa3",
+      "glibc": "2.44",
+      "minimum_kernel": "4.19.0",
+      "configured_kernel_macro": "#define __LINUX_KERNEL_VERSION (4 * 65536 + 19 * 256 + 0)",
+      "stage": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/glibc244-b53-20260915/builds/armhf/stage",
+      "loader": {
+        "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/glibc244-b53-20260915/builds/armhf/stage/lib/arm-linux-gnueabihf/ld-linux-armhf.so.3",
+        "sha256": "af65df2c42d8377d036868d86b0601385c632d5c156d1cdb2c0353462dcfa2f0"
+      },
+      "libc": {
+        "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/glibc244-b53-20260915/builds/armhf/stage/lib/arm-linux-gnueabihf/libc.so.6",
+        "sha256": "21274f27fbe78eb97a0a3f59a0f89c5c52d9dcee2cf18ff88562e00a29d97611"
+      },
+      "uapi_headers": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/github-push-20260915/dependency-sdks/arm32/arm-buildroot-linux-gnueabi/sysroot/usr/include",
+      "uapi_linux_version": "4.19.202",
+      "default_time_bits": 32,
+      "app_time_bits64_redirects_required": true
+    },
+    "aarch64": {
+      "configuration": {
+        "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/glibc244-b53-20260915/builds/aarch64/configuration.json",
+        "sha256": "439a6fcacd348ef089260fac6bbdd8b8747df5944d135a96882467afb867c783"
+      },
+      "compiler_command": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/gcc/xgcc -B/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/gcc/ -B/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/aarch64-unknown-linux-gnu/libgcc/ --sysroot=/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/sysroot",
+      "compiler_version_recorded": "16.2.0",
+      "glibc_source_commit": "2d5421ffca8893534d5e02ad38c28acd8e778fa3",
+      "glibc": "2.44",
+      "minimum_kernel": "4.19.0",
+      "configured_kernel_macro": "#define __LINUX_KERNEL_VERSION (4 * 65536 + 19 * 256 + 0)",
+      "stage": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/glibc244-b53-20260915/builds/aarch64/stage",
+      "loader": {
+        "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/glibc244-b53-20260915/builds/aarch64/stage/lib/ld-linux-aarch64.so.1",
+        "sha256": "b3f344a84f31ac21c18a01b7694f7c3dafe3934e8b182d5acf566836a79213a0"
+      },
+      "libc": {
+        "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/glibc244-b53-20260915/builds/aarch64/stage/lib/aarch64-linux-gnu/libc.so.6",
+        "sha256": "28de8a9816280aed2038b435d824900f565c088a79a2789028c197773a5dc34b"
+      },
+      "uapi_headers": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/github-push-20260915/dependency-sdks/arm64/aarch64-buildroot-linux-gnu/sysroot/usr/include",
+      "uapi_linux_version": "4.19.202",
+      "default_time_bits": 64,
+      "app_time_bits64_redirects_required": false
+    }
+  },
+  "current_vendor_and_future_userspace": {
+    "policy": {
+      "path": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/configs/b53-userspace-targets.json",
+      "sha256": "c237e36335110ddda5036385a9eed5fcf99efc1cc93cd44d8d423ca76d9e7d0f"
+    },
+    "stock_be19000ai": "Inventory reports armel glibc 2.32, Linux ABI tag 4.19.0; 650 armel and 14 AArch64 userspace ELFs, no armhf. Current kernel work does not replace that libc.",
+    "be92_new_sdk": "Recorded RT-BE92U 102_40311 uses kernel 5.15.167, main armhf ABI and glibc 2.38 with Linux ABI tag 5.15.0. This is a separate SDK/ABI migration, not evidence that BE19000AI gained those syscalls.",
+    "systemd": "Existing unchanged systemd 262 test used BE98 AArch64 glibc 2.44 and ran far enough to encounter independent missing kernel APIs on kernel6. Native ARM64 time64 is not the demonstrated systemd boot blocker, and glibc compatibility alone is not complete systemd/Ubuntu compatibility.",
+    "ubuntu_or_custom_rootfs": "For a future custom Ubuntu-based rootfs, keep the three loader/runtime ABIs separate; choose/rebuild glibc with a deliberate kernel feature baseline and test actual binaries. A distribution name or newer glibc version alone cannot establish compatibility.",
+    "compiler_policy": "Available ARM32 compilers are GCC13.3.0; AArch64 GCC16.2.0. Existing target flags are -march=armv8-a+crc+crypto -mtune=cortex-a53 -mfpu=crypto-neon-fp-armv8 plus softfp/hard for ARM32, and -mcpu=cortex-a53+crypto+crc for AArch64."
+  },
+  "probe": {
+    "source": {
+      "path": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/scripts/time64-glibc-probe.c",
+      "sha256": "de2a8daf50945349812fa614d3ab9fbd16157411bb2550812196198fa77ad6b3"
+    },
+    "build_manifest": {
+      "path": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/time64-glibc/build-manifest.json",
+      "sha256": "8ecff94a74638426fcaea5d03ff4bd053ddcfa5f42993e3c6b3b6660bdaa3c1c"
+    },
+    "build_result": "armel and armhf compile/link passed with -Wall -Wextra -Werror. readelf confirms matching soft/hard ELF flags and references to __clock_gettime64@GLIBC_2.34 and __timerfd_settime64@GLIBC_2.34.",
+    "runtime_result": null,
+    "runtime_claim": "Not run by this agent; compilation and symbol references are not runtime success.",
+    "behavior": "Compile-time sizeof(time_t)==8; validate current CLOCK_REALTIME; create nonblocking CLOCK_MONOTONIC timerfd, request relative seconds 0x80000010 (2147483664), close immediately, and check EOVERFLOW under --expect-eoverflow or success under --expect-supported. No global clock mutation, sleeping, disk/network I/O or relay action.",
+    "minimal_runtime": {
+      "armel": {
+        "probe": {
+          "path": "build/time64-glibc/armel/probe",
+          "sha256": "53791c76993010b87f23530f388c11bca954a093aeadceffa5adf70b27eeaede",
+          "bytes": 5648
+        },
+        "libc.so.6": {
+          "path": "build/time64-glibc/armel/libc.so.6",
+          "sha256": "7df44d1b0e69e01544423b12db03b818d27453cc713dd99a5423bf4882b7fe6d",
+          "bytes": 1434188
+        },
+        "ld-linux.so.3": {
+          "path": "build/time64-glibc/armel/ld-linux.so.3",
+          "sha256": "82f7b00334c45415e3a51d4aaa599863c1fae6be029fa7308d541902cb97d810",
+          "bytes": 174400
+        }
+      },
+      "armhf": {
+        "probe": {
+          "path": "build/time64-glibc/armhf/probe",
+          "sha256": "1c845fc927fb1cd31ac9ef4460d52171983437980b385d3cb09377ab779fc9e9",
+          "bytes": 5532
+        },
+        "libc.so.6": {
+          "path": "build/time64-glibc/armhf/libc.so.6",
+          "sha256": "d1b06bc619100b992df0230136a633a427c821d09a5f54b6087f15ebf55da9be",
+          "bytes": 1061456
+        },
+        "ld-linux-armhf.so.3": {
+          "path": "build/time64-glibc/armhf/ld-linux-armhf.so.3",
+          "sha256": "d2d0e727bf5bb800f53aa1651eaf857315162e05ebf2793abb4e977ea605ba29",
+          "bytes": 129348
+        }
+      }
+    },
+    "loader_invocations": {
+      "armel": "/tmp/time64-glibc/armel/ld-linux.so.3 --inhibit-cache --library-path /tmp/time64-glibc/armel /tmp/time64-glibc/armel/probe --expect-eoverflow",
+      "armhf": "/tmp/time64-glibc/armhf/ld-linux-armhf.so.3 --inhibit-cache --library-path /tmp/time64-glibc/armhf /tmp/time64-glibc/armhf/probe --expect-eoverflow"
+    },
+    "loader_list_first": "Insert --list immediately before the absolute probe path, omit --expect-eoverflow, and verify libc and loader resolve only to the matching temporary runtime directory.",
+    "old_smoke_limit": "Existing BE98 libc-smoke.c only tested present-day CLOCK_MONOTONIC and other basic APIs; it does not set _TIME_BITS=64 or test timestamps beyond INT32_MAX.",
+    "recommended_separate_regressions": [
+      "Actual kernel8 ARM32 raw syscall numbers 403..423 should return ENOSYS.",
+      "Future backport: test post-2038 ARM32 timer, utimensat/statx round-trip, timeout/cancellation/error paths and legacy time32 binaries.",
+      "Run both armel and armhf application-level probes although their kernel syscall ABI is shared.",
+      "Keep CPU, I/O, Wi-Fi and vendor module ABI regression checks separate from time64 userspace tests."
+    ]
+  },
+  "evidence": [
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/Kconfig",
+      "sha256": "1d4ceb30597876b0a1391a01960b9e3409d4f7958a45156cc79018353d908d02"
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/asm/unistd.h",
+      "sha256": "f92b26c85a5c562301f1281a8106741a77bae41dd29e3f44927e3b9eab900c9f"
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/include/asm/unistd32.h",
+      "sha256": "769187a264e5eaf387ac5c5ade614e987c6cd482de316cf892562c6a2c1d2db1"
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/kernel/syscall.c",
+      "sha256": "292a179c0f3cca91a5297504f1ba86a84aad31dccc7f3a96bc73a32e18644d66"
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/kernel/sys_compat.c",
+      "sha256": "785d654ce3c31d25c06f18975c87ed58710a35f5372e7b9c953308c95c78adcb"
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/uapi/linux/time.h",
+      "sha256": "3e55624be3b3f10ec0836c6b3f98db21ae8f24dfb1d60a7a0a9c1a67e18b4ff7"
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/uapi/asm-generic/unistd.h",
+      "sha256": "9ef8cc9befe8a0b60e44071829fdf3783598f29f93c28e86b5ec9f21077e677a"
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/glibc244-b53-20260915/source/glibc/sysdeps/unix/sysv/linux/features-time64.h",
+      "sha256": "c7c33cddd4ffbbca1eb0de042131a51201a42f29139820d0a36c1e1dd0d16ba5"
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/glibc244-b53-20260915/source/glibc/sysdeps/unix/sysv/linux/kernel-features.h",
+      "sha256": "bbb8ab5aed26002dd50de8ce0f95acde802dc4f562779ececfa9198beaa0afaf"
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/glibc244-b53-20260915/source/glibc/sysdeps/unix/sysv/linux/configure.ac",
+      "sha256": "fa3f3e35df23c00e1e4c01e01c20060379b536552ab0db3691d30b6bb316b3d4"
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/glibc244-b53-20260915/source/glibc/sysdeps/unix/sysv/linux/aarch64/configure.ac",
+      "sha256": "94e2e19640134e73f33d238b79663edd3a9e0b62b62767d230394ad2426a8065"
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/glibc244-b53-20260915/source/glibc/sysdeps/unix/sysv/linux/arm/arch-syscall.h",
+      "sha256": "4455555eec0eb6f73e1047a44ec43baddd99d956c72c041682c1c6ebc259c0ca"
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/glibc244-b53-20260915/source/glibc/sysdeps/unix/sysv/linux/arm/bits/timesize.h",
+      "sha256": "2e54c3ee45a1ab07ca614e57b2216922c9135d4c51f7ade1541d1861091f0a71"
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/glibc244-b53-20260915/source/glibc/sysdeps/unix/sysv/linux/clock_gettime.c",
+      "sha256": "534bf880422c550ab8714a20669684e62e86dc53bf7650354348d472a5951aee"
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/glibc244-b53-20260915/source/glibc/sysdeps/unix/sysv/linux/timerfd_settime.c",
+      "sha256": "28c5dcaeaea4bd4bb95afe078446b8823b592b40ce97353703e57b56d0dedbfe"
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/glibc244-b53-20260915/source/glibc/sysdeps/unix/sysv/linux/clock_nanosleep.c",
+      "sha256": "f07a6e0c40de9ec419ca42c4d6fa18a19691e4729cc31177c553697622be36e5"
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/glibc244-b53-20260915/source/glibc/sysdeps/unix/sysv/linux/utimensat.c",
+      "sha256": "69cf8c905ce282d3a3c4350efee23fc01c3ddbc82f7156054379e27770f95c7c"
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/glibc244-b53-20260915/source/glibc/nptl/futex-internal.c",
+      "sha256": "d82db2d6c1fb33af739e9914b3d2028831df93b5f0b2f321d516432ea563441b"
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/reports/systemd262/assessment.json",
+      "sha256": "8052e86a5f78943591d524b695b0b5339f9bd215e7e430521f13c3718b461fb8"
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/reports/be92-40311/assessment.json",
+      "sha256": "d231c52306044ac9026b712e2c61b84eb76defc1ca51437373ae7b89b65ffbe0"
+    }
+  ]
+}

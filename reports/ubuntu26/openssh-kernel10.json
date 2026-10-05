@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "scope": "Official Ubuntu native arm64 OpenSSH in isolated no-NIC kernel10 QEMU, guest loopback only. This validates SSH software/service integration with the custom Ubuntu GNU/systemd candidate, not ASUS services or physical-router deployment.",
+  "target_kernel_runtime_validated": true,
+  "production_ready": false,
+  "full_asus_runtime_accepted": false,
+  "rootfs": {
+    "path": "build/ubuntu26-rootfs/ubuntu26-bcm-gnu-systemd-openssh-b53-v3.tar",
+    "sha256": "303cafac152c86df9ac78a7c677e718ec411074dd7c73f33a3f0db26df59fda5",
+    "unmodified_by_fixture_or_runtime": true
+  },
+  "base_rootfs": {
+    "path": "build/ubuntu26-rootfs/ubuntu26-bcm-gnu-systemd-b53-v3.tar",
+    "sha256": "057c52f70d8974691179235c4e273a6be0d474edde11d6c1cb85b09b11b250a4",
+    "unchanged": true
+  },
+  "openssh_version": "OpenSSH_10.2p1 Ubuntu-2ubuntu3.6, OpenSSL 3.5.5 27 Jan 2026",
+  "preserved_custom_package_count": 41,
+  "custom_package_versions_preserved": {
+    "binutils": "2.47-6ubuntu1+leonb53.1",
+    "binutils-aarch64-linux-gnu": "2.47-6ubuntu1+leonb53.1",
+    "binutils-arm-linux-gnueabi": "2.47-6ubuntu1+leonb53.1",
+    "binutils-arm-linux-gnueabihf": "2.47-6ubuntu1+leonb53.1",
+    "binutils-common:arm64": "2.47-6ubuntu1+leonb53.1",
+    "cpp-16": "16.2.0-3ubuntu1+leonb53.1",
+    "cpp-16-aarch64-linux-gnu": "16.2.0-3ubuntu1+leonb53.1",
+    "g++-16": "16.2.0-3ubuntu1+leonb53.1",
+    "g++-16-aarch64-linux-gnu": "16.2.0-3ubuntu1+leonb53.1",
+    "gcc-16": "16.2.0-3ubuntu1+leonb53.1",
+    "gcc-16-aarch64-linux-gnu": "16.2.0-3ubuntu1+leonb53.1",
+    "gcc-16-base:arm64": "16.2.0-3ubuntu1+leonb53.1",
+    "libasan8:arm64": "16.2.0-3ubuntu1+leonb53.1",
+    "libatomic1:arm64": "16.2.0-3ubuntu1+leonb53.1",
+    "libbinutils:arm64": "2.47-6ubuntu1+leonb53.1",
+    "libc-bin": "2.44-1ubuntu1+leonb53.1",
+    "libc-dev-bin": "2.44-1ubuntu1+leonb53.1",
+    "libc-gconv-modules-extra:arm64": "2.44-1ubuntu1+leonb53.1",
+    "libc6:arm64": "2.44-1ubuntu1+leonb53.1",
+    "libc6-dev:arm64": "2.44-1ubuntu1+leonb53.1",
+    "libcc1-0:arm64": "16.2.0-3ubuntu1+leonb53.1",
+    "libctf-nobfd0:arm64": "2.47-6ubuntu1+leonb53.1",
+    "libctf0:arm64": "2.47-6ubuntu1+leonb53.1",
+    "libgcc-16-dev:arm64": "16.2.0-3ubuntu1+leonb53.1",
+    "libgcc-s1:arm64": "16.2.0-3ubuntu1+leonb53.1",
+    "libgomp1:arm64": "16.2.0-3ubuntu1+leonb53.1",
+    "libgprofng0:arm64": "2.47-6ubuntu1+leonb53.1",
+    "libhwasan0:arm64": "16.2.0-3ubuntu1+leonb53.1",
+    "libitm1:arm64": "16.2.0-3ubuntu1+leonb53.1",
+    "liblsan0:arm64": "16.2.0-3ubuntu1+leonb53.1",
+    "libsframe3:arm64": "2.47-6ubuntu1+leonb53.1",
+    "libstdc++-16-dev:arm64": "16.2.0-3ubuntu1+leonb53.1",
+    "libstdc++6:arm64": "16.2.0-3ubuntu1+leonb53.1",
+    "libsystemd-shared:arm64": "259.5-0ubuntu3.4+leonb53.2",
+    "libsystemd0:arm64": "259.5-0ubuntu3.4+leonb53.2",
+    "libtsan2:arm64": "16.2.0-3ubuntu1+leonb53.1",
+    "libubsan1:arm64": "16.2.0-3ubuntu1+leonb53.1",
+    "libudev1:arm64": "259.5-0ubuntu3.4+leonb53.2",
+    "systemd": "259.5-0ubuntu3.4+leonb53.2",
+    "systemd-sysv": "259.5-0ubuntu3.4+leonb53.2",
+    "udev": "259.5-0ubuntu3.4+leonb53.2"
+  },
+  "signed_ubuntu_sources_unchanged": true,
+  "fixture_manifest": {
+    "path": "build/ubuntu26-openssh/openssh-kernel10-v2/manifest.json",
+    "sha256": "c520e51269d82696df6669bef1113b4879b536f574a592288e0fa4cbabbcee2c"
+  },
+  "qemu_result": {
+    "path": "build/qemu/ubuntu26-kernel10-openssh-v2/result.json",
+    "sha256": "0bd29523c870ac3a8bc93c362d3212319706a2e873b7d85023973cd7eb8f2fa8"
+  },
+  "qemu_serial_log": {
+    "path": "build/qemu/ubuntu26-kernel10-openssh-v2/serial.log",
+    "sha256": "3f3059091caa1fbbbae03d490c3a3731d0f9b88776869150d1f6f139007556d8"
+  },
+  "kernel": {
+    "path": "build/Image-v10",
+    "sha256": "4a15601eada042576aed2a3680dcc48e9228eea70f70c478840767aaa89a9f8e"
+  },
+  "qemu_runner": {
+    "path": "scripts/run-qemu.py",
+    "sha256": "dadbc719113a6abddd6fb2df67a0e33e14b56b0d69754aa64e12d6e9e563018c"
+  },
+  "fixture_builder": {
+    "path": "scripts/prepare-ubuntu26-openssh-qemu.py",
+    "sha256": "0e9889c1303dcb4b7d66cfe80b3dbfe4ac4cf9f63aee382e52849fb430ecf877"
+  },
+  "elapsed_seconds": 76.58,
+  "guest_complete": true,
+  "guest_panic": false,
+  "probe_exit_code": 0,
+  "expected_marker_occurrences": {
+    "LAB_OPENSSH_EFFECTIVE_CONFIG_PASS": 1,
+    "LAB_OPENSSH_LOOPBACK_KEY_AUTH_PASS": 1,
+    "LAB_OPENSSH_UNAUTHORIZED_KEY_REJECTED": 1,
+    "LAB_OPENSSH_SFTP_PASS": 1,
+    "LAB_OPENSSH_SYSTEMD_RESTART_PASS": 1,
+    "LAB_OPENSSH_SYSTEMD_STOP_PASS": 1,
+    "LAB_OPENSSH_KERNEL10_COMPLETE": 1,
+    "QEMU_UBUNTU26_SYSTEMD_FULL_COMPLETE": 1
+  },
+  "checks": {
+    "sshd_syntax_and_effective_config": true,
+    "native_official_ssh_service_started_by_systemd": true,
+    "only_tcp_listener_guest_127_0_0_1_2222": true,
+    "nonroot_ed25519_key_auth_real_session_uid_1000": true,
+    "strict_pinned_host_key_verification": true,
+    "unauthorized_key_rejected": true,
+    "sftp_upload_download_hash_equivalence_via_cmp": true,
+    "systemd_service_restart_changed_main_pid_and_relogin": true,
+    "systemd_service_stop_inactive_and_no_tcp_listeners": true,
+    "no_dropbear_installed_or_running": true,
+    "dpkg_audit_empty": true,
+    "base_multiuser_journald_udevd_dbus_and_apt_service_lifecycle": true
+  },
+  "isolation": {
+    "qemu_nic": "none",
+    "host_port_forwarding": false,
+    "host_or_lan_network_listener_started": false,
+    "hardware_passthrough": false,
+    "host_block_devices": false,
+    "host_ssh_modified": false,
+    "router_access": false,
+    "test_user_and_keys_created_only_inside_running_guest": true,
+    "temporary_guest_user_in_candidate_tar": false,
+    "loopback_test_config_in_candidate_tar": false
+  },
+  "known_observations": [
+    "Kernel creates virtual IFB/tunnel interfaces with -nic none. Fixture rejects hardware interfaces, global addresses, and a default IPv4 route; it allows these unaddressed kernel virtual interfaces.",
+    "The official Ubuntu ssh.service uses KillMode=process. Stop briefly reported an sshd-session process remaining; the validated stop contract is listener shutdown and unit inactivity, not forcibly terminating every established session.",
+    "systemd-ssh-generator created a guest AF_UNIX local socket. No external TCP listener or host forwarding was enabled.",
+    "QEMU uses stock project hardware initcall blacklist and no physical BCM network/USB/Wi-Fi hardware, so this is not hardware acceptance."
+  ],
+  "prior_failure": {
+    "result": {
+      "path": "build/qemu/ubuntu26-kernel10-openssh-v1/result.json",
+      "sha256": "505d5ef9991197133a70aa4752bc5b51edd7ee9fa78da6e8885825070342c739"
+    },
+    "serial_log": {
+      "path": "build/qemu/ubuntu26-kernel10-openssh-v1/serial.log",
+      "sha256": "fc8b1cab04b1c26315e0d982d93e304575e78cdc759c5cb3442dae646af211da"
+    },
+    "classification": "fixture-precondition-error-before-SSH",
+    "cause": "First fixture incorrectly required /sys/class/net to contain only lo, rejecting BCM built-in virtual IFB/tunnel interfaces. Corrected guards retain no hardware/global address/default route restrictions; target kernel, sshd, candidate tar and SSH policy were unchanged."
+  },
+  "deployment_todos": [
+    "Configure explicitly selected production login account(s) and authorized keys; no real account credentials were migrated. Current configuration is temporary key-only bootstrap with root password locked.",
+    "Regenerate unique production SSH host keys before deployment; candidate keys were created in an isolated build only and private contents were never logged.",
+    "Enable one chosen SSH service activation model only after production account/network policy is staged. Candidate ssh.service and ssh.socket autostart remain disabled.",
+    "Integrate ASUS service ownership so vendor Dropbear and ASUS account generation cannot override OpenSSH or Ubuntu account databases.",
+    "Complete ASUS hardware/userspace integration and rollback proof before firmware deployment."
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "source_pin": "9b25e55ca5c56a6f01d6a56264c0f6c47459ada0",
+  "base_receipt": {
+    "path": "reports/ubuntu26/asuswrt6-combined-port.json",
+    "sha256": "651edad9988b572d6865621ced5c32371e7b3ce1dc332672e7e079fa28695412"
+  },
+  "patch": {
+    "path": "patches/ubuntu26/asuswrt6/0013-asus-rc-native-device-ownership.patch",
+    "sha256": "a3fcae6e0862707598120a88ab8d0ffb64cd27aebc3e7b5882b0b5e257c9faaa"
+  },
+  "changes": [
+    {
+      "path": "release/src/router/rc/init.c",
+      "before_sha256": "cbc3f94bf71ff7dd5500eaf25e1e3bde9f9c4647224f47a7e57a29f576056534",
+      "after_sha256": "20a85df0ef23822bcfc3b3b72fe5fcc761e811fd3f239b8f4a1a31b0f011a5b8"
+    },
+    {
+      "path": "release/src/router/rc/services.c",
+      "before_sha256": "2478ba4760152a10c67d2381bb38269b920764b05dd39cfda3bc6b12f42af207",
+      "after_sha256": "4a62bd5a17beeb92a5889a17a38b016455f7581ed678045197bff7b524c25409"
+    }
+  ],
+  "apply_stdout": "patching file release/src/router/rc/init.c\npatching file release/src/router/rc/services.c\n",
+  "fuzz": 0,
+  "native_ownership": "devtmpfs/udev creates/removes dynamic nodes and loads modalias modules; model tmpfiles creates only 31 proprietary nodes root0600",
+  "callbacks": "Original hotplug2 keeps kernel event callbacks inside rc namespace. Projected rules remove device mutation; dispatcher waits up to5s for native udev nodes before add callbacks.",
+  "not_claimed": [
+    "Native coldplug and vendor event ordering are not proven on BCM hardware.",
+    "mdev wireless callbacks need CMS/BDK applicability audit; ASUS net hotplug callbacks retained.",
+    "This patch does not disable separately launched manufacturing tools or arbitrary privileged user scripts."
+  ],
+  "actual_asus_services_executed": false,
+  "flash_allowed": false,
+  "generator_sha256": "86ca793514b7d3ba34bcb2e2b42f67fd558a46daa89de4982d4d3c480ec0aa69"
+}

@@ -1,0 +1,36 @@
+{
+  "schema": 1,
+  "status": "sole_static_native_rescue_installer_compile_passed_inspect_only",
+  "manifest": {
+    "path": "build/asus-uplink-rescue/install-v3/manifest.json",
+    "sha256": "5a2f4a0eef5c5cdabafbd5caafea9924fb1289554cffdccf70ab1ef218f1d836",
+    "bytes": 20911
+  },
+  "installer": {
+    "path": "build/asus-uplink-rescue/install-v3/install-additions",
+    "sha256": "4980536a609519756890743ae6dcfd3b673b952e27530e7bd531586c86e583b6",
+    "bytes": 1226840
+  },
+  "elf": {
+    "path": "build/asus-uplink-rescue/install-v3/elf.txt",
+    "sha256": "c9bb9c37df7918d7e196d50eb1d15a21a2fec3efe6384dc50528efcc639af30f",
+    "bytes": 4139
+  },
+  "build_log": {
+    "path": "build/asus-uplink-rescue/install-v3/build.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0
+  },
+  "approved_compile_plan_sha256": "3f87d128f25fe861ff85ab1ec5b8e33aec98437a0408b43269a3e46bd2e23ad6",
+  "source_or_installer_compiled": true,
+  "compile_count": 1,
+  "native_returncode": 0,
+  "native_tool_session": 91998,
+  "native_exit_chunk": "fd4096",
+  "compiled_input_inventory_matches": true,
+  "static_pie_aarch64_no_interp_no_needed": true,
+  "installer_executed": false,
+  "device_accessed": false,
+  "fixed_socket_parent_creation_only": true,
+  "old_fixtures_QEMU_version_probes_run": false
+}

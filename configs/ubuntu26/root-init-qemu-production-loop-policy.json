@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "scope": "offline-qemu-fixture",
+  "flash_accepted": false,
+  "device": "/dev/loop1",
+  "start_sysfs": "",
+  "major": 7,
+  "minor": 1,
+  "start_sector": 0,
+  "sectors": 4194304,
+  "uuid": "6c4e5c80-7789-40f6-827c-0cf714980a3e",
+  "generation": "squashfs-pivot-qemu-v1\n",
+  "fsck": "/usr/libexec/leon-lab/fsck",
+  "fsck_timeout": 5,
+  "ubuntu_init": "/usr/libexec/leon-lab/ubuntu-init",
+  "vendor_init": "/sbin/rc",
+  "guardian": {
+    "required": true,
+    "program": "/usr/libexec/leon-boot/trial-guardian",
+    "expected_watchdog_seconds": 40,
+    "arm_timeout_ms": 3000,
+    "preflight_timeout_ms": 3000
+  },
+  "emergency_fault_sink": true
+}

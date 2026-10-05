@@ -1,0 +1,79 @@
+{
+  "date": "2026-10-03",
+  "scope": "Compiler preprocessor feature/ABI checks only; no firmware or SDK changes",
+  "profiles": {
+    "armel": {
+      "compiler_command": [
+        "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/glibc244-b53-20260915/toolchains/arm32-ubuntu/usr/bin/arm-linux-gnueabi-gcc",
+        "--sysroot=/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/glibc244-b53-20260915/toolchains/arm32-ubuntu"
+      ],
+      "compiler_version": "13.3.0",
+      "flags": [
+        "-march=armv8-a+crc+crypto",
+        "-mtune=cortex-a53",
+        "-mfpu=crypto-neon-fp-armv8",
+        "-mfloat-abi=softfp"
+      ],
+      "result": "pass",
+      "macros": {
+        "__ARM_ARCH": "8",
+        "__ARM_ARCH_8A__": "1",
+        "__ARM_FEATURE_CRC32": "1",
+        "__ARM_FEATURE_CRYPTO": "1",
+        "__ARM_FEATURE_AES": "1",
+        "__ARM_FEATURE_SHA2": "1",
+        "__ARM_NEON": "1"
+      },
+      "stderr": ""
+    },
+    "armhf": {
+      "compiler_command": [
+        "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/glibc244-b53-20260915/toolchains/arm32-ubuntu/usr/bin/arm-linux-gnueabihf-gcc",
+        "--sysroot=/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/glibc244-b53-20260915/toolchains/arm32-ubuntu"
+      ],
+      "compiler_version": "13.3.0",
+      "flags": [
+        "-march=armv8-a+crc+crypto",
+        "-mtune=cortex-a53",
+        "-mfpu=crypto-neon-fp-armv8",
+        "-mfloat-abi=hard"
+      ],
+      "result": "pass",
+      "macros": {
+        "__ARM_ARCH": "8",
+        "__ARM_ARCH_8A__": "1",
+        "__ARM_FEATURE_CRC32": "1",
+        "__ARM_FEATURE_CRYPTO": "1",
+        "__ARM_FEATURE_AES": "1",
+        "__ARM_FEATURE_SHA2": "1",
+        "__ARM_NEON": "1",
+        "__ARM_PCS_VFP": "1"
+      },
+      "stderr": ""
+    },
+    "arm64": {
+      "compiler_command": [
+        "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/gcc/xgcc",
+        "-B/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/gcc/",
+        "-B/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/aarch64-unknown-linux-gnu/libgcc/",
+        "--sysroot=/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/sysroot"
+      ],
+      "compiler_version": "16.2.0",
+      "flags": [
+        "-mcpu=cortex-a53+crypto+crc"
+      ],
+      "result": "pass",
+      "macros": {
+        "__ARM_ARCH": "8",
+        "__ARM_FEATURE_CRC32": "1",
+        "__ARM_FEATURE_CRYPTO": "1",
+        "__ARM_FEATURE_AES": "1",
+        "__ARM_FEATURE_SHA2": "1",
+        "__ARM_NEON": "1",
+        "__aarch64__": "1"
+      },
+      "stderr": ""
+    }
+  },
+  "arm32_flag_note": "GCC 13.3 ARM rejects +crc on -mcpu=cortex-a53; the explicit -march=armv8-a+crc+crypto -mtune=cortex-a53 form passes with CRC/Crypto/NEON macros enabled."
+}

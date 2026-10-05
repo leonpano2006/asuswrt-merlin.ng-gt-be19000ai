@@ -1,0 +1,111 @@
+{
+  "status": "passed_controlled_native_spawn_fixture",
+  "source_sha256": "8c0bb7d18e3c180792b7c5a421d94e093076a11fcd981268a9fa84b7fb0f60f4",
+  "binary_sha256": "58499b84e184ceec8eef37f9c9eff88b921eccaff327a969ac2e0a0ca14cc3e0",
+  "compile_command": [
+    "gcc",
+    "-std=gnu11",
+    "-O2",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-DLEON_BSP_RUNNER_UNIT_TEST=1",
+    "-DLEON_BSP_STAGE_TIMEOUT_MS=300",
+    "-DLEON_BSP_KILL_GRACE_MS=100",
+    "-DLEON_BSP_ROM=\"/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/asus-bsp-runner/v4/rom\"",
+    "-DLEON_BSP_SHELL=\"/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/asus-bsp-runner/v4/dash\"",
+    "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/scripts/asus-integration/bsp-runner.c",
+    "-o",
+    "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/asus-bsp-runner/v4/runner"
+  ],
+  "cases": [
+    {
+      "case": "start-order",
+      "returncode": 0,
+      "seconds": 0.248,
+      "events": [
+        "S25mount-fs start",
+        "S29partitioncfg start",
+        "S30defaults start",
+        "S32check-and-restore start",
+        "S33init-defaults start",
+        "S35system-config start",
+        "S39hndmfg start",
+        "S40hndnvram start",
+        "S41wluboot2knvram start",
+        "S45bcm-base-drivers start",
+        "S45bcm-wlan-drivers start",
+        "S45gre-tunnel-drivers start"
+      ],
+      "log_sha256": "dfa3c3e00ab7fd78bb4d7e466aaa09127ea9d034da6c98dca8c9ccee76e134ad"
+    },
+    {
+      "case": "start-failure",
+      "returncode": 19,
+      "seconds": 0.043,
+      "events": [
+        "S25mount-fs start",
+        "S29partitioncfg start"
+      ],
+      "log_sha256": "6fe6a6912c2d8c47ada13d0cc007081afead13a3b20630d39d72ea59defe689f"
+    },
+    {
+      "case": "stop-failure-continues",
+      "returncode": 125,
+      "seconds": 0.063,
+      "events": [
+        "K82check-and-restore stop",
+        "K82init-defaults stop",
+        "K95mount-fs stop"
+      ],
+      "log_sha256": "d0d4f12e076ff444b51a1b2068120ff8e4cb17f31e0a267ee4b1dd5a95b90cb5"
+    },
+    {
+      "case": "timeout",
+      "returncode": 124,
+      "seconds": 0.424,
+      "events": [
+        "S25mount-fs start"
+      ],
+      "log_sha256": "6cda2ac0f9816a506f1c59722c05abf09f24c7beeb6d18c75a086f10d9b330c0"
+    },
+    {
+      "case": "term-cancellation",
+      "returncode": 143,
+      "seconds": 0.103,
+      "events": [
+        "S25mount-fs start"
+      ],
+      "log_sha256": "6b583896443f5ab47f82b212a882eba48c12dc9623fe28f7a36574acd3abc540"
+    },
+    {
+      "case": "tampered-script-target",
+      "returncode": 125
+    }
+  ],
+  "scope": "Host-compiled runner in test-only path/UID/guard mode; only synthetic script bodies and a mask probe execute. Production storage/namespace guards and Broadcom driver behavior are outside this fixture.",
+  "signals": "Children get dedicated process groups; tests inherit blocked SIGALRM and verify cleared child masks. Timeout and cancellation never signal PID1 or caller process group.",
+  "actual_asus_services_executed": false,
+  "flash_allowed": false,
+  "rc_source_port": {
+    "patch": {
+      "path": "patches/ubuntu26/asuswrt6/0015-asus-bsp-ordered-runner.patch",
+      "sha256": "8ca2d674a92c92ded66244968b69dc32502ea47f5762a2d865ed1196cf513f00"
+    },
+    "base_sha256": "20a85df0ef23822bcfc3b3b72fe5fcc761e811fd3f239b8f4a1a31b0f011a5b8",
+    "after_sha256": "418ff357d32a39534be4488531cf8c27212dd7ca12dc979838623ad77d6b721d",
+    "apply_stdout": "patching file release/src/router/rc/init.c\n",
+    "fuzz": 0,
+    "source_pin": "9b25e55ca5c56a6f01d6a56264c0f6c47459ada0",
+    "apply_order": "after0003\u20130011 and0013;0012 is ROM resources;0014 SSH touches different scope",
+    "contract": "Nonzero start stops initialization. Stop runner attempts every original K step first, then rc exits125 so broker records incomplete drain.",
+    "actual_asus_services_executed": false,
+    "flash_allowed": false
+  },
+  "native_build": {
+    "path": "build/asus-bsp-resources/native-v5/result.json",
+    "sha256": "166815af8492b409582ae560881424d1a00c9e017f807054336122a9ec4535d8",
+    "ordered_runner_sha256": "d3d8a74068eb70af278445e7baf88cd426b3e305d2b8dae862c4038f6519d5ba",
+    "runtime_scope": "Final runner compiled; synthetic spawn proof separate. Namespace/BSP kernel10 proof refers precisely to native-v4 paths, not later binaries with different debug build paths."
+  }
+}

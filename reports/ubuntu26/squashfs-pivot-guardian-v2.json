@@ -1,0 +1,257 @@
+{
+  "passed": true,
+  "errors": [],
+  "scenarios": [
+    {
+      "scenario": "positive",
+      "checks": {
+        "complete_without_panic": true,
+        "exact_initramfs": true,
+        "exact_serial": true,
+        "real_squashfs_pid1": true,
+        "no_restore_failure": true,
+        "no_vendor_exec_failure": true,
+        "private_fd3_no_extra_descriptors": true,
+        "prepared_before_armed": true,
+        "armed_40": true,
+        "real_systemd": true,
+        "close_on_exec_handoff": true,
+        "actual_service_observes_guard": true,
+        "apt_writable_oldroot_readonly": true,
+        "no_fallback": true,
+        "no_emergency": true
+      },
+      "elapsed_seconds": 40.48,
+      "serial_sha256": "17ce244dca09c4bd564ee796743169d7814d62e7fdbcac629ba2cadc631650b4",
+      "result": {
+        "path": "build/qemu/ubuntu26-pivot-guardian-v2-positive/result.json",
+        "sha256": "f24f546998eb7799ea5fb74952f6979479cc2df0fb4fb00582b05b9892a7aeb7"
+      }
+    },
+    {
+      "scenario": "exec-error",
+      "checks": {
+        "complete_without_panic": true,
+        "exact_initramfs": true,
+        "exact_serial": true,
+        "real_squashfs_pid1": true,
+        "no_restore_failure": true,
+        "no_vendor_exec_failure": true,
+        "private_fd3_no_extra_descriptors": true,
+        "reversed_to_readonly_vendor": true,
+        "no_emergency": true,
+        "no_systemd_exec_success": true,
+        "armed_before_attempt": true,
+        "nonce_abort_confirmed_exit": true,
+        "mock_disabled_before_exit": true,
+        "exec_failed_ENOENT": true
+      },
+      "elapsed_seconds": 11.02,
+      "serial_sha256": "cfe00be583bf8e13b845651a2c63716076a9dccabb83c7be4ddb79f0281869a6",
+      "result": {
+        "path": "build/qemu/ubuntu26-pivot-guardian-v2-exec-error/result.json",
+        "sha256": "037aee3b62a7e1b036674d1a7fb3cecd78b0b86734d1ad4139a033b3e56bdd9e"
+      }
+    },
+    {
+      "scenario": "guardian-refused",
+      "checks": {
+        "complete_without_panic": true,
+        "exact_initramfs": true,
+        "exact_serial": true,
+        "real_squashfs_pid1": true,
+        "no_restore_failure": true,
+        "no_vendor_exec_failure": true,
+        "private_fd3_no_extra_descriptors": true,
+        "reversed_to_readonly_vendor": true,
+        "no_emergency": true,
+        "no_systemd_exec_success": true,
+        "unarmed_refusal_and_exit125": true,
+        "never_sent_arm": true,
+        "never_armed": true
+      },
+      "elapsed_seconds": 10.62,
+      "serial_sha256": "343b5f8ac57ba161d603cb38a23cf2799ff29e1554ad8fdb624285914fad18f6",
+      "result": {
+        "path": "build/qemu/ubuntu26-pivot-guardian-v2-guardian-refused/result.json",
+        "sha256": "1a95c9df88ed9cbd3d4da6f830cc2efd45bc798845e8f940c225f7cabe9f7718"
+      }
+    },
+    {
+      "scenario": "guardian-prearm-hang",
+      "checks": {
+        "complete_without_panic": true,
+        "exact_initramfs": true,
+        "exact_serial": true,
+        "real_squashfs_pid1": true,
+        "no_restore_failure": true,
+        "no_vendor_exec_failure": true,
+        "private_fd3_no_extra_descriptors": true,
+        "reversed_to_readonly_vendor": true,
+        "no_emergency": true,
+        "no_systemd_exec_success": true,
+        "unarmed_kill_and_reap": true,
+        "preflight_timeout": true,
+        "never_sent_arm": true
+      },
+      "elapsed_seconds": 13.82,
+      "serial_sha256": "49d2e04f74aef08909e6b053f5aefe79a285fd3e54db083eedffb6995f063a0f",
+      "result": {
+        "path": "build/qemu/ubuntu26-pivot-guardian-v2-guardian-prearm-hang/result.json",
+        "sha256": "dd167808e910153592a09ddc2bf75dd68ad7e175b3baa028aeaff1eaa7f85b91"
+      }
+    },
+    {
+      "scenario": "guardian-postarm-hang",
+      "checks": {
+        "complete_without_panic": true,
+        "exact_initramfs": true,
+        "exact_serial": true,
+        "real_squashfs_pid1": true,
+        "no_restore_failure": true,
+        "no_vendor_exec_failure": true,
+        "private_fd3_no_extra_descriptors": true,
+        "selected_emergency": true,
+        "compile_time_sink_only": true,
+        "remained_on_ext4_without_vendor": true,
+        "no_vendor_exec": true,
+        "no_systemd_exec_success": true,
+        "no_confirmed_abort": true,
+        "did_not_attempt_ubuntu_exec": true
+      },
+      "elapsed_seconds": 17.43,
+      "serial_sha256": "640679c73f1be2de20519fa540d733d1af749a4a4c3caa01f92cfab8b0ac6875",
+      "result": {
+        "path": "build/qemu/ubuntu26-pivot-guardian-v2-guardian-postarm-hang/result.json",
+        "sha256": "be1472c088fb2bf54cc4fd57c3d1d164c403351c3eb0b18605c127850ac90d14"
+      }
+    },
+    {
+      "scenario": "guardian-postarm-dies",
+      "checks": {
+        "complete_without_panic": true,
+        "exact_initramfs": true,
+        "exact_serial": true,
+        "real_squashfs_pid1": true,
+        "no_restore_failure": true,
+        "no_vendor_exec_failure": true,
+        "private_fd3_no_extra_descriptors": true,
+        "selected_emergency": true,
+        "compile_time_sink_only": true,
+        "remained_on_ext4_without_vendor": true,
+        "no_vendor_exec": true,
+        "no_systemd_exec_success": true,
+        "no_confirmed_abort": true,
+        "did_not_attempt_ubuntu_exec": true
+      },
+      "elapsed_seconds": 11.62,
+      "serial_sha256": "42608249a0dfc7459e9bd15a687df6cd5b553ab3a077b8582384cbfaf1c6268d",
+      "result": {
+        "path": "build/qemu/ubuntu26-pivot-guardian-v2-guardian-postarm-dies/result.json",
+        "sha256": "9f8e46eeae28cc42edc0d26d5a20a6974b2c4aeeb085eecf86c35810b2d54aa3"
+      }
+    },
+    {
+      "scenario": "guardian-bad-nonce",
+      "checks": {
+        "complete_without_panic": true,
+        "exact_initramfs": true,
+        "exact_serial": true,
+        "real_squashfs_pid1": true,
+        "no_restore_failure": true,
+        "no_vendor_exec_failure": true,
+        "private_fd3_no_extra_descriptors": true,
+        "selected_emergency": true,
+        "compile_time_sink_only": true,
+        "remained_on_ext4_without_vendor": true,
+        "no_vendor_exec": true,
+        "no_systemd_exec_success": true,
+        "no_confirmed_abort": true,
+        "did_not_attempt_ubuntu_exec": true
+      },
+      "elapsed_seconds": 14.74,
+      "serial_sha256": "896be1d28bdda6e1fb018ee94817cf741a9106ad9f35c01649fea6b903398106",
+      "result": {
+        "path": "build/qemu/ubuntu26-pivot-guardian-v2-guardian-bad-nonce/result.json",
+        "sha256": "39fdaab41a1c32ec7699863f9e6922268622a1c8ef4d30feb55155f93510d29a"
+      }
+    },
+    {
+      "scenario": "guardian-abort-failure",
+      "checks": {
+        "complete_without_panic": true,
+        "exact_initramfs": true,
+        "exact_serial": true,
+        "real_squashfs_pid1": true,
+        "no_restore_failure": true,
+        "no_vendor_exec_failure": true,
+        "private_fd3_no_extra_descriptors": true,
+        "selected_emergency": true,
+        "compile_time_sink_only": true,
+        "remained_on_ext4_without_vendor": true,
+        "no_vendor_exec": true,
+        "no_systemd_exec_success": true,
+        "no_confirmed_abort": true,
+        "exec_failed_after_armed": true,
+        "armed_40": true
+      },
+      "elapsed_seconds": 14.74,
+      "serial_sha256": "a433a543f7ddd823c966793a75096c59905c7e1eaf4db27fdd7c1401f98a1c0b",
+      "result": {
+        "path": "build/qemu/ubuntu26-pivot-guardian-v2-guardian-abort-failure/result.json",
+        "sha256": "6e25d5f88ecc767065ed21d0cdb7c4dc9bdc9238a3445cf7e826a30c248fd92d"
+      }
+    },
+    {
+      "scenario": "guardian-aborted-alive",
+      "checks": {
+        "complete_without_panic": true,
+        "exact_initramfs": true,
+        "exact_serial": true,
+        "real_squashfs_pid1": true,
+        "no_restore_failure": true,
+        "no_vendor_exec_failure": true,
+        "private_fd3_no_extra_descriptors": true,
+        "selected_emergency": true,
+        "compile_time_sink_only": true,
+        "remained_on_ext4_without_vendor": true,
+        "no_vendor_exec": true,
+        "no_systemd_exec_success": true,
+        "no_confirmed_abort": true,
+        "exec_failed_after_armed": true,
+        "armed_40": true
+      },
+      "elapsed_seconds": 14.62,
+      "serial_sha256": "b07838c0687cd89dc11366554bbda80c117d843d1282684401775cbbb7e0623f",
+      "result": {
+        "path": "build/qemu/ubuntu26-pivot-guardian-v2-guardian-aborted-alive/result.json",
+        "sha256": "e09f24d893a11d104171436f0fabf61ed38df5064d2a89f637c046659a13ed08"
+      }
+    }
+  ],
+  "fixture_manifest": {
+    "path": "build/ubuntu26-pivot-qemu/guardian-v2/manifest.json",
+    "sha256": "75dbec7173011895b7a6e35d0303c3b20f260e5995c2c19cf37458abd3e82036"
+  },
+  "helper_source_sha256": "f39a8ea66c413cb1c8d61f39bbc34276f02401e09fe01ba496529b1c225d4d8e",
+  "helper_sha256": "a5948b9766d45cc9431dd1408525ebc822cc587b89f5e33551e63757431acf81",
+  "guardian_input": {
+    "role": "protocol_mock_without_hardware",
+    "path": "build/ubuntu26-root-init/guardian-v4/root-guardian-mock",
+    "sha256": "7ad80ba6c4ec2919dc6cfc3a87ec845b6ccec8e459fda4b61ca471e9fa9d0d72"
+  },
+  "input_images_unchanged": true,
+  "limits": [
+    "Real kernel10 PID1 and readonly SquashFS to ext4 pivot, with RAM loop images only; no physical block device or NIC.",
+    "The mock guardian exercises the exact two-phase wire contract; it never opens a watchdog or claims hardware arming.",
+    "Emergency cases use an explicit compile-time parent fault sink; production RB_AUTOBOOT is not hardware-validated here.",
+    "Successful preexec abort requires exact nonce, ABORTED, and direct-child exit0 before reverse pivot.",
+    "A real gate-closed guardian case proves only refusal before watchdog open, not its unfinished production health collector.",
+    "Vendor rc is a test double; actual ASUS services, board reset, flash and metadata commit never execute."
+  ],
+  "hardware_watchdog_armed": false,
+  "actual_asus_services_executed": false,
+  "hardware_reset_proven": false,
+  "flash_accepted": false,
+  "checker_sha256": "7f1e41aca64068443dbea1b07d43d3026eac3d022dfc5292e48e3a2515bab1ce"
+}

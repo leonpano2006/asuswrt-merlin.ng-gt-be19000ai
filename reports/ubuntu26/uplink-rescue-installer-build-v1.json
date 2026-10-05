@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "status": "sole_static_native_rescue_installer_compile_passed_inspect_only",
+  "manifest": {
+    "path": "build/asus-uplink-rescue/install-v1/manifest.json",
+    "sha256": "a50f6c2bf2f5cf139e314a06c09f7f57a6335217d435211cb8a04b60e8aa335d",
+    "bytes": 18244
+  },
+  "installer": {
+    "path": "build/asus-uplink-rescue/install-v1/install-additions",
+    "sha256": "a94aa3a471ade081d6209403970bf658574e62bb9bf6282a84854a910bfdaea8",
+    "bytes": 1220416
+  },
+  "elf": {
+    "path": "build/asus-uplink-rescue/install-v1/elf.txt",
+    "sha256": "f95890d83d0149e9b53bb1a34ea27019b41a6ebbeda01bbaa93a8157a3a0de06",
+    "bytes": 4139
+  },
+  "build_log": {
+    "path": "build/asus-uplink-rescue/install-v1/build.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0
+  },
+  "source_manifest": {
+    "path": "build/asus-uplink-rescue/install-source-v1/manifest.json",
+    "sha256": "c9fb7a261b5a09b556f65de6c6e609abedd6015eb8e14e3b26c88226683544c1",
+    "bytes": 17395
+  },
+  "approved_compile_plan_sha256": "25d0d944ec4091b7a9233e1b7b111e7d42c17d51035c2a0abdebc67381fa7548",
+  "source_or_installer_compiled": true,
+  "inherited_source_phase_manifest_flag": false,
+  "inherited_flag_qualification": "Frozen builder/compile gate unchanged. This accurate inspect-only receipt overrides the inherited source-only false flag for completed compile; original manifest preserved byte-for-byte.",
+  "compile_count": 1,
+  "native_returncode": 0,
+  "native_tool_session": 99207,
+  "native_exit_chunk": "74cc33",
+  "namespace_mode": "require_escalated upfront; no namespace setup retry",
+  "compiled_input_inventory_matches": true,
+  "static_pie_aarch64_no_interp_no_needed": true,
+  "installer_executed": false,
+  "helper_executed": false,
+  "device_accessed": false,
+  "fixtures_oldtests_QEMU_or_role_probes_run": false
+}

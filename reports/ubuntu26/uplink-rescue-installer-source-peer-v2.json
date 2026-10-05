@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "status": "source_only_independent_rescue_installer_v2_peer_pass",
+  "manifest": {
+    "path": "build/asus-uplink-rescue/install-v2/manifest.json",
+    "sha256": "96d7ee155a4b6070d893aa47570dd2b971907c72fb9a60773b8bb3eded852406",
+    "bytes": 18244
+  },
+  "installer": {
+    "path": "build/asus-uplink-rescue/install-v2/install-additions",
+    "sha256": "e9c5e06dc7c5919009a3ce16fe914f6104f4fec42a434189e915c757e4689316",
+    "bytes": 1220416
+  },
+  "accurate_build_receipt": {
+    "path": "reports/ubuntu26/uplink-rescue-installer-build-v2.json",
+    "sha256": "c0798333c95bcefa4bf6b344a187c3acfad8ed907d1ca49de0bac507d6858150",
+    "bytes": 1877
+  },
+  "prior_manifest": {
+    "path": "build/asus-uplink-rescue/install-v1/manifest.json",
+    "sha256": "a50f6c2bf2f5cf139e314a06c09f7f57a6335217d435211cb8a04b60e8aa335d",
+    "bytes": 18244
+  },
+  "source_members": 21,
+  "actual_source_inventory_matches_manifest": true,
+  "changed_members_vs_rescue_v1": [
+    "recovery-payload.h"
+  ],
+  "install_c_byte_identical_to_rescue_v1": true,
+  "install_c_sha256": "1fdb07f0d0c6ee06f7a3d4f31d912322cba7be2c0e8e5d84e70f48dc4b5bc0b7",
+  "embedded_payload_bytes_sha_size_verified_against_actual_files": true,
+  "changed_embedded_arrays": [
+    0,
+    6
+  ],
+  "five_other_payload_arrays_byte_identical": true,
+  "helper": {
+    "sha256": "55f6953743d6e0420d4d04d2ad95505fcf0ba340da9c84ce91ee375be622a133",
+    "bytes": 73520
+  },
+  "deb": {
+    "sha256": "f89513cc9ed3c7019dd1a2d210d64ce319362596d07e91ab81e6674b506195d4",
+    "bytes": 14884,
+    "version": "0.1+leonb53.2"
+  },
+  "header_outside_arrays_only_fixed_helper_deb_descriptors_changed": true,
+  "worker_v1_to_v2_exact_three_label_substitutions": true,
+  "compiled_input_inventory_matches": true,
+  "static_elf_passed": true,
+  "accurate_receipt_overrides_inherited_source_phase_compiled_false": true,
+  "all_stock_CID_GPT_metadata_clean_orphan_identity16_RC6_and_transaction_guards_unchanged": true,
+  "publication_contract": {
+    "additions": 7,
+    "replacements": 0,
+    "temporaries": 7,
+    "links": 1
+  },
+  "new_build_test_VM_installer_or_device_executions_by_reviewer": 0,
+  "limits": [
+    "Read frozen receipts, source/embedded bytes and saved ELF inspection only; no old fixture rerun.",
+    "Actual full functional rescue/controller PASS remains a separate root-owned prerequisite before physical staging/trial."
+  ]
+}

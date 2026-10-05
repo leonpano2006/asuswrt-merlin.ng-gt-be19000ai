@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "status": "compiled_and_packaged; final trial-control package, coinstallation and Kernel10 acceptance pending",
+  "production_ready": false,
+  "flash_allowed": false,
+  "runtime_version": "0.7",
+  "source_revision": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-emmc-wdt-v4",
+  "rc_sha256": "af9b497f7791d75031772c894d17f886ba99dbac687262d9933133aa65a752fe",
+  "libovpn_sha256": "f1be7eb30e5948d339965d6653aa64f3b3ee4b3f4abf772801f9d13cd769bc13",
+  "evidence": [
+    {
+      "path": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-emmc-wdt-v4/revision-result.json",
+      "sha256": "6a4685084c1fcafc738456816d8dc6c769d4b8d679facbfeee859e3009dd2b83"
+    },
+    {
+      "path": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-emmc-wdt-v4/abi-role-proof.json",
+      "sha256": "ea13f8dd1005c2ae6a174858ff9b74a53d15af2135577f54d6d50388de09893a"
+    },
+    {
+      "path": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-emmc-wdt-v4/ledg-linked-proof.json",
+      "sha256": "ec09748d4c63311517a28c47cca1c8b9aac8ff1ce5cbf9b3dedfa52d0697d5b0"
+    },
+    {
+      "path": "patches/ubuntu26/asuswrt6/0019-asus-native-watchdog-owner.patch",
+      "sha256": "e94fe374c921102f37f6caa9074e6cc531ca513edb2a06200d32ea7029d78c87"
+    },
+    {
+      "path": "build/asus-runtime-projection/v7/projection.json",
+      "sha256": "0d54bdb5c6f6356a186090ef6a41117a005698f54b921ca262e4ea8d0d5f16b5"
+    },
+    {
+      "path": "build/asus-runtime-projection/v7/packages.json",
+      "sha256": "f5cc8e22de47bccd8dfbc6a1b3b943a722275fa469a1e4fc0a8790db5a4c7c5a"
+    },
+    {
+      "path": "build/asus-runtime-projection/v7/plugin-plan.json",
+      "sha256": "5b113a047dfe20e772d54bb9f0b454f8027f5df6b6fb77d77fd68a9cbc6af2b5"
+    },
+    {
+      "path": "build/asus-runtime-projection/v7/ifunc-audit.json",
+      "sha256": "28d41af3b7ece937baa1b343fa7b4b235370324f8dafd58f2cf22c59d3b6c233"
+    },
+    {
+      "path": "build/asus-command-projection/v7/package/manifest.json",
+      "sha256": "6b020a0082425a97fb467fdb950f9d0711ac108c584b67c15842c95846015529"
+    },
+    {
+      "path": "build/asus-command-projection/v7/static-check.json",
+      "sha256": "2c0e11ee9f60cd81e857c4df15b5bb6c89d0af10b9d276047f53bc52d609112f"
+    },
+    {
+      "path": "build/asus-command-projection/v7/watchdog-alias-proof.json",
+      "sha256": "942aa91e38e624c2a22304f14269090f6f86032670f7b4d9a9dd0a1e6bce37f2"
+    }
+  ],
+  "compiled_watchdog_gate": {
+    "init_object": {
+      "path": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-emmc-wdt-v4/objects/init.o",
+      "sha256": "9cf41236254ed85489a523d076c7f61b0be514a76eb86b23558f91a9002e1739"
+    },
+    "native_helper_path_and_failure_message_present": true,
+    "legacy_wdtctl_absent_from_init_object_rodata": true,
+    "limitation": "Object-string evidence supplements exact source patch and compiler proof; native helper/guardian actual runtime remains separate."
+  },
+  "next_candidate_extra_manifests": [
+    "build/asus-startup/package-v4/manifest.json",
+    "build/asus-command-projection/v7/package/manifest.json",
+    "build/asus-notify-packages/metadata-v2/manifest.json",
+    "build/ubuntu26-armel-runtime-gcc15/metadata-v2/manifest.json",
+    "build/ubuntu26/config-deb-v3/manifest.json",
+    "build/ubuntu26-kernel10-modules/v1/manifest.json",
+    "build/asus-resolver/package-v3/manifest.json",
+    "build/asus-ssh-integration/validated-manifest.json",
+    "build/asus-runtime-projection/v6/ssh-official-packages.json",
+    "build/ubuntu26-boot-profile/package-v4/manifest.json",
+    "build/ubuntu26-trial-activation/package-v2/manifest.json"
+  ],
+  "pending": [
+    "Native trial-control0.1 exact manifest and target guardian/SSH ancestry fixture acceptance.",
+    "Compose new rootfs from immutable GNUbase, all finalpackage manifests, preserve all preexistingimages.",
+    "Kernel10 full loader+package acceptance with samefinalset; private wdctl denial invocation plus actualhelper protocol tests separate.",
+    "Seal labSSHkeys and independent installedmodeaudit.",
+    "ActualBroadcom hardware functionality and user-approved deployment gates."
+  ]
+}

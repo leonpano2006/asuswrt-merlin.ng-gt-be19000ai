@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "status": "source_only_exact_asus_lookup_rule_with_disjoint_routes_successor",
+  "old_source": {
+    "path": "scripts/asus-integration/uplink-rescue/rescue-link-v3.c",
+    "sha256": "935fe3b61e0aae34a45fb718c1081b0ae4b42867043eaedb88cc38c5b35c8cd0",
+    "bytes": 29791
+  },
+  "new_source": {
+    "path": "scripts/asus-integration/uplink-rescue/rescue-link-v4.c",
+    "sha256": "e289f45739a661705faf8b526e139514c7861e24557e4f59fa2346c9549874d4",
+    "bytes": 31538
+  },
+  "transforms": [
+    {
+      "old": "static int parse_rule(struct snapshot *s,const struct nlmsghdr *h){\n struct rtattr *a;int len;if(attributes(h,sizeof(struct fib_rule_hdr),&a,&len))return -1;\n const struct fib_rule_hdr *m=NLMSG_DATA(h);uint32_t table=m->table,priority=0,v;\n if(m->family!=AF_INET||m->src_len||m->dst_len||m->tos||m->flags||m->action!=FR_ACT_TO_TBL)return -1;\n for(;RTA_OK(a,len);a=RTA_NEXT(a,len))switch(a->rta_type&NLA_TYPE_MASK){\n  case FRA_TABLE:if(!u32attr(a,&v)||(table&&table!=v))return -1;table=v;break;\n  case FRA_PRIORITY:if(!u32attr(a,&priority))return -1;break;\n  case FRA_SUPPRESS_PREFIXLEN:if(!u32attr(a,&v)||v!=UINT32_MAX)return -1;break;\n  case FRA_PROTOCOL:if(RTA_PAYLOAD(a)!=1)return -1;break;\n  case FRA_PAD:if(RTA_PAYLOAD(a))return -1;break;\n  default:return -1;\n }\n unsigned bit=table==RT_TABLE_LOCAL&&priority==0?1:table==RT_TABLE_MAIN&&priority==32766?2:table==RT_TABLE_DEFAULT&&priority==32767?4:0;\n if(len||!bit||(s->rules_mask&bit))return -1;s->rules_mask|=bit;return 0;\n}\n",
+      "new": "static int parse_rule(struct snapshot *s,const struct nlmsghdr *h){\n const char *reason=\"rule-header\";struct rtattr *a;int len;\n if(attributes(h,sizeof(struct fib_rule_hdr),&a,&len))goto refused;\n const struct fib_rule_hdr *m=NLMSG_DATA(h);uint32_t table=m->table,priority=0,v;unsigned seen=0;\n reason=\"rule-selector-flags-or-action\";\n if(m->family!=AF_INET||m->src_len||m->dst_len||m->tos||m->res1||m->res2||m->flags||m->action!=FR_ACT_TO_TBL)goto refused;\n for(;RTA_OK(a,len);a=RTA_NEXT(a,len)){unsigned attribute;reason=\"rule-attribute-shape\";\n  switch(a->rta_type&NLA_TYPE_MASK){\n   case FRA_TABLE:attribute=1;if(!u32attr(a,&v)||(table&&table!=v))goto refused;table=v;break;\n   case FRA_PRIORITY:attribute=2;if(!u32attr(a,&priority))goto refused;break;\n   case FRA_SUPPRESS_PREFIXLEN:attribute=4;if(!u32attr(a,&v)||v!=UINT32_MAX)goto refused;break;\n   case FRA_PROTOCOL:attribute=8;if(RTA_PAYLOAD(a)!=1)goto refused;break;\n   case FRA_PAD:attribute=16;if(RTA_PAYLOAD(a))goto refused;break;\n   default:reason=\"rule-unknown-attribute\";goto refused;\n  }\n  if(seen&attribute){reason=\"rule-duplicate-attribute\";goto refused;}seen|=attribute;\n }\n if(len){reason=\"rule-attribute-tail\";goto refused;}\n /* This one ASUS lookup may contain only canonical destinations disjoint\n  * from both rescue endpoints; snapshot_until checks every8437 row. */\n unsigned bit=table==RT_TABLE_LOCAL&&priority==0?1:table==RT_TABLE_MAIN&&priority==32766?2:table==RT_TABLE_DEFAULT&&priority==32767?4:table==8437&&priority==20?8:0;\n if(!bit){reason=\"rule-table-or-priority\";goto refused;}\n if(s->rules_mask&bit){reason=\"rule-duplicate\";goto refused;}s->rules_mask|=bit;return 0;\nrefused:\n fprintf(stderr,\"LEON_RESCUE parser-refused stage=%s\\n\",reason);return -1;\n}\n"
+    },
+    {
+      "old": "static int snapshot_until(struct snapshot *s,int64_t deadline){",
+      "new": "/* A pure lookup can affect an endpoint only through a covering destination.\n * Refuse any ambiguous row rather than infer a harmless route from it. */\nstatic bool asus_8437_route_disjoint(const struct route *r){\n if(r->table!=8437||r->prefix>32||(r->prefix&&!r->has_dst)||r->src_prefix||r->src||r->tos||r->unknown||r->gateway||r->multipath)return false;\n uint32_t mask=r->prefix?UINT32_MAX<<(32-r->prefix):0,dst=r->has_dst?ntohl(r->dst):0;\n if(dst&~mask)return false;\n return (ntohl(self_ip)&mask)!=dst&&(ntohl(peer_ip)&mask)!=dst;\n}\nstatic int snapshot_until(struct snapshot *s,int64_t deadline){"
+    },
+    {
+      "old": "   if(e==ETIMEDOUT){static const char *const kinds[]={\"link\",\"address\",\"route\",\"rule\"};\n    fprintf(stderr,\"LEON_RESCUE snapshot-timeout dump=%s elapsed_ms=%lld\\n\",kinds[i],(long long)(now_ms()-dump_started));}",
+      "new": "   static const char *const kinds[]={\"link\",\"address\",\"route\",\"rule\"};\n   if(e==ETIMEDOUT)fprintf(stderr,\"LEON_RESCUE snapshot-timeout dump=%s elapsed_ms=%lld\\n\",kinds[i],(long long)(now_ms()-dump_started));\n   else fprintf(stderr,\"LEON_RESCUE snapshot-refused dump=%s errno=%d elapsed_ms=%lld\\n\",kinds[i],e,(long long)(now_ms()-dump_started));"
+    },
+    {
+      "old": " }if(s->rules_mask!=7){errno=EPROTO;return -1;}return 0;\n}\nstatic int snapshot(struct snapshot *s)",
+      "new": " }if(s->rules_mask!=7&&s->rules_mask!=15){fprintf(stderr,\"LEON_RESCUE parser-refused stage=rule-mandatory-set\\n\");errno=EPROTO;return -1;}\n for(unsigned i=0;i<s->routes_n;++i)if(s->routes[i].table==8437&&!asus_8437_route_disjoint(&s->routes[i])){\n  fprintf(stderr,\"LEON_RESCUE parser-refused stage=asus-8437-route-overlap-or-ambiguous\\n\");errno=EPROTO;return -1;}\n return 0;\n}\nstatic int snapshot(struct snapshot *s)"
+    }
+  ],
+  "reverse_exact_old_source": true,
+  "unchanged_functions_except": [
+    "parse_rule",
+    "snapshot_until"
+  ],
+  "required_rule_mask": 7,
+  "optional_rule_bit": 8,
+  "accepted_completed_masks": [
+    7,
+    15
+  ],
+  "optional_rule": {
+    "family": "AF_INET",
+    "priority": 20,
+    "table": 8437,
+    "action": "FR_ACT_TO_TBL",
+    "max_count": 1,
+    "selectors_zero": true,
+    "flags_zero": true,
+    "reserved_header_bytes_zero": true,
+    "unknown_attributes_rejected": true,
+    "duplicate_rules_and_attributes_rejected": true
+  },
+  "protocol_and_nop_suppression_attributes_retain_old_value_checks": true,
+  "enrollment_string_unchanged": true,
+  "ownership_ACTIVE_and_write_cleanup_functions_unchanged": true,
+  "timeout_retry_remains_ETIMEDOUT_only": true,
+  "netlink_envelope_and_sequence_validation_unchanged": true,
+  "diagnostic_metadata": "Fixed rule-refusal stage; fixed snapshot dump kind, errno and elapsed; no raw rules, selectors, addresses or message payloads.",
+  "source_compiled": false,
+  "helper_executed": false,
+  "fixtures_tests_QEMU_device": false,
+  "builders_modified": false,
+  "limits": [
+    "The exception concerns existing AF_INET rule/route snapshots; unrelated IPv6 tables cannot affect this IPv4 lookup.",
+    "This is a non-atomic dump snapshot; concurrent policy changes remain possible. Every later snapshot repeats the exact-rule and route-overlap gate; no ambiguous outcome is adopted.",
+    "Any covering or ambiguous table8437 IPv4 route remains a hard EPROTO refusal, even if the optional rule is absent. Only canonical disjoint destination prefixes are permitted; no vendor route is changed.",
+    "No generic EPROTO retry or change to live-route, ownership, address/route identity, enrollment, write/cleanup or service behavior."
+  ],
+  "added_function": "asus_8437_route_disjoint",
+  "table8437_ipv4_routes_allowed_only_if_canonical_and_disjoint_from_both_rescue_endpoints": true,
+  "overlap_check_unconditional_even_without_optional_rule": true,
+  "overlap_check_before_snapshot_success_and_any_new_mutation": true,
+  "ambiguous_route_refusals": [
+    "prefix>32",
+    "nonzero_prefix_without_DST",
+    "noncanonical_destination_host_bits",
+    "source_specific_route",
+    "TOS_specific_route",
+    "unknown_attributes",
+    "gateway_or_multipath_representation"
+  ],
+  "all_covering_route_types_refused_including_default_blackhole_throw": true,
+  "noncovering_route_type_scope_protocol_metric_flags_unmodified_vendor_metadata": true
+}

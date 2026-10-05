@@ -1,0 +1,36 @@
+{
+  "schema": 1,
+  "status": "read_only_source_review_findings_resolved_no_device_execution",
+  "source": {
+    "path": "scripts/prepare-ubuntu26-flash.py",
+    "sha256": "e7b08c23194f32539e7bccc789a1c9621bb64d0a18ee12b761bf7c21b9955969"
+  },
+  "underlying_writer_generator": {
+    "path": "scripts/prepare-kernel9-flash.py",
+    "sha256": "b41be9741f0e16e1c410ae63cb6a9b823a1d4eedb4eb2b97e67f5cb1f5565176"
+  },
+  "packer": {
+    "path": "scripts/pack-ubuntu26-bootstrap.py",
+    "sha256": "cf5402b1164b6802beedd3999f5255523b72010eedca19504411c4e9e0ada288"
+  },
+  "resolved_findings": [
+    {
+      "issue": "Checking only current mount namespace missed device identity helper private p11 mount",
+      "resolution": "Scan all process mountinfo before and after flash, refuse read errors/p11 matches; also inspect holders and swap paths."
+    },
+    {
+      "issue": "String injection could silently miss guard anchors after future prior-generator changes",
+      "resolution": "Each insertion anchor now requires exactly one occurrence."
+    }
+  ],
+  "reviewed": [
+    "Re-runs actual staged firmware/cpio/kernel/guardian evidence validation, verifies exact FIT payloads and image hash",
+    "Retains previously reviewed inactive-slot1 flasher path, complete stock slot2 before/after verification and original boot selection",
+    "Exact candidate GPT bytes and p11 range, complete p11 hash before/after; no boot token, selection or permanent commit generated"
+  ],
+  "limitations": [
+    "Positive generation still awaits final firmware manifest; source review does not claim generated script or physical flash executed.",
+    "Namespace/holders/swap checks are snapshots, not kernel-wide exclusion; operator must maintain exclusive storage maintenance.",
+    "Source review does not prove bcm_flasher physical behavior or device durability."
+  ]
+}

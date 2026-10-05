@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "status": "read_only_delta_review_no_new_actionable_findings",
+  "source": {
+    "path": "scripts/prepare-ubuntu26-flash.py",
+    "sha256": "ebc47e88dd87a187978ba80c4e9f9d6e09b66e8da5b0709af880fc9fec35a7ac"
+  },
+  "previous_review": {
+    "path": "reports/ubuntu26/ubuntu-flash-generator-source-review-v1.json",
+    "sha256": "ab7f06d1e2c896a3e9a8e7a1859bf7f47db7b6a91f7dc2adc2dcacafcd5ebc0e"
+  },
+  "delta": [
+    "Old unconditional EXIT trap is replaced with state-aware cleanup. Before writer intent lock may be released; after flash_started=1 it is retained until complete slot/GPT/p11 readbacks set flash_complete=1.",
+    "HUP/INT/TERM or command/readback failure after possible firmware writer entry therefore retain uncertain-state lock. Exact replacement anchors are mandatory."
+  ],
+  "limitations": [
+    "No generated flash script or device writer executed.",
+    "Retained advisory lock is evidence of uncertainty, not proof a detached writer has exited.",
+    "Safe retry or recovery still requires explicit review; no automatic retry, reboot or commit."
+  ]
+}

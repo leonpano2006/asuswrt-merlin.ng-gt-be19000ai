@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "status": "review_findings_closed_in_gated_candidate",
+  "scope": "Independent read-only source/receipt review of native-v13; no physical watchdog or ASUS execution",
+  "sources": [
+    {
+      "path": "build/asus-trial-runtime/native-v13/source-snapshot/production.c",
+      "sha256": "49886199ba35d7054eb8ae6e64818d252997cfd8998e93ab75ba60f6f81fc9a5"
+    },
+    {
+      "path": "build/asus-trial-runtime/native-v13/source-snapshot/preflight.c",
+      "sha256": "b57bdd3fa8608eb94245dfbdb7761472c3598732014abb7e36095181d30196d5"
+    },
+    {
+      "path": "build/asus-trial-runtime/native-v13/source-snapshot/control-client.c",
+      "sha256": "57dad7b775f7c43a9a4857520d1c28a5378d653ba17a55de1221a559561c6a2c"
+    },
+    {
+      "path": "build/asus-trial-runtime/native-v13/source-snapshot/control-server.c",
+      "sha256": "b92a3067881a31fa00bda27210cf71dc671375f94576dc95c034a98273d3579b"
+    },
+    {
+      "path": "build/asus-trial-runtime/native-v13/source-snapshot/process-auth.c",
+      "sha256": "0c85656bf9ccfee9d6a0cc29f0d3de59fbc96000662f7f2709a4202460e560fd"
+    },
+    {
+      "path": "build/asus-trial-runtime/native-v13/source-snapshot/local-health.c",
+      "sha256": "ba729547510a85feee8fb4c4e21f853a8c58997c700fe07951c93c9d3300c3b7"
+    },
+    {
+      "path": "build/asus-trial-runtime/native-v13/source-snapshot/health-worker.c",
+      "sha256": "50e41de817c396e850c3651f248920e7bc6f4400e0157cf86d6b59c5a5e302cd"
+    }
+  ],
+  "findings": [
+    {
+      "id": "guardian-emergency-driver-shutdown",
+      "severity": "high",
+      "status": "closed_source_and_frozen_build",
+      "detail": "RB_AUTOBOOT invokes bcm96xxx watchdog shutdown. Current production source prefers verified PROC_SUPER_MAGIC sysrq-trigger b and declares lack of WDT backup on syscall fallback."
+    },
+    {
+      "id": "collector-lost-child-pid",
+      "severity": "medium",
+      "status": "closed_source_and_frozen_build",
+      "detail": "Original collector forgot PID immediately after nonblocking wait; new health-worker retains PID until confirmed reap, latches timeout/invalid exit, rejects overlap and polls without blocking feeding loop. Capture waits stay in alarm-bounded disposable worker."
+    },
+    {
+      "id": "running-sshd-config-unverified",
+      "severity": "medium",
+      "status": "closed_source_and_frozen_build",
+      "detail": "Both guardian local-health and native SSH apply use the same exact binary argv/listener-title parser. Parser tests cover 3 accepted forms, 13 malformed forms, and 142 truncations. Actual SSH disable/reenable and kernel10 service behavior remain parent-owned runtime proof."
+    },
+    {
+      "id": "stale-critical-identity-map",
+      "severity": "high",
+      "status": "closed_exact_archive_comparison",
+      "detail": "Old generated preflight mapped an obsolete broker unit. native-v13 now incorporates final integration0.7, and independent tar checker verified all 208 critical files including ownership/mode against final archive sealed runtime07."
+    }
+  ],
+  "other_reviewed_contracts": {
+    "watchdog_open_after_exact_arm_request": true,
+    "gate_closed_unarmed_refusal": true,
+    "metadata_both_crc_tokens_readonly_fullbyte_comparison": true,
+    "known_good_slot2_complete_partition_hashes": true,
+    "current_boot_and_one_shot_intent_readback": true,
+    "broker_ready_protocol_and_real_process_namespace_checks": true,
+    "ssh_ack_real_authenticated_native_ancestry_and_tcp_endpoint": true,
+    "ssh_ack_distinct_session_same_lan_endpoint_nonce_binding": true
+  },
+  "immutable_guardian_identity_qemu": {
+    "path": "reports/ubuntu26/squashfs-pivot-guardian-health-v1.json",
+    "sha256": "27d3fc5a1f0efb1e9ecba5acf5be81c38edea535956032de47400436245cdeb8"
+  },
+  "parent_emergency_qemu": {
+    "path": "reports/ubuntu26/squashfs-pivot-guardian-emergency-v1.json",
+    "sha256": "9a2c569e3ec4c57153ca18262a2bdd7e3df9629bf9825a803645eb8081637101"
+  },
+  "limitations": [
+    "Source review is not deployed hardware validation.",
+    "Identity test uses mocked hardware-armed responses and real frozen trial-health, not actual watchdog arming.",
+    "Actual Wi-Fi, switch, AiMesh and AI services remain separate acceptance checks.",
+    "Frozen candidate immutable deployment gate remains false.",
+    "Complete production-loop QEMU is being tested with an explicit mock watchdog, regular-file preflight and synthetic ASUS process topology; final result is recorded separately."
+  ],
+  "hardware_accessed": false,
+  "deployment_accepted": false,
+  "supersedes": {
+    "path": "reports/ubuntu26/asus-trial-production-peer-review-v1.json",
+    "sha256": "7adcef2af58713d897de226c848542d0f1ca3c976785a1b045ceb49ff2c418a9"
+  },
+  "guardian_receipt": {
+    "path": "build/asus-trial-runtime/native-v13/guardian-receipt.json",
+    "sha256": "f48948da8b350e5c8cce24f6ef90c056797e2a05ca6d8ba25e5e2706c9dd3d82"
+  },
+  "identity_map": {
+    "path": "reports/ubuntu26/asus-trial-identity-map-archive-sealed-runtime07-v1.json",
+    "sha256": "0f07d4149ac546a3e13384452e933b012b02bda4fcc8ef12fcdb624aafee47e2"
+  },
+  "ssh_parser_fixture": {
+    "path": "build/asus-ssh-integration/parser-review-v1/result.json",
+    "sha256": "0aa98584786cca2ee9b555dc19600fb1176025790049fd90d595747531f89f2f"
+  },
+  "production_loop_fixture_pending": "build/ubuntu26-pivot-qemu/production-loop-v1/manifest.json"
+}

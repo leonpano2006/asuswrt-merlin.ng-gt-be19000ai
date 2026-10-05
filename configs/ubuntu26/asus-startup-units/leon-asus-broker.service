@@ -1,0 +1,24 @@
+[Unit]
+Description=ASUS service subtree supervised by the native system manager
+Requires=leon-asus-prepare.service leon-asus-storage.target leon-asus-ssh.socket
+BindsTo=leon-asus-prepare.service leon-asus-storage.target
+After=leon-asus-prepare.service leon-asus-storage.target leon-asus-ssh.socket
+
+[Service]
+Type=notify
+NotifyAccess=main
+ExecStart=/usr/libexec/asus/rc-broker /usr/libexec/asus/etc-launch
+Environment=LD_PRELOAD=/usr/lib/aarch64-linux-gnu/leon-asus/libleon-rc-notify.so
+Environment=PATH=/usr/sbin:/usr/bin
+RuntimeDirectory=leon-rc
+RuntimeDirectoryMode=0700
+UMask=0022
+KillMode=mixed
+KillSignal=SIGTERM
+SendSIGKILL=yes
+TimeoutStartSec=600s
+TimeoutStopSec=480s
+Restart=no
+# SIGTERM reaches only the broker. It requests an ordered rc stop; systemd
+# finally clears this cgroup. No rcctl reboot/stop command is an ExecStop.
+# The launcher alone creates the private /etc, /rom and /www mount view.

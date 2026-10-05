@@ -1,0 +1,6 @@
+[Unit]
+Description=Explicitly activated ASUS compatibility subtree
+Requires=leon-asus-broker.service leon-asus-resolver-bootstrap.service leon-asus-resolver.path
+BindsTo=leon-asus-broker.service
+After=leon-asus-broker.service leon-asus-resolver-bootstrap.service leon-asus-resolver.path
+# No Install section: packaging does not attach this to a native boot target.

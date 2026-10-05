@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "scope": "BE19000AI BCM userspace; source/build policy, not permission to flash",
+  "user_direction": "Do not treat an official gcc-16 package name as evidence of a stable ARM32 compiler. Preserve the BE98 GCC15.2 ARMEL/ARMHF baseline while checking the exact provenance.",
+  "arm64": {
+    "accepted_compiler_major": 16,
+    "accepted_runtime_major": 16,
+    "compiler": "16.2.0-3ubuntu1+leonb53.1",
+    "source_package": "16.2.0-3ubuntu1",
+    "source_authentication": "build/ubuntu26-gcc/source-authentication.json",
+    "BASE_VER": "16.2.0",
+    "DATESTAMP": "20260918",
+    "DEV_PHASE": "",
+    "classification": "Ubuntu rebuild of the GCC16 release branch with distribution patches; not the unmodified upstream release tarball",
+    "runtime": "Existing validated native GNU package set retained"
+  },
+  "armel": {
+    "accepted_compiler_major": 15,
+    "accepted_runtime_major": 15,
+    "compiler_baseline": "Verified GCC15.2.0 as used in BE98",
+    "new_gcc16_cross_batch": "quarantined_pending_compiler_policy; neither installed nor accepted for deployment",
+    "runtime_package": "leon-gcc15-runtime:armel",
+    "runtime_source_version": "15.2.0",
+    "library_directory": "/usr/lib/arm-linux-gnueabi",
+    "requires": [
+      "Truthful source/compiler versions; never relabel GCC15 binary payload as GCC16",
+      "Versioned Provides may cover only the implemented libgcc/libstdc++ ABI",
+      "Architecture-specific file conflicts; native arm64 GCC16 runtime remains intact",
+      "Real apt solver and coinstallation validation before acceptance",
+      "Rebuild glibc2.44 ARMEL with the selected compiler and matching native libc package fullversion"
+    ]
+  },
+  "armhf": {
+    "accepted_compiler_major": 15,
+    "accepted_runtime_major": 15,
+    "compiler_baseline": "Verified GCC15.2.0 as used in BE98",
+    "required_now": false
+  },
+  "classification_rules": [
+    "Record full compiler banner, dumpfullversion, source BASE-VER/DATESTAMP/DEV-PHASE and Debian changelog",
+    "A signed distribution package establishes origin, not regression-free code generation",
+    "A release-branch git update alone does not prove an experimental compiler",
+    "Preserve historical test artifacts and label their compiler policy explicitly"
+  ],
+  "upstream_release_reference": "https://gcc.gnu.org/releases.html",
+  "historical_rollback_cause": "BE98 GCC15 compiler dependencies pulled libgcc-s1-armel-cross 16-20260322-1ubuntu1cross1 snapshot. Prior solution pinned 15.2.0-4ubuntu4cross1 and rebuilt GCC15.2.0 runtime source for A53; compiler and runtime must be verified separately.",
+  "historical_evidence": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/libgcc-runtime-20260916/README.md"
+}

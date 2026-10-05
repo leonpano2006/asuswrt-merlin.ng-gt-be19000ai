@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "status": "source_only_pending_independent_review",
+  "build_ready": false,
+  "production_ready": false,
+  "compiled": false,
+  "syntax_checked": false,
+  "tests_run": false,
+  "device_accessed": false,
+  "plan": {
+    "path": "scripts/asus-integration/uplink-rescue/plan-v1.json",
+    "sha256": "2ead41a88603f978febf47f7a4bdf282c0994aab96356e49313e63979ae1a648"
+  },
+  "source_audit": {
+    "path": "reports/ubuntu26/management-uplink-rescue-source-v1.json",
+    "sha256": "17e9da5cb8d281918a226766024cfba407eab50b3959c3655dc661ce1f569685"
+  },
+  "sources": [
+    {"path": "scripts/asus-integration/uplink-rescue/rescue-link.c", "sha256": "fb093f06b32500d4aa0e4f8c32480bfa25b85638f68f4d00a9109773e83b9cf4"},
+    {"path": "scripts/asus-integration/uplink-rescue/controller-transient.sh", "sha256": "eefb681e592534b488a6d8295544f2c3125106c8bef6a766d111869e99e7a293"},
+    {"path": "scripts/asus-integration/uplink-rescue/rescue-link-enrollment.in", "sha256": "a11203eafd9b152ac7912edfc06224b780bdfc952324f0e4a937a006710ca804"},
+    {"path": "scripts/asus-integration/uplink-rescue/leon-asus-rescue-link.service.in", "sha256": "7caa49d8e32e6f861d68a458845cca290b5ff6c42e8243664bbde5d0ce853487"},
+    {"path": "scripts/asus-integration/uplink-rescue/leon-asus-ssh-uplink-rescue.socket.in", "sha256": "e6a8a8bf40fefc9ddda2d67ac82c94348b8b34bea925fd6ae9ea46dd0ba67961"},
+    {"path": "scripts/asus-integration/uplink-rescue/leon-asus-ssh-uplink-rescue@.service.in", "sha256": "59a57082d32b40ac9132e1349c71951888eda0008005cbc048ae5dcd56627bd1"},
+    {"path": "scripts/asus-integration/uplink-rescue/leon-asus-uplink-rescue.conf.in", "sha256": "2177796b3c2e37fc7804300a929902dd070afc0e8aeb9f8548858b87da2ac49c"},
+    {"path": "scripts/asus-integration/uplink-rescue/README.source-only", "sha256": "93df8df7f1824c2df39d1053e0d9bcd60ed25e1d9dd3f4387e68e9e70fff2c03"},
+    {"path": "scripts/asus-integration/uplink-rescue/implementation-v1.json", "sha256": "c3c53323e4acc86df0c332ac94b8f898b45fde43c64b5647ce70c6aea1015cbc"}
+  ],
+  "inspection_scope": "Author source inspection and source hashing only. Independent peer, compilation and the single new focused network fixture have not yet occurred.",
+  "fixed_objects": {
+    "router": "169.254.190.15/32 label eth0:lr or br0:lr; only peer169.254.190.51/32 main route protocol186 metric42760 preferred-source169.254.190.15",
+    "controller": "169.254.190.51/32 label br-lan:lr; only peer169.254.190.15/32 main route protocol186 metric42760 preferred-source169.254.190.51",
+    "eth0_and_br0_mac": "02:00:00:f0:00:01",
+    "controller_br_lan_mac": "02:00:00:f0:00:02",
+    "ifindices": "Dynamically enrolled from the fixed names/MACs; not the stock numerical values.",
+    "listener": "169.254.190.15:2223, no device bind, existing native account/PAM/ed25519 public-key only, exact peer AllowUsers.",
+    "no_changes": "Normal LAN, DHCP,169.254.0.2 eth.ai-10, bridge membership, interface flags/MAC, rules, neighbours, sysctls, firewall, NVRAM, passwords/keys, port22/2222 and guardian acceptance."
+  },
+  "explicit_limits": [
+    "Pending or ambiguous netlink/shell mutation intents are retained and refuse automatic retry/adoption. A stopped helper can leave its own partial transient state for later reviewed cleanup.",
+    "Receipt plus exact attributes identifies cooperating ownership, not a transaction isolated from other privileged writers. Normal ASUS address changes are permitted and never reverted.",
+    "Controller BusyBox command syntax/output capabilities remain untested. Unsupported noprefixroute, label, protocol, metric or table dump behaviour fails closed; no guessed parser fallback.",
+    "Public known_hosts2223 enrolment is separately described but not implemented by network setup/cleanup. No private key was read/exported.",
+    "No global IPv4LL uniqueness claim. First physical client requires expected neighbour MAC and strict existing native host-key verification.",
+    "Stop timeout successor30s is source-only; original draft10s would be too short for the bounded cleanup sequence."
+  ]
+}

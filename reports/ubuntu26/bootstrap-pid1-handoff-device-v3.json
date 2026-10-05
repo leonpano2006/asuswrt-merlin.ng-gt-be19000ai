@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "status": "bootstrap_pid1_and_handoff_validated",
+  "passed": true,
+  "stage_manifest": {
+    "path": "build/ubuntu26-bootstrap/device-enabled-v3/manifest.json",
+    "sha256": "61bdfecd29d35d57641663e0d74a95e4e2cf0e6de121f79ba254cfd39f3cb049"
+  },
+  "production_squashfs": {
+    "path": "build/ubuntu26-bootstrap/device-enabled-v3/bootstrap.zstd.squashfs",
+    "sha256": "658ce05f067c4c3992a336919efa35bffd6dde973990714aaa87d46676b03ba9"
+  },
+  "kernel_sha256": "4a15601eada042576aed2a3680dcc48e9228eea70f70c478840767aaa89a9f8e",
+  "packed_mountpoints": {
+    "/dev": {
+      "type": "directory",
+      "uid": 0,
+      "gid": 0,
+      "mode": "0755"
+    },
+    "/proc": {
+      "type": "directory",
+      "uid": 0,
+      "gid": 0,
+      "mode": "0755"
+    },
+    "/sys": {
+      "type": "directory",
+      "uid": 0,
+      "gid": 0,
+      "mode": "0755"
+    },
+    "/run": {
+      "type": "directory",
+      "uid": 0,
+      "gid": 0,
+      "mode": "0755"
+    },
+    "/leon-newroot": {
+      "type": "directory",
+      "uid": 0,
+      "gid": 0,
+      "mode": "0755"
+    }
+  },
+  "exact_production_pid1_passed_mounts": true,
+  "fallback_kernel_log_retained": true,
+  "missing_run_regression_reproduced": true,
+  "real_systemd_handoff_passed": true,
+  "exact_entry": {
+    "fixture": {
+      "path": "build/ubuntu26-bootstrap-qemu/device-v3-exact-entry/manifest.json",
+      "sha256": "f937f57a639015dc3c12972198295d58a81c1e78642e01dd7f993c3dd2200b5b"
+    },
+    "result": {
+      "path": "build/qemu/ubuntu26-bootstrap-device-v3-entry/result.json",
+      "sha256": "ec58824007df59ed15c554812d0f74bb4679317ebf230478c1bcb0c14853b8e1"
+    },
+    "log": {
+      "path": "build/qemu/ubuntu26-bootstrap-device-v3-entry/serial.log",
+      "sha256": "25ee63d283f83b9b8ff21cba073d52f72643532c1b2141ec519e6dfd019c6b24"
+    },
+    "elapsed_seconds": 2.2,
+    "initramfs": {
+      "path": "build/ubuntu26-bootstrap-qemu/device-v3-exact-entry/initramfs.cpio.gz",
+      "sha256": "de8a546ab96945c57bc47230240cfe722ec181fccb2e3cc34be89684b6d62a3b"
+    }
+  },
+  "loop_handoff": {
+    "fixture": {
+      "path": "build/ubuntu26-bootstrap-qemu/device-v3-loop-handoff/manifest.json",
+      "sha256": "4b92594f3a6e1495ffb4ded61c57b6bf2e55256ac18500b554d0ab6b60af2d6f"
+    },
+    "result": {
+      "path": "build/qemu/ubuntu26-bootstrap-device-v3-handoff/result.json",
+      "sha256": "4ac695d1934a62d67b07e57e4c41f4fc5e83ec85578c3ad0c2c3a2e79281927a"
+    },
+    "log": {
+      "path": "build/qemu/ubuntu26-bootstrap-device-v3-handoff/serial.log",
+      "sha256": "804de8510b764f046c6874c2c138d912cda8c8403f499c371a1e51f8b3a5f6e8"
+    },
+    "elapsed_seconds": 57.73,
+    "initramfs": {
+      "path": "build/ubuntu26-bootstrap-qemu/device-v3-loop-handoff/initramfs.cpio.gz",
+      "sha256": "2c3e4d524f70b33313d15fb9385dbfceddd2b4f94a9582605755b33cb24b286e"
+    }
+  },
+  "regression": {
+    "fixture": {
+      "path": "build/ubuntu26-bootstrap-qemu/device-v1-exact-entry/manifest.json",
+      "sha256": "8a832d298b7041cfaad3233fceb43bcc64a115474659bdf1ad4200f9286fbf00"
+    },
+    "result": {
+      "path": "build/qemu/ubuntu26-bootstrap-device-v1-entry/result.json",
+      "sha256": "3ce967bdac8cdf5f52d16acaf9a6898e6a9452262f99a613ccd5cbc34ec64090"
+    },
+    "log": {
+      "path": "build/qemu/ubuntu26-bootstrap-device-v1-entry/serial.log",
+      "sha256": "a436bf03be169177b9c82a574db5e935e14e588ebc269670d2cfdb1c8dae5e40"
+    },
+    "elapsed_seconds": 1.41,
+    "initramfs": {
+      "path": "build/ubuntu26-bootstrap-qemu/device-v1-exact-entry/initramfs.cpio.gz",
+      "sha256": "ae0e638071c7142050cde19042be43ebef7d998a72f87e6b75309968b998b9a7"
+    }
+  },
+  "validator": {
+    "path": "scripts/check-ubuntu26-bootstrap-handoff.py",
+    "sha256": "7dd350240f26935c655a14a63e728f92a1cf93c8a8c5d29caddda9f28ac7afce"
+  },
+  "physical_trial_accepted": false,
+  "hardware_watchdog_tested": false,
+  "automatic_boot_commit": false,
+  "limits": [
+    "Exact production image executes PID1 and refuses the absent BCM eMMC in QEMU virt.",
+    "Positive systemd handoff keeps all image directories and other payload bytes; exactly three regular files adapt PID1/fsck to loop storage and use a protocol-only guardian.",
+    "This proves the missing-mountpoint fix and boot packaging path; physical board and watchdog acceptance remain separate."
+  ]
+}

@@ -1,5 +1,5 @@
 /* Explicit-loader time64 probe. The normal mode changes no global clock.
- * Optional --qemu-regression requires the guest marker and kernel9, adds bounded
+ * Optional --qemu-regression requires the guest marker and selected kernel build, adds bounded
  * interrupt tests, and moves only the disposable VM clock to 2100 then restores
  * it. No host/router clock changes or external networking. */
 #define _GNU_SOURCE 1
@@ -20,6 +20,10 @@
 #include <time.h>
 #include <unistd.h>
 
+#ifndef EXPECTED_KERNEL_BUILD
+#define EXPECTED_KERNEL_BUILD 9
+#endif
+
 _Static_assert(sizeof(time_t) == 8, "probe must use 64-bit time_t");
 
 static volatile sig_atomic_t signals_seen;
@@ -38,9 +42,11 @@ static void cancel_alarm(void)
 static int interrupted_tests(void)
 {
     struct utsname u;
+    char expected[32];
+    snprintf(expected, sizeof(expected), "#%d ", EXPECTED_KERNEL_BUILD);
     if (access("/QEMU_LAB_GUEST", R_OK) || uname(&u) ||
-        strncmp(u.version, "#9 ", 3) != 0 || strcmp(u.release,"4.19.294") != 0) {
-        fputs("FAIL interrupt tests require QEMU kernel9\n",stderr);return 1;
+        strncmp(u.version, expected, strlen(expected)) != 0 || strcmp(u.release,"4.19.294") != 0) {
+        fprintf(stderr,"FAIL interrupt tests require QEMU kernel%d\n",EXPECTED_KERNEL_BUILD);return 1;
     }
     struct sigaction sa = {0};sa.sa_handler=interrupted;sigemptyset(&sa.sa_mask);
     if(sigaction(SIGALRM,&sa,NULL))return 1;

@@ -1,0 +1,72 @@
+--- a/release/src/router/rc/init.c
++++ b/release/src/router/rc/init.c
+@@ -62,6 +62,7 @@
+ 
+ #include <shared.h>
+ #include <stdio.h>
++#include "rc-trial-network-policy.h"
+ #ifdef RTCONFIG_USB
+ #include <disk_io_tools.h>
+ #include <disk_share.h>
+@@ -28236,6 +28237,7 @@
+ 		 * Keep the existing authenticated manager/native policy path. */
+ 		if (!leon_lan_ssh_startup_reconciled) {
+ 			leon_lan_ssh_startup_reconciled = 1;
++			leon_trial_network_policy();
+ 			if (nvram_get_int("sshd_enable") != 0 && start_sshd() != 0)
+ 				logmessage("sshd", "Post-READY native SSH policy reconciliation failed");
+ 		}
+--- /dev/null
++++ b/release/src/router/rc/rc-trial-network-policy.h
+@@ -0,0 +1,51 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++#ifndef LEON_RC_TRIAL_NETWORK_POLICY_H
++#define LEON_RC_TRIAL_NETWORK_POLICY_H
++#if defined(LEON_SYSTEMD_RC) && LEON_SYSTEMD_RC == 1
++
++/* One post-READY trial record, read only. Never print general NVRAM or
++ * credential/group material. Interface-list values have a fixed byte cap
++ * and an ASCII allowlist; invalid values are reported without their bytes. */
++static inline void leon_trial_network_policy(void)
++{
++    static const char *const integers[] = {
++        "sw_mode", "re_mode", "x_Setting", "restore_defaults", "wlc_psta",
++        "wlc_dpsta", "mlo_mb", "dhcp_war", "lacp_enabled", "amas_status_init",
++        "stop_amas_lldpd", "amas_bhctrl_service_ready",
++        "amas_status_service_ready", "amas_lanctrl_service_ready", "amas_ready"
++    };
++    static const char *const strings[] = {
++        "lan_proto", "lan_ifname", "lan_ifnames", "eth_ifnames",
++        "sta_ifnames", "sta_phy_ifnames", "wan_ifnames", "wan0_ifname",
++        "lacp_ifnames", "autowan_ifnames", "autowan_detected_ifname", "amas_ifname"
++    };
++    unsigned int i;
++    fprintf(stderr, "LEON_NETWORK_POLICY_BEGIN schema=1 phase=post-ready\n");
++    for (i = 0; i < sizeof(integers) / sizeof(integers[0]); i++)
++        fprintf(stderr, "LEON_NETWORK_POLICY key=%s value=%d\n",
++                integers[i], nvram_get_int(integers[i]));
++    for (i = 0; i < sizeof(strings) / sizeof(strings[0]); i++) {
++        const char *value = nvram_safe_get(strings[i]);
++        size_t length = 0;
++        int valid = 1;
++        while (length < 512 && value[length]) {
++            unsigned char c = (unsigned char)value[length++];
++            if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
++                  (c >= '0' && c <= '9') || c == '_' || c == '-' ||
++                  c == '.' || c == ':' || c == ',' || c == ' '))
++                valid = 0;
++        }
++        if (length == 512)
++            fprintf(stderr, "LEON_NETWORK_POLICY key=%s value=<over-cap>\n", strings[i]);
++        else if (!valid)
++            fprintf(stderr, "LEON_NETWORK_POLICY key=%s value=<invalid-ascii>\n", strings[i]);
++        else
++            fprintf(stderr, "LEON_NETWORK_POLICY key=%s value=%.*s\n",
++                    strings[i], (int)length, value);
++    }
++    fprintf(stderr, "LEON_NETWORK_POLICY cfg_group_present=%d\n",
++            nvram_safe_get("cfg_group")[0] != '\0');
++    fprintf(stderr, "LEON_NETWORK_POLICY_END schema=1\n");
++}
++#endif
++#endif

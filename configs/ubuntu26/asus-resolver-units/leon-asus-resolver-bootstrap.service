@@ -1,0 +1,12 @@
+[Unit]
+Description=Bootstrap native DNS from verified ASUS upstream policy
+Before=leon-asus-prepare.service leon-asus-resolver.path
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/libexec/asus/resolver-export --bootstrap
+TimeoutStartSec=10s
+UMask=0022
+# Native PID1 mount namespace; no local DNS server or network manager started.
+

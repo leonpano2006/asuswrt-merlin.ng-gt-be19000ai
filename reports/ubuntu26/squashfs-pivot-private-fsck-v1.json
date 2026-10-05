@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "passed": true,
+  "errors": [],
+  "scenarios": [
+    {
+      "scenario": "positive",
+      "checks": {
+        "complete": true,
+        "exact_initramfs": true,
+        "log_unchanged": true,
+        "readonly_squashfs_start": true,
+        "no_restore_failure": true,
+        "no_vendor_exec_failure": true,
+        "real_systemd_started": true,
+        "apt_real_writable_root": true,
+        "ext4_pid1": true,
+        "no_fallback": true,
+        "actual_exec": true,
+        "private_fsck_with_stock_loader_untouched": true
+      },
+      "elapsed_seconds": 42.45,
+      "serial_sha256": "d6d4d3b6a0982365e6bcdb764e24a4e6ec973a276a2002ebabea28dd33e1b89e",
+      "result_path": "build/qemu/ubuntu26-pivot-private-fsck-v1-positive/result.json",
+      "result_sha256": "20bb4b285c78ff15522fbae5af95a9998077535e36a5060de46956fb67c88cd4"
+    },
+    {
+      "scenario": "fsck-private-missing",
+      "checks": {
+        "complete": true,
+        "exact_initramfs": true,
+        "log_unchanged": true,
+        "readonly_squashfs_start": true,
+        "no_restore_failure": true,
+        "no_vendor_exec_failure": true,
+        "exact_failure_stage": true,
+        "vendor_fixture_pid1": true,
+        "exact_vendor_exec": true,
+        "did_not_start_ubuntu": true,
+        "no_pivot_exec": true,
+        "private_fsck_refused_without_falling_back_to_stock_libs": true
+      },
+      "elapsed_seconds": 11.82,
+      "serial_sha256": "1366d51d580e959c3ca0490843cdd9857290c5f101171db42bba03458eeb6560",
+      "result_path": "build/qemu/ubuntu26-pivot-private-fsck-v1-fsck-private-missing/result.json",
+      "result_sha256": "601924a4c177c275f70e423d8759ad999583199b07066098c3197c78d96dc2ba"
+    },
+    {
+      "scenario": "exec-error",
+      "checks": {
+        "complete": true,
+        "exact_initramfs": true,
+        "log_unchanged": true,
+        "readonly_squashfs_start": true,
+        "no_restore_failure": true,
+        "no_vendor_exec_failure": true,
+        "exact_failure_stage": true,
+        "vendor_fixture_pid1": true,
+        "exact_vendor_exec": true,
+        "did_not_start_ubuntu": true,
+        "after_pivot_failure": true
+      },
+      "elapsed_seconds": 12.24,
+      "serial_sha256": "b5c6b7b36dfb6cd6d6f2d6b437c03a6eea706fa7d966cc9ca67b79acbc087227",
+      "result_path": "build/qemu/ubuntu26-pivot-private-fsck-v1-exec-error/result.json",
+      "result_sha256": "dc16c2b57e6f008eb3af0340313cf70b6cb40a751f243e917b1e803950c73395"
+    }
+  ],
+  "fixture_manifest_sha256": "ccbe06d3a9da79854a7fbf598e0b2e5d079db09812337a939228ee8df6fad3b5",
+  "helper_source_sha256": "412d92c10820c4c2774791fa12fd14f93e4f83ba7ed02fa7a25d805016e45018",
+  "helper_sha256": "25d301ccc702d19ff238ae55c372ad01b7960bab018c3c3ccf0a863fab5207e8",
+  "input_disk_images_unchanged": true,
+  "limitations": [
+    "RAM-backed loop devices, no host block device or network; not power-loss or physical eMMC validation.",
+    "Vendor rc is an explicit fixture; fallback proves restoration and PID1 exec, not ASUS networking.",
+    "Positive run starts real native systemd and apt on ext4; no ASUS driver or daemon starts.",
+    "The helper can restore only before successful systemd exec; later failures require the separate board trial/watchdog policy.",
+    "Generation marker identifies the selected root; it is not a signature over a writable filesystem."
+  ],
+  "router_accessed": false,
+  "flash_or_boot_commit_accepted": false
+}

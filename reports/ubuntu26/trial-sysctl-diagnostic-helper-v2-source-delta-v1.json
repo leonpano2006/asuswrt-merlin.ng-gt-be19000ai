@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "status": "exact_source_only_zombie_metadata_delta",
+  "old_source": "scripts/asus-integration/trial-snapshot/sysctl-process-v1.sh",
+  "old_sha256": "f4339b6cd0f2ed296afb25f4e6777e3612a718812696256452d963fd534d6b04",
+  "new_source": "scripts/asus-integration/trial-snapshot/sysctl-process-v2.sh",
+  "new_sha256": "3e2c4deefca6f628fbad8bf43c308b3de0e8108f469fcd8cadb5d5200f39b39e",
+  "operations": [
+    {
+      "operation": "insert",
+      "old_start_byte": 1770,
+      "old_end_byte": 1770,
+      "old_start_line": 48,
+      "old_text": "",
+      "new_text": "}\n\nzombie_identity() {\n    local pid=$1 worker=$2 raw tail\n    local -a fields=()\n    Z_START= Z_PPID= Z_EXE_RC=\n    capture /usr/bin/cat \"/proc/$pid/stat\"\n    [[ \"$CAPTURE_RC\" == 0 ]] || return 1\n    raw=$CAPTURE_DATA\n    [[ \"$raw\" == \"$pid (\"*\") \"* ]] || return 1\n    tail=${raw##*) }\n    read -r -a fields <<< \"$tail\"\n    [[ ${#fields[@]} -ge 20 && \"${fields[0]}\" == Z && \"${fields[1]}\" == \"$worker\" &&\n        \"${fields[1]}\" =~ ^[0-9]+$ && \"${fields[19]}\" =~ ^[0-9]+$ ]] || return 1\n    Z_START=${fields[19]} Z_PPID=${fields[1]}\n    capture /usr/bin/readlink \"/proc/$pid/exe\"\n    [[ \"$CAPTURE_RC\" != 0 ]] || return 1\n    Z_EXE_RC=$CAPTURE_RC\n"
+    },
+    {
+      "operation": "replace",
+      "old_start_byte": 6339,
+      "old_end_byte": 6420,
+      "old_start_line": 135,
+      "old_text": "# Only exact known executables are candidates. Manager -> worker -> child parent\n",
+      "new_text": "capture_zombie() {\n    local pid=$1 manager=$2 worker=$3\n    local pre_manager_start pre_worker_start pre_start pre_ppid pre_exe_rc\n    local post_start post_ppid post_exe_rc\n    local child_status child_status_rc worker_status worker_status_rc\n    local worker_syscall worker_syscall_rc worker_wchan worker_wchan_rc\n    printf 'TRIAL_SYSCTL_PROCESS pid=%s kind=exited-unreaped-callout-not-proven-sysctl capture=begin\\n' \"$pid\"\n    if ! chain_identity \"$manager\" \"$worker\"; then\n        printf 'TRIAL_SYSCTL_PROCESS pid=%s capture=discarded reason=zombie-pre-chain-unavailable\\n' \"$pid\"\n        ((raced+=1))\n        return\n    fi\n    pre_manager_start=$CHAIN_MANAGER_START pre_worker_start=$CHAIN_WORKER_START\n    if ! zombie_identity \"$pid\" \"$worker\"; then\n        printf 'TRIAL_SYSCTL_PROCESS pid=%s capture=discarded reason=zombie-pre-identity-unavailable\\n' \"$pid\"\n        ((raced+=1))\n        return\n    fi\n    pre_start=$Z_START pre_ppid=$Z_PPID pre_exe_rc=$Z_EXE_RC\n    capture /usr/bin/awk -F: '$1==\"State\" || $1==\"PPid\" || $1==\"Uid\" || $1==\"Gid\" ||\n        $1==\"NSpid\" || $1==\"Threads\" || $1==\"CapEff\" || $1==\"Seccomp\" ||\n        $1==\"NoNewPrivs\" {print}' \"/proc/$pid/status\"\n    child_status=$CAPTURE_DATA child_status_rc=$CAPTURE_RC\n    capture /usr/bin/awk -F: '$1==\"State\" || $1==\"PPid\" || $1==\"Uid\" || $1==\"Gid\" ||\n        $1==\"NSpid\" || $1==\"Threads\" || $1==\"CapEff\" || $1==\"Seccomp\" ||\n        $1==\"NoNewPrivs\" {print}' \"/proc/$worker/status\"\n    worker_status=$CAPTURE_DATA worker_status_rc=$CAPTURE_RC\n    capture /usr/bin/cat \"/proc/$worker/syscall\"\n    worker_syscall=$CAPTURE_DATA worker_syscall_rc=$CAPTURE_RC\n    capture /usr/bin/cat \"/proc/$worker/wchan\"\n    worker_wchan=$CAPTURE_DATA worker_wchan_rc=$CAPTURE_RC\n    if ! zombie_identity \"$pid\" \"$worker\" || [[ \"$Z_START\" != \"$pre_start\" || \"$Z_PPID\" != \"$pre_ppid\" ]]; then\n        child_status= worker_status= worker_syscall= worker_wchan=\n        printf 'TRIAL_SYSCTL_PROCESS pid=%s capture=discarded reason=zombie-post-identity-raced\\n' \"$pid\"\n        ((raced+=1))\n        return\n    fi\n    post_start=$Z_START post_ppid=$Z_PPID post_exe_rc=$Z_EXE_RC\n    if ! chain_identity \"$manager\" \"$worker\" ||\n        [[ \"$CHAIN_MANAGER_START\" != \"$pre_manager_start\" || \"$CHAIN_WORKER_START\" != \"$pre_worker_start\" ]]; then\n        child_status= worker_status= worker_syscall= worker_wchan=\n        printf 'TRIAL_SYSCTL_PROCESS pid=%s capture=discarded reason=zombie-post-chain-raced\\n' \"$pid\"\n        ((raced+=1))\n        return\n    fi\n    printf 'TRIAL_SYSCTL_PROCESS pid=%s kind=exited-unreaped-callout-not-proven-sysctl capture=committed pre_state=Z post_state=Z pre_starttime=%s post_starttime=%s pre_ppid=%s post_ppid=%s pre_exe_rc=%s post_exe_rc=%s\\n' \\\n        \"$pid\" \"$pre_start\" \"$post_start\" \"$pre_ppid\" \"$post_ppid\" \"$pre_exe_rc\" \"$post_exe_rc\"\n    printf 'TRIAL_SYSCTL_PROCESS manager=%s pre_starttime=%s post_starttime=%s worker=%s pre_starttime=%s post_starttime=%s worker_exe=%s\\n' \\\n        \"$manager\" \"$pre_manager_start\" \"$CHAIN_MANAGER_START\" \"$worker\" \"$pre_worker_start\" \"$CHAIN_WORKER_START\" \"$UDEV_EXE\"\n    emit_stream zombie-child-status \"$child_status_rc\" \"$child_status\"\n    emit_stream zombie-parent-worker-status \"$worker_status_rc\" \"$worker_status\"\n    emit_stream zombie-parent-worker-syscall \"$worker_syscall_rc\" \"$worker_syscall\"\n    emit_stream zombie-parent-worker-wchan \"$worker_wchan_rc\" \"$worker_wchan\"\n    ((committed+=1))\n}\n\n# Zombie candidates additionally require stable Z state with no executable link.\n# Only exact known executables are otherwise candidates. Manager -> worker -> child parent\n"
+    },
+    {
+      "operation": "replace",
+      "old_start_byte": 6571,
+      "old_end_byte": 6647,
+      "old_start_line": 138,
+      "old_text": "candidate_count=0 sysctl_matches=0 preexec_candidates=0 committed=0 raced=0\n",
+      "new_text": "candidate_count=0 sysctl_matches=0 preexec_candidates=0 zombie_candidates=0 committed=0 raced=0\n"
+    },
+    {
+      "operation": "replace",
+      "old_start_byte": 8506,
+      "old_end_byte": 8757,
+      "old_start_line": 179,
+      "old_text": "            identity \"$child\" \"$UDEV_EXE\" && [[ \"$ID_PPID\" == \"$worker\" ]] || continue\n            ((candidate_count+=1, preexec_candidates+=1))\n            capture_process \"$child\" suspected-preexec-not-proven-sysctl \"$UDEV_EXE\" \"$manager\" \"$worker\"\n",
+      "new_text": "            if identity \"$child\" \"$UDEV_EXE\" && [[ \"$ID_PPID\" == \"$worker\" ]]; then\n                ((candidate_count+=1, preexec_candidates+=1))\n                capture_process \"$child\" suspected-preexec-not-proven-sysctl \"$UDEV_EXE\" \"$manager\" \"$worker\"\n            elif zombie_identity \"$child\" \"$worker\"; then\n                ((candidate_count+=1, zombie_candidates+=1))\n                capture_zombie \"$child\" \"$manager\" \"$worker\"\n            fi\n"
+    },
+    {
+      "operation": "replace",
+      "old_start_byte": 8784,
+      "old_end_byte": 8993,
+      "old_start_line": 185,
+      "old_text": "printf 'TRIAL_SYSCTL_PROCESS_END schema=1 candidates=%s exact_sysctl=%s suspected_preexec=%s committed=%s discarded=%s\\n' \\\n    \"$candidate_count\" \"$sysctl_matches\" \"$preexec_candidates\" \"$committed\" \"$raced\"\n",
+      "new_text": "printf 'TRIAL_SYSCTL_PROCESS_END schema=1 candidates=%s exact_sysctl=%s suspected_preexec=%s exited_unreaped=%s committed=%s discarded=%s\\n' \\\n    \"$candidate_count\" \"$sysctl_matches\" \"$preexec_candidates\" \"$zombie_candidates\" \"$committed\" \"$raced\"\n"
+    }
+  ],
+  "allowed_scope": "New zombie_identity and capture_zombie functions, child-class selection, counter/footer labels; five inherited functions unchanged."
+}

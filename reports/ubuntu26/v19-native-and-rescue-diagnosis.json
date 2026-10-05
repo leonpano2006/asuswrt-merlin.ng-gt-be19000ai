@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "status": "v19_native_success_backup_route_parser_failure_and_actual_automatic_stock2_return",
+  "native_boot_id": "00000000-0000-4000-8000-000000000030",
+  "native_primary_login_passed": true,
+  "backup_login_passed": false,
+  "scoped_prepare_all_stages_status0_by_monotonic_s": 9.008404,
+  "guardian_preflight_passed_and_ARMED": true,
+  "UBUNTU_EXEC_proved": true,
+  "guardian_local_bits": 7,
+  "guardian_metadata_worker_result": 1,
+  "guardian_lan_sequence": 0,
+  "guardian_first_failure": "policy-expiry",
+  "guardian_failure_reason": 3,
+  "guardian_final_monotonic_ms": 339599,
+  "guardian_last_successful_keepalive_ms": 300549,
+  "rescue_READY_monotonic_s": 170.124236,
+  "rescue_route_dump_refused_errno": 71,
+  "rescue_route_dump_failure_monotonic_s": 171.125885,
+  "rescue_socket_closed_monotonic_s": 171.142317,
+  "broker_started_monotonic_s": 189.885513,
+  "owned_rescue_address_retained_on": "eth0",
+  "actual_current_stock2_boot_id": "00000000-0000-4000-8000-000000000033",
+  "current_stock2_kernel": "4.19.294 #1",
+  "current_stock2_root": "p6",
+  "metadata_sha256": "f555ad0bca09747d8305f659cb1c5465f6c2903144cd7ccaa1ae682254c21a73",
+  "manual_powercycle_performed": false,
+  "ACK_sent": false,
+  "ASUS_complete_acceptance_run": false,
+  "permanent_acceptance": false,
+  "git_commit_or_push": false,
+  "new_journals_verified_once": 2,
+  "old_verifications_reused_by_exact_bytes": 1,
+  "proven_latent_parser_defect": "v4 rejects canonical Linux4.19 RT_TABLE_COMPAT252 + full RTA_TABLE8437 before unchanged disjointness gate",
+  "specific_V19_route_packet_not_proved": true,
+  "next": "Focused v5 raw-header fixture once; p11-only helper successor with exact source/error diagnostics; reuse V19 kernel/firmware/guardian and previous passed tests.",
+  "evidence": {
+    "analysis": {
+      "path": "evidence/ubuntu26/trial-live/nineteenth-forensics-analysis-v2/result.json",
+      "sha256": "a6dd8b70970b1f664bc868c0ef34b41895eaa98e4e3398427fa220fce0daf447",
+      "bytes": 8672
+    },
+    "focused_journal": {
+      "path": "evidence/ubuntu26/trial-live/nineteenth-forensics-analysis-v2/rescue-focused.txt",
+      "sha256": "6150eaf55d5cd8ca9a24cccfb7ed31f750d613904456181583cbc4500bbb9476",
+      "bytes": 4601
+    },
+    "actual_stock": {
+      "path": "evidence/ubuntu26/trial-live/nineteenth-return-forensics-v1/stock-result.json",
+      "sha256": "d4c0ae8f60bcee6330d71edfc2a83aeecd7c08c6219930475ab19e7ea289f94f",
+      "bytes": 1508
+    },
+    "clean_export_receipt": {
+      "path": "evidence/ubuntu26/trial-live/nineteenth-return-forensics-v1/result.json",
+      "sha256": "b2e6ddc3b31e1d4ccd7f2b0dca8c57c9d363f28d7d5b15f1e3d44e0b9e9a80a8",
+      "bytes": 1484
+    }
+  }
+}

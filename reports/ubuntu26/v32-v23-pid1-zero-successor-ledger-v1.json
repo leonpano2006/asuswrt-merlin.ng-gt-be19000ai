@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "captured_utc": "2026-10-05T23:06:57.163262+00:00",
+  "status": "native32_and_v23_packed_once_device_trial_pending",
+  "actual_operations": {
+    "new_host_fixture_compiles": 1,
+    "new_host_fixture_runs": 1,
+    "new_pid1_cases_passed": 21,
+    "old_focused_cases_rerun": 0,
+    "native_guardian_compiles": 1,
+    "native_client_compiles": 0,
+    "firmware_packs_with_integral_readback": 1,
+    "kernel_compiles": 0,
+    "QEMU_runs": 0,
+    "device_flashes": 0
+  },
+  "preflight_v1_failure": {
+    "tool_chunk": "8b61f5",
+    "reason": "missing_host_ccache_before_output_or_compile",
+    "compile_count": 0,
+    "fixture_run_count": 0,
+    "out_exists_after": false
+  },
+  "receipt_files": {
+    "build/asus-accepted-runtime/pid1-zero-time-fixture-v1/result.json": {
+      "sha256": "9b3d89f11dce2b7d5189d0e773cfb3a68b65a98915aa1efc08a2150c2d7f018b",
+      "bytes": 8622
+    },
+    "build/asus-trial-runtime/native-v32-pid1-zero-time/manifest.json": {
+      "sha256": "50819fdb7ed3dac11ba81d96a3839c3aa25882774d6f2337f08687c2fdc9b773",
+      "bytes": 46819
+    },
+    "build/asus-trial-runtime/native-v32-pid1-zero-time/guardian-receipt.json": {
+      "sha256": "80474ff08bf9cdef99b69c7d3d859a1cce45b23da7390584e80574211bef45e5",
+      "bytes": 13915
+    },
+    "build/ubuntu26-firmware/kernel10-ubuntu26-trial-v23-accepted-this-boot-guardian32/manifest.json": {
+      "sha256": "0078fd28b41d1d7fa79c17a816813f419df94bbdd0666021f4d9273e1800f0a6",
+      "bytes": 5654
+    }
+  },
+  "source_review": {
+    "cfe_reviewed_pid1_source": "c8172b73b9e8db0e3e9a62d6a7ef379830fb3f90a8f05f92681f7ab8c12358ab",
+    "root_and_peer_reviewed_native_builder": "c1cf544a727bb4a8ccd2a5f094478a1666eca6c1ce33798ecffb08e38ee19b6e",
+    "packer_filled_actual_three_artifact_pins": "31660990e163d925a5d1ec02e88c370f04418499563ebab6740cfa0ba33453fb",
+    "changed_production_files": [
+      "accepted-core.c"
+    ],
+    "other_production_files_unchanged": 35,
+    "identity_rows_unchanged": 213,
+    "generic_ssh_process_authentication_unchanged": true
+  },
+  "pending": [
+    "new_stock2_return_and_clean_p11",
+    "inactive_slot1_flash",
+    "new_boot_primary_and_backup_login",
+    "actual_current_boot_accept",
+    "observer_free_same_owner_watchdog_survival"
+  ],
+  "permanent_boot_selection": false,
+  "commit_or_push": false
+}

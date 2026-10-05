@@ -1,0 +1,120 @@
+{
+  "schema": 1,
+  "status": "same_boot_asus_https_and_telemetry_point_checks_passed",
+  "observed_boot": "00000000-0000-4000-8000-000000000027",
+  "proof_kind": "derived_verification_of_two_distinct_actual_captures",
+  "actual_single_remote_success_receipt": false,
+  "guardian_ack_sent": false,
+  "boot_accepted": false,
+  "settings_changed": false,
+  "all_required_functional_point_checks_passed": true,
+  "proofs": {
+    "asus_https": {
+      "receipt": {
+        "path": "evidence/ubuntu26/trial-live/twentysecond-repair-readonly-v1/result.json",
+        "sha256": "3790720bc802aed96ead9ea02dc8c1ba477a372a9e0cb931767f5f111bb4831c",
+        "bytes": 1896
+      },
+      "capture": {
+        "path": "evidence/ubuntu26/trial-live/twentysecond-repair-readonly-v1/capture.txt",
+        "sha256": "e8481ec7beea5cbfb5d8ba40e475cfbc8462f52238de319588277e27034b4c3f",
+        "bytes": 1434
+      },
+      "actual_remote_exit_code": 125,
+      "actual_snapshot_complete": false,
+      "source_sha256": "e2e0d79901084eb3b2f665192634fde942ece6f34f564364a1ecd7b38c32bfe3",
+      "checks": [
+        "CHECK running_hash_/proc/144 PASS",
+        "CHECK running_hash_/proc/315 PASS",
+        "CHECK running_hash_/proc/314 PASS",
+        "CHECK private_sh PASS",
+        "CHECK private_etc_marker PASS",
+        "CHECK gencert_exact_stock_bytes PASS",
+        "CHECK gencert_private_alias PASS",
+        "CHECK genuine_aimesh_observed PASS",
+        "CHECK genuine_lldpd_observed PASS",
+        "CHECK genuine_httpd_observed PASS",
+        "CHECK https_8443_listener PASS",
+        "CHECK fixed_vendor_curl PASS",
+        "CHECK https_head_command PASS",
+        "CHECK https_http_response PASS",
+        "CHECK history_autostart PASS",
+        "CHECK history_active PASS"
+      ],
+      "aggregate_summary": [
+        "HTTPS_RESPONSE status=200 certificate_trust_unproven=true no_login=true"
+      ]
+    },
+    "telemetry": {
+      "receipt": {
+        "path": "evidence/ubuntu26/trial-live/twentysecond-telemetry-diagnostic-v1/result.json",
+        "sha256": "0dd9a62a8b1ea23d3386703da6d93dd4f9973363d169d821483c87bd4fa7dd49",
+        "bytes": 2879
+      },
+      "capture": {
+        "path": "evidence/ubuntu26/trial-live/twentysecond-telemetry-diagnostic-v1/capture.txt",
+        "sha256": "31c302e6517774b94a04f2eb9f22babd98b2aaa6f77075cd7879bd5f915dfaec",
+        "bytes": 3177
+      },
+      "actual_remote_exit_code": 1,
+      "actual_snapshot_complete": false,
+      "source_sha256": "62bbcc1e1883b962558740ca0ddfe7eeda580d6c4ccb0bd752f90d7f75fba9ac",
+      "checks": [
+        "CHECK code_hash_/usr/libexec/asus/rc PASS",
+        "CHECK code_hash_/usr/libexec/asus/rc-broker PASS",
+        "CHECK code_hash_/usr/libexec/asus/ash PASS",
+        "CHECK code_hash_/usr/libexec/asus/busybox PASS",
+        "CHECK code_hash_/usr/libexec/leon-asus/telemetry-namespace-exec PASS",
+        "CHECK code_hash_/usr/share/asus/integration/rc.sha256 PASS",
+        "CHECK code_hash_/usr/libexec/node-history/history.sh PASS",
+        "CHECK code_hash_/usr/libexec/ccr-status/collect.sh PASS",
+        "CHECK private_etc_marker PASS",
+        "CHECK history_unit_status_query PASS",
+        "CHECK history_enabled PASS",
+        "CHECK history_active PASS",
+        "CHECK history_steady_busybox PASS",
+        "CHECK history_running_busybox_hash PASS",
+        "CHECK history_root_process PASS",
+        "CHECK history_private_namespace PASS",
+        "CHECK history_lifetime_at_end PASS",
+        "CHECK history_journal_metadata_query FAIL",
+        "CHECK ccr_unit_status_query PASS",
+        "CHECK ccr_enabled PASS",
+        "CHECK ccr_active PASS",
+        "CHECK ccr_steady_busybox PASS",
+        "CHECK ccr_running_busybox_hash PASS",
+        "CHECK ccr_root_process PASS",
+        "CHECK ccr_private_namespace PASS",
+        "CHECK ccr_lifetime_at_end PASS",
+        "CHECK ccr_journal_metadata_query FAIL",
+        "CHECK node_stats_readonly_query PASS",
+        "CHECK node_stats_fresh_rows PASS",
+        "CHECK ccr_status_readonly_query PASS",
+        "CHECK ccr_status_fresh_rows PASS",
+        "CHECK ccr_summary_readonly PASS",
+        "CHECK ccr_status_ok_fresh PASS",
+        "CHECK history_error_empty PASS",
+        "CHECK same_rc_lifetime_and_namespace_at_end PASS",
+        "CHECK same_boot_at_end PASS"
+      ],
+      "aggregate_summary": [
+        "MAINPID role=history pid=4621 parent=1 starttime=19084 exe_class=busybox canonical=/usr/libexec/asus/busybox namespace=mnt:[4026532225] namespace_class=private_rc",
+        "MAINPID role=ccr pid=4620 parent=1 starttime=19084 exe_class=busybox canonical=/usr/libexec/asus/busybox namespace=mnt:[4026532225] namespace_class=private_rc",
+        "DB_AGGREGATE node_stats rows=100 latest=1791240688 age_seconds=38",
+        "DB_AGGREGATE ccr_status rows=1 latest=1791240695 age_seconds=31",
+        "CCR_SUMMARY status=ok age_seconds=31 error_count=0"
+      ]
+    }
+  },
+  "excluded_optional_diagnostics": [
+    "history_journal_metadata_query",
+    "ccr_journal_metadata_query"
+  ],
+  "false_verifier_condition": "ash-entry execs canonical BusyBox; actual BusyBox/hash/private-namespace proved in second capture",
+  "limits": [
+    "Both original remote failures and incomplete statuses are retained; no fabricated rc0 or full-suite PASS.",
+    "Journal metadata queries are unavailable; no journal contents or retries used.",
+    "This is a bounded point observation, not browser rendering, certificate trust, WiFi-client/RGB/AI/SL/USB-CAN/permanent-boot acceptance."
+  ],
+  "created_utc": "2026-10-05T22:53:27.015173+00:00"
+}

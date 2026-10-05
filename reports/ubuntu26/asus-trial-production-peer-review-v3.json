@@ -1,0 +1,203 @@
+{
+  "schema_version": 1,
+  "status": "review_findings_closed_enabled_candidate_qemu_only",
+  "scope": "Independent static review, immutable receipt/map verification and six real kernel10 SquashFS-to-ext4/systemd production-loop fixtures. Hardware watchdog/storage/ASUS backend explicitly substituted.",
+  "guardian_receipt": {
+    "path": "build/asus-trial-runtime/native-v17-enabled/guardian-receipt.json",
+    "sha256": "cf8a91cc2de7be670fa6dfeb57a782c12a14938ad134a0a14f4f3734fcfa9723"
+  },
+  "production_loop": {
+    "path": "reports/ubuntu26/asus-trial-loop-production-loop-v6.json",
+    "sha256": "b6bdbf444413d2018b487171d0337e76c280257f5387639fb31f3c35c2a39e25"
+  },
+  "identity_map": {
+    "path": "reports/ubuntu26/asus-trial-identity-map-archive-sealed-runtime07-v4-enabled.json",
+    "sha256": "2323c62707afb24928219afcafc90f3708550f21031b4998a7f695be7e369308"
+  },
+  "previous_review": {
+    "path": "reports/ubuntu26/asus-trial-production-peer-review-v2.json",
+    "sha256": "c8544632a9ee593e7dcd04f62148c86cbbdc0a3b4d953b653651dbb411e59055"
+  },
+  "shared_production_sources": {
+    "production.c": {
+      "path": "build/asus-trial-runtime/native-v17-enabled/source-snapshot/production.c",
+      "sha256": "a0ef929d6c33a53ffd45ebd8ab9c67f578abd176ada4326feb75b822fc1a2e09"
+    },
+    "trial-policy.c": {
+      "path": "build/asus-trial-runtime/native-v17-enabled/source-snapshot/trial-policy.c",
+      "sha256": "9d93784cbaadfee68b41791c357091e1fec4a28b51f53247d756c3d831c38db3"
+    },
+    "trial-policy.h": {
+      "path": "build/asus-trial-runtime/native-v17-enabled/source-snapshot/trial-policy.h",
+      "sha256": "8e1c2d3d5260bf1bf13f93f24d9bdad339249a353dd54f8b1271a89121d82837"
+    },
+    "trial-handoff.h": {
+      "path": "build/asus-trial-runtime/native-v17-enabled/source-snapshot/trial-handoff.h",
+      "sha256": "4de3b81e120df030daf6bf939ec42977588afeea70dfc0d7bca35151d2f93089"
+    },
+    "preflight.c": {
+      "path": "build/asus-trial-runtime/native-v17-enabled/source-snapshot/preflight.c",
+      "sha256": "834a66f46630e3274cbaa305b34e61c9aa903dca07d15d4947fb024311067130"
+    },
+    "control-server.c": {
+      "path": "build/asus-trial-runtime/native-v17-enabled/source-snapshot/control-server.c",
+      "sha256": "b92a3067881a31fa00bda27210cf71dc671375f94576dc95c034a98273d3579b"
+    },
+    "control-server.h": {
+      "path": "build/asus-trial-runtime/native-v17-enabled/source-snapshot/control-server.h",
+      "sha256": "25d6cf12fb4636ede609ae404d5c9c616f316d6cd6916be76d8011327431c771"
+    },
+    "process-auth.c": {
+      "path": "build/asus-trial-runtime/native-v17-enabled/source-snapshot/process-auth.c",
+      "sha256": "0c85656bf9ccfee9d6a0cc29f0d3de59fbc96000662f7f2709a4202460e560fd"
+    },
+    "local-health.c": {
+      "path": "build/asus-trial-runtime/native-v17-enabled/source-snapshot/local-health.c",
+      "sha256": "dfa7778a12f2af02fb17eca81b9744eaec9c0934ea4a795b8f544e05007c668a"
+    },
+    "health-worker.c": {
+      "path": "build/asus-trial-runtime/native-v17-enabled/source-snapshot/health-worker.c",
+      "sha256": "afdd7af6920fe621ff08ca8ca6005ec15a5839623476361549ebda8256ae967c"
+    },
+    "health-worker.h": {
+      "path": "build/asus-trial-runtime/native-v17-enabled/source-snapshot/health-worker.h",
+      "sha256": "a8bdb13486bc9558be9c45a018590bbaff706e9150295ab39ec8e1d5c4af6204"
+    },
+    "sshd-state.h": {
+      "path": "build/asus-trial-runtime/native-v17-enabled/source-snapshot/sshd-state.h",
+      "sha256": "1e315b40f3ca04a3ae7aca73d5b62f30b0822e1f29bc4507d437aa5c8b28d8b7"
+    }
+  },
+  "findings": [
+    {
+      "id": "guardian-emergency-driver-shutdown",
+      "status": "closed",
+      "resolution": "Verified procfs SysRq b preferred over RB_AUTOBOOT, which invokes BCM watchdog shutdown; direct reboot is last resort without a watchdog-backup guarantee."
+    },
+    {
+      "id": "collector-lost-child-pid",
+      "status": "closed",
+      "resolution": "Retain worker PID until confirmed reap; no overlapping collector; bounded worker failure latches no-feed."
+    },
+    {
+      "id": "running-sshd-config-unverified",
+      "status": "closed_actual_loop_proof",
+      "resolution": "Exact current native sshd executable/process lifetime/unit/argv matcher; wrong-config daemon remained reachable over real SSH before next collector rejected it, without a competing helper timeout."
+    },
+    {
+      "id": "stale-critical-identity-map",
+      "status": "closed_exact_archive_comparison",
+      "resolution": "All 208 critical regular files and metadata match final archive with enabled guardian generated policy."
+    },
+    {
+      "id": "kernel-proc-children-unavailable",
+      "status": "closed_actual_kernel10_proof",
+      "resolution": "Bounded /proc enumeration replaces unavailable children file; preserves complete direct-child start-time snapshot and rechecks lifetime/executable at acceptance."
+    },
+    {
+      "id": "capture-timeout-and-reaped-pid",
+      "status": "closed_source_unit_and_real_loop",
+      "resolution": "Only signal unreaped helper; clean timeout returns incomplete sample only after confirmed reap. STARTING can retry inside original 300s deadline, HEALTHY incomplete sample expires. Unreapable worker remains 6s/6.5s bounded hard failure."
+    },
+    {
+      "id": "optimized-python-evidence-gate-bypass",
+      "status": "closed",
+      "resolution": "Builder and exporter reject optimized Python before argument processing or build directory creation; seven negative gate tests passed."
+    }
+  ],
+  "supporting_evidence": {
+    "capture_tests": {
+      "path": "build/asus-trial-runtime/native-v16/capture-test.log",
+      "sha256": "19c5db4e109f2a7f86419c0fddebdf6e2e354b9558f3e16bbb27c373e6cc0d5e"
+    },
+    "gate_rejections": {
+      "path": "build/asus-trial-runtime/gate-rejection-v2/result.json",
+      "sha256": "75756c4003b26c5eb6809213a1566288f926b4c5bedc99143a2095a9ee183269"
+    },
+    "builder": {
+      "path": "scripts/build-asus-trial-runtime.py",
+      "sha256": "9dd95e30bcfd0db5c8857378ee73bee9f6471ee6e12adcea7b5cc64239ba2aef"
+    },
+    "exporter": {
+      "path": "scripts/export-asus-trial-guardian.py",
+      "sha256": "935ab0000bd0a7292a2c212a1400c751f5994ac23cc76bc59e56f14543929a13"
+    },
+    "guardian_entry": {
+      "path": "scripts/asus-integration/trial-guard/guardian.c",
+      "sha256": "175bee65c76daf1d760edc5f983315ac896c84fba8f215bbfe6bf47ec59a2839"
+    },
+    "kernel_config": {
+      "path": "build/kernel10/attempt1/config",
+      "sha256": "1c495c39d80319246f26a38192eb481b54860ea938d46bbc8156b4fa676a8216"
+    }
+  },
+  "actual_loop_observations": [
+    "STARTING systemctl capture timeout (1502ms against unchanged1500ms limit) was cleanly reaped; later complete samples reached HEALTHY without resetting startup deadline.",
+    "Healthy wrong-argv injection produced only SSH bit loss after confirmed alternate daemon login, then no-feed and mock40s reset.",
+    "Worker hang exited124 with no result after6032ms, latched failure and stopped feeding.",
+    "Metadata readonly-bit loss was explicitly injected before metadata recheck failure.",
+    "LAN lease expiry retained local health yet expired on reason6.",
+    "Prearm refusal restored vendor fixture PID1; ARM failure selected verified-proc emergency fault sink and never executed vendor fallback."
+  ],
+  "historical_nonaccepted_runs": [
+    {
+      "result": {
+        "path": "build/qemu/ubuntu26-pivot-production-loop-v1-healthy-lan-expiry/result.json",
+        "sha256": "daeb661ff2cec6ecf86a20c05ec5631d84f19fe6144c8febd4c7eff991ea2f49"
+      },
+      "disposition": "Fixture user-sessions/PAM readiness and padded storage grammar prevented useful health; retained failed artifact."
+    },
+    {
+      "result": {
+        "path": "build/qemu/ubuntu26-pivot-production-loop-v2-healthy-lan-expiry/result.json",
+        "sha256": "1bc3ff29495b4adbb72136ae30edb45403b9aede8b04ef89f31d7fb7b3215f62"
+      },
+      "disposition": "Real kernel10 lacks CONFIG_PROC_CHILDREN; old collector could never identify ASUS direct child."
+    },
+    {
+      "result": {
+        "path": "build/qemu/ubuntu26-pivot-production-loop-v2-healthy-ssh-argv/result.json",
+        "sha256": "490a2c5b43d987468918ef1fb4bd3a10015ad7be776aee671f7de71314207f20"
+      },
+      "disposition": "Same missing CONFIG_PROC_CHILDREN defect."
+    },
+    {
+      "result": {
+        "path": "build/qemu/ubuntu26-pivot-production-loop-v3-healthy-ssh-argv/result.json",
+        "sha256": "4c241b3cd5357b26fc6a397acf7b078b15125000aa48067124f22f92d9b9afe4"
+      },
+      "disposition": "Collector failed before healthy; original log lacks precise helper-exit diagnosis. Not accepted or attributed solely to load."
+    },
+    {
+      "result": {
+        "path": "build/qemu/ubuntu26-pivot-production-loop-v3-healthy-ssh-argv-retry1/result.json",
+        "sha256": "443ebb197b01bd45f8ca055f4d9c467be1f9bd72f0b73ea4f5c2eea9e1e594c7"
+      },
+      "disposition": "Independent retry reproduced early collector failure; retained, not accepted."
+    },
+    {
+      "result": {
+        "path": "build/qemu/ubuntu26-pivot-production-loop-v4-healthy-ssh-argv/result.json",
+        "sha256": "b76de1187df2d75c4722cbd48537ffdb4070e8ac12bf6f148363a29c2df6ea0c"
+      },
+      "disposition": "Proof raced Type=simple sshd listener startup; connection refused, despite normal later listen."
+    },
+    {
+      "result": {
+        "path": "build/qemu/ubuntu26-pivot-production-loop-v5-healthy-ssh-argv/result.json",
+        "sha256": "79cc8dad904556b26da7f1c37f4643507614071eeca490f2a2b998e0f2a0f505"
+      },
+      "disposition": "Run completed, but daemon-reload caused health command timeout before wrong-argv injection; explicitly excluded from wrong-argv acceptance."
+    }
+  ],
+  "limitations": [
+    "Mock watchdog uses real elapsed40s timer but never opens physical watchdog or proves BCM reset/bootloader behavior.",
+    "Regular-file storage and synthetic broker/ASUS process topology do not validate Broadcom WiFi, AiMesh, Ethernet/AI hardware services.",
+    "Gate-enabled binary is build-authorized for a guarded future trial, not evidence of physical deployment, permanent boot acceptance or runtime success.",
+    "No automatic boot commit or permanent observer-free acceptance path exists in this frozen release."
+  ],
+  "hardware_accessed": false,
+  "router_accessed": false,
+  "physical_deployment_accepted": false,
+  "automatic_boot_commit_allowed": false
+}

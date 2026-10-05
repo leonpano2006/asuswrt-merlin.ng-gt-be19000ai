@@ -1,0 +1,277 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-10-04T13:59:38.540385+00:00",
+  "scope": "Time64 migration audit/policy only; no BE98 or BE19000AI executable modified and no clock set",
+  "policy": "Use time64 by default in every new or rebuildable component. Keep a time32 compatibility boundary only when required by a demonstrated retained binary/protocol ABI and only after evaluating a proper source conversion, versioned interface or explicit adapter.",
+  "default_build_contract": {
+    "arm64": "64-bit time_t is native. New tools/broker/services default arm64 and use fixed-width versioned IPC fields.",
+    "armel_armhf": [
+      "Use _TIME_BITS=64 and _FILE_OFFSET_BITS=64 for normal newly built components, with sizeof(time_t)==8 and sizeof(off_t)==8 compile-time tests. Preserve required float ABI separately.",
+      "Verify compiler/dpkg-buildflags effective defaults rather than relying on GCC version alone.",
+      "Never apply -U_TIME_BITS/-U_FILE_OFFSET_BITS to every armel build just because old proprietary blobs exist.",
+      "Audit every public struct, pointer parameter, return value, callback, shared-memory region, wire record and persisted record shared with unchanged code."
+    ],
+    "kernel": "Image-v9 now implements ARM32 time64 syscalls and has physical armel/armhf glibc timer validation. Existing AIO remains disabled; legacy socket timestamps/ioctls are outside that syscall patch coverage.",
+    "libc": "Retain existing old symbol ABI for unchanged blobs while offering glibc time64 redirects to rebuilt code; upgrading libc does not rewrite old executable layouts or promote its time_t."
+  },
+  "be98_observed_pitfall_and_fix": {
+    "evidence": [
+      {
+        "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/aimesh-ui-fix-20260917/README.md",
+        "sha256": "9d70f15e7593a23ba5122651b7dbe9176a1b0a10ee069fba09a57cb848ba92f3"
+      },
+      {
+        "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/aimesh-ui-fix-20260917/evidence/layout-contract.json",
+        "sha256": "e4f0846f5177a2d2c9067886c27bc2081c166ddf1c4102c32af14af70f5e70f9"
+      },
+      {
+        "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/aimesh-ui-fix-20260917/result.json",
+        "sha256": "65d0d3affe3dfb81d220b5f79a5496251bc2ad240d9b8fe9bd390b208cc90fd0"
+      },
+      {
+        "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/aimesh-ui-fix-20260917/patches/cfg_slavelist.h.patch",
+        "sha256": "f306491992cb13de51d20e61775ed16c9ba4b1dce4abce920580c80fa31f88ef"
+      }
+    ],
+    "producer": "Unchanged ARM32 cfg_server publishes legacy shared-memory CM_CLIENT_TABLE",
+    "vendor_layout": {
+      "application_time_t": 4,
+      "table_bytes": 20348,
+      "report_offset": 836,
+      "count_offset": 15652
+    },
+    "broken_rebuilt_consumer": {
+      "application_time_t": 8,
+      "table_bytes": 20424,
+      "report_offset": 840,
+      "count_offset": 15724
+    },
+    "fixed_rebuilt_consumer": {
+      "application_time_t": 8,
+      "table_bytes": 20348,
+      "report_offset": 836,
+      "count_offset": 15652
+    },
+    "fix": "Only the binary shared-memory reportStartTime field became explicit int32_t for the retained ARM32 producer; the application continued using time64.",
+    "validation": "All65members and padding byte-identical to vendor fixture; fixed application sizeof(time_t)==8; ARM QEMU and live20API rounds plus topology/client rendering passed in recordedBE98 test.",
+    "other_layout_issue": "The newer networkmap header independently grew the legacy client table through added MLO/repeater fields; fixing time width alone was insufficient.",
+    "porting_caution": "The historical patch selects its wire typedef with __arm__. A future arm64 reader of the same armel producer must use the producer protocol layout too. Select an explicit vendor protocol version, not the consumer CPU architecture. Recompute AI-specific layout and producer size; do not reuse BE98 byte counts."
+  },
+  "be19000ai_concrete_boundaries": [
+    {
+      "component": "CM_CLIENT_TABLE shared memory",
+      "evidence": {
+        "source_commit": "69838e4a60564e5550e97f11d8a8cf2c6260c4f0",
+        "path": "release/src/router/cfg_mnt/cfg_slavelist.h",
+        "source_sha256": "c2ab9cc347c6f034cec9b04d742a013576bdd3907b3fb6fea3fb5f4f03cef7e9",
+        "lines": [
+          46,
+          124,
+          134
+        ]
+      },
+      "observed": "Current source still uses time_t reportStartTime[] and declares cm_isSlaveOnline(time_t) and cm_setReOffline(time_t*).",
+      "action": "Define fixed vendor protocol structs with static offsetof/size assertions and separate time64 application representation. Inventory every consumer and retained producer before enabling time64; convert checked fields at the boundary. Audit the time-bearing function declarations across retained objects too.",
+      "limit": "The header proves a type-sensitive contract, not the physical AI producer segment size or every active linked call."
+    },
+    {
+      "component": "HTTPD -> libshared rfctime(const time_t*,...)",
+      "evidence": {
+        "httpd": {
+          "path": "build/kernel9-ui1-rootfs/usr/sbin/httpd",
+          "sha256": "df7d10e24231ccc2f994f4b89c7e73c20264746e06ec8c19e1aba7579d313201"
+        },
+        "libshared": {
+          "path": "build/kernel9-ui1-rootfs/usr/lib/libshared.so",
+          "sha256": "0b280a0c80b16e0ecf1f36281661c9c24fa483fb1adb3de0b2e266d7c9f011d8"
+        },
+        "source": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/httpd-dashboard-fix-20260917/src/misc.c:7641"
+      },
+      "observed": "Current HTTPD has undefined rfctime, libshared defines it, and the sourced implementation takes const time_t*. A rebuilt time64 caller and retained time32 implementation must not assume identical pointee layout.",
+      "action": "Prefer rebuilding the source implementation with an explicit modern API and adapting callsites. If unchanged callers must keep rfctime, preserve its original ABI entry and expose a separate time64 API or tested wrapper for new callers. Range-check any conversion; do not relabel the existing symbol as a larger struct ABI.",
+      "limit": "Current stock pair both uses legacyABI and is not claimed broken; the conflict arises when replacing only one side."
+    },
+    {
+      "component": "retained libshared/libcodb time and stat calls",
+      "evidence": {
+        "libshared": {
+          "path": "build/kernel9-ui1-rootfs/usr/lib/libshared.so",
+          "sha256": "0b280a0c80b16e0ecf1f36281661c9c24fa483fb1adb3de0b2e266d7c9f011d8"
+        },
+        "libcodb": {
+          "path": "build/kernel9-ui1-rootfs/usr/lib/libcodb.so",
+          "sha256": "57d4f89d6bc82ce95a346f823c66b8a9d305ce98d40b4b83f0f17a7307d033fd"
+        }
+      },
+      "observed": "readelf shows legacy time@GLIBC_2.4, localtime/localtime_r, gettimeofday, mktime; libshared also setitimer/getitimer and __xstat64/__fxstat64/__lxstat64; libcodb has __lxstat. stat64 in a symbol name is not proof that its ARM32 timestamps are time64.",
+      "action": "Rebuild available code against modern headers and verify actual redirects (__time64, __localtime64*, __stat64_time64 or statx as applicable). Keep legacy exports for untouched consumers. Audit callbacks and structs passed across library/object boundaries before mixing old and new TUs.",
+      "limit": "Name/version evidence identifies legacy calls; it does not establish all execution paths or all internal timestamp arithmetic."
+    },
+    {
+      "component": "libcodb source completeness",
+      "evidence": {
+        "path": "reports/ui-audit/libcodb-integration.json",
+        "sha256": "9c1961689c87cf5d33d65edb51210766d573dde10fd09843c1da2a902ca1b178"
+      },
+      "observed": "Existing replacement was rejected because public source lacks codb_content_query_json_field_ex, cosql_get_column_values_ex and cosql_remove_data_keep_one_per_group_by_columns exported by stock.",
+      "action": "Recover compatible source or implement and test missing ABI/API behavior before a full time64 replacement. Keep isolated legacy component as explicit temporary boundary if unable to replace it; do not ship the incomplete rebuild just to claim time64."
+    }
+  ],
+  "component_migration_order": [
+    {
+      "components": "native Ubuntu essential/apt/dpkg, new broker/collectors",
+      "target": "arm64 native time64",
+      "checks": "Actual binaries on Image-v9, persisted package state, resolver/TLS, process management; no time32 downgrade."
+    },
+    {
+      "components": "rebuildable ASUS HTTPD/rc source and helpers",
+      "target": "time64 internally, B53-tuned armel where linked to vendor objects",
+      "checks": "Carry proven BE98 translation/FORTIFY fixes; inventory retained object boundaries; cfg/networkmap wire fixtures, source format warnings, actual loader relocation and UI/AiMesh tests."
+    },
+    {
+      "components": "libshared and other source-visible legacy DSOs",
+      "target": "modern internal time64 with explicitly retained versioned/renamed legacy entrypoints where actual consumers require them",
+      "checks": "Full exported ABI signatures, callbacks, symbol versions, struct layouts, legacy+new caller fixtures and >2038 behavior."
+    },
+    {
+      "components": "cfg_client/server, proprietary hostapd/networkmap pieces, source-incomplete libcodb",
+      "target": "replace/rebuild when possible; otherwise narrow explicit legacy interface",
+      "checks": "No assertion that time64 kernel/libc changed old binary layout. Protocol round trips, range checks and failure semantics; do not wrap overflow back into negative epochs."
+    },
+    {
+      "components": "third-party optional armhf programs",
+      "target": "their time64 distribution packages and runtime, separate from armel SDK",
+      "checks": "No hard/soft-float library mixing; sizeof/time64 syscalls and package ABI closure."
+    }
+  ],
+  "specific_porting_rules": {
+    "timers": "Use CLOCK_MONOTONIC for intervals/timeouts; real-time64 for wall clock. Convert kernel/library structs through declared APIs, not casts. Test >2038 timerfd/clock/IPC deadlines only in disposableVM; hardware probes must not set global clock.",
+    "stat": "Use rebuilt headers and time64 stat wrappers or explicit statx. A 32-bit object compiled with old struct stat cannot accept a new struct stat* solely because symbol resolution succeeds.",
+    "shared_and_wire_structs": "Define fixed-width fields, endianness and protocol version; assert complete byte layouts. Decode legacy fields into int64 application values, encode only with validated representability. Once both sides are upgradeable, migrate protocol/storage schema to64bits with explicit compatibility.",
+    "callbacks": "Audit callback typedefs and retained-object callsites. time_t parameters/returns may change ARM register allocation and alignment; function names and SONAME alone cannot validate them.",
+    "format_and_parse": "Replace %ld assumptions about time_t with explicit intmax_t/PRIdMAX casts or deliberate int64 formats; on32bit use strtoimax/strtoll plus bounds checks instead of atol/strtol for64bit epochs. Keep FORTIFY enabled and fix bounded buffers.",
+    "persistent_data": "Identify binary records, SQL schemas, NVRAM text epochs and public JSON representations. Use transactional/versioned migration and fixtures across2038; no blind cast or reinterpretation of old files."
+  },
+  "legacy_exceptions_policy": {
+    "required_record": [
+      "component and exact artifact hash",
+      "observed old ABI field/call signature",
+      "reason source/API conversion is blocked",
+      "bounded adapter or retained implementation",
+      "overflow behavior and test evidence",
+      "condition for removing exception"
+    ],
+    "not_acceptable": [
+      "blanket armel time32 CFLAGS",
+      "silent truncation to32bit",
+      "assuming glibc backward symbol compatibility also preserves changed private structs",
+      "claiming every oldblob is time64 after a kernel syscall backport"
+    ],
+    "historical_recipe_boundary": "BE98 armel-multiarch early four-library compiler migration used -U_TIME_BITS/-U_FILE_OFFSET_BITS. That was a frozen ABI migration scope, not the policy for this new Ubuntu rootfs. Re-audit each package and use time64 unless an actual exported boundary requires a retained legacy form."
+  },
+  "not_completed": "The BusyBox monotonic source fix is staged and focused-tested only. No full ASUS/BusyBox package built, no library ABI migration performed, and current kernel9 still carries stock old userspace. The remaining document specifies source changes and acceptance required for the next userspace stage.",
+  "implementation_followup": {
+    "checked_at_utc": "2026-10-04T14:06:15.577848+00:00",
+    "method": "Exact source via git show at pinned source HEAD; compare previous BE98 patches by replacing full matching hunk context in memory only; no source file, rootfs, binary or device written.",
+    "source_commit": "69838e4a60564e5550e97f11d8a8cf2c6260c4f0",
+    "busybox_monotonic": {
+      "source": "release/src/router/busybox/libbb/time.c:233-271",
+      "source_sha256": "0631c34deddb092fcfa314ec6eb8e00fc86824a43dc8b6ecf7b49a3c6b24c9ef",
+      "config": "release/src/router/busybox/config_base:124 CONFIG_MONOTONIC_SYSCALL=y; board-generated config still needs confirmation for the rebuilt package",
+      "observed": "get_mono(struct timespec*) at244-247 still passes libc struct directly to syscall(__NR_clock_gettime). monotonic_ns/us/ms/sec all call this helper.",
+      "already_fixed_in_ai_source": false,
+      "be98_patch": {
+        "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/ping-diagnosis-20260922/busybox-time64.patch",
+        "sha256": "2471fcdee372fd72ae2fcb300bb4749873003a2fdd4cb751d71913cd0b8f588b"
+      },
+      "be98_public_commit": "f80c68e01042c8d29ae994162c780b48f4b36c78",
+      "textual_port_check": {
+        "hunk_context_matches": [
+          1
+        ],
+        "applied_in_memory": true,
+        "in_memory_output_sha256": "8978882e073e888ef4a9257937a7b3825daebf4b074b12dbf678c783579fe209"
+      },
+      "patch_behavior": "When __USE_TIME_BITS64 is defined, use libc clock_gettime(CLOCK_MONOTONIC,ts); otherwise retain the existing raw call. This fixes user/kernel structure translation and retains time64. Observed glibc2.44 defines __USE_TIME_BITS64 for native arm64 too, so the tested arm64 build also selects libc; legacy armel remains the tested raw branch.",
+      "historical_evidence": [
+        {
+          "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/ping-diagnosis-20260922/README.md",
+          "sha256": "cdb079fd2e515620033b917797d343f3750721648e73973a9b0d3437702cdd7a"
+        },
+        {
+          "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/ping-diagnosis-20260922/result.json",
+          "sha256": "a0fb590e98a0a128ff50f921f694c2fe1a036f56ac8a44e6259a4aedd0b195d1"
+        },
+        {
+          "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/ping-diagnosis-20260922/src/clock-abi-probe.c",
+          "sha256": "4a15ccf06e5aa49195975ab3a4b17f17e03b4aab67261c355f29ec45215f8b73"
+        },
+        {
+          "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/busybox-aarch64-20260923/README.md",
+          "sha256": "e864cb66a67605ea6f7e1b2a414b7c7d0e8aa4a91d00e0dc98383d4302b2c208"
+        }
+      ],
+      "known_failure": "BE98 rebuilt ARM32 had sizeof(time_t)=8,sizeof(timespec)=16,tv_nsec offset8; legacy syscall wrote only first8bytes and left sentinel bytes intact, corrupting ping RTT. The correction worked through libc even on old BE98 kernel with clock_gettime64 ENOSYS. Kernel9 new syscall support does not make the old syscall write a new larger struct.",
+      "current_stock_boundary": "Current AI BusyBox is still old glibc/time32 with legacy syscall import, so this is a required source fix before its time64 rebuild, not a claim of the current stock mismatch.",
+      "safe_port_steps": [
+        "Apply the exact hash-bound hunk in a disposable package source copy; enable normal ARM32 time64/file-offset64 defaults rather than disabling them.",
+        "Build armel time64 and arm64 variants with unchanged relevant applets; assert time_t/timespec sizes and verify dynamic import/normal-loader closure against intended libc.",
+        "In QEMU #9 run the preserved sentinel/ABI probe, compare libc CLOCK_MONOTONIC and all monotonic helpers across successive samples; verify monotonic deltas and nanosecond range, bounded sleep/timeout and ping TTL deadline. No wall-clock change is required.",
+        "Test post2038 date formatting and sparse large files; before replacing BusyBox also test udhcpc scripts, syslog IPC, login/auth, hotplug and mount applets with their actual ASUS contracts. Prior arm64 candidate did not cover all these."
+      ],
+      "staged_implementation": {
+        "patch": "patches/ubuntu26/0001-busybox-time64-clock.patch",
+        "manifest": "configs/ubuntu26/userspace-patches.json",
+        "integration": "Separate userspace stack using scripts/apply-patch-stack.py conventions; kernel-only stack and current vendor source checkout are unchanged.",
+        "verification": "reports/ubuntu26/busybox-time64-patch-test.json",
+        "result": {
+          "old_armel_time64_failure_reproduced": true,
+          "patched_abi_variants_passed": 4,
+          "checks_per_passing_variant": 65,
+          "global_clock_writes": 0
+        },
+        "runtime_limit": "Focused actual helper functions under qemu-user/native host with explicitglibc2.44; not a full BusyBox rebuild or fresh physical acceptance."
+      }
+    },
+    "cfg_shared_memory": {
+      "source": "release/src/router/cfg_mnt/cfg_slavelist.h:46,124,134",
+      "source_sha256": "c2ab9cc347c6f034cec9b04d742a013576bdd3907b3fb6fea3fb5f4f03cef7e9",
+      "already_fixed_in_ai_source": false,
+      "observed": "reportStartTime[] is still time_t; cm_isSlaveOnline(time_t) and cm_setReOffline(time_t*) are separate source-level callable contracts requiring retained-object audit.",
+      "be98_patch": {
+        "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/aimesh-ui-fix-20260917/patches/cfg_slavelist.h.patch",
+        "sha256": "f306491992cb13de51d20e61775ed16c9ba4b1dce4abce920580c80fa31f88ef"
+      },
+      "textual_port_check": {
+        "hunk_context_matches": [
+          1,
+          1
+        ],
+        "applied_in_memory": true,
+        "in_memory_output_sha256": "0c07d4f4d69bff11ac8720298941329b0af6e5d90bf0884df2d94df684aba3ea"
+      },
+      "safety": "Textual patch compatibility is not a target layout test. Keep normal application time64; define the retained producer wire version independently from consumer architecture, then assert AI-specific total size/offsets/alignment against the actual producer fixture. Do not copy BE98 table byte counts or use __arm__ as the protocol selector for an arm64 reader.",
+      "safe_port_steps": [
+        "Capture exact AI SDK feature macros and enumerate all CM_CLIENT_TABLE producers/readers plus any time-bearing by-value/pointer/callback boundary with retained objects.",
+        "Compile legacy layout fixture and modern armel/arm64 reader fixture; require every field offset and complete initialized-byte pattern to match the retained producer protocol. Inspect actual shared-memory segment size read-only before physical integration.",
+        "Use explicit int32 wire timestamp only for the retained32bit producer, convert to64bit internal time with checked encode/decode. Upgrade the producer/protocol to64bits when source-compatible; reject overflow rather than silently truncate.",
+        "Exercise empty/invalid shared-memory handling, AiMesh topology/client counts and interval calculations in QEMU fixtures, then actual HTTPD service on a controlled hardware trial without rebooting radios."
+      ]
+    },
+    "rfctime": {
+      "source": "release/src/router/shared/misc.c:7644-7656",
+      "source_sha256": "0fea3c59f6a879259056c26e74b6bcc8735c98c612d5b2bcabe9a6c8d4e51650",
+      "implementation": "rfctime(const time_t *timep,char *ts_string,int len) calls localtime_r(timep,&tm) and strftime.",
+      "already_has_explicit_time64_legacy_adapter_in_ai_source": false,
+      "be98_examined_source": "httpd-dashboard-fix-20260917/src/misc.c:7641 likewise keeps time_t*; no distinct rfctime64/__wrap_rfctime found in examined HTTPD/dashboard/AiMesh/platform source checkpoints. This is scoped search, not a claim about every historical file.",
+      "actual_elf_edge": "Current AI HTTPD imports rfctime; current AI libshared exports it. A time64 consumer with old library reads the wrong-width pointee, while a newtime64 library serving oldpointer callers could read beyond their4byte object.",
+      "safe_port_steps": [
+        "Inventory every binary/object importing rfctime and its known compile ABI before changing exported signature.",
+        "Prefer a new explicit64bit API (for example timestamp int64_t by value) for rebuilt code, retain old rfctime entry with explicit legacy32bit pointee contract only for retained callers, or upgrade all source-visible callers together with distinct compatibility entrypoints. Do not cast time_t pointers.",
+        "Use separate legacy and modern caller fixtures with canaries, dates before/at/after2038 including2100, TZ/DST transitions, output-length boundaries and failure checks. Preserve FORTIFY; oldformat overflow must fail explicitly.",
+        "Run loader/relocation plus HTTPD authentication/cookie/date/log paths against final linked libraries. Source-level argument type changes alone do not prove mixed retained objects safe."
+      ]
+    },
+    "result": "The exact BE98 BusyBox fix is now staged as a board-pinned Ubuntu userspace patch, with old ARM32 failure reproduced and four passing ABI fixtures. AiMesh wire-field pattern still requires AI producer-layout validation; rfctime still requires a deliberate compatibility API implementation. No blanket time32 compilation and no live deployment."
+  }
+}

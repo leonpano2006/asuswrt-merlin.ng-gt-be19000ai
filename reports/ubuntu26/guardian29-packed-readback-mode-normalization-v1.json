@@ -1,0 +1,3444 @@
+{
+  "schema": 1,
+  "status": "private_extracted_readback_mode_normalization_completed",
+  "sidecar": {
+    "path": "scripts/finish-ubuntu26-guardian29-pack-v1.py",
+    "sha256": "b9c7424f52cc7590db8d4cff262b4e469b339fd0a3c07353b8c65dfeff8c046f",
+    "bytes": 14956
+  },
+  "approved_finish_plan_sha256": "fb631814602e58d84e20aaa61243f6112fdb317b5d999f49121defdc1b089c26",
+  "observed_partial_pack": {
+    "path": "build/ubuntu26-bootstrap/guardian29-finish-source-plan-v1/observed-partial-pack.json",
+    "sha256": "bb371bc044b729bfec52b3f897ba6cc346311b0ff693aba70d03e1c4121a98f8"
+  },
+  "original_packer": {
+    "path": "scripts/pack-ubuntu26-guardian29-successor-v1.py",
+    "sha256": "c941c29fa7f7edf39607f0cd13fbcb6c5b0e9123fc3473e25c8fff60bbfd7e6d",
+    "bytes": 30556
+  },
+  "original_execution_plan_sha256": "909a190b4b67c82958c2d64d01a69a85c3eaf6b6e5d06796f9dcc8898baf5b75",
+  "normalized_file_count": 155,
+  "normalized_mode_delta": [
+    {
+      "path": "bin/qdf_cv_lvl.sh",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "6dc3ce5de3fad9811e33f199d859e9bd18e46d956104644c1da52038c766ed2e"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "6dc3ce5de3fad9811e33f199d859e9bd18e46d956104644c1da52038c766ed2e"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715277,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 738,
+        "st_mtime_ns": 1761750320000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/crypto/842.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "8ea1fe2dee846f7255304f2cb4204e3218cd015990a6ed6bc8c0db27daf1573a"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "8ea1fe2dee846f7255304f2cb4204e3218cd015990a6ed6bc8c0db27daf1573a"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715485,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 8000,
+        "st_mtime_ns": 1791110946000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/crypto/af_alg.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "1df437337520549900ffc4cca29e4637c6877bb620bbe197fb7cc77479b63d60"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "1df437337520549900ffc4cca29e4637c6877bb620bbe197fb7cc77479b63d60"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715486,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 32112,
+        "st_mtime_ns": 1791110947000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/crypto/algif_aead.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "3a70f6735a6b09cac46f78b884f2fdc4c255979b9873a5853039b8cd0b91fc89"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "3a70f6735a6b09cac46f78b884f2fdc4c255979b9873a5853039b8cd0b91fc89"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715487,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 15672,
+        "st_mtime_ns": 1791110947000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/crypto/algif_hash.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "61f20527b8c2b2fa6ccd453cb7967940f09bcaa60ff8ac9c9d14d516f296796f"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "61f20527b8c2b2fa6ccd453cb7967940f09bcaa60ff8ac9c9d14d516f296796f"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715488,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 15272,
+        "st_mtime_ns": 1791110946000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/crypto/algif_rng.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "51f5c4fffd937edd21bb103582fe60ea371f709261031b4c64cfaf6188008e30"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "51f5c4fffd937edd21bb103582fe60ea371f709261031b4c64cfaf6188008e30"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715489,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 8616,
+        "st_mtime_ns": 1791110947000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/crypto/algif_skcipher.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "fedde7c3b57b2a82da5490f4bf6983d67924d10dd19ca14dbfced7565aa5a152"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "fedde7c3b57b2a82da5490f4bf6983d67924d10dd19ca14dbfced7565aa5a152"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715490,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 13520,
+        "st_mtime_ns": 1791110947000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/crypto/lz4.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "260bfabe3dce4959652b712ff83f1ab041ed6e2fe2bae5e81f9ee7ff51caf4dd"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "260bfabe3dce4959652b712ff83f1ab041ed6e2fe2bae5e81f9ee7ff51caf4dd"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715491,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 7992,
+        "st_mtime_ns": 1791110947000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/crypto/lz4hc.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "25b4e56ce0b9a221081f47dd9c26f120a017514d3957330df08f52634aa5b847"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "25b4e56ce0b9a221081f47dd9c26f120a017514d3957330df08f52634aa5b847"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715492,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 8008,
+        "st_mtime_ns": 1791110946000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/crypto/xor.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "dc6fd642be563897ffb6ce447eba33717bbe53140d8c5969864ef85d8702091d"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "dc6fd642be563897ffb6ce447eba33717bbe53140d8c5969864ef85d8702091d"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715493,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 13392,
+        "st_mtime_ns": 1791110947000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/base/firmware_loader/firmware_class.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "3bbae45bce4dfea42952c890669dadd094df75fbc16ea2c2ec2074eca48ad7b4"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "3bbae45bce4dfea42952c890669dadd094df75fbc16ea2c2ec2074eca48ad7b4"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715497,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 17200,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/block/zram/zram.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "1c40b38ec43e03d11e55fe1a2b94cf2759defadf91f2ffcd569fdcad46d2ad77"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "1c40b38ec43e03d11e55fe1a2b94cf2759defadf91f2ffcd569fdcad46d2ad77"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715500,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 49264,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/cdrom/cdrom.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "c914d7a39e34d3a7dd14c11e9abaea513a4329a7490b125b711c7190ac47c8ea"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "c914d7a39e34d3a7dd14c11e9abaea513a4329a7490b125b711c7190ac47c8ea"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715502,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 53888,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/char/rtl8372/rtl8372.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "3044b7b31fc1ed1851791aac5c3df13ef31496132a01cfd8c5cc732f8112f4c3"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "3044b7b31fc1ed1851791aac5c3df13ef31496132a01cfd8c5cc732f8112f4c3"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715505,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 948056,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/connector/cn.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "7055525dd24c4feeebbc9fb24a28831c34d443799ba6872e10b8586392762919"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "7055525dd24c4feeebbc9fb24a28831c34d443799ba6872e10b8586392762919"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715507,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 13712,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/hid/usbhid/usbhid.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "5be5d0fed4d052bd0946abbe48e00921c3270795d85c8fa9bc43c14932a2558c"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "5be5d0fed4d052bd0946abbe48e00921c3270795d85c8fa9bc43c14932a2558c"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715510,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 60568,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/mmc/core/oops_mmc.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "698e8a7f8bda96357a9ca29108c3cf5ff4ab39beedfbb6bf61548716a1a51ca3"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "698e8a7f8bda96357a9ca29108c3cf5ff4ab39beedfbb6bf61548716a1a51ca3"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715513,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 21624,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/mtd/mtdoops.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "667d4734bcfa450d9cbaca40736d4f164e8e32931bb9db3a5196c12c5434c074"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "667d4734bcfa450d9cbaca40736d4f164e8e32931bb9db3a5196c12c5434c074"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715515,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 16416,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/net/bonding/bonding.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "db6e6dc996aefcaf0b5d6f5db100224890e084a6dff7dab756db3d18ac92c7ba"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "db6e6dc996aefcaf0b5d6f5db100224890e084a6dff7dab756db3d18ac92c7ba"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715518,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 232656,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/net/can/can-dev.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "d1b01a07072a76b45f6a76b7f2124ab94fa2eeb790d0cf94e68928299f2aecfe"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "d1b01a07072a76b45f6a76b7f2124ab94fa2eeb790d0cf94e68928299f2aecfe"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715520,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 34384,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/net/can/usb/peak_usb/peak_usb.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "dbf8d5178501d11f13a0eae6a378670bdc78a313cf3ec076bb0449d35a53d878"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "dbf8d5178501d11f13a0eae6a378670bdc78a313cf3ec076bb0449d35a53d878"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715523,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 58856,
+        "st_mtime_ns": 1791207432000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/net/mii.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "87a7b0dfe52213c3e4be479f5724ca7a3fb81c7c848c3ca246c3514904d02140"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "87a7b0dfe52213c3e4be479f5724ca7a3fb81c7c848c3ca246c3514904d02140"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715524,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 12152,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/net/tun.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "e2dd1bb8edbbce32a7f056f11c838e7b2a4fa838c7884fecee2d32d70aac6605"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "e2dd1bb8edbbce32a7f056f11c838e7b2a4fa838c7884fecee2d32d70aac6605"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715525,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 73568,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/net/usb/asix.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "3eacae3287b643578c7f1e8c19b0f5c10b7f10a6221491dd79f781ba4634090c"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "3eacae3287b643578c7f1e8c19b0f5c10b7f10a6221491dd79f781ba4634090c"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715527,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 64240,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/net/usb/ax88179_178a.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "00aac46dcbfa9b637d3b29a6c16ca671e32fb817250419865d7416542e6f4cca"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "00aac46dcbfa9b637d3b29a6c16ca671e32fb817250419865d7416542e6f4cca"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715528,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 37904,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/net/usb/cdc_ether.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "44cd02d8deb61ce77f53db4bfb51f93d4c61798d32956d2b05bc3e6779dd66c3"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "44cd02d8deb61ce77f53db4bfb51f93d4c61798d32956d2b05bc3e6779dd66c3"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715529,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 20776,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/net/usb/cdc_ncm.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "efc4edc6da205190d7285d239bf40f75308a267cc8e0ca4051ae94f69225b731"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "efc4edc6da205190d7285d239bf40f75308a267cc8e0ca4051ae94f69225b731"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715530,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 43856,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/net/usb/ipheth.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "a36e737bfd1959cbd006191bb21e0e9ed8c5a9457445b9de58bd33b49444b44e"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "a36e737bfd1959cbd006191bb21e0e9ed8c5a9457445b9de58bd33b49444b44e"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715531,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 19096,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/net/usb/qmi_wwan.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "450760aa45cf83ec3a53c3358efa2f96181f470ee4ab01328052be97a41b1725"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "450760aa45cf83ec3a53c3358efa2f96181f470ee4ab01328052be97a41b1725"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715532,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 83752,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/net/usb/rndis_host.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "bf9e3a5b6c558d7594879fb5074c93ad854ea18272566fe4d8ac8a0e5bff0a9b"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "bf9e3a5b6c558d7594879fb5074c93ad854ea18272566fe4d8ac8a0e5bff0a9b"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715533,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 17360,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/net/usb/usbnet.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "4c4ee1ad9278fdc4cf9eee932e9241720977fabec4924c70d2abad8316446881"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "4c4ee1ad9278fdc4cf9eee932e9241720977fabec4924c70d2abad8316446881"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715534,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 52808,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/scsi/scsi_mod.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "a81b6b24e1603d6d5d2121809a00f52d01b31049f173ab73e97c321643a7a98a"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "a81b6b24e1603d6d5d2121809a00f52d01b31049f173ab73e97c321643a7a98a"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715536,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 313632,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/scsi/sd_mod.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "1197a999b7aa88ea0b5d1d77f4d87387d136e6e5408ce05225bd1c7c345305fb"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "1197a999b7aa88ea0b5d1d77f4d87387d136e6e5408ce05225bd1c7c345305fb"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715537,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 73984,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/scsi/sg.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "ad4397f4237a9d3a3cd22e6628bab34ca5994ee9a0251dbbeefcf4756c9a03e4"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "ad4397f4237a9d3a3cd22e6628bab34ca5994ee9a0251dbbeefcf4756c9a03e4"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715538,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 75016,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/scsi/sr_mod.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "562e8ccf9361f1df919f9e48e2786008ef957eacc7f69759380f76a012b55121"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "562e8ccf9361f1df919f9e48e2786008ef957eacc7f69759380f76a012b55121"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715539,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 35960,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/usb/class/cdc-acm.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "e3fab602333387fe6bf4cbe8e8e9cc319881e842ec541364cbabfce623ff5155"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "e3fab602333387fe6bf4cbe8e8e9cc319881e842ec541364cbabfce623ff5155"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715542,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 50064,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/usb/class/cdc-wdm.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "ed18818ceaa7bfdf0e16ff73ff6fca441e22b9f0d6122c48607e2ca328725ac6"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "ed18818ceaa7bfdf0e16ff73ff6fca441e22b9f0d6122c48607e2ca328725ac6"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715543,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 28320,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/usb/class/usblp.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "ef1f736b9e6e4ff114f73be7b616511205b37b30783b003f8d16abd0dc771601"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "ef1f736b9e6e4ff114f73be7b616511205b37b30783b003f8d16abd0dc771601"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715544,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 31528,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/usb/common/usb-common.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "b2ddb735729e329f88d7594feb91e7f69f3c217cb3c91d47288b3c6f09d27f99"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "b2ddb735729e329f88d7594feb91e7f69f3c217cb3c91d47288b3c6f09d27f99"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715546,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 12016,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/usb/core/ledtrig-usbport.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "a94617aa02720fe4c44b03cb1f1296817cdbcae607e9228bfcee32164ef5e380"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "a94617aa02720fe4c44b03cb1f1296817cdbcae607e9228bfcee32164ef5e380"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715548,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 11424,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/usb/core/usbcore.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "716e5139552a1360b82aa209137cb5014a31ba574f134bdf7c1bdcaa1d11e9d2"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "716e5139552a1360b82aa209137cb5014a31ba574f134bdf7c1bdcaa1d11e9d2"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715549,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 370752,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/usb/host/ehci-hcd.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "f22d5f45c58696296b74aef5c12d29126bef4377953603b9a7b66c0514157589"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "f22d5f45c58696296b74aef5c12d29126bef4377953603b9a7b66c0514157589"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715551,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 75000,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/usb/host/ehci-pci.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "11146ce1bf8c7bff4f4319c8080506a7a0992c4b950a4d17f390c50a7155a1d0"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "11146ce1bf8c7bff4f4319c8080506a7a0992c4b950a4d17f390c50a7155a1d0"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715552,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 12560,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/usb/host/ehci-platform.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "eb77b043037982fba1484417f9d5d617ed191cfdff80b5a953fe7e76972333d8"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "eb77b043037982fba1484417f9d5d617ed191cfdff80b5a953fe7e76972333d8"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715553,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 16872,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/usb/host/ohci-hcd.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "da5f73263ae81f9f1910c2393509d0b9428997de4be98dffd058b367588d182f"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "da5f73263ae81f9f1910c2393509d0b9428997de4be98dffd058b367588d182f"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715554,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 58920,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/usb/host/ohci-pci.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "39562ac2ab92840957e8f6ea265fdd9a4d4b117613dba4440072f9a2efb95677"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "39562ac2ab92840957e8f6ea265fdd9a4d4b117613dba4440072f9a2efb95677"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715555,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 10664,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/usb/host/ohci-platform.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "c1972964662f8210640eadb02539ac2dc0ea76ac2836dc997052e7b1c2abb403"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "c1972964662f8210640eadb02539ac2dc0ea76ac2836dc997052e7b1c2abb403"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715556,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 13328,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/usb/host/xhci-hcd.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "bf9ca5f7f062cfffa66f3c42917e9a2856f4c94e786c93d43b1a4cde96bf07b1"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "bf9ca5f7f062cfffa66f3c42917e9a2856f4c94e786c93d43b1a4cde96bf07b1"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715557,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 218656,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/usb/host/xhci-pci.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "2dca1b3bb10b51ff3bdbaf5d3006c28a7370c0eafce2c4110d00f3b6e7000352"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "2dca1b3bb10b51ff3bdbaf5d3006c28a7370c0eafce2c4110d00f3b6e7000352"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715558,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 11504,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/usb/host/xhci-plat-hcd.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "b4ee449fcb436d5b86364a32c483ac614274be8affdb29835444017b3ac4dc09"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "b4ee449fcb436d5b86364a32c483ac614274be8affdb29835444017b3ac4dc09"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715559,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 18360,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/usb/mon/usbmon.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "477d8167c9460de15c2b03ae24b112172ba26e6bed28d859fa39c3699241a859"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "477d8167c9460de15c2b03ae24b112172ba26e6bed28d859fa39c3699241a859"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715561,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 51736,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/usb/serial/option.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "9da279a4afa191456fd966e571a22f9d73428fa68b6c53076c84aa2c4c304d69"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "9da279a4afa191456fd966e571a22f9d73428fa68b6c53076c84aa2c4c304d69"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715563,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 180760,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/usb/serial/usb_wwan.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "78ef835301c0911939193ae72a15d5a7f37e7a1f8551e9fae9138cf4740b1326"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "78ef835301c0911939193ae72a15d5a7f37e7a1f8551e9fae9138cf4740b1326"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715564,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 15608,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/usb/serial/usbserial.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "a0364cf15780287981980e9611e809687386e48baf71d190923cfb076e28a10e"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "a0364cf15780287981980e9611e809687386e48baf71d190923cfb076e28a10e"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715565,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 56640,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/usb/storage/uas.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "182d0a06c38f80b417c508560f98e25473d78e3ec9106b3f7dbf34219e4e25ef"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "182d0a06c38f80b417c508560f98e25473d78e3ec9106b3f7dbf34219e4e25ef"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715567,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 33808,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/drivers/usb/storage/usb-storage.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "b6e8d5fedbb86f52071f95e5aed1e37a8b74a66572d46dd03cd0b9c05b4966e6"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "b6e8d5fedbb86f52071f95e5aed1e37a8b74a66572d46dd03cd0b9c05b4966e6"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715568,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 147144,
+        "st_mtime_ns": 1791110964000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/fs/binfmt_misc.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "404f173b57d563ae15088b1bfaf391c6d0e8ef90574aacfe1fe3e051f88c0d27"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "404f173b57d563ae15088b1bfaf391c6d0e8ef90574aacfe1fe3e051f88c0d27"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715570,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 20264,
+        "st_mtime_ns": 1791110954000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/fs/btrfs/btrfs.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "0b1643f2581e914b7acfb9b86e894c97cff591a17f9c349921d5404649fca69e"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "0b1643f2581e914b7acfb9b86e894c97cff591a17f9c349921d5404649fca69e"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715572,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 1781704,
+        "st_mtime_ns": 1791110954000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/fs/cifs/cifs.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "60461e9e1e4636d5f8de53b088ec8ec703331d29e7aa2826f2544feb732062ad"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "60461e9e1e4636d5f8de53b088ec8ec703331d29e7aa2826f2544feb732062ad"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715574,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 724592,
+        "st_mtime_ns": 1791110954000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/fs/exportfs/exportfs.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "97e80f9293091018fcef8a729235051b2ed1c070f8c74cdc088a0adb4924403b"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "97e80f9293091018fcef8a729235051b2ed1c070f8c74cdc088a0adb4924403b"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715576,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 11056,
+        "st_mtime_ns": 1791110954000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/fs/nls/nls_cp437.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "e3c2ba11fd2f68b60dbea4f4ce777002113277b8d444522e1749934c866036c2"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "e3c2ba11fd2f68b60dbea4f4ce777002113277b8d444522e1749934c866036c2"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715578,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 10696,
+        "st_mtime_ns": 1791110954000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/fs/nls/nls_cp850.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "f8d659a58eb30cce2de2962fe592f5a9608c16949d41c040bd02ddaae8fd30c9"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "f8d659a58eb30cce2de2962fe592f5a9608c16949d41c040bd02ddaae8fd30c9"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715579,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 9760,
+        "st_mtime_ns": 1791110954000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/fs/nls/nls_cp852.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "b237c2b968afcb9c1c6f1b7718d89e4a85e86278633d0ac6ed6a9f903a687dba"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "b237c2b968afcb9c1c6f1b7718d89e4a85e86278633d0ac6ed6a9f903a687dba"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715580,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 9760,
+        "st_mtime_ns": 1791110954000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/fs/nls/nls_cp866.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "e0b4713efbac5b8301df339c94fe5348b4675ce94bdbd2702b027c943f536cbd"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "e0b4713efbac5b8301df339c94fe5348b4675ce94bdbd2702b027c943f536cbd"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715581,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 10072,
+        "st_mtime_ns": 1791110954000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/fs/nls/nls_cp932.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "94689fc0a3e248dc9c2a83c031f7c18e32dcff79efbcffad5b6e16486d11a0c1"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "94689fc0a3e248dc9c2a83c031f7c18e32dcff79efbcffad5b6e16486d11a0c1"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715582,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 91688,
+        "st_mtime_ns": 1791110954000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/fs/nls/nls_cp936.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "d2e6172b057cb799e7dc152115dfd526d34623fcb9eae8a2057061a30b95dbdb"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "d2e6172b057cb799e7dc152115dfd526d34623fcb9eae8a2057061a30b95dbdb"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715583,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 140272,
+        "st_mtime_ns": 1791110954000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/fs/nls/nls_cp949.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "be8c80d610f576842fd12e11a99f708335d4b4841d33cb2e94b5555df0f9ae7f"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "be8c80d610f576842fd12e11a99f708335d4b4841d33cb2e94b5555df0f9ae7f"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715584,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 163344,
+        "st_mtime_ns": 1791110954000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/fs/nls/nls_cp950.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "1200a7f1231ef9b2947cebf7e9e0d97c4d42248e93557ba7c65ab990fd819c79"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "1200a7f1231ef9b2947cebf7e9e0d97c4d42248e93557ba7c65ab990fd819c79"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715585,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 115720,
+        "st_mtime_ns": 1791110954000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/fs/nls/nls_euc-jp.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "313897d8061c64ec281a68c60ca37d5911f01440b7a955a5c6e2928483174438"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "313897d8061c64ec281a68c60ca37d5911f01440b7a955a5c6e2928483174438"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715586,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 10168,
+        "st_mtime_ns": 1791110954000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/fs/ntfs/ntfs.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "92c70617a6c76bbc7feb773ea9063c7c12586283ca1629b8959bbf992c95f42c"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "92c70617a6c76bbc7feb773ea9063c7c12586283ca1629b8959bbf992c95f42c"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715588,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 408616,
+        "st_mtime_ns": 1791110954000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/fs/overlayfs/overlay.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "5c3b87c54430a351bf7cbd91d1217950457055817c97a6a79d7e03be9483793e"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "5c3b87c54430a351bf7cbd91d1217950457055817c97a6a79d7e03be9483793e"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715590,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 189576,
+        "st_mtime_ns": 1791110954000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/fs/xfs/xfs.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "aa2b64e71954bdc7aa2e83512abb78caf28b6583b5c1fadc48111bb51ef9d43a"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "aa2b64e71954bdc7aa2e83512abb78caf28b6583b5c1fadc48111bb51ef9d43a"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715595,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 1335264,
+        "st_mtime_ns": 1791110954000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/lib/842/842_compress.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "e56fc9f5c7d0d84cd79919c4dc72bdce5d3c561df102f7f82916733257180a02"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "e56fc9f5c7d0d84cd79919c4dc72bdce5d3c561df102f7f82916733257180a02"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715598,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 13784,
+        "st_mtime_ns": 1791110945000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/lib/842/842_decompress.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "dd3cd2e927da647ea2c5fe489a3aeb24931b9f2849d2f4ea83b239376f3199fd"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "dd3cd2e927da647ea2c5fe489a3aeb24931b9f2849d2f4ea83b239376f3199fd"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715599,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 11856,
+        "st_mtime_ns": 1791110945000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/lib/lz4/lz4_compress.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "091c9fd33a068d534694f502be18d4c6fe9b3f9406ce0807b8ab2c7a45d4d179"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "091c9fd33a068d534694f502be18d4c6fe9b3f9406ce0807b8ab2c7a45d4d179"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715601,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 33032,
+        "st_mtime_ns": 1791110945000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/lib/lz4/lz4_decompress.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "5918ebb0a3816a192308fce4279da4a2f104f2ca8eacd5f3cb3a435f0a97f74b"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "5918ebb0a3816a192308fce4279da4a2f104f2ca8eacd5f3cb3a435f0a97f74b"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715602,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 28832,
+        "st_mtime_ns": 1791110945000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/lib/lz4/lz4hc_compress.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "ed4eecfb617287770993ef836560f2ec6ee63d764b5a03e6936d5d1309acb348"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "ed4eecfb617287770993ef836560f2ec6ee63d764b5a03e6936d5d1309acb348"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715603,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 17416,
+        "st_mtime_ns": 1791110945000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/lib/raid6/raid6_pq.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "93553361eb5a5c0ec8d9f14797ee062932529e5fb3223a21116a584e6b4caf95"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "93553361eb5a5c0ec8d9f14797ee062932529e5fb3223a21116a584e6b4caf95"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715605,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 109312,
+        "st_mtime_ns": 1791110945000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/mm/z3fold.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "92a10d82761ff9875d7a0b7c775e48146cd1f82784895c14e0873d1f2b6d5f55"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "92a10d82761ff9875d7a0b7c775e48146cd1f82784895c14e0873d1f2b6d5f55"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715607,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 22840,
+        "st_mtime_ns": 1791110955000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/mm/zbud.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "fdc30b01a31c85ad5d2f1c6bf0faec275c7f32174edae69f2ea513288173daa3"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "fdc30b01a31c85ad5d2f1c6bf0faec275c7f32174edae69f2ea513288173daa3"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715608,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 11328,
+        "st_mtime_ns": 1791110955000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/bridge/br_netfilter.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "af486a907d13488d7d89a527a543171460f30b952620e86627459cab67f65f01"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "af486a907d13488d7d89a527a543171460f30b952620e86627459cab67f65f01"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715611,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 32176,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/can/can-bcm.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "07fa3af549919af7280fed1d4e6eb9292cb23ba5448241a8c804e9aeb3ca3329"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "07fa3af549919af7280fed1d4e6eb9292cb23ba5448241a8c804e9aeb3ca3329"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715613,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 32400,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/can/can-gw.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "9d28804c58d315ed0734dd9d57d19bf6c4fbc41062aff06e158aadd892c902b8"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "9d28804c58d315ed0734dd9d57d19bf6c4fbc41062aff06e158aadd892c902b8"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715614,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 23784,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/can/can-raw.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "d92d59c046084c684962943998a8842bb6b1d4c4f2c2fad836c68080f993b8c6"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "d92d59c046084c684962943998a8842bb6b1d4c4f2c2fad836c68080f993b8c6"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715615,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 25856,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/can/can.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "e2f96c06ec80966f3d763f286269fe8bdeaa81cd5f84397e57bb61d9151a083c"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "e2f96c06ec80966f3d763f286269fe8bdeaa81cd5f84397e57bb61d9151a083c"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715616,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 36120,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/dns_resolver/dns_resolver.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "55a182e4f9472299200409ff79e883f5bf3f1efba39d71568194a209e8f40858"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "55a182e4f9472299200409ff79e883f5bf3f1efba39d71568194a209e8f40858"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715618,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 16968,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/ipv4/ah4.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "cfd381d1b6f3c96cecb7a0a762cfd35fc9acd866b7cba1f566ad4f5e912e9dec"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "cfd381d1b6f3c96cecb7a0a762cfd35fc9acd866b7cba1f566ad4f5e912e9dec"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715620,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 15104,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/ipv4/esp4.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "a85e8c077960260af8eb52d11b7eba4e5a2158fa734cd421a33e7e8ed49b1419"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "a85e8c077960260af8eb52d11b7eba4e5a2158fa734cd421a33e7e8ed49b1419"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715621,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 22848,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/ipv4/ipcomp.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "d4612f9ccec702b06f62de8d9569f42866a5b33215d0cffeb29f56335a232fe0"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "d4612f9ccec702b06f62de8d9569f42866a5b33215d0cffeb29f56335a232fe0"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715622,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 8688,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/ipv4/netfilter/ipt_TOS.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "9acd9d46bb0fe8879904bb3c6840ba4ac87b7355793b14fc2e323fff9907c620"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "9acd9d46bb0fe8879904bb3c6840ba4ac87b7355793b14fc2e323fff9907c620"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715624,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 5584,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/ipv4/netfilter/ipt_ipp2p.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "c62fedf7296ac37a41e27a89e3045b8a2cc2001be82354bec47ec4e64a43acc3"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "c62fedf7296ac37a41e27a89e3045b8a2cc2001be82354bec47ec4e64a43acc3"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715625,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 14560,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/ipv4/netfilter/ipt_tos.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "83715e4ee35b6aacc50427b418c78b44c6ed12cbd6e9634723af66262e35daaf"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "83715e4ee35b6aacc50427b418c78b44c6ed12cbd6e9634723af66262e35daaf"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715626,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 4688,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/ipv4/netfilter/ipt_web.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "a5c6b94da98bd67fba1066c2f8ef7d40277f7fc06e36ad9ea22bf88b41145809"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "a5c6b94da98bd67fba1066c2f8ef7d40277f7fc06e36ad9ea22bf88b41145809"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715627,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 6504,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/ipv4/netfilter/ipt_webmon.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "3e58c7f7ec5b9713219a0f446dfdafb686a79588511d252173e053526da824a5"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "3e58c7f7ec5b9713219a0f446dfdafb686a79588511d252173e053526da824a5"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715628,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 44928,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/ipv4/netfilter/nf_dup_ipv4.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "2e52ed4aebb823a6eb5f906621f6bcd26f2df8e6d737bb6760ca1aa29deb095f"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "2e52ed4aebb823a6eb5f906621f6bcd26f2df8e6d737bb6760ca1aa29deb095f"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715629,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 6016,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/ipv4/netfilter/nf_nat_h323.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "a1c2745a1295a3c4d4d5f3387ff6ba53f1bf5df0a770bba742352fe28ac38adb"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "a1c2745a1295a3c4d4d5f3387ff6ba53f1bf5df0a770bba742352fe28ac38adb"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715630,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 17912,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/ipv4/netfilter/nf_socket_ipv4.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "b45a0dfa3c67943c0a021b7615ea8e2abf3e67e6eea87d9704873602ebc8573c"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "b45a0dfa3c67943c0a021b7615ea8e2abf3e67e6eea87d9704873602ebc8573c"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715631,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 5648,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/ipv4/netfilter/nf_tproxy_ipv4.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "066a213ebbb9b1e8001f4ebe9ad5275ae396eb1b39cb0ad6f05f55f9684d3efc"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "066a213ebbb9b1e8001f4ebe9ad5275ae396eb1b39cb0ad6f05f55f9684d3efc"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715632,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 7464,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/ipv4/xfrm4_tunnel.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "d82e6d4db67ec89116d8695736950ab0ce5b5b7d4ba13b252fef246dbc226fd9"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "d82e6d4db67ec89116d8695736950ab0ce5b5b7d4ba13b252fef246dbc226fd9"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715633,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 7688,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/ipv6/netfilter/nf_dup_ipv6.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "d658ad719577f18525e2b0239824c0fd7501149699ad9f9bd1994a57049bcf51"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "d658ad719577f18525e2b0239824c0fd7501149699ad9f9bd1994a57049bcf51"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715636,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 6048,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/ipv6/netfilter/nf_socket_ipv6.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "9243cf3993fc431c01e9565d0f044231932823aea75cd9e4b2e1f131cd9b2373"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "9243cf3993fc431c01e9565d0f044231932823aea75cd9e4b2e1f131cd9b2373"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715637,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 5352,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/ipv6/netfilter/nf_tproxy_ipv6.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "8797b463129a72bed5ef2594d6890ef66d417c8891e36438f14a45731d8ffbe2"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "8797b463129a72bed5ef2594d6890ef66d417c8891e36438f14a45731d8ffbe2"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715638,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 8080,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/netfilter/nf_conntrack_ftp.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "1755290d91bd58b6f67ae5f580d34ad05693012f0a9997c529cd1c4d6a326bce"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "1755290d91bd58b6f67ae5f580d34ad05693012f0a9997c529cd1c4d6a326bce"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715640,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 16192,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/netfilter/nf_conntrack_h323.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "a87902f6c75fe6f75c84f959a9d812be82ff4f34821d4fac57e2e33039705462"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "a87902f6c75fe6f75c84f959a9d812be82ff4f34821d4fac57e2e33039705462"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715641,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 71344,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/netfilter/nf_conntrack_sip.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "c14dd0c2d1a086720f7353f0cdaf9c431b70c322d7f9835d6386665f8dbae3b2"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "c14dd0c2d1a086720f7353f0cdaf9c431b70c322d7f9835d6386665f8dbae3b2"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715642,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 45280,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/netfilter/nf_conntrack_tftp.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "6e06393d37098fdae165c568a7ac0baadc3b5ae5e17ba28f272d0beea2016b7d"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "6e06393d37098fdae165c568a7ac0baadc3b5ae5e17ba28f272d0beea2016b7d"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715643,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 11136,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/netfilter/nf_nat_ftp.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "5158bfbdd774dccd06a9c672c2146f6417b6ed5bb80b005f76349ab0afa8e7da"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "5158bfbdd774dccd06a9c672c2146f6417b6ed5bb80b005f76349ab0afa8e7da"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715644,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 8104,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/netfilter/nf_nat_sip.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "cef267c7272c735bcc226cf92003bc1e0ebc2e85c5cd2c617fc54293543e5d55"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "cef267c7272c735bcc226cf92003bc1e0ebc2e85c5cd2c617fc54293543e5d55"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715645,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 20792,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/netfilter/nf_nat_tftp.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "f487e6be9da02df2e717cb2799cc6027eb29815aba2346921befb84fd8c38d17"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "f487e6be9da02df2e717cb2799cc6027eb29815aba2346921befb84fd8c38d17"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715646,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 5640,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/netfilter/nf_tables.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "b6f9c0079fb8e1e354fb4628ad74c1e368bfdf933faad091c912bb4b83a2c045"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "b6f9c0079fb8e1e354fb4628ad74c1e368bfdf933faad091c912bb4b83a2c045"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715647,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 202400,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/netfilter/xt_HL.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "66fd9643fbbb8bb846043d0816943eacce3a3f8525fca10f27f0ac86034418e4"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "66fd9643fbbb8bb846043d0816943eacce3a3f8525fca10f27f0ac86034418e4"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715648,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 6544,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/netfilter/xt_TEE.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "727fd849e83f5d97185727a92052c6ef95d41dafc438d050dbf5834acaec63ec"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "727fd849e83f5d97185727a92052c6ef95d41dafc438d050dbf5834acaec63ec"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715649,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 11760,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/netfilter/xt_TPROXY.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "fc67f0871537515ac821722f0eaca7c971ad39ddf01145e076b0a6e9fc981b3f"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "fc67f0871537515ac821722f0eaca7c971ad39ddf01145e076b0a6e9fc981b3f"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715650,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 10552,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/netfilter/xt_comment.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "88e7842b6afaf2a944c74c438ccaadfd767d8c45598e03ab5a0084745469f29b"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "88e7842b6afaf2a944c74c438ccaadfd767d8c45598e03ab5a0084745469f29b"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715651,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 5008,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/netfilter/xt_condition.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "096df00c26c8158730056657e66600799cd268270b45403e36eebfbae774d31b"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "096df00c26c8158730056657e66600799cd268270b45403e36eebfbae774d31b"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715652,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 14272,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/netfilter/xt_geoip.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "479bc0e9acc58af86ba2f5e4d6a4b60a42fba96bdce10134f4ca9caca17a5c96"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "479bc0e9acc58af86ba2f5e4d6a4b60a42fba96bdce10134f4ca9caca17a5c96"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715653,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 9304,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/netfilter/xt_hashlimit.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "40b74c9815287f7aaa8e8d565a32688b9202fe0fed7c81cd5f0995bd23f2bfcf"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "40b74c9815287f7aaa8e8d565a32688b9202fe0fed7c81cd5f0995bd23f2bfcf"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715654,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 28704,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/netfilter/xt_hl.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "ec8d0c2571ac18c6ab1d65d14b922584476b8d21b59e9e943b3e986dff6b4f5a"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "ec8d0c2571ac18c6ab1d65d14b922584476b8d21b59e9e943b3e986dff6b4f5a"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715655,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 5472,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/netfilter/xt_length.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "e63eab2f9cb181ac4958360b8fd5e41eb4dd49a6c4106045a35b6943580c9f75"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "e63eab2f9cb181ac4958360b8fd5e41eb4dd49a6c4106045a35b6943580c9f75"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715656,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 5432,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/netfilter/xt_pkttype.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "fbbe2fc999ff2f48a38f3d3a46d91b6d0fb574076ca0f1bacb997a9af7e077d9"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "fbbe2fc999ff2f48a38f3d3a46d91b6d0fb574076ca0f1bacb997a9af7e077d9"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715657,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 5136,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/netfilter/xt_quota.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "0f8aefb94569f61f2ba9ab7b291babbdd1633af2452185ac7d056f11ef2ede3b"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "0f8aefb94569f61f2ba9ab7b291babbdd1633af2452185ac7d056f11ef2ede3b"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715658,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 5936,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/netfilter/xt_sctp.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "1c9244ef166c3d9601d201b059875e4bb15cd9f7cb5d84db4cac8edc7518982b"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "1c9244ef166c3d9601d201b059875e4bb15cd9f7cb5d84db4cac8edc7518982b"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715659,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 6856,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/netfilter/xt_socket.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "5a796877d71217b9f66f8348c10b9e33844eb9c79577f2712422ee32e9d18dfd"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "5a796877d71217b9f66f8348c10b9e33844eb9c79577f2712422ee32e9d18dfd"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715660,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 11648,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/sched/em_cmp.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "e2bab8cc3ab8d8fa7982b060a61cf5fd0b3b06d800453f09491d847987d67991"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "e2bab8cc3ab8d8fa7982b060a61cf5fd0b3b06d800453f09491d847987d67991"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715662,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 4912,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/sched/em_ipset.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "f51162a816f6d9ce614828b496a7cc9ec3fef79aa18a89d618b379d6a1388ce9"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "f51162a816f6d9ce614828b496a7cc9ec3fef79aa18a89d618b379d6a1388ce9"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715663,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 7840,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/sched/em_ipt.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "97bc9598feae88329d1850cde4b5dba1adbdd1aa99fb164eeb419190a1534694"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "97bc9598feae88329d1850cde4b5dba1adbdd1aa99fb164eeb419190a1534694"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715664,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 9560,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/sched/em_meta.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "6e65b234f4b29b1656ad7f6a07a128b553a7cf9a4da7cc191a5304eea8c16c40"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "6e65b234f4b29b1656ad7f6a07a128b553a7cf9a4da7cc191a5304eea8c16c40"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715665,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 19840,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/sched/em_nbyte.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "d96339ce8683801bdc78538b5c073a5552475b1eb3f50083d5ac3cecf3bb1bd7"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "d96339ce8683801bdc78538b5c073a5552475b1eb3f50083d5ac3cecf3bb1bd7"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715666,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 5200,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/sched/em_text.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "e98f26d5c56e7a2c523ce4afb6d6aa5616544e4bbe902969d424d73c4026b982"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "e98f26d5c56e7a2c523ce4afb6d6aa5616544e4bbe902969d424d73c4026b982"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715667,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 6936,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/sched/em_u32.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "0ca6a077dc5dcd7007a9047427554559552c34c01a1556c6c01aaf6fa354180b"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "0ca6a077dc5dcd7007a9047427554559552c34c01a1556c6c01aaf6fa354180b"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715668,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 4720,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/sched/sch_hfsc.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "547f519ca9571309ffab42ef4c15993c92eda6ec9568cf5386879f002f2ca277"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "547f519ca9571309ffab42ef4c15993c92eda6ec9568cf5386879f002f2ca277"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715669,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 29984,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/wireguard/wireguard.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "c7de3ab52e077d3215c24f2ee048deac652d0029b53a9ee441efc37249ac700c"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "c7de3ab52e077d3215c24f2ee048deac652d0029b53a9ee441efc37249ac700c"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715671,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 186680,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/wireless/cfg80211.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "6f04121db811c5bc66ab56834b4843e29165d6f1dee96ecaed4530d78222ac7d"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "6f04121db811c5bc66ab56834b4843e29165d6f1dee96ecaed4530d78222ac7d"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715673,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 474144,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "lib/modules/4.19.294/kernel/net/xfrm/xfrm_user.ko",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "39d41d71f88ddfdf1ce01ce1b7991f21ac9b1908c8622699e9beee343ecd4698"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "39d41d71f88ddfdf1ce01ce1b7991f21ac9b1908c8622699e9beee343ecd4698"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715675,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 48840,
+        "st_mtime_ns": 1791110960000000000
+      }
+    },
+    {
+      "path": "rom/etc/adsl1/adsl_phy.bin",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "bea8e7fdd61d00ed7ad51054cddcfaea264c0247359f2181ecd02bdf44580011"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "bea8e7fdd61d00ed7ad51054cddcfaea264c0247359f2181ecd02bdf44580011"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715731,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 1162836,
+        "st_mtime_ns": 1761750320000000000
+      }
+    },
+    {
+      "path": "rom/etc/dbus-1/session.conf",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "f75d1c63a1bd0f6b3e8685587b63e341f6b9700c8c570dae27e8d8f9d0a5940b"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "f75d1c63a1bd0f6b3e8685587b63e341f6b9700c8c570dae27e8d8f9d0a5940b"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715737,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 2883,
+        "st_mtime_ns": 1761750317000000000
+      }
+    },
+    {
+      "path": "rom/etc/dbus-1/session.d/.dummy",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715739,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 0,
+        "st_mtime_ns": 1761750317000000000
+      }
+    },
+    {
+      "path": "rom/etc/dbus-1/system.conf",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "3012d329a0bea5e8aadd3321b239bfa8328c010272da48f998ff7ce53e947007"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "3012d329a0bea5e8aadd3321b239bfa8328c010272da48f998ff7ce53e947007"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715740,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 2988,
+        "st_mtime_ns": 1761750317000000000
+      }
+    },
+    {
+      "path": "rom/etc/dbus-1/system.d/bluetooth.conf",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "e7840d4eee247794cf624dd1fc4bc7c8cf8add73caf48a360001975a1f6b4abe"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "e7840d4eee247794cf624dd1fc4bc7c8cf8add73caf48a360001975a1f6b4abe"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715743,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 1312,
+        "st_mtime_ns": 1761750317000000000
+      }
+    },
+    {
+      "path": "rom/etc/ethertypes",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "125a4dd1a01ce8ceef19e51b1daa88c15494948c39a3388fa3f3a14982437d3a"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "125a4dd1a01ce8ceef19e51b1daa88c15494948c39a3388fa3f3a14982437d3a"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715751,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 342,
+        "st_mtime_ns": 1790194848000000000
+      }
+    },
+    {
+      "path": "rom/etc/iproute2/ematch_map",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "0b1d73102310eedcb0b6a6f1b104c40d9d7a33ab5150c88a4698d0d6ab2b8659"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "0b1d73102310eedcb0b6a6f1b104c40d9d7a33ab5150c88a4698d0d6ab2b8659"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715788,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 81,
+        "st_mtime_ns": 1761750320000000000
+      }
+    },
+    {
+      "path": "rom/etc/ld.so.conf",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "f96ac6450442e347566bdaac4bb9557ba8d61113f43819b425959ca205546236"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "f96ac6450442e347566bdaac4bb9557ba8d61113f43819b425959ca205546236"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715791,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 36,
+        "st_mtime_ns": 1761750320000000000
+      }
+    },
+    {
+      "path": "rom/etc/modprobe.conf",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "2bda45ec0e349413d59982a6cd34a09f8be82bed53f4a021c4f7d735402abe7d"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "2bda45ec0e349413d59982a6cd34a09f8be82bed53f4a021c4f7d735402abe7d"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715805,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 887,
+        "st_mtime_ns": 1761750320000000000
+      }
+    },
+    {
+      "path": "rom/etc/nsswitch.conf",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "68306211cba4cff69e7779fd356d9319279695352ec5e83243d89b32cc1392ce"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "68306211cba4cff69e7779fd356d9319279695352ec5e83243d89b32cc1392ce"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715808,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 196,
+        "st_mtime_ns": 1790194848000000000
+      }
+    },
+    {
+      "path": "rom/etc/profile",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "756dfc9991ed60971f80b6eaa2f3a6079ba0ba8e8d779c612dcbb358414d3c79"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "756dfc9991ed60971f80b6eaa2f3a6079ba0ba8e8d779c612dcbb358414d3c79"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715832,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 876,
+        "st_mtime_ns": 1761750320000000000
+      }
+    },
+    {
+      "path": "rom/etc/protocols",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "4bc77c3f6dd37839cf4869d6920715e377cf229208489fe00e0c386fdd143572"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "4bc77c3f6dd37839cf4869d6920715e377cf229208489fe00e0c386fdd143572"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715833,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 1938,
+        "st_mtime_ns": 1790194848000000000
+      }
+    },
+    {
+      "path": "rom/etc/resolv.conf",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "388b5f50173389e3c7648e1c2180883dd1c27ae7739f7b9f9de82b293f3a3b6f"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "388b5f50173389e3c7648e1c2180883dd1c27ae7739f7b9f9de82b293f3a3b6f"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715854,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 21,
+        "st_mtime_ns": 1761750320000000000
+      }
+    },
+    {
+      "path": "rom/etc/services",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "6f968c60864491aad6ef261cdf009e98e7636b503590656ee1a7df9b19dada5a"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "6f968c60864491aad6ef261cdf009e98e7636b503590656ee1a7df9b19dada5a"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715861,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 4994,
+        "st_mtime_ns": 1790194848000000000
+      }
+    },
+    {
+      "path": "rom/etc/ssl/certs/dh2048.pem",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "9e5aac4a86aabb83f5e2737df97c29f095d9990e651778c7cdb3762c2badc6bf"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "9e5aac4a86aabb83f5e2737df97c29f095d9990e651778c7cdb3762c2badc6bf"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715878,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 424,
+        "st_mtime_ns": 1761750320000000000
+      }
+    },
+    {
+      "path": "rom/tmpfs.json",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "baefad18a5c3f8f1d5fa9916537373998aa4777a590d6f82a3e487f9e6c503c2"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "baefad18a5c3f8f1d5fa9916537373998aa4777a590d6f82a3e487f9e6c503c2"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44715938,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 3120,
+        "st_mtime_ns": 1761750320000000000
+      }
+    },
+    {
+      "path": "usr/libexec/ccr-status/network.jq",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "3522343ebda8c9b720de7edb0e5b738469f80a822bd0c2f42e2718945d7e7016"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "3522343ebda8c9b720de7edb0e5b738469f80a822bd0c2f42e2718945d7e7016"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44717510,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 4898,
+        "st_mtime_ns": 1791101199000000000
+      }
+    },
+    {
+      "path": "usr/libexec/ccr-status/normalize.jq",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "d13d475768dc0fb01312d2b59298ac0786780f7831ebad419de7920d3d1b2342"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "d13d475768dc0fb01312d2b59298ac0786780f7831ebad419de7920d3d1b2342"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44717511,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 2216,
+        "st_mtime_ns": 1791094863000000000
+      }
+    },
+    {
+      "path": "usr/libexec/ccr-status/schema.sql",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "fe1036df3cc848db0e2c119aaa401a4aa81da6c609f89b8f118264fde37ba546"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "fe1036df3cc848db0e2c119aaa401a4aa81da6c609f89b8f118264fde37ba546"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44717512,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 459,
+        "st_mtime_ns": 1791067774000000000
+      }
+    },
+    {
+      "path": "usr/libexec/node-history/collect.awk",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "97c203a96efe3f2eaf61ebe4810823e1924774adba3e10c20eca856991beba33"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "97c203a96efe3f2eaf61ebe4810823e1924774adba3e10c20eca856991beba33"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44717531,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 2008,
+        "st_mtime_ns": 1791056547000000000
+      }
+    },
+    {
+      "path": "usr/libexec/node-history/schema.sql",
+      "before": {
+        "mode": 420,
+        "kind": 32768,
+        "sha256": "9f950d801c55b886dc06045ad9576743aed336ab64334e1eb815df323abc068c"
+      },
+      "expected": {
+        "mode": 436,
+        "kind": 32768,
+        "sha256": "9f950d801c55b886dc06045ad9576743aed336ab64334e1eb815df323abc068c"
+      },
+      "inode": {
+        "st_dev": 34,
+        "st_ino": 44717533,
+        "st_uid": 1000,
+        "st_gid": 1000,
+        "st_nlink": 1,
+        "st_size": 1050,
+        "st_mtime_ns": 1791056547000000000
+      }
+    }
+  ],
+  "packed_metadata_proof": {
+    "entries_including_root": 4373,
+    "uid_gid_all_zero": true,
+    "exact_type_mode_symlink_metadata": true,
+    "listing_sha256": "f32bd26a6d22625cde9ba16b0ec50c22b6ba44f3ad2be21235f8864fa923b9a7"
+  },
+  "all4372_content_type_mode_symlink_inventory_matches": true,
+  "packed_image_bytes_unchanged": true,
+  "new_archive_pack_extraction_count": 0,
+  "native_compile_tests_QEMU_device_signing": false,
+  "scope": "Host-private extraction permissions only; audit written before immutable finalization tail. No firmware success is claimed by this audit."
+}

@@ -1,0 +1,164 @@
+{
+  "schema_version": 1,
+  "status": "offline_identity_transaction_validated_device_preflight_unexecuted",
+  "identity_transaction_validation_passed": true,
+  "device_local_initialization_executed": false,
+  "physical_device_provisioned": false,
+  "production_ready": false,
+  "real_credentials_read": false,
+  "secrets_transferred_to_host": false,
+  "services_started": false,
+  "hardware_watchdog_opened": false,
+  "builder": {
+    "path": "scripts/build-asus-device-provision.py",
+    "sha256": "f18b9cb2459a85ec47ece537323eeba5d1fa89003f7bb5462278de0ba0714a1f"
+  },
+  "build_manifest": {
+    "path": "build/asus-device-provision/identity-v6/manifest.json",
+    "sha256": "d2cca5d14186a14637906ed44fb09ef29b2e0bc1ee7094ca1c6b748f79aaf143"
+  },
+  "executable": {
+    "path": "build/asus-device-provision/identity-v6/device-provision",
+    "sha256": "29fa9d5fa525f61f130ac0b602b6bece4185eb4bfba01639b4e15f5a482f5e34"
+  },
+  "static_aarch64_no_interpreter_or_needed": true,
+  "test_manifest": {
+    "path": "build/asus-device-provision/identity-test-v3/manifest.json",
+    "sha256": "8ad9c489cd3ef124409d6a5f6d7ce74f6dc60a76a1c07c339fd9ebbcc5b62e38",
+    "result": {
+      "path": "build/asus-device-provision/identity-test-v3/result.json",
+      "sha256": "1c05e9d77b8bce3e838812243876689d326b266bee475d9d1ba3b9e363ab4006"
+    }
+  },
+  "cases": [
+    {
+      "name": "invalid_hash_no_mutation",
+      "passed": true,
+      "exit_code": 125,
+      "public_output_only": true
+    },
+    {
+      "name": "partial_public_key",
+      "passed": true,
+      "exit_code": 125,
+      "public_output_only": true
+    },
+    {
+      "name": "symlink_private_key",
+      "passed": true,
+      "exit_code": 125,
+      "public_output_only": true
+    },
+    {
+      "name": "partial_account_marker",
+      "passed": true,
+      "exit_code": 125,
+      "public_output_only": true
+    },
+    {
+      "name": "staging_residue",
+      "passed": true,
+      "exit_code": 125,
+      "public_output_only": true
+    },
+    {
+      "name": "stale_home_without_account",
+      "passed": true,
+      "exit_code": 125,
+      "public_output_only": true
+    },
+    {
+      "name": "fresh_selected_account_and_unique_hostkeys",
+      "passed": true,
+      "exit_code": 0,
+      "public_output_only": true
+    },
+    {
+      "name": "exact_markers_ordinary_uid_sudo_unrelated_shadow_preserved",
+      "passed": true
+    },
+    {
+      "name": "idempotent_complete_preserves_all_identity_bytes",
+      "passed": true,
+      "exit_code": 0,
+      "public_output_only": true
+    },
+    {
+      "name": "different_hash_cannot_overwrite_complete_identity",
+      "passed": true,
+      "exit_code": 125,
+      "public_output_only": true
+    },
+    {
+      "name": "missing_account_marker",
+      "passed": true,
+      "exit_code": 125,
+      "public_output_only": true
+    },
+    {
+      "name": "missing_device_marker",
+      "passed": true,
+      "exit_code": 125,
+      "public_output_only": true
+    },
+    {
+      "name": "bad_private_key_mode",
+      "passed": true,
+      "exit_code": 125,
+      "public_output_only": true
+    },
+    {
+      "name": "mismatched_public_key",
+      "passed": true,
+      "exit_code": 125,
+      "public_output_only": true
+    },
+    {
+      "name": "incomplete_transaction_marker",
+      "passed": true,
+      "exit_code": 125,
+      "public_output_only": true
+    },
+    {
+      "name": "completed_staging_residue",
+      "passed": true,
+      "exit_code": 125,
+      "public_output_only": true
+    },
+    {
+      "name": "unsafe_existing_home_mode",
+      "passed": true,
+      "exit_code": 125,
+      "public_output_only": true
+    },
+    {
+      "name": "wrong_existing_home_owner",
+      "passed": true,
+      "exit_code": 125,
+      "public_output_only": true
+    },
+    {
+      "name": "duplicate_selected_account_refused",
+      "passed": true,
+      "exit_code": 125,
+      "public_output_only": true
+    }
+  ],
+  "identity_policy": {
+    "account": "MastermixStudios",
+    "uid": "ordinary native Ubuntu UID>=1000 and <65534; no UID0 alias",
+    "shell": "/bin/bash",
+    "sudo": "normal password-required Ubuntu sudo group",
+    "credential": "Selected already-encoded vendor crypt hash in device memory only; no plaintext or hash in argv/env/log. No algorithm conversion.",
+    "shadow": "Only selected native entry changed, unrelated account lines preserved",
+    "keys": "Native Ubuntu ssh-keygen generates each device RSA/ECDSA/Ed25519 identity in device-local staging; validates public/private pairs, fsyncs keys+directory before final identity marker. Existing/partial identity never overwritten.",
+    "home": "Fresh selected home must not exist; complete identity requires exact native UID/GID and safe non-symlink directory.",
+    "output": "Status, ordinary UID, public keys and public fingerprints only"
+  },
+  "coordinator_scope": "Exact stock slot2 rootp6 read-only SquashFS/native namespace, fixed eMMC CID/size/p11 extent+clean ext4 UUID, whole known-stock p5/p6 hashes, root-owned generated marker,24 helper/config ELF closure hashes and11 exact loader/usrmerge symlinks; private mount+network namespace before chroot. Actual board paths have not been executed by these tests.",
+  "limits": [
+    "Synthetic tests execute the identical identity core against the exact sealed Ubuntu archive, not actual device credentials.",
+    "Full stock-device preflight is compiled and peer-reviewed; only non-device refusal is executed offline.",
+    "No candidate image contains generated fixture private host keys or copied real password hashes. The standalone provisioner remains a separate guarded device step."
+  ]
+}

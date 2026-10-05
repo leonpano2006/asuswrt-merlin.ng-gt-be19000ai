@@ -1,0 +1,149 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-10-04T16:31:45.578179+00:00",
+  "status": "source_port_and_mock_lifecycle_complete_with_separate_real_OpenSSH_validation",
+  "strategy": "Let native Ubuntu systemd own PID1 and lifecycle. Keep the board-specific ARMEL ASUS rc responsible for hardware initialization before splitting individual vendor services.",
+  "process_chain": [
+    {
+      "component": "Ubuntu systemd",
+      "abi": "arm64",
+      "role": "PID1, cgroups, native services, global reboot and shutdown"
+    },
+    {
+      "component": "ASUS broker",
+      "abi": "arm64",
+      "role": "Authenticated manager handshake, readiness, notification forwarding and ordered stop"
+    },
+    {
+      "component": "Rebuilt BE19000AI ASUS rc",
+      "abi": "armel softfp",
+      "role": "Existing board, NVRAM, Wi-Fi, wired AiMesh, bridge/Runner and AI-link initialization order"
+    }
+  ],
+  "completed": {
+    "BE98_reference": "Reviewed nine historical checkpoints, including hardware trial evidence; not a current live-state claim.",
+    "source_port": "Four patches apply in order with fuzz=0 on 118 hash-verified pinned inputs; no full rc/libovpn build.",
+    "offline_foundation_cases": 13,
+    "target_systemd_mock_cases": {
+      "native": [
+        "ALARM_AND_CHILD_MASK",
+        "SYSTEMD_READY_CGROUP",
+        "NOTIFICATION",
+        "ORDERED_STOP",
+        "RESTART",
+        "CRASH_RECOVERY",
+        "SYSTEMD_LIFECYCLE"
+      ],
+      "armel": [
+        "ALARM_AND_CHILD_MASK",
+        "SYSTEMD_READY_CGROUP",
+        "NOTIFICATION",
+        "ORDERED_STOP",
+        "RESTART",
+        "CRASH_RECOVERY",
+        "SYSTEMD_LIFECYCLE"
+      ]
+    },
+    "openssh_version": "OpenSSH_10.2p1 Ubuntu-2ubuntu3.6, OpenSSL 3.5.5 27 Jan 2026",
+    "openssh_runtime_checks": {
+      "sshd_syntax_and_effective_config": true,
+      "native_official_ssh_service_started_by_systemd": true,
+      "only_tcp_listener_guest_127_0_0_1_2222": true,
+      "nonroot_ed25519_key_auth_real_session_uid_1000": true,
+      "strict_pinned_host_key_verification": true,
+      "unauthorized_key_rejected": true,
+      "sftp_upload_download_hash_equivalence_via_cmp": true,
+      "systemd_service_restart_changed_main_pid_and_relogin": true,
+      "systemd_service_stop_inactive_and_no_tcp_listeners": true,
+      "no_dropbear_installed_or_running": true,
+      "dpkg_audit_empty": true,
+      "base_multiuser_journald_udevd_dbus_and_apt_service_lifecycle": true
+    },
+    "custom_GNU_systemd_package_versions_preserved": 41
+  },
+  "candidate": {
+    "path": "build/ubuntu26-rootfs/ubuntu26-bcm-gnu-systemd-openssh-b53-v3.tar",
+    "sha256": "303cafac152c86df9ac78a7c677e718ec411074dd7c73f33a3f0db26df59fda5",
+    "unmodified_by_fixture_or_runtime": true
+  },
+  "validation_boundary": "Broker native/ARMEL mocks ran on the GNU/systemd base. Real OpenSSH ran on a separate derived candidate. No combined actual ASUS/OpenSSH runtime has booted.",
+  "armel_boundary": "Fresh mock/shim from GCC15.2 reference SDK, isolated BE98 glibc2.44; not final Ubuntu armel packages",
+  "next_required_work": [
+    "Complete the pinned BE19000AI userspace model configuration and matching proprietary-object/library closure, then build actual rc/libovpn.",
+    "Resolve account writes, /data and other mount ownership, NSS/hosts, private shell and device/config ownership before actual rc activation.",
+    "Complete matching Ubuntu ARM32 runtime packages and actual ASUS service acceptance.",
+    "Integrate ASUS SSH settings and the intended production account/access policy with OpenSSH; generate device-specific host keys before cutover.",
+    "Validate recoverable storage/boot and the physical ASUS functional profile before deployment."
+  ],
+  "actual_asus_services_executed": false,
+  "actual_rc_compiled": false,
+  "production_ready": false,
+  "flash_allowed": false,
+  "router_or_partition_changed": false,
+  "host_ssh_changed": false,
+  "separate_AI_board_OS_changed": false,
+  "evidence": [
+    {
+      "name": "policy",
+      "path": "configs/ubuntu26/systemd-first-stage.json",
+      "sha256": "4a16eff47ecfacce26adad5537b40f96bb4a748157698d7444df0712093fb6f2"
+    },
+    {
+      "name": "registry",
+      "path": "configs/ubuntu26/userspace-patches.json",
+      "sha256": "1498433c02f4de509f94aef7abc22ac29d6dd11d89c0f1ce8af249476f37992a"
+    },
+    {
+      "name": "source",
+      "path": "reports/ubuntu26/asus-rc-systemd-port.json",
+      "sha256": "a07b9b7ab12084bbe69df921e99182b4af1f0be22e9fe181e4c32c311e969c10"
+    },
+    {
+      "name": "layout",
+      "path": "reports/ubuntu26/asus-persistent-layout-port.json",
+      "sha256": "51b5b51f8ed6948d71edb4e840c41fbc5f627f88d6cb329e742ad6a6afd8c6ab"
+    },
+    {
+      "name": "foundation",
+      "path": "reports/ubuntu26/asus-startup-integration.json",
+      "sha256": "46f5d61cc346a2dea0cd6fea1b5485344a9768197dfbe2e2406c15526276b6af"
+    },
+    {
+      "name": "lifecycle",
+      "path": "reports/ubuntu26/asus-systemd-lifecycle.json",
+      "sha256": "99e5d481f2584631f54953c677f4fe3087d1e6083ff5938184b2f748e8629b32"
+    },
+    {
+      "name": "openssh_candidate",
+      "path": "reports/ubuntu26/openssh-candidate.json",
+      "sha256": "677f77259d2dd952a703c7d79b76486e287e42e91dce082b07fc2845996ff872"
+    },
+    {
+      "name": "openssh_runtime",
+      "path": "reports/ubuntu26/openssh-kernel10.json",
+      "sha256": "f5df87cca6a84b07abb067780a6ed67809d39c31b78a1882a9ac6dfbcf415730"
+    }
+  ],
+  "patches": [
+    {
+      "path": "patches/ubuntu26/0003-asus-rc-systemd-manager.patch",
+      "sha256": "466074a96ce4e24f92f2055bc25d03230381ba19f650243cc75c7d2d94b6cb0f"
+    },
+    {
+      "path": "patches/ubuntu26/0004-asus-rc-persistent-layout.patch",
+      "sha256": "ce649ba8cfa84c0fec86fdd3ac87a85a765f863ed65a47a2babf7f65f5c6746a"
+    },
+    {
+      "path": "patches/ubuntu26/0005-asus-rc-openssh-ownership.patch",
+      "sha256": "ffa29ff0875cd23402608aad901745d1dabf1b88e7e4bc29fbc07acd544478be"
+    },
+    {
+      "path": "patches/ubuntu26/0006-asus-libovpn-systemd-manager.patch",
+      "sha256": "ea37ab0969bc36b1fe7bdbe7684b6d05bac256b2a1faa42c550edff2420c48f6"
+    }
+  ],
+  "summarizer": {
+    "path": "scripts/summarize-systemd-first-stage.py",
+    "sha256": "afb8ac6d6e36ccd1ba0a9d2007f61542ed1a700b53130bde7699a6e1830b86cd"
+  }
+}

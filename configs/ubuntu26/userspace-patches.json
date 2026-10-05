@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "status": "staged userspace patch; not installed on the router",
+  "source_commit": "69838e4a60564e5550e97f11d8a8cf2c6260c4f0",
+  "patch_directory": "patches/ubuntu26",
+  "application": "Apply only the explicitly registered patches to disposable copies of their matching source or extracted-rootfs tree, after verifying input hashes. Do not pass the whole patches/ubuntu26 directory to the directory-based kernel patch scanner: that directory also contains patches for the separate Ubuntu systemd source tree.",
+  "patches": [
+    {
+      "path": "patches/ubuntu26/0001-busybox-time64-clock.patch",
+      "sha256": "d8097772237a59d532c6bdd1bbdf7a11aeba35eef9c8140c1a83bb274613bc72",
+      "source_path": "release/src/router/busybox/libbb/time.c",
+      "source_sha256": "0631c34deddb092fcfa314ec6eb8e00fc86824a43dc8b6ecf7b49a3c6b24c9ef",
+      "result_sha256": "8978882e073e888ef4a9257937a7b3825daebf4b074b12dbf678c783579fe209",
+      "origin_commit": "f80c68e01042c8d29ae994162c780b48f4b36c78"
+    },
+    {
+      "path": "patches/ubuntu26/0002-ai-upgrade-posix-test.patch",
+      "sha256": "8f363c3d0174dea4949e0199913c3a2c069d934986814ae4d59ede981daf4780",
+      "source_path": "release/src/router/rom/apps_scripts/ai_upgrade.sh",
+      "source_sha256": "d9067409ab08fb8def1cfa1033b28410afc1938cccfc4257711ffb9e8dae54d2",
+      "result_sha256": "6a6ed94bd657388938ab48ee98e2bab320d3b1711dae6fdac81c83cbaca767a6",
+      "verification": "python3 scripts/check-asus-shell-portability.py",
+      "scope": "Five POSIX comparison replacements only; never execute AI upgrade as a test."
+    }
+  ],
+  "verification": "Run each registered patch verification; source and extracted vendor-rootfs patches target different trees and must not be interchanged.",
+  "not_included": [
+    "cfg shared-memory change awaiting AI producer-layout measurements",
+    "rfctime exported ABI change requiring compatibility API design"
+  ],
+  "rootfs_patches": [
+    {
+      "kind": "vendor-rootfs",
+      "path": "patches/ubuntu26/rootfs/ai-upgrade-posix-test.patch",
+      "sha256": "432b19b7b3ff7481180d0b5b7927778586f2033c884f388f0c70bc97b31e1939",
+      "input_path": "usr/sbin/ai_upgrade",
+      "input_sha256": "cd712a0ab2a7f60eade88f73d0e46c23a22bd4d6af8bc34dfae1fa319902e5ff",
+      "result_sha256": "05fb7c70721a9e930724659657fee0646df384323602cd6410482ab93bf7a512",
+      "comparison_replacements": 5,
+      "syntax_checks": {
+        "original": {
+          "argv": [
+            "dash",
+            "-n",
+            "<vendor-rootfs-original>"
+          ],
+          "returncode": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        "patched": {
+          "argv": [
+            "dash",
+            "-n",
+            "<vendor-rootfs-patched>"
+          ],
+          "returncode": 0,
+          "stdout": "",
+          "stderr": ""
+        }
+      },
+      "exact_patch_apply_passed": true,
+      "application": "Only a disposable source/rootfs staging copy with matching input SHA; never the baseline or live router."
+    }
+  ],
+  "integration_patch_set": {
+    "scope": "Dedicated Ubuntu rc build only; source port not a compiled/launchable board runtime.",
+    "build_selection": "LEON_SYSTEMD_RC=y; 0004 deliberately rejects the standalone legacy build.",
+    "activation_allowed": false,
+    "patches": [
+      {
+        "path": "patches/ubuntu26/0003-asus-rc-systemd-manager.patch",
+        "sha256": "466074a96ce4e24f92f2055bc25d03230381ba19f650243cc75c7d2d94b6cb0f"
+      },
+      {
+        "path": "patches/ubuntu26/0004-asus-rc-persistent-layout.patch",
+        "sha256": "ce649ba8cfa84c0fec86fdd3ac87a85a765f863ed65a47a2babf7f65f5c6746a"
+      },
+      {
+        "path": "patches/ubuntu26/0005-asus-rc-openssh-ownership.patch",
+        "sha256": "ffa29ff0875cd23402608aad901745d1dabf1b88e7e4bc29fbc07acd544478be"
+      },
+      {
+        "path": "patches/ubuntu26/0006-asus-libovpn-systemd-manager.patch",
+        "sha256": "ea37ab0969bc36b1fe7bdbe7684b6d05bac256b2a1faa42c550edff2420c48f6"
+      }
+    ],
+    "verification": [
+      "scripts/asus-integration/prepare-rc-systemd-port.py",
+      "scripts/asus-integration/check-persistent-layout-port.py",
+      "reports/ubuntu26/asus-rc-systemd-port.json",
+      "reports/ubuntu26/asus-persistent-layout-port.json"
+    ],
+    "required_before_build": "Materialize the pinned board userspace configuration, BSP headers and exact selected proprietary-object/library set; do not substitute BE98 model objects.",
+    "required_before_activation": "Complete accounts/NSS, private shell and remaining config/device ownership, then validate actual ASUS service startup and rollback."
+  }
+}

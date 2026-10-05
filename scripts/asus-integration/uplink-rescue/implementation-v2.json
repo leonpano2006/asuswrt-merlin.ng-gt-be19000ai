@@ -1,0 +1,74 @@
+{
+  "schema": 1,
+  "status": "source_only_router_review_fixes_controller_blocked",
+  "compiled": false,
+  "syntax_checked": false,
+  "fixture_executed": false,
+  "device_accessed": false,
+  "installed": false,
+  "source_contract": "plan-v1.json",
+  "sources": [
+    "rescue-link.c",
+    "controller-transient.sh",
+    "rescue-link-enrollment.in",
+    "leon-asus-rescue-link.service.in",
+    "leon-asus-ssh-uplink-rescue.socket.in",
+    "leon-asus-ssh-uplink-rescue@.service.in",
+    "leon-asus-uplink-rescue.conf.in"
+  ],
+  "implementation_deltas": [
+    "Read-only polling at one-second intervals replaces multicast subscriptions; write allowlist unchanged. Each four-dump snapshot has one five-second deadline and1MiB/4096-message bounds per exchange.",
+    "Stop timeout is30s instead of draft10s: up to5s in-flight snapshot plus cleanup three5s snapshots and two2s ACKs. Initial readiness stops waiting after250s to leave room before unit270s startup timeout.",
+    "Root-owned same-boot atomic ownership receipt distinguishes stable confirmed objects from uncertain intents. Pending intents are retained and never automatically adopted/deleted after a crash or ambiguous write.",
+    "Controller is one-shot transient shell, separate explicit cleanup, no permanent install. A private mkdir operation-lock prevents concurrent setup/cleanup; stale lock requires reviewed intervention.",
+    "Public known_hosts port2223 enrolment is deliberately a separate future transaction; no key bytes are read by network scripts.",
+    "Peer-IP namespace collision rejected in IFA_LOCAL and IFA_ADDRESS before own-self matching.",
+    "CapabilityBoundingSet adds only CAP_SYS_PTRACE for fixed PID1 READ_FSCREDS namespace/root checks; no arbitrary process inspection.",
+    "TimeoutStartSec300/TimeoutStopSec60 replace270/30; two stop gates after old-object withdrawal and after installation prevent migration from adding another full transaction after TERM. No Restart and ambiguous intent preservation unchanged.",
+    "Official BusyBox1.37 route display omits protocol despite supporting noprefixroute; .51 has no stat. Original controller script blocked, awaiting separately reviewed private official ip-full and numeric ls metadata adaptation."
+  ],
+  "write_allowlist": {
+    "router": [
+      "fixed169.254.190.15/32 labeleth0:lr OR br0:lr",
+      "fixedmain-table169.254.190.51/32 peer route protocol186 metric42760 with selected OIF and preferred source169.254.190.15",
+      "root-only same-boot /run/leon-asus-rescue-link receipt/lock"
+    ],
+    "controller": [
+      "fixed169.254.190.51/32 labelbr-lan:lr",
+      "fixedmain-table169.254.190.15/32 peer route protocol186 metric42760 with br-lan and preferred source169.254.190.51",
+      "root-only /tmp/leon-uplink-rescue-controller receipt/lock/bounded metadata dumps"
+    ],
+    "explicitly_excluded": [
+      "normal addresses",
+      "default routes",
+      "169.254.0.2 eth.ai-10 route",
+      "bridge/VLAN/macvlan",
+      "link flags/MAC",
+      "rules/neighbours",
+      "DHCP",
+      "NVRAM",
+      "sysctl/firewall",
+      "password/keys",
+      "guardian ACK/boot metadata"
+    ]
+  },
+  "minimal_build_plan_after_review": {
+    "router": "One source file, existing verified native GCC16.2 compiler and ccache. -O2 -g0 -Wall -Wextra -Werror -Wno-misleading-indentation -mcpu=cortex-a53+crypto+crc; ordinary arm64 ELF with existing native glibc2.44. No ASUS libraries, no libsystemd, no kernel rebuild. Build receipt must bind source/compiler/argv and inspect interpreter/DT_NEEDED; do not execute production helper on the host.",
+    "shell": "Do not execute original BusyBox controller: protocol display/stat incompatibility known. Review separate private official ip-full adaptation first.",
+    "units": "One static parse of only new unit/config drafts after review. No daemon reload, enable, preset or account changes."
+  },
+  "single_focused_fixture_plan_after_build_review": [
+    "One disposable no-physical-NIC environment with two isolated net/PID/mount namespaces, private /proc and root-owned runtime/config views. Use actual production source with fixed addresses/MACs; native PID1 namespace/root checks must remain effective, not compiled away. If host namespace ownership cannot represent that safely, use a single new minimal kernel10 network fixture rather than re-running old system suites.",
+    "Use the already synthetic recovery SSH client key/host key/account from the existing recovery fixture; never import .51 or router production private keys. Keep vendor/normal control unavailable. Capture normal-address/default-route/account-file hashes once before and after.",
+    "Start missing/uninitializedeth0, then create enrolled detached Ethernet link: no mutation before readiness, labelled rescue address/one peer route afterwards; controllerbr-lan normal100.51 remains. Verify key-only2223, wrong peer/key/password/root rejection.",
+    "Create normalbr0 IPv4 and enslaveeth0 in the fixture only; helper withdraws and reinstalls owned objects onbr0 without changing bridge membership. Test reconnect, reverse transition, normal DHCP-like IPv4 replacement and glibc IFA_LABEL exclusion from ASUS-style/native LAN selection.",
+    "In the same focused run inject foreign address/route, unknown master/MAC, arp_ignore2, missing normalbr0 address, malformed/truncated ACK/dump and timeout cases at an isolated transport seam. Do not write real production netdevs. Confirm no foreign deletion or retry of uncertain intents.",
+    "Stop/cleanup: only alias/peer route removed; original100.51/default route and unrelated169.254.0.2 route, interface flags/master/MAC and normal SSH definitions remain unchanged. No trial ACK or acceptance."
+  ],
+  "remaining_review_items": [
+    "No claim that the uncompiled C or unparsed shell currently builds/runs.",
+    "Check target BusyBox command/printed numeric protocol support before controller mutation; proto186 may print a system name on some ip implementations, which the script deliberately refuses.",
+    "The field snapshots are not a global L2 address-conflict proof. First physical connection must validate expected peer MAC and existing native host key.",
+    "Actual candidate firewall/bridge state may differ from stock inventory. The helper does not add an exception or change policy to make rescue work."
+  ]
+}

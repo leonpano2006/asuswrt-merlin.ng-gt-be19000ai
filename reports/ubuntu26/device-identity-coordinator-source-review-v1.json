@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "status": "read_only_source_review_no_new_actionable_findings",
+  "source": {
+    "path": "scripts/asus-integration/device-provision/coordinator.c",
+    "sha256": "c63c6dca474cb007244f234453a5ce1ab5e5cbc2d364482e0039c4eedd74cb1b"
+  },
+  "closure_policy": {
+    "path": "build/asus-device-provision/identity-v2/provision-policy.h",
+    "sha256": "4bf41f4674c54769fde4d0c03c26d06c6b3100b6d5b18bbd71342fea5381c501"
+  },
+  "related_identity_source": {
+    "path": "scripts/asus-integration/device-provision/identity.c",
+    "sha256": "538a2522284b39f8908b593173196584d99fb010877c2dee78d934c78ddc9b14"
+  },
+  "reviewed": [
+    "Fixed stock p6 root and namespace, exact CID/geometry/p11 extent/UUID/clean ext4 preflight and complete p5/p6 hashes",
+    "Only selected stock admin hash read into memory, bounded source checks, no hash output",
+    "Private mount and network namespaces, private propagation, chroot and native generation/24 regular/11 symlink closure checks before native command execution",
+    "Private dev/proc/run; identity child alarm and PDEATHSIG; syncfs before public-only export; parent waits for child exit before success"
+  ],
+  "limitations": [
+    "No block device opened, device mount or provisioning operation executed by this review.",
+    "A source review does not prove physical eMMC exclusivity, live account metadata or actual device execution.",
+    "Caller must exclude unrelated native/stock writers during device provisioning."
+  ]
+}

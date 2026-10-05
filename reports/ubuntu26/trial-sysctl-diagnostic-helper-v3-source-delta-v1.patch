@@ -1,0 +1,185 @@
+--- scripts/asus-integration/trial-snapshot/sysctl-process-v2.sh
++++ scripts/asus-integration/trial-snapshot/sysctl-process-v3.sh
+@@ -206,61 +206,165 @@
+     ((committed+=1))
+ }
+ 
++# Own metadata is fixed and bounded; never report arbitrary skipped exe targets.
++capture_self_metadata() {
++    capture /usr/bin/awk -F: '$1=="CapEff" || $1=="CapPrm" || $1=="CapBnd" ||
++        $1=="NoNewPrivs" || $1=="Uid" || $1=="Gid" {print}' "/proc/$$/status"
++    emit_stream self-capability-status "$CAPTURE_RC" "$CAPTURE_DATA"
++    capture /usr/bin/readlink "/proc/$$/ns/mnt"
++    emit_stream self-mount-namespace "$CAPTURE_RC" "$CAPTURE_DATA"
++    capture /usr/bin/readlink /proc/1/ns/mnt
++    emit_stream pid1-mount-namespace "$CAPTURE_RC" "$CAPTURE_DATA"
++    capture /usr/bin/readlink "/proc/$$/ns/user"
++    emit_stream self-user-namespace "$CAPTURE_RC" "$CAPTURE_DATA"
++    capture /usr/bin/readlink /proc/1/ns/user
++    emit_stream pid1-user-namespace "$CAPTURE_RC" "$CAPTURE_DATA"
++}
++
++finish_scan() {
++    local exit_rc=$1
++    [[ "$candidate_count" -lt 4 ]] || candidate_cap_reached=1
++    printf 'TRIAL_SYSCTL_PROCESS_SCAN helper_revision=3 proc_enumerated=%s proc_visited=%s proc_scanned=%s proc_ineligible=%s initial_exe_errors=%s initial_nonmatching_exe=%s managers_found=%s managers_scanned=%s manager_identity_rejected=%s manager_role_rejected=%s workers_enumerated=%s workers_scanned=%s worker_identity_rejected=%s worker_parent_rejected=%s children_enumerated=%s children_scanned=%s children_read_or_format_rejected=%s child_candidate_rejected=%s traversal_cap_rejected=%s worker_cap_reached=%s child_cap_reached=%s candidate_cap_reached=%s\n' \
++        "$proc_enumerated" "$proc_visited" "$proc_scanned" "$proc_ineligible" \
++        "$initial_exe_errors" "$initial_nonmatching_exe" "$managers_found" "$managers_scanned" \
++        "$manager_identity_rejected" "$manager_role_rejected" "$workers_enumerated" "$workers_scanned" \
++        "$worker_identity_rejected" "$worker_parent_rejected" "$children_enumerated" "$children_scanned" \
++        "$children_read_or_format_rejected" "$child_candidate_rejected" "$traversal_cap_rejected" \
++        "$worker_cap_reached" "$child_cap_reached" "$candidate_cap_reached"
++    printf 'TRIAL_SYSCTL_PROCESS_END schema=1 helper_revision=3 scan_status=%s scan_reason=%s exit_rc=%s candidates=%s exact_sysctl=%s suspected_preexec=%s exited_unreaped=%s committed=%s discarded=%s zero_matches_proves_no_hang=false\n' \
++        "$scan_status" "$scan_reason" "$exit_rc" "$candidate_count" "$sysctl_matches" \
++        "$preexec_candidates" "$zombie_candidates" "$committed" "$raced"
++}
++
+ # Zombie candidates additionally require stable Z state with no executable link.
+ # Only exact known executables are otherwise candidates. Manager -> worker -> child parent
+ # relationships distinguish a possible pre-exec callout from an ordinary worker.
+ # udev's "Spawned" log does not establish that fexecve has completed.
+ candidate_count=0 sysctl_matches=0 preexec_candidates=0 zombie_candidates=0 committed=0 raced=0
++proc_enumerated=0 proc_visited=0 proc_scanned=0 proc_ineligible=0
++initial_exe_errors=0 initial_nonmatching_exe=0 managers_found=0 managers_scanned=0
++manager_identity_rejected=0 manager_role_rejected=0 workers_enumerated=0 workers_scanned=0
++worker_identity_rejected=0 worker_parent_rejected=0 children_enumerated=0 children_scanned=0
++children_read_or_format_rejected=0 child_candidate_rejected=0 traversal_cap_rejected=0
++worker_cap_reached=0 child_cap_reached=0 candidate_cap_reached=0
++scan_status=incomplete scan_reason=unexpected-exit
+ manager_pids=()
+-printf 'TRIAL_SYSCTL_PROCESS_BEGIN schema=1 max_candidates=4 per_stream_bytes=8192\n'
+-for procdir in /proc/[0-9]*; do
+-    [[ -d "$procdir" && ! -L "$procdir" ]] || continue
++# TERM may be the outer timeout or another interruption; the helper cannot prove which.
++# SIGKILL cannot run a trap. Missing END therefore also means incomplete, never no hang.
++trap 'scan_status=incomplete; scan_reason=term-or-outer-timeout; exit 143' TERM
++trap 'scan_status=incomplete; scan_reason=interrupt; exit 130' INT
++trap 'scan_status=incomplete; scan_reason=hangup; exit 129' HUP
++trap 'finish_scan "$?"' EXIT
++printf 'TRIAL_SYSCTL_PROCESS_BEGIN schema=1 helper_revision=3 max_candidates=4 per_stream_bytes=8192 end_marker_required=true complete_scope=bounded-traversal zero_matches_proves_no_hang=false\n'
++capture_self_metadata
++proc_entries=(/proc/[0-9]*)
++proc_enumerated=${#proc_entries[@]}
++for procdir in "${proc_entries[@]}"; do
++    ((proc_visited+=1))
++    if [[ ! -d "$procdir" || -L "$procdir" ]]; then
++        ((proc_ineligible+=1))
++        continue
++    fi
+     pid=${procdir##*/}
+-    [[ "$pid" =~ ^[0-9]+$ ]] || continue
++    if [[ ! "$pid" =~ ^[0-9]+$ ]]; then
++        ((proc_ineligible+=1))
++        continue
++    fi
++    ((proc_scanned+=1))
+     capture /usr/bin/readlink "$procdir/exe"
+-    [[ "$CAPTURE_RC" == 0 ]] || continue
++    if [[ "$CAPTURE_RC" != 0 ]]; then
++        ((initial_exe_errors+=1))
++        continue
++    fi
+     if [[ "$CAPTURE_DATA" == "$EXPECTED_EXE" ]]; then
+         ((candidate_count+=1, sysctl_matches+=1))
+         capture_process "$pid" exact-systemd-sysctl "$EXPECTED_EXE"
+         [[ "$candidate_count" -lt 4 ]] || break
+     elif [[ "$CAPTURE_DATA" == "$UDEV_EXE" ]]; then
+-        if identity "$pid" "$UDEV_EXE" && [[ "$ID_PPID" == 1 ]]; then
++        if ! identity "$pid" "$UDEV_EXE"; then
++            ((manager_identity_rejected+=1))
++        elif [[ "$ID_PPID" != 1 ]]; then
++            # Ordinary workers share this exe; a role rejection is not an access error.
++            ((manager_role_rejected+=1))
++        else
+             manager_pids+=("$pid")
+-        fi
++            ((managers_found+=1))
++        fi
++    else
++        ((initial_nonmatching_exe+=1))
+     fi
+ done
+ for manager in "${manager_pids[@]}"; do
+     [[ "$candidate_count" -lt 4 ]] || break
+-    identity "$manager" "$UDEV_EXE" && [[ "$ID_PPID" == 1 ]] || continue
++    ((managers_scanned+=1))
++    if ! identity "$manager" "$UDEV_EXE"; then
++        ((manager_identity_rejected+=1))
++        continue
++    elif [[ "$ID_PPID" != 1 ]]; then
++        ((manager_role_rejected+=1))
++        continue
++    fi
+     capture /usr/bin/cat "/proc/$manager/task/$manager/children"
+-    [[ "$CAPTURE_RC" == 0 && ! "$CAPTURE_DATA" =~ [^0-9[:space:]] ]] || continue
++    if [[ "$CAPTURE_RC" != 0 || "$CAPTURE_DATA" =~ [^0-9[:space:]] ]]; then
++        ((children_read_or_format_rejected+=1))
++        continue
++    fi
+     workers=()
+     read -r -a workers <<< "$CAPTURE_DATA"
++    ((workers_enumerated+=${#workers[@]}))
+     workers_visited=0
+     for worker in "${workers[@]}"; do
+-        [[ "$candidate_count" -lt 4 && "$workers_visited" -lt 32 ]] || break
++        [[ "$candidate_count" -lt 4 ]] || break
++        if [[ "$workers_visited" -ge 32 ]]; then
++            ((traversal_cap_rejected+=1, worker_cap_reached+=1))
++            break
++        fi
+         [[ "$worker" =~ ^[0-9]+$ ]] || continue
+-        ((workers_visited+=1))
+-        identity "$worker" "$UDEV_EXE" && [[ "$ID_PPID" == "$manager" ]] || continue
++        ((workers_visited+=1, workers_scanned+=1))
++        if ! identity "$worker" "$UDEV_EXE"; then
++            ((worker_identity_rejected+=1))
++            continue
++        elif [[ "$ID_PPID" != "$manager" ]]; then
++            ((worker_parent_rejected+=1))
++            continue
++        fi
+         capture /usr/bin/cat "/proc/$worker/task/$worker/children"
+-        [[ "$CAPTURE_RC" == 0 && ! "$CAPTURE_DATA" =~ [^0-9[:space:]] ]] || continue
++        if [[ "$CAPTURE_RC" != 0 || "$CAPTURE_DATA" =~ [^0-9[:space:]] ]]; then
++            ((children_read_or_format_rejected+=1))
++            continue
++        fi
+         children=()
+         read -r -a children <<< "$CAPTURE_DATA"
++        ((children_enumerated+=${#children[@]}))
+         children_visited=0
+         for child in "${children[@]}"; do
+-            [[ "$candidate_count" -lt 4 && "$children_visited" -lt 32 ]] || break
++            [[ "$candidate_count" -lt 4 ]] || break
++            if [[ "$children_visited" -ge 32 ]]; then
++                ((traversal_cap_rejected+=1, child_cap_reached+=1))
++                break
++            fi
+             [[ "$child" =~ ^[0-9]+$ ]] || continue
+-            ((children_visited+=1))
++            ((children_visited+=1, children_scanned+=1))
+             if identity "$child" "$UDEV_EXE" && [[ "$ID_PPID" == "$worker" ]]; then
+                 ((candidate_count+=1, preexec_candidates+=1))
+                 capture_process "$child" suspected-preexec-not-proven-sysctl "$UDEV_EXE" "$manager" "$worker"
+             elif zombie_identity "$child" "$worker"; then
+                 ((candidate_count+=1, zombie_candidates+=1))
+                 capture_zombie "$child" "$manager" "$worker"
++            else
++                ((child_candidate_rejected+=1))
+             fi
+         done
+     done
+ done
+-printf 'TRIAL_SYSCTL_PROCESS_END schema=1 candidates=%s exact_sysctl=%s suspected_preexec=%s exited_unreaped=%s committed=%s discarded=%s\n' \
+-    "$candidate_count" "$sysctl_matches" "$preexec_candidates" "$zombie_candidates" "$committed" "$raced"
++if [[ "$candidate_count" -ge 4 ]]; then
++    candidate_cap_reached=1
++    scan_status=incomplete scan_reason=candidate-cap
++elif [[ "$traversal_cap_rejected" -gt 0 ]]; then
++    scan_status=incomplete scan_reason=traversal-cap
++else
++    # Complete describes bounded traversal, not unrestricted proc visibility.
++    # Rejection counters remain material, even when all traversal loops finished.
++    scan_status=complete scan_reason=bounded-traversal-finished
++fi
+ exit 0

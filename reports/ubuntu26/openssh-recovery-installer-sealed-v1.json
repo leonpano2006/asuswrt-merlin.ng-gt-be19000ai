@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "status": "installer_exact_inputs_sealed_and_focused_evidence_reused",
+  "installer_manifest": {
+    "path": "build/asus-ssh-recovery/install-v1/manifest.json",
+    "sha256": "455fdb8227329b2b1a0dc6ef2ed442d43817280880ee8b1efee5db858e462669"
+  },
+  "installer": {
+    "path": "build/asus-ssh-recovery/install-v1/install-recovery",
+    "sha256": "d9cc63fb12062add7a135b2d212058e1f3645efcab5b57651b2e55204723848e"
+  },
+  "fixed_input_pins": {
+    "build/asus-ssh-recovery/install-v1/manifest.json": "455fdb8227329b2b1a0dc6ef2ed442d43817280880ee8b1efee5db858e462669",
+    "build/ubuntu26-bsp-update/native-v2/manifest.json": "3f993744f1586f29d255ca190eb1d2e06b1205ac959a9a266a41521b85a4322a",
+    "reports/ubuntu26/asus-openssh-recovery-focused-v2.json": "e3d35906037500a99bb97a9354857d031bc46f9e1ba1306cf2688ec2e97ea720",
+    "build/asus-ssh-recovery/recovery-source-v1/manifest.json": "d099f76ef25894bc4bcd20126168f5637c5b62d8265f8675429d5051f755081f",
+    "evidence/ubuntu26/management-backup/ubuntu-host-ed25519.pub": "3457059d21603fe0d2f0971b1475c35625679c3511f3bcc073c8765ac6829bd2",
+    "evidence/ubuntu26/device-identity-live/identity-v8-first.txt": "2808496c1eb8fff2586b0a47ac9bce3d87f217da1d977bcc47b9199bfae473a4"
+  },
+  "copied_frozen_guard_inventory": {
+    "slot-device.c": "b618cabe4984858bf9f73c40c5f9f139b87cb999cfecc645052702401978ee21",
+    "slot-proof.c": "e6e5ed929d78ed6f42bd1935f5c84d9e937ebb2fa0bca64821318b963214c77e",
+    "slot-proof.h": "eb611bdaaea8caf69ca2e8047877c019f9c01e827d15cd4aad358b4d418205de",
+    "slot-device-policy.h": "92560f2af1a1e0be2a88b2d486d23c039cf557b4b5afc2e86b8a0852a6462976",
+    "p11-clear-view.h": "988d0b81d28e09f16aab6303721b9425ac66dbd0d6f2b74ecd3609483c29bdf3",
+    "sha256-compat.h": "18079008e1a791b72abf5d6513011c5e606a29d3ed0476927f0ed48d6fa1a9a8",
+    "sha256.c": "a58c66b50180e58fcc96dcb9dda460a1faef23a3bfefe79d2f691353248c091b",
+    "boot-diagnostics.h": "6db67153c5e05327afb92d42bb20765a98e96667fad1b5af66157931bdadb1af",
+    "hardware-payload.h": "5bbc8cf507ebdc9f1d29c166ddbd26c2e50f5d322c077eb5a8cc29a6ae60f17d",
+    "resolver-payload.h": "75c6117bb611ba48162400bd61d9dc287bbcb669ffbdebdb37125ae3a7faf0e8",
+    "hardware-provision.c": "366b607ade08c03a4610b4476336ea95d2660cfb4c1890a5cc510a8e8bd4d0d0",
+    "fixture.c": "4f86ddbdb8f88c7170eadb5101e555bb01b85effb568742bd41d2561b7dbc12e",
+    "bsp-payload.h": "7ccfffe058e6fcd139e7138e8a52b523ab779ec81d5d4c9d2ae0c4f44dbe3c98",
+    "resources/hndmfg.sh": "39845e29972a2e31efa987c6faa52d20cec51507323483052980f64b843eadf5",
+    "resources/hndnvram.sh": "6c7328049f2fe8362e8a279617c5bedf1d8433f2125636af3e96b39f21aaa1c7",
+    "resources/mount-data.inc": "d7439bbb478c72891c534ab4f3bbb415d73f4156759ed138e5941e99ca12ed58",
+    "resources/mount-fs.sh": "b08d58dfe34bba39dd4b63dc432ae82de6a3971bc9c68838d4dd95bec20598a2",
+    "bsp-provision.c": "7d68daea0337316f5abe2ee53e51eb1b6953cc8c5fdaac56a97fda283b49431c"
+  },
+  "compiled_input_snapshot_exact": true,
+  "changed_transaction_cases_reused": 15,
+  "runtime_source_peer": "candidate_recovery_guardian: no concrete transaction/auth bypass finding",
+  "peer_build_binding_gaps_resolved": "Complete copied and compiled frozen guard comparison plus fixed package/proof/host/enrollment pins; no rebuild or test repeat.",
+  "verifier": {
+    "path": "scripts/seal-openssh-recovery-installer.py",
+    "sha256": "88871f57498d487143e5beff4e03dce1d7691599c26a5f17b1cbca72cb78b51a"
+  },
+  "device_operated": false,
+  "physical_acceptance": false
+}

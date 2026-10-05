@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "status": "source_only_contract_pending_parent_review",
+  "helper_implemented": false,
+  "build_allowed_by_this_plan": false,
+  "device_activation_allowed_by_this_plan": false,
+  "scope": "An independent port2223 key-only management connection, not LAN health/ACK, not boot acceptance.",
+  "fixed_enrolment": {
+    "router_address": "169.254.190.15/32",
+    "peer_address": "169.254.190.51/32",
+    "router_eth_ifname": "eth0",
+    "router_eth_mac": "02:00:00:f0:00:01",
+    "router_bridge": "br0",
+    "router_bridge_mac": "02:00:00:f0:00:01",
+    "router_labels": {"eth0": "eth0:lr", "br0": "br0:lr"},
+    "controller_ifname": "br-lan",
+    "controller_mac": "02:00:00:f0:00:02",
+    "controller_label": "br-lan:lr",
+    "ifindices": "Discover and bind the current ifindex+name+MAC tuple; revalidate before/after each mutation, never pin observed stock values.",
+    "ssh_account": "MastermixStudios",
+    "ssh_port": 2223,
+    "host_key": "/etc/ssh/ssh_host_ed25519_key",
+    "public_authorization": "/var/lib/leon-asus-ssh/recovery_authorized_keys",
+    "credentials": "Reuse existing device-local host key and native account/PAM. No key generation, password/account changes or secret export."
+  },
+  "netlink_contract": {
+    "transport": "AF_NETLINK/SOCK_RAW|SOCK_CLOEXEC|SOCK_NONBLOCK/NETLINK_ROUTE in native PID1 network namespace; one mutator under boot-scoped root-owned lock.",
+    "read_messages": ["RTM_GETLINK", "RTM_GETADDR", "RTM_GETROUTE", "RTM_GETRULE"],
+    "events": ["RTMGRP_LINK", "RTMGRP_IPV4_IFADDR", "RTMGRP_IPV4_ROUTE", "RTMGRP_IPV4_RULE"],
+    "write_messages": ["RTM_NEWADDR", "RTM_DELADDR", "RTM_NEWROUTE", "RTM_DELROUTE"],
+    "never_write": ["RTM_NEWLINK", "RTM_DELLINK", "RTM_NEWRULE", "RTM_NEWNEIGH", "RTM_DELNEIGH", "sysctl", "firewall", "NVRAM"],
+    "validation": "Kernel sender pid0, exact sequence, NLMSG_ERROR ACK checked, bounded length/attributes, NLM_F_DUMP_INTR/MSG_TRUNC/ENOBUFS/unknown conflicting attributes reject and cause fresh read-only resnapshot; do not treat partial dump as absence.",
+    "bounds": {"operation_deadline_ms": 2000, "snapshot_deadline_ms": 5000, "multipart_bytes_max": 1048576, "messages_max": 4096, "reconcile_poll_ms": 1000},
+    "address": "AF_INET local=address=169.254.190.15, prefix32, scope LINK, explicit matching IFA_LABEL, PERMANENT|NOPREFIXROUTE; no broadcast or automatic /16 connected route. Kernel-created /32 local-table route is expected and accounted for.",
+    "peer_route": "Only main-table RTN_UNICAST 169.254.190.51/32, scope LINK, no gateway/multipath, current target OIF, preferred-source169.254.190.15; dedicated proposed protocol186+metric42760, reject collisions before use. Add EXCL, never replace a foreign route.",
+    "controller_objects": "Equivalent labelled169.254.190.51/32 on br-lan plus main-table peer169.254.190.15/32 preferred-source169.254.190.51. Controller provisioning is separate and not performed by router helper."
+  },
+  "preflight": [
+    "Root/native PID1 network namespace and exact trusted config/helper identity; root-owned private state directory; no caller-supplied device, address, route or executable.",
+    "Read normal addresses, both rescue-address occurrences in the complete namespace, local/main routes and rule ordering. Reject foreign rescue address/label/peer-route or unexpected policy routing.",
+    "Verify Ethernet type, exact MAC and netdev identity; UP/carrier. If master absent choose eth0; if exact br0 choose br0 after verifying bridge identity, usable member state and existing non-rescue br0 IPv4. Any other master fails closed.",
+    "Read effective all+target arp_ignore, arp_filter, arp_announce and rp_filter without writing. Initial policy allows only captured-compatible arp_ignore0/1, arp_filter0, arp_announce0; rp_filter0/1/2 requires exact reverse peer route. Unknown values fail closed.",
+    "Require reviewed unchanged candidate/controller filter policy or a later narrow connectivity proof; never insert a firewall exception as a side effect.",
+    "Preserve normal IPv4/IPv6 addresses, routes, flags, master and MTU. Explicit labels are mandatory because /32 is not an IPv4 secondary flag guarantee."
+  ],
+  "lifecycle": [
+    "Initial state must be clear, or match a same-boot root-owned operation receipt plus the complete exact owned object tuple. Never adopt an arbitrary identical-looking preexisting object without receipt.",
+    "Persist intent before each mutation in /run, request one exact EXCL add, wait bounded ACK and full readback; on ambiguity stop adding and retain explicit unknown state for exact inspection/cleanup.",
+    "Publish READY only after both address and peer route readback, unchanged normal address/route inventory, unchanged master/identity, and label exclusion from normal br0 consumers are established.",
+    "On eth0 master transition, remove only the old owned peer route then old owned labelled address, revalidate the new target, add only new labelled address and peer route. Never carry duplicate rescue addresses on both devices. A reconnect gap is permitted.",
+    "If carrier, normal-address prerequisite, identity or policy disappears, withdraw only owned objects and withhold availability. Unknown master/conflicting external state exits rather than guessing.",
+    "SIGTERM and ExecStopPost cleanup inspect same-boot receipt and full exact object identity before deleting only the owned route/address. Unknown or externally changed objects are retained with an explicit failure; never flush an interface/table. No reboot or service-control side effects.",
+    "No automatic restart loop. Native socket is bound to fixed IPv4, not a device, and is stopped when its helper fails. No normal SSH22/recovery2222 changes."
+  ],
+  "controller_first_trial_plan": {
+    "implementation": "A separate transient guarded shell script using the already present BusyBox ip is sufficient because controller br-lan is fixed and does not need master migration. Do not build/install a second native helper or query controller architecture merely for this operation.",
+    "preflight": "Verify native br-lan MAC 02:00:00:f0:00:02, current ifindex, UP/carrier, exact existing192.168.100.51/24 with labelbr-lan, effective ARP policies and standard rule ordering; require no existing rescue address/label or peer route. Fixed C locale, bounded complete output and exact parser; verify ip label and exact route selection syntax before any future mutation.",
+    "owned_state": "Only169.254.190.51/32 labelbr-lan:lr and route169.254.190.15/32 devbr-lan src169.254.190.51. No /16 route, default route, normal address, VLAN, bridge, firewall, sysctl or UCI change.",
+    "rollback": "Root-owned same-boot transient receipt written before additions; exact route/address readback. On failure/exit explicitly delete only the matching owned route/address. No ip addr flush, no broad ip route del, no automatic retry of unknown outcome.",
+    "limits": "No controller script has been implemented or executed. Keeping the existing .51 management connection alive and verifying normal address/default route unchanged is required for the later single trial. No permanent install."
+  },
+  "focused_future_review_and_test_plan_only": [
+    "Review implementation before a single build: malformed multipart/ACK/timeouts, source sender/sequence and explicit ownership fail-closed cases.",
+    "One isolated network namespace fixture later: detached eth0 endpoint, master transition to br0 and reverse; normal IPv4/DHCP-address changes preserved; label excluded by actual glibc getifaddrs/ASUS-style matcher and native health matcher.",
+    "Exact peer route/address collision, wrong MAC/master and arp_ignore2 rejection; interrupted operation cleanup removes no foreign object.",
+    "Use existing fixture identities for one key-only2223 connection and rejection of password/root/wrong-key/wrong-peer; ensure22 and2222 definitions unchanged. This plan does not execute any of these tests."
+  ]
+}

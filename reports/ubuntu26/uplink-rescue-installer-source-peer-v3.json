@@ -1,0 +1,85 @@
+{
+  "schema": 1,
+  "status": "source_only_fixed_socket_parent_rescue_installer_v3_peer_pass",
+  "source_only_review_passed": true,
+  "static_21_member_source_closure": true,
+  "inherited_guard_and_transaction_sources_unchanged": true,
+  "fixed_socket_parent_creation_only": true,
+  "builder": {
+    "path": "scripts/build-uplink-rescue-installer-v3.py",
+    "sha256": "204514119ad9f863ef5b68583dd20422282b04501f7ef4e998d6a92757bb7ad2",
+    "bytes": 12377
+  },
+  "C": {
+    "path": "scripts/asus-integration/uplink-rescue/install-v3.c",
+    "sha256": "aec2d619bdad361facb7e016680535772504d2e5c92d212a8fede58f91729216",
+    "bytes": 28040
+  },
+  "deployer_before_final_source_peer_pin": {
+    "path": "scripts/deploy-uplink-rescue-p11-v3.py",
+    "sha256": "7947049a7f0c35206572d093e9762a194da9ef73c563319c17e3c691a336528d",
+    "bytes": 16875
+  },
+  "manifest": {
+    "path": "build/asus-uplink-rescue/install-v3/manifest.json",
+    "sha256": "5a2f4a0eef5c5cdabafbd5caafea9924fb1289554cffdccf70ab1ef218f1d836",
+    "bytes": 20911
+  },
+  "installer": {
+    "path": "build/asus-uplink-rescue/install-v3/install-additions",
+    "sha256": "4980536a609519756890743ae6dcfd3b673b952e27530e7bd531586c86e583b6",
+    "bytes": 1226840
+  },
+  "actual_build_receipt": {
+    "path": "reports/ubuntu26/uplink-rescue-installer-build-v3.json",
+    "sha256": "bcdc4caeb804540c76e100ae267ede97c6970f31be089f5fdfff615245f9647b",
+    "bytes": 1335
+  },
+  "rescue_v2_baseline": {
+    "path": "build/asus-uplink-rescue/install-v2/manifest.json",
+    "sha256": "96d7ee155a4b6070d893aa47570dd2b971907c72fb9a60773b8bb3eded852406",
+    "bytes": 18244
+  },
+  "original_V15_baseline": {
+    "path": "build/asus-trial-candidate-v15/install-v1/manifest.json",
+    "sha256": "18c2470a65afa9d2aad2e5e9676b810f6a1757ab4f89bb9b1a1196987a2ff984",
+    "bytes": 19368
+  },
+  "original_V15_baseline_installer": {
+    "path": "build/asus-trial-candidate-v15/install-v1/install-additions",
+    "sha256": "3ee1c2a1e8b1e78bf03501bb84bb61e549bbd28c75761501ebb1e57a78c11b65",
+    "bytes": 8889008
+  },
+  "fixed_parent_diagnosis": {
+    "path": "evidence/ubuntu26/device-uplink-rescue-live/preflight-diagnosis-v1/result.json",
+    "sha256": "7b5e5aa5a977dfb30b7f9bc31e209fc281aee8d4de9247f9c17c8c12b7a38910",
+    "bytes": 2904
+  },
+  "diagnosis_metadata": {
+    "path": "evidence/ubuntu26/device-uplink-rescue-live/preflight-diagnosis-v1/diagnoser.stdout",
+    "sha256": "7e4e003a8ed559f9421a165c2ab258b395d3e448a2eda62c1b46373b043f7feb",
+    "bytes": 12418
+  },
+  "source_members": 21,
+  "only_changed_source": "install.c",
+  "twenty_unchanged_members_include_payload_header": true,
+  "remove_three_fixed_helpers_and_inverse_nine_main_substitutions_equals_v2": true,
+  "worker_three_work_labels_only_same_compileline_flags_ccache_environment": true,
+  "fixed_parent_policy": "Ancestors create0/root0755/nofollow/samedev; parent ENOENT or valid existingroot0755. All7/prereqs+fullrecheck before fixedmkdir0700; newly-created onlychmod755/fsyncdir+ancestor; existingparent no chmod/racedappearance refuses; finalancestor/parent sameinode/root755.",
+  "directory_creation_count_immediate_even_partial_failure": true,
+  "identity16_RC6_checkonly8_old90_storage_transactions_unchanged": true,
+  "seven_regular_rows_original_V15_fixture_baseline_and_zero_replacements_retained": true,
+  "actual_ELF_AArch64_staticPIE_no_PT_INTERP_or_DT_NEEDED": true,
+  "compile_count_in_root_receipt": 1,
+  "native_returncode_in_root_receipt": 0,
+  "deployer_final_artifact_and_unique_remote_pins_verified_SOURCE_PEER_still_None": true,
+  "deployer_exact7_absent_passes_one_parent_ENOENT_and_native_directories_created1_required": true,
+  "default_local_only_exactgate_before_output_or_transport_unchanged": true,
+  "peer_plan_import_compile_test_fixture_VM_or_device_invocations": 0,
+  "limits": [
+    "Sequential failure retains created parent/owned temp/partial additions, no rollback or retry.",
+    "Shared flock excludes cooperating writers only; mkdir/open and rename are not hostile-writer compare-and-swap.",
+    "Old focused guard/payload fixture proof is reused; this review does not claim it exercises new parent creation.",
+    "Final SOURCE_PEER literal filling still requires the reviewed report pin before physical staging."
+  ]
+}

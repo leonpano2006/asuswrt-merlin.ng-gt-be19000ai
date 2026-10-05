@@ -1,0 +1,61 @@
+Native OpenSSH recovery candidate
+
+This package contains standard OpenSSH configuration and systemd units only.
+It has no maintainer scripts, imported keys, account creation, host-key
+generation, or automatic activation. Building it does not access a router.
+
+The independent listener is IPv4 port 2222, bound to br0. It permits only
+MastermixStudios from 192.168.100.0/24 and only public-key authentication. It
+uses the existing native ed25519 host key and the separate persistent file
+/var/lib/leon-asus-ssh/recovery_authorized_keys. The ASUS control bridge and
+ordinary port 22 neither generate this configuration nor replace this file.
+
+Before activating a reviewed future candidate, separately copy only the
+already enrolled public key whose SHA256 fingerprint is
+h0AOx4W9yxopLTJeDvC8YdWsiPuhufuDz/DEKY3OH9o into recovery_authorized_keys.
+The private key /root/.ssh/netpanel stays on the authorized .51 client.
+Make the public file root:root 0644 and its directory ancestors root-owned,
+traversable, and not writable by group or others (normally 0755). Preserve
+the existing native account, home, PAM policy, shadow, host keys, and identity
+marker. Confirm the candidate's actual native host-key fingerprint before
+accepting connections; the stock Dropbear fingerprint is a separate identity.
+
+Enable leon-asus-ssh-recovery.socket through its Install WantedBy setting,
+which creates sys-subsystem-net-devices-br0.device.wants, not sockets.target.
+For an already active br0, explicitly start the socket after enabling it.
+For a staged rootfs, create the equivalent device-wants symlink before boot.
+br0 can then be created by the broker without the recovery listener holding
+up sockets.target or basic.target. Removing br0 stops the listener; the next
+device activation starts it again. This requires the bridge to be exposed
+as an active systemd device, which must be checked on the target candidate.
+
+Each accepted connection creates OpenSSH's root-owned /run/sshd privilege-
+separation directory when needed. Both its template and the package's small
+persistent ssh.service.d drop-in set RuntimeDirectoryPreserve=yes, preventing
+ordinary SSH shutdown or recovery exit from deleting this directory during
+the boot. The ordinary service's listener, ExecStart and generated config
+are unchanged; the only shared adjustment is directory preservation.
+Missing public authorization or host-key material rejects the connection;
+the socket remains available for a later provisioned connection.
+
+Public-key login remains independent of vendor password decryption/import,
+but the existing native account and PAM account/session checks must remain
+usable. Account expiration, a missing native account, /etc/nologin, missing
+br0, firewall rejection, filesystem damage, or systemd failure can still
+prevent access. This package changes no sudo policy: sudo can still require
+the native account password. It does not grant unrestricted passwordless
+root commands or claim privileged recovery after that password is lost.
+
+One new isolated fixture run should check late br0 creation, pinned key-only
+login while ordinary SSH/vendor control is unavailable, ordinary ssh.service
+stop/start during a live recovery session, br0 removal/recreation, and another
+fresh boot. It must also reject password, root, unapproved-key and non-LAN
+logins and preserve ordinary port-22 configuration and native account files.
+Reuse an existing fixture identity and run no unrelated baseline SSH suite.
+Only a later authorized native physical boot can establish target acceptance.
+
+Primary references:
+https://raw.githubusercontent.com/systemd/systemd/main/man/systemd.socket.xml
+https://raw.githubusercontent.com/systemd/systemd/main/man/systemd.exec.xml
+https://man.openbsd.org/sshd
+https://man.openbsd.org/sshd_config

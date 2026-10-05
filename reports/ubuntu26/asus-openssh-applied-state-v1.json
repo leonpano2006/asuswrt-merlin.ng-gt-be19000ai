@@ -1,0 +1,72 @@
+{
+  "status": "component_validated_inactive_candidate",
+  "package": {
+    "path": "build/asus-ssh-integration/native-v6/leon-asus-openssh-control_0.4+leonb53.1_arm64.deb",
+    "sha256": "41791106b2d01f815b08098ad2892d812997d8a116504a061e1b6a596e9cdd34",
+    "version": "0.4+leonb53.1",
+    "architecture": "arm64"
+  },
+  "evidence": {
+    "native_build": {
+      "path": "build/asus-ssh-integration/native-v6/manifest.json",
+      "sha256": "96816296fd625c22a9b5cf16e1f987774038e224eff17c2ad94dca7737463b84"
+    },
+    "candidate_build": {
+      "path": "build/asus-ssh-integration/gnu-systemd-openssh-control-b53-v6/build.json",
+      "sha256": "57751e8706631c131066c7407121a33beaf09912cacfe7a8cded7d91551f6d2a"
+    },
+    "fixture": {
+      "path": "build/asus-ssh-integration/fixture-v7/manifest.json",
+      "sha256": "11d909886b4e64780387a046526840cfc88c891668c3d057b6759b5d093d2156"
+    },
+    "qemu": {
+      "path": "build/qemu/asus-openssh-control-kernel10-v7/result.json",
+      "sha256": "cf9e65256aec66c2fd6891447f626fdc10f5b9f733c0dde408ba3181e4501c26"
+    },
+    "serial": {
+      "path": "build/qemu/asus-openssh-control-kernel10-v7/serial.log",
+      "sha256": "8daa69d75d3df52a407fd9ec825cd2616ab49eb3358748b72992eca1c5536dcc"
+    },
+    "independent_parser_review": {
+      "path": "build/asus-ssh-integration/parser-review-v1/result.json",
+      "sha256": "0aa98584786cca2ee9b555dc19600fb1176025790049fd90d595747531f89f2f"
+    }
+  },
+  "actual_sshd_master_command": "sshd: /usr/sbin/sshd -D -f /run/leon-asus-ssh/sshd_config [listener] 0 of 10-100 startups",
+  "unrelated_running_master_rejected_before_account_or_config_change": true,
+  "canonical_master_idempotent_reload_and_password_policy_passed": true,
+  "kernel_notes_sha256_observed_in_guest": "d75d9316e93c45d36290eab8cdb48868c982b5740f54bb63d7cc38d89fae5ab4",
+  "markers": [
+    "LAB_SSH_CONTROL_KERNEL10_NOTES_PASS",
+    "LAB_SSH_CONTROL_DEVICE_KEYS_PASS",
+    "LAB_SSH_CONTROL_REJECT_INVALID_NO_CHANGE_PASS",
+    "LAB_SSH_CONTROL_IDENTITY_ONLY_NO_START_PASS",
+    "LAB_SSH_CONTROL_ARMEL_TIME64_TRANSPORT_PASS",
+    "LAB_SSH_CONTROL_UNMANAGED_MASTER_REFUSED_UNCHANGED_PASS",
+    "LAB_SSH_CONTROL_IPV4_IPV6_LAN_CONFIG_PASS",
+    "LAB_SSH_CONTROL_KEY_LOGIN_AND_REJECT_PASS",
+    "LAB_SSH_CONTROL_PASSWORD_SUDO_POLICY_PASS",
+    "LAB_SSH_CONTROL_LEGACY_MD5_AUTH_PASS",
+    "LAB_SSH_CONTROL_IDEMPOTENT_SINGLE_ENTRY_PASS",
+    "LAB_SSH_CONTROL_PASSWORD_DISABLE_PASS",
+    "LAB_SSH_CONTROL_SERVICE_RESTART_PASS",
+    "LAB_SSH_CONTROL_DISABLE_PASS",
+    "LAB_SSH_CONTROL_REENABLE_AFTER_STOP_PASS",
+    "LAB_SSH_CONTROL_KERNEL10_COMPLETE",
+    "QEMU_UBUNTU26_SYSTEMD_FULL_COMPLETE"
+  ],
+  "elapsed_seconds": 145.13,
+  "scope": "Actual native Ubuntu SSH and ARMEL/native request clients on target kernel10; guest loopback only, synthetic accounts and device-local guest keys.",
+  "candidate_still_contains_prototype_keys": true,
+  "physical_lan_accepted": false,
+  "production_ready": false,
+  "router_access": false,
+  "historical_failure": {
+    "path": "build/qemu/asus-openssh-control-kernel10-v6/result.json",
+    "reason": "Stopping the unrelated fixture SSH service removed /run/sshd; pre-start sshd -t required recreating that owned runtime directory. Native v6 adds this and a real disable/reenable login regression."
+  },
+  "checker": {
+    "path": "scripts/check-asus-openssh-applied-state.py",
+    "sha256": "56226286675a8cc3637632404608470b72779343b5d289af6204b9011369e6a4"
+  }
+}

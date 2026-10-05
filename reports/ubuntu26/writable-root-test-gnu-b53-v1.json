@@ -1,0 +1,111 @@
+{
+  "rootfs_tar_sha256": "e701ec4eb2e40c875803f16e223e85321229ad57f45a13a7a1b4bf9edb777a5a",
+  "kernel_sha256": "4a15601eada042576aed2a3680dcc48e9228eea70f70c478840767aaa89a9f8e",
+  "image_sha256": "1001c134be38f23a570eec872377dcde70df53baa258340376a0763ad046698f",
+  "image_unchanged_after_guests": true,
+  "initramfs_sha256": "c61fd39c83b91b467ed4f5861309fb382b84d124ff8e871235519b85bbae7a46",
+  "filesystem": {
+    "uuid": "a5b3d0f8-80f1-4e2d-bc73-4c21561f740b",
+    "feature_profile": [
+      "has_journal",
+      "ext_attr",
+      "resize_inode",
+      "dir_index",
+      "filetype",
+      "extent",
+      "flex_bg",
+      "sparse_super",
+      "large_file",
+      "huge_file",
+      "dir_nlink",
+      "extra_isize",
+      "metadata_csum"
+    ],
+    "identity_sha256": "a4edc5ccef4dd70f50a7dad1a941b7aa02d20f4c7a7ce6fdc531fbbd7dcb340d",
+    "rootfs_tar_sha256": "e701ec4eb2e40c875803f16e223e85321229ad57f45a13a7a1b4bf9edb777a5a",
+    "kernel_sha256": "4a15601eada042576aed2a3680dcc48e9228eea70f70c478840767aaa89a9f8e",
+    "final_init_sha256": "4efcca563c3285cc58c51feec2ea615264afb268f39b345aba5fefdf33b3413b",
+    "systemd_service_proof": true,
+    "namespace_uid_map": "         0       1000          1\n         1     100000      65536\n",
+    "image_bytes": 1073741824,
+    "device_inodes_created_offline": 8
+  },
+  "metadata_audit": {
+    "archive_entries_checked": 13208,
+    "uid_gid_mode_verified": true,
+    "hardlinks_verified": 116,
+    "xattrs": [
+      {
+        "path": "./var/log/journal",
+        "name": "system.posix_acl_default",
+        "preserved": true,
+        "comparison": "same ACL tags, permissions, named IDs; unused IDs ignored"
+      },
+      {
+        "path": "./var/log/journal",
+        "name": "system.posix_acl_access",
+        "preserved": true,
+        "comparison": "same ACL tags, permissions, named IDs; unused IDs ignored"
+      }
+    ],
+    "errors": []
+  },
+  "host_e2fsck_clean": true,
+  "qemu_runs": [
+    {
+      "scenario": "systemd",
+      "command": [
+        "qemu-system-aarch64",
+        "-machine",
+        "virt-8.2,gic-version=2",
+        "-accel",
+        "tcg,thread=multi",
+        "-cpu",
+        "cortex-a53",
+        "-smp",
+        "2",
+        "-m",
+        "4096",
+        "-nodefaults",
+        "-nic",
+        "none",
+        "-display",
+        "none",
+        "-monitor",
+        "none",
+        "-serial",
+        "stdio",
+        "-no-reboot",
+        "-sandbox",
+        "on,obsolete=deny,elevateprivileges=deny,spawn=deny,resourcecontrol=deny",
+        "-kernel",
+        "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/Image-v10",
+        "-initrd",
+        "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/ubuntu26-writable-root-gnu-b53-v1/ubuntu-writable.cpio.gz",
+        "-append",
+        "console=ttyAMA0 earlycon=pl011,mmio32,0x09000000 rdinit=/init panic=0 oops=panic nokaslr loglevel=6 initcall_blacklist=bcm_pmc_drv_reg,bcm_ubus_drv_init,pmc_xrdp_init,pmc_wan_initcall,bcmbca_vreg_sync_drv_reg"
+      ],
+      "stop_reason": "qemu-exit",
+      "elapsed_seconds": 10.66,
+      "complete": false,
+      "panic": false,
+      "lab_lines": [
+        "LAB_BOOTSTRAP_EXIT_code=1"
+      ],
+      "log_sha256": "c6c15b96d7c6e79c0652ff1205728d01fd815cdf796079a71ae5b0e927615502",
+      "systemd_service_proof_passed": false
+    }
+  ],
+  "limitations": [
+    "Image is RAM-backed inside QEMU; verifies real ext4 unmount/remount persistence, not host-file persistence across QEMU boots or power loss.",
+    "No physical disk, partition, boot setting or ASUS service was modified.",
+    "Early transition is an initramfs switch_root test; starting from an already mounted SquashFS would need a separately tested pivot_root path.",
+    "Optional systemd proof covers one minimal oneshot service only; no proprietary ASUS service integration is validated.",
+    "Bad UUID selects a safe marker and powers off; it does not emulate the complete vendor recovery path."
+  ],
+  "systemd_service_proof": true,
+  "passed": false,
+  "failure_classification": "harness_capacity: bootstrap /run tmpfs fixed at512MiB could not hold the newly requested1GiB test image",
+  "repair": "Size guest temporary image storage from actual ext4 image size; original384MiB scenario remains512MiB",
+  "followup": "reports/ubuntu26/writable-root-test-gnu-b53-v1-capacityfix.json"
+}

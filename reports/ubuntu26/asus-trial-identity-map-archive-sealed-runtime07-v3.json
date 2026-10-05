@@ -1,0 +1,1488 @@
+{
+  "schema_version": 1,
+  "passed": true,
+  "rootfs": {
+    "path": "build/ubuntu26-rootfs/ubuntu26-bcm-asus-runtime07-archive-sealed-v1.tar",
+    "sha256": "2f0eafc638180019bb44b230e71877e200886e9c6afc9895bb299b0d6e4ca688"
+  },
+  "guardian_receipt": {
+    "path": "build/asus-trial-runtime/native-v16/guardian-receipt.json",
+    "sha256": "ece9f05231212c78797a7004a4605bc749f249fd6a9d0ad4276cdd0c67888bcc"
+  },
+  "generated_identity_header": {
+    "path": "build/asus-trial-runtime/native-v16/identity-production.h",
+    "sha256": "6b13ec6d18c349997cbb169f8340f3ee16588e505480c0949464cfcc632dbf15"
+  },
+  "guardian": {
+    "path": "build/asus-trial-runtime/native-v16/guardian-integrated",
+    "sha256": "1422c15e00bedc660b88c49911ec1254b58f32ce544bbc04136d3c8604a4985a"
+  },
+  "deployment_gate_enabled": false,
+  "count": 208,
+  "checks": [
+    {
+      "path": "/usr/bin/systemctl",
+      "expected_sha256": "ce5670ab2606e4fc987189135fe2afc80fa29ef45d90c976e0aaac7c674fafda",
+      "actual_sha256": "ce5670ab2606e4fc987189135fe2afc80fa29ef45d90c976e0aaac7c674fafda",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/bcmkernel/net/netfilter/nf_conntrack_rtsp.ko",
+      "expected_sha256": "b2e5c25b54b2d8aece8b368d574eda146c44f4e8d597f67124e89bde15ce5604",
+      "actual_sha256": "b2e5c25b54b2d8aece8b368d574eda146c44f4e8d597f67124e89bde15ce5604",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/bcmkernel/net/netfilter/nf_dyndscp.ko",
+      "expected_sha256": "1d9b6018af6cada9371a4901d744f6a557ab4f9e7547cbe79ba10a3cef4fe9e9",
+      "actual_sha256": "1d9b6018af6cada9371a4901d744f6a557ab4f9e7547cbe79ba10a3cef4fe9e9",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/bcmkernel/net/netfilter/nf_nat_pt.ko",
+      "expected_sha256": "5a8b88575f1095b44cacd2f57529ffd4661e0f67a6bdb7415650af67a7018211",
+      "actual_sha256": "5a8b88575f1095b44cacd2f57529ffd4661e0f67a6bdb7415650af67a7018211",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/bcmkernel/net/netfilter/nf_nat_rtsp.ko",
+      "expected_sha256": "760550d10c2c0f13418707bbb3c171abd19b3b77ed7905471b96f87df641c05e",
+      "actual_sha256": "760550d10c2c0f13418707bbb3c171abd19b3b77ed7905471b96f87df641c05e",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/bcmkernel/net/netfilter/xt_SKIPLOG.ko",
+      "expected_sha256": "7cd290cf47b4c98d2677a8a21d53d1c561e2007a31aa016d0ee71a80470ef45d",
+      "actual_sha256": "7cd290cf47b4c98d2677a8a21d53d1c561e2007a31aa016d0ee71a80470ef45d",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/bcmkernel/net/netfilter/xt_blog.ko",
+      "expected_sha256": "b23fc182500c4919cab899a566a77f76ed7807f7391356e27d2de3507677182a",
+      "actual_sha256": "b23fc182500c4919cab899a566a77f76ed7807f7391356e27d2de3507677182a",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/bcmkernel/net/netfilter/xt_flowlabel.ko",
+      "expected_sha256": "4117ae58240361fdbb23eef5259c96ca3c9b2c99f7d0f3d55ee97b5172dfd274",
+      "actual_sha256": "4117ae58240361fdbb23eef5259c96ca3c9b2c99f7d0f3d55ee97b5172dfd274",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/bcmkernel/net/netfilter/xt_mscs.ko",
+      "expected_sha256": "17300f4f18e72f733842582c84bd4412deb9faa547f3d1382f3227d6a01bc36f",
+      "actual_sha256": "17300f4f18e72f733842582c84bd4412deb9faa547f3d1382f3227d6a01bc36f",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/bcmkernel/net/netfilter/xt_scs.ko",
+      "expected_sha256": "88f8ff4cd2dc862f5b6e13d260c8386763cd27d4e527eb8dfda59e7cd791b903",
+      "actual_sha256": "88f8ff4cd2dc862f5b6e13d260c8386763cd27d4e527eb8dfda59e7cd791b903",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/extra/bcm_bca_usb.ko",
+      "expected_sha256": "45251a122169c61ef850084ea8ab8d0f58fbb7c0722cfb273411b609b060f617",
+      "actual_sha256": "45251a122169c61ef850084ea8ab8d0f58fbb7c0722cfb273411b609b060f617",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/extra/bcm_bp3drv.ko",
+      "expected_sha256": "1b0358022a743009ca09a7613e898de31c1f57440c85ae5babb6e0c95e0c1d18",
+      "actual_sha256": "1b0358022a743009ca09a7613e898de31c1f57440c85ae5babb6e0c95e0c1d18",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/extra/bcm_bpm.ko",
+      "expected_sha256": "4210544576e5a9b262de67f6678d0dc7086493e5bd33f0fed8ba86311f20fd2f",
+      "actual_sha256": "4210544576e5a9b262de67f6678d0dc7086493e5bd33f0fed8ba86311f20fd2f",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/extra/bcm_enet.ko",
+      "expected_sha256": "316db2192cdf97a6b00ccac89cee4012f5b6983401f75988c4125d717fe0af0c",
+      "actual_sha256": "316db2192cdf97a6b00ccac89cee4012f5b6983401f75988c4125d717fe0af0c",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/extra/bcm_ingqos.ko",
+      "expected_sha256": "385b075ed20a7c6c8da71cc62215a85567f9097fa8bc32fae7bbaa71924a7cd2",
+      "actual_sha256": "385b075ed20a7c6c8da71cc62215a85567f9097fa8bc32fae7bbaa71924a7cd2",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/extra/bcm_knvram.ko",
+      "expected_sha256": "302cda26fa6be36b5052b21e0a95c34db299300bdb74299eb8234f10763a28ea",
+      "actual_sha256": "302cda26fa6be36b5052b21e0a95c34db299300bdb74299eb8234f10763a28ea",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/extra/bcm_mpm.ko",
+      "expected_sha256": "455a0b7187851c907f1d59c0b17f2db2e33a48aa2bad97783a3e09744c01c48b",
+      "actual_sha256": "455a0b7187851c907f1d59c0b17f2db2e33a48aa2bad97783a3e09744c01c48b",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/extra/bcm_pcie_hcd.ko",
+      "expected_sha256": "3386e76e99751433c04eab60f3182ede1178916db727889f92851cc8ddacb6ad",
+      "actual_sha256": "3386e76e99751433c04eab60f3182ede1178916db727889f92851cc8ddacb6ad",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/extra/bcm_pondrv.ko",
+      "expected_sha256": "ed02ba9131da9dfbfa84ffc7e366601e38dbcbbd47e948727d7ff7f68a58264f",
+      "actual_sha256": "ed02ba9131da9dfbfa84ffc7e366601e38dbcbbd47e948727d7ff7f68a58264f",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/extra/bcm_thermal.ko",
+      "expected_sha256": "6d1f8782f53c6b118c3e0acec048c4ec4764192ffae3d9900ddd2120a79f93f1",
+      "actual_sha256": "6d1f8782f53c6b118c3e0acec048c4ec4764192ffae3d9900ddd2120a79f93f1",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/extra/bcmflex.ko",
+      "expected_sha256": "a46c58a7b7d1ef8906fa036481ef641315d896b5186d67f797f2979fd0c319e5",
+      "actual_sha256": "a46c58a7b7d1ef8906fa036481ef641315d896b5186d67f797f2979fd0c319e5",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/extra/bcmlibs.ko",
+      "expected_sha256": "b63afa61242e9c29938c05591ae50de9a9049e45fa7ac4ae2d739d985a6fbfa1",
+      "actual_sha256": "b63afa61242e9c29938c05591ae50de9a9049e45fa7ac4ae2d739d985a6fbfa1",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/extra/bcmmcast.ko",
+      "expected_sha256": "c5519dc861305ef715d4b46199a07c912c56a5b5c7a692d6a9ec08dc2dc92a7e",
+      "actual_sha256": "c5519dc861305ef715d4b46199a07c912c56a5b5c7a692d6a9ec08dc2dc92a7e",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/extra/bcmspu.ko",
+      "expected_sha256": "f55183d2e713a34f8225a84353d0d884ae7cb40148ecc039f07eec5729962ff8",
+      "actual_sha256": "f55183d2e713a34f8225a84353d0d884ae7cb40148ecc039f07eec5729962ff8",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/extra/bcmvlan.ko",
+      "expected_sha256": "0ec61ee7fea01c42cbb549bcbfcc88cde807f696e2fa08d18e763e96c8c76a87",
+      "actual_sha256": "0ec61ee7fea01c42cbb549bcbfcc88cde807f696e2fa08d18e763e96c8c76a87",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/extra/bdmf.ko",
+      "expected_sha256": "b34acedd5c1d5da436d25b7a0f83071b26a4ac3109fbddd47b0ee5e6ab74c8d9",
+      "actual_sha256": "b34acedd5c1d5da436d25b7a0f83071b26a4ac3109fbddd47b0ee5e6ab74c8d9",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/extra/cmdlist.ko",
+      "expected_sha256": "fc413b1428b0f475b6ff685f1f639fcfdc9256008f4f501db26a24412f3e3aff",
+      "actual_sha256": "fc413b1428b0f475b6ff685f1f639fcfdc9256008f4f501db26a24412f3e3aff",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/extra/dhd.ko",
+      "expected_sha256": "af77543e47c80c0aa6b400c8267e50f77126493a9d9ef01aa4ffe4e095cab2e6",
+      "actual_sha256": "af77543e47c80c0aa6b400c8267e50f77126493a9d9ef01aa4ffe4e095cab2e6",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/extra/emf.ko",
+      "expected_sha256": "d8c20737d825cc3a2d05a6ea38e3d2920fc323070215663dca75fcb6d05f1850",
+      "actual_sha256": "d8c20737d825cc3a2d05a6ea38e3d2920fc323070215663dca75fcb6d05f1850",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/extra/gdx.ko",
+      "expected_sha256": "9563363484cd3affb683f06083ad698876d8c5aaddd00c73d3db41e88f4c9c2f",
+      "actual_sha256": "9563363484cd3affb683f06083ad698876d8c5aaddd00c73d3db41e88f4c9c2f",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/extra/hnd.ko",
+      "expected_sha256": "9f79110d7f6f8a3eef08623261b2de4233dd8165702ad54f3c9780285f9669e6",
+      "actual_sha256": "9f79110d7f6f8a3eef08623261b2de4233dd8165702ad54f3c9780285f9669e6",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/extra/hs_uart_drv.ko",
+      "expected_sha256": "8fff163c0476cb54bd5777eff5ffd450d64a462efacb37814ce3820b9c923e8e",
+      "actual_sha256": "8fff163c0476cb54bd5777eff5ffd450d64a462efacb37814ce3820b9c923e8e",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/extra/igs.ko",
+      "expected_sha256": "7b7aae57d7017c35b59e6cfa09bd1ffaa477334b35c1113975109284c097b24f",
+      "actual_sha256": "7b7aae57d7017c35b59e6cfa09bd1ffaa477334b35c1113975109284c097b24f",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/extra/nat46.ko",
+      "expected_sha256": "bcb2fd61edeb4efe4d429de59ede891e88ee0f3cd99b46095e18f4f8f38572ed",
+      "actual_sha256": "bcb2fd61edeb4efe4d429de59ede891e88ee0f3cd99b46095e18f4f8f38572ed",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/extra/pcap.ko",
+      "expected_sha256": "e4f62696dd874221b7914395eb141874bc3059575a0efcd66922d8b24bb0d85c",
+      "actual_sha256": "e4f62696dd874221b7914395eb141874bc3059575a0efcd66922d8b24bb0d85c",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/extra/pktflow.ko",
+      "expected_sha256": "4a1aef36117adea3c202427fce9470e97d6f349e7ef334c4c00d702b17f74ad1",
+      "actual_sha256": "4a1aef36117adea3c202427fce9470e97d6f349e7ef334c4c00d702b17f74ad1",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/extra/pktrunner.ko",
+      "expected_sha256": "bdb7794f7d1005c9e8cba3cfb9de657a343bdbae23a0304e383f46c9cede41e0",
+      "actual_sha256": "bdb7794f7d1005c9e8cba3cfb9de657a343bdbae23a0304e383f46c9cede41e0",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/extra/rdpa.ko",
+      "expected_sha256": "ac28b6ec7b10c110e238f2164378d8f06b5a8a188f8233f962691831439f90a5",
+      "actual_sha256": "ac28b6ec7b10c110e238f2164378d8f06b5a8a188f8233f962691831439f90a5",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/extra/rdpa_cmd.ko",
+      "expected_sha256": "5f4105716a1ec62835c6195d2edd27ce6da779d79052dfe63a31664d37b22fc7",
+      "actual_sha256": "5f4105716a1ec62835c6195d2edd27ce6da779d79052dfe63a31664d37b22fc7",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/extra/rdpa_gpl.ko",
+      "expected_sha256": "176c9d5343ba49d1f86c240c51517cd6bf099e6baddeafc1dc7b6b704bdd9b9d",
+      "actual_sha256": "176c9d5343ba49d1f86c240c51517cd6bf099e6baddeafc1dc7b6b704bdd9b9d",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/extra/rdpa_gpl_ext.ko",
+      "expected_sha256": "9cf20e2f817e449a19ebf1be95b59121ac7927c74a30725283d3b34aeba67c6d",
+      "actual_sha256": "9cf20e2f817e449a19ebf1be95b59121ac7927c74a30725283d3b34aeba67c6d",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/extra/rdpa_mw.ko",
+      "expected_sha256": "39d2f67ab25f9237397ddb6025d996d2f809d35e0131d7fd405f3ac704667c15",
+      "actual_sha256": "39d2f67ab25f9237397ddb6025d996d2f809d35e0131d7fd405f3ac704667c15",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/extra/rdpa_usr.ko",
+      "expected_sha256": "62d08a3618ee81b83f2744c29fddcd44841b11fad260b316266e5e61bc556016",
+      "actual_sha256": "62d08a3618ee81b83f2744c29fddcd44841b11fad260b316266e5e61bc556016",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/extra/sw_gso.ko",
+      "expected_sha256": "7fba345b7959ab34f7a0d39cafb572d1b8ecd58dc2f1cf8d2ee040e2ac8aeb52",
+      "actual_sha256": "7fba345b7959ab34f7a0d39cafb572d1b8ecd58dc2f1cf8d2ee040e2ac8aeb52",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/extra/wfd.ko",
+      "expected_sha256": "b431c83ca674273adfa9c548b3f1bc329365f222b3b98753d47940b64ee1143a",
+      "actual_sha256": "b431c83ca674273adfa9c548b3f1bc329365f222b3b98753d47940b64ee1143a",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/extra/wlshared.ko",
+      "expected_sha256": "e6f519d9bd248dbaba9a3ae2db348fbbf8cd62df4b0bf599c714fb6b28499b76",
+      "actual_sha256": "e6f519d9bd248dbaba9a3ae2db348fbbf8cd62df4b0bf599c714fb6b28499b76",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/crypto/842.ko",
+      "expected_sha256": "8ea1fe2dee846f7255304f2cb4204e3218cd015990a6ed6bc8c0db27daf1573a",
+      "actual_sha256": "8ea1fe2dee846f7255304f2cb4204e3218cd015990a6ed6bc8c0db27daf1573a",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/crypto/af_alg.ko",
+      "expected_sha256": "1df437337520549900ffc4cca29e4637c6877bb620bbe197fb7cc77479b63d60",
+      "actual_sha256": "1df437337520549900ffc4cca29e4637c6877bb620bbe197fb7cc77479b63d60",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/crypto/algif_aead.ko",
+      "expected_sha256": "3a70f6735a6b09cac46f78b884f2fdc4c255979b9873a5853039b8cd0b91fc89",
+      "actual_sha256": "3a70f6735a6b09cac46f78b884f2fdc4c255979b9873a5853039b8cd0b91fc89",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/crypto/algif_hash.ko",
+      "expected_sha256": "61f20527b8c2b2fa6ccd453cb7967940f09bcaa60ff8ac9c9d14d516f296796f",
+      "actual_sha256": "61f20527b8c2b2fa6ccd453cb7967940f09bcaa60ff8ac9c9d14d516f296796f",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/crypto/algif_rng.ko",
+      "expected_sha256": "51f5c4fffd937edd21bb103582fe60ea371f709261031b4c64cfaf6188008e30",
+      "actual_sha256": "51f5c4fffd937edd21bb103582fe60ea371f709261031b4c64cfaf6188008e30",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/crypto/algif_skcipher.ko",
+      "expected_sha256": "fedde7c3b57b2a82da5490f4bf6983d67924d10dd19ca14dbfced7565aa5a152",
+      "actual_sha256": "fedde7c3b57b2a82da5490f4bf6983d67924d10dd19ca14dbfced7565aa5a152",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/crypto/lz4.ko",
+      "expected_sha256": "260bfabe3dce4959652b712ff83f1ab041ed6e2fe2bae5e81f9ee7ff51caf4dd",
+      "actual_sha256": "260bfabe3dce4959652b712ff83f1ab041ed6e2fe2bae5e81f9ee7ff51caf4dd",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/crypto/lz4hc.ko",
+      "expected_sha256": "25b4e56ce0b9a221081f47dd9c26f120a017514d3957330df08f52634aa5b847",
+      "actual_sha256": "25b4e56ce0b9a221081f47dd9c26f120a017514d3957330df08f52634aa5b847",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/crypto/xor.ko",
+      "expected_sha256": "dc6fd642be563897ffb6ce447eba33717bbe53140d8c5969864ef85d8702091d",
+      "actual_sha256": "dc6fd642be563897ffb6ce447eba33717bbe53140d8c5969864ef85d8702091d",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/base/firmware_loader/firmware_class.ko",
+      "expected_sha256": "3bbae45bce4dfea42952c890669dadd094df75fbc16ea2c2ec2074eca48ad7b4",
+      "actual_sha256": "3bbae45bce4dfea42952c890669dadd094df75fbc16ea2c2ec2074eca48ad7b4",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/block/zram/zram.ko",
+      "expected_sha256": "1c40b38ec43e03d11e55fe1a2b94cf2759defadf91f2ffcd569fdcad46d2ad77",
+      "actual_sha256": "1c40b38ec43e03d11e55fe1a2b94cf2759defadf91f2ffcd569fdcad46d2ad77",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/cdrom/cdrom.ko",
+      "expected_sha256": "c914d7a39e34d3a7dd14c11e9abaea513a4329a7490b125b711c7190ac47c8ea",
+      "actual_sha256": "c914d7a39e34d3a7dd14c11e9abaea513a4329a7490b125b711c7190ac47c8ea",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/char/rtl8372/rtl8372.ko",
+      "expected_sha256": "3044b7b31fc1ed1851791aac5c3df13ef31496132a01cfd8c5cc732f8112f4c3",
+      "actual_sha256": "3044b7b31fc1ed1851791aac5c3df13ef31496132a01cfd8c5cc732f8112f4c3",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/connector/cn.ko",
+      "expected_sha256": "7055525dd24c4feeebbc9fb24a28831c34d443799ba6872e10b8586392762919",
+      "actual_sha256": "7055525dd24c4feeebbc9fb24a28831c34d443799ba6872e10b8586392762919",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/hid/usbhid/usbhid.ko",
+      "expected_sha256": "5be5d0fed4d052bd0946abbe48e00921c3270795d85c8fa9bc43c14932a2558c",
+      "actual_sha256": "5be5d0fed4d052bd0946abbe48e00921c3270795d85c8fa9bc43c14932a2558c",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/mmc/core/oops_mmc.ko",
+      "expected_sha256": "698e8a7f8bda96357a9ca29108c3cf5ff4ab39beedfbb6bf61548716a1a51ca3",
+      "actual_sha256": "698e8a7f8bda96357a9ca29108c3cf5ff4ab39beedfbb6bf61548716a1a51ca3",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/mtd/mtdoops.ko",
+      "expected_sha256": "667d4734bcfa450d9cbaca40736d4f164e8e32931bb9db3a5196c12c5434c074",
+      "actual_sha256": "667d4734bcfa450d9cbaca40736d4f164e8e32931bb9db3a5196c12c5434c074",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/net/bonding/bonding.ko",
+      "expected_sha256": "db6e6dc996aefcaf0b5d6f5db100224890e084a6dff7dab756db3d18ac92c7ba",
+      "actual_sha256": "db6e6dc996aefcaf0b5d6f5db100224890e084a6dff7dab756db3d18ac92c7ba",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/net/can/can-dev.ko",
+      "expected_sha256": "d1b01a07072a76b45f6a76b7f2124ab94fa2eeb790d0cf94e68928299f2aecfe",
+      "actual_sha256": "d1b01a07072a76b45f6a76b7f2124ab94fa2eeb790d0cf94e68928299f2aecfe",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/net/can/usb/peak_usb/peak_usb.ko",
+      "expected_sha256": "dbf8d5178501d11f13a0eae6a378670bdc78a313cf3ec076bb0449d35a53d878",
+      "actual_sha256": "dbf8d5178501d11f13a0eae6a378670bdc78a313cf3ec076bb0449d35a53d878",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/net/mii.ko",
+      "expected_sha256": "87a7b0dfe52213c3e4be479f5724ca7a3fb81c7c848c3ca246c3514904d02140",
+      "actual_sha256": "87a7b0dfe52213c3e4be479f5724ca7a3fb81c7c848c3ca246c3514904d02140",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/net/tun.ko",
+      "expected_sha256": "e2dd1bb8edbbce32a7f056f11c838e7b2a4fa838c7884fecee2d32d70aac6605",
+      "actual_sha256": "e2dd1bb8edbbce32a7f056f11c838e7b2a4fa838c7884fecee2d32d70aac6605",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/net/usb/asix.ko",
+      "expected_sha256": "3eacae3287b643578c7f1e8c19b0f5c10b7f10a6221491dd79f781ba4634090c",
+      "actual_sha256": "3eacae3287b643578c7f1e8c19b0f5c10b7f10a6221491dd79f781ba4634090c",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/net/usb/ax88179_178a.ko",
+      "expected_sha256": "00aac46dcbfa9b637d3b29a6c16ca671e32fb817250419865d7416542e6f4cca",
+      "actual_sha256": "00aac46dcbfa9b637d3b29a6c16ca671e32fb817250419865d7416542e6f4cca",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/net/usb/cdc_ether.ko",
+      "expected_sha256": "44cd02d8deb61ce77f53db4bfb51f93d4c61798d32956d2b05bc3e6779dd66c3",
+      "actual_sha256": "44cd02d8deb61ce77f53db4bfb51f93d4c61798d32956d2b05bc3e6779dd66c3",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/net/usb/cdc_ncm.ko",
+      "expected_sha256": "efc4edc6da205190d7285d239bf40f75308a267cc8e0ca4051ae94f69225b731",
+      "actual_sha256": "efc4edc6da205190d7285d239bf40f75308a267cc8e0ca4051ae94f69225b731",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/net/usb/ipheth.ko",
+      "expected_sha256": "a36e737bfd1959cbd006191bb21e0e9ed8c5a9457445b9de58bd33b49444b44e",
+      "actual_sha256": "a36e737bfd1959cbd006191bb21e0e9ed8c5a9457445b9de58bd33b49444b44e",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/net/usb/qmi_wwan.ko",
+      "expected_sha256": "450760aa45cf83ec3a53c3358efa2f96181f470ee4ab01328052be97a41b1725",
+      "actual_sha256": "450760aa45cf83ec3a53c3358efa2f96181f470ee4ab01328052be97a41b1725",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/net/usb/rndis_host.ko",
+      "expected_sha256": "bf9e3a5b6c558d7594879fb5074c93ad854ea18272566fe4d8ac8a0e5bff0a9b",
+      "actual_sha256": "bf9e3a5b6c558d7594879fb5074c93ad854ea18272566fe4d8ac8a0e5bff0a9b",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/net/usb/usbnet.ko",
+      "expected_sha256": "4c4ee1ad9278fdc4cf9eee932e9241720977fabec4924c70d2abad8316446881",
+      "actual_sha256": "4c4ee1ad9278fdc4cf9eee932e9241720977fabec4924c70d2abad8316446881",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/scsi/scsi_mod.ko",
+      "expected_sha256": "a81b6b24e1603d6d5d2121809a00f52d01b31049f173ab73e97c321643a7a98a",
+      "actual_sha256": "a81b6b24e1603d6d5d2121809a00f52d01b31049f173ab73e97c321643a7a98a",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/scsi/sd_mod.ko",
+      "expected_sha256": "1197a999b7aa88ea0b5d1d77f4d87387d136e6e5408ce05225bd1c7c345305fb",
+      "actual_sha256": "1197a999b7aa88ea0b5d1d77f4d87387d136e6e5408ce05225bd1c7c345305fb",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/scsi/sg.ko",
+      "expected_sha256": "ad4397f4237a9d3a3cd22e6628bab34ca5994ee9a0251dbbeefcf4756c9a03e4",
+      "actual_sha256": "ad4397f4237a9d3a3cd22e6628bab34ca5994ee9a0251dbbeefcf4756c9a03e4",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/scsi/sr_mod.ko",
+      "expected_sha256": "562e8ccf9361f1df919f9e48e2786008ef957eacc7f69759380f76a012b55121",
+      "actual_sha256": "562e8ccf9361f1df919f9e48e2786008ef957eacc7f69759380f76a012b55121",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/usb/class/cdc-acm.ko",
+      "expected_sha256": "e3fab602333387fe6bf4cbe8e8e9cc319881e842ec541364cbabfce623ff5155",
+      "actual_sha256": "e3fab602333387fe6bf4cbe8e8e9cc319881e842ec541364cbabfce623ff5155",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/usb/class/cdc-wdm.ko",
+      "expected_sha256": "ed18818ceaa7bfdf0e16ff73ff6fca441e22b9f0d6122c48607e2ca328725ac6",
+      "actual_sha256": "ed18818ceaa7bfdf0e16ff73ff6fca441e22b9f0d6122c48607e2ca328725ac6",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/usb/class/usblp.ko",
+      "expected_sha256": "ef1f736b9e6e4ff114f73be7b616511205b37b30783b003f8d16abd0dc771601",
+      "actual_sha256": "ef1f736b9e6e4ff114f73be7b616511205b37b30783b003f8d16abd0dc771601",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/usb/common/usb-common.ko",
+      "expected_sha256": "b2ddb735729e329f88d7594feb91e7f69f3c217cb3c91d47288b3c6f09d27f99",
+      "actual_sha256": "b2ddb735729e329f88d7594feb91e7f69f3c217cb3c91d47288b3c6f09d27f99",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/usb/core/ledtrig-usbport.ko",
+      "expected_sha256": "a94617aa02720fe4c44b03cb1f1296817cdbcae607e9228bfcee32164ef5e380",
+      "actual_sha256": "a94617aa02720fe4c44b03cb1f1296817cdbcae607e9228bfcee32164ef5e380",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/usb/core/usbcore.ko",
+      "expected_sha256": "716e5139552a1360b82aa209137cb5014a31ba574f134bdf7c1bdcaa1d11e9d2",
+      "actual_sha256": "716e5139552a1360b82aa209137cb5014a31ba574f134bdf7c1bdcaa1d11e9d2",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/usb/host/ehci-hcd.ko",
+      "expected_sha256": "f22d5f45c58696296b74aef5c12d29126bef4377953603b9a7b66c0514157589",
+      "actual_sha256": "f22d5f45c58696296b74aef5c12d29126bef4377953603b9a7b66c0514157589",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/usb/host/ehci-pci.ko",
+      "expected_sha256": "11146ce1bf8c7bff4f4319c8080506a7a0992c4b950a4d17f390c50a7155a1d0",
+      "actual_sha256": "11146ce1bf8c7bff4f4319c8080506a7a0992c4b950a4d17f390c50a7155a1d0",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/usb/host/ehci-platform.ko",
+      "expected_sha256": "eb77b043037982fba1484417f9d5d617ed191cfdff80b5a953fe7e76972333d8",
+      "actual_sha256": "eb77b043037982fba1484417f9d5d617ed191cfdff80b5a953fe7e76972333d8",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/usb/host/ohci-hcd.ko",
+      "expected_sha256": "da5f73263ae81f9f1910c2393509d0b9428997de4be98dffd058b367588d182f",
+      "actual_sha256": "da5f73263ae81f9f1910c2393509d0b9428997de4be98dffd058b367588d182f",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/usb/host/ohci-pci.ko",
+      "expected_sha256": "39562ac2ab92840957e8f6ea265fdd9a4d4b117613dba4440072f9a2efb95677",
+      "actual_sha256": "39562ac2ab92840957e8f6ea265fdd9a4d4b117613dba4440072f9a2efb95677",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/usb/host/ohci-platform.ko",
+      "expected_sha256": "c1972964662f8210640eadb02539ac2dc0ea76ac2836dc997052e7b1c2abb403",
+      "actual_sha256": "c1972964662f8210640eadb02539ac2dc0ea76ac2836dc997052e7b1c2abb403",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/usb/host/xhci-hcd.ko",
+      "expected_sha256": "bf9ca5f7f062cfffa66f3c42917e9a2856f4c94e786c93d43b1a4cde96bf07b1",
+      "actual_sha256": "bf9ca5f7f062cfffa66f3c42917e9a2856f4c94e786c93d43b1a4cde96bf07b1",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/usb/host/xhci-pci.ko",
+      "expected_sha256": "2dca1b3bb10b51ff3bdbaf5d3006c28a7370c0eafce2c4110d00f3b6e7000352",
+      "actual_sha256": "2dca1b3bb10b51ff3bdbaf5d3006c28a7370c0eafce2c4110d00f3b6e7000352",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/usb/host/xhci-plat-hcd.ko",
+      "expected_sha256": "b4ee449fcb436d5b86364a32c483ac614274be8affdb29835444017b3ac4dc09",
+      "actual_sha256": "b4ee449fcb436d5b86364a32c483ac614274be8affdb29835444017b3ac4dc09",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/usb/mon/usbmon.ko",
+      "expected_sha256": "477d8167c9460de15c2b03ae24b112172ba26e6bed28d859fa39c3699241a859",
+      "actual_sha256": "477d8167c9460de15c2b03ae24b112172ba26e6bed28d859fa39c3699241a859",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/usb/serial/option.ko",
+      "expected_sha256": "9da279a4afa191456fd966e571a22f9d73428fa68b6c53076c84aa2c4c304d69",
+      "actual_sha256": "9da279a4afa191456fd966e571a22f9d73428fa68b6c53076c84aa2c4c304d69",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/usb/serial/usb_wwan.ko",
+      "expected_sha256": "78ef835301c0911939193ae72a15d5a7f37e7a1f8551e9fae9138cf4740b1326",
+      "actual_sha256": "78ef835301c0911939193ae72a15d5a7f37e7a1f8551e9fae9138cf4740b1326",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/usb/serial/usbserial.ko",
+      "expected_sha256": "a0364cf15780287981980e9611e809687386e48baf71d190923cfb076e28a10e",
+      "actual_sha256": "a0364cf15780287981980e9611e809687386e48baf71d190923cfb076e28a10e",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/usb/storage/uas.ko",
+      "expected_sha256": "182d0a06c38f80b417c508560f98e25473d78e3ec9106b3f7dbf34219e4e25ef",
+      "actual_sha256": "182d0a06c38f80b417c508560f98e25473d78e3ec9106b3f7dbf34219e4e25ef",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/drivers/usb/storage/usb-storage.ko",
+      "expected_sha256": "b6e8d5fedbb86f52071f95e5aed1e37a8b74a66572d46dd03cd0b9c05b4966e6",
+      "actual_sha256": "b6e8d5fedbb86f52071f95e5aed1e37a8b74a66572d46dd03cd0b9c05b4966e6",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/fs/binfmt_misc.ko",
+      "expected_sha256": "404f173b57d563ae15088b1bfaf391c6d0e8ef90574aacfe1fe3e051f88c0d27",
+      "actual_sha256": "404f173b57d563ae15088b1bfaf391c6d0e8ef90574aacfe1fe3e051f88c0d27",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/fs/btrfs/btrfs.ko",
+      "expected_sha256": "0b1643f2581e914b7acfb9b86e894c97cff591a17f9c349921d5404649fca69e",
+      "actual_sha256": "0b1643f2581e914b7acfb9b86e894c97cff591a17f9c349921d5404649fca69e",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/fs/cifs/cifs.ko",
+      "expected_sha256": "60461e9e1e4636d5f8de53b088ec8ec703331d29e7aa2826f2544feb732062ad",
+      "actual_sha256": "60461e9e1e4636d5f8de53b088ec8ec703331d29e7aa2826f2544feb732062ad",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/fs/exportfs/exportfs.ko",
+      "expected_sha256": "97e80f9293091018fcef8a729235051b2ed1c070f8c74cdc088a0adb4924403b",
+      "actual_sha256": "97e80f9293091018fcef8a729235051b2ed1c070f8c74cdc088a0adb4924403b",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/fs/nls/nls_cp437.ko",
+      "expected_sha256": "e3c2ba11fd2f68b60dbea4f4ce777002113277b8d444522e1749934c866036c2",
+      "actual_sha256": "e3c2ba11fd2f68b60dbea4f4ce777002113277b8d444522e1749934c866036c2",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/fs/nls/nls_cp850.ko",
+      "expected_sha256": "f8d659a58eb30cce2de2962fe592f5a9608c16949d41c040bd02ddaae8fd30c9",
+      "actual_sha256": "f8d659a58eb30cce2de2962fe592f5a9608c16949d41c040bd02ddaae8fd30c9",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/fs/nls/nls_cp852.ko",
+      "expected_sha256": "b237c2b968afcb9c1c6f1b7718d89e4a85e86278633d0ac6ed6a9f903a687dba",
+      "actual_sha256": "b237c2b968afcb9c1c6f1b7718d89e4a85e86278633d0ac6ed6a9f903a687dba",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/fs/nls/nls_cp866.ko",
+      "expected_sha256": "e0b4713efbac5b8301df339c94fe5348b4675ce94bdbd2702b027c943f536cbd",
+      "actual_sha256": "e0b4713efbac5b8301df339c94fe5348b4675ce94bdbd2702b027c943f536cbd",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/fs/nls/nls_cp932.ko",
+      "expected_sha256": "94689fc0a3e248dc9c2a83c031f7c18e32dcff79efbcffad5b6e16486d11a0c1",
+      "actual_sha256": "94689fc0a3e248dc9c2a83c031f7c18e32dcff79efbcffad5b6e16486d11a0c1",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/fs/nls/nls_cp936.ko",
+      "expected_sha256": "d2e6172b057cb799e7dc152115dfd526d34623fcb9eae8a2057061a30b95dbdb",
+      "actual_sha256": "d2e6172b057cb799e7dc152115dfd526d34623fcb9eae8a2057061a30b95dbdb",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/fs/nls/nls_cp949.ko",
+      "expected_sha256": "be8c80d610f576842fd12e11a99f708335d4b4841d33cb2e94b5555df0f9ae7f",
+      "actual_sha256": "be8c80d610f576842fd12e11a99f708335d4b4841d33cb2e94b5555df0f9ae7f",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/fs/nls/nls_cp950.ko",
+      "expected_sha256": "1200a7f1231ef9b2947cebf7e9e0d97c4d42248e93557ba7c65ab990fd819c79",
+      "actual_sha256": "1200a7f1231ef9b2947cebf7e9e0d97c4d42248e93557ba7c65ab990fd819c79",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/fs/nls/nls_euc-jp.ko",
+      "expected_sha256": "313897d8061c64ec281a68c60ca37d5911f01440b7a955a5c6e2928483174438",
+      "actual_sha256": "313897d8061c64ec281a68c60ca37d5911f01440b7a955a5c6e2928483174438",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/fs/ntfs/ntfs.ko",
+      "expected_sha256": "92c70617a6c76bbc7feb773ea9063c7c12586283ca1629b8959bbf992c95f42c",
+      "actual_sha256": "92c70617a6c76bbc7feb773ea9063c7c12586283ca1629b8959bbf992c95f42c",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/fs/overlayfs/overlay.ko",
+      "expected_sha256": "5c3b87c54430a351bf7cbd91d1217950457055817c97a6a79d7e03be9483793e",
+      "actual_sha256": "5c3b87c54430a351bf7cbd91d1217950457055817c97a6a79d7e03be9483793e",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/fs/tfat.ko",
+      "expected_sha256": "22ceae7596398efbdde7119c667fce3c18f94ac3fd6ae1159a5bad6b3f121ce6",
+      "actual_sha256": "22ceae7596398efbdde7119c667fce3c18f94ac3fd6ae1159a5bad6b3f121ce6",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/fs/thfsplus.ko",
+      "expected_sha256": "1b08b2dbd6f02bafefd485d16fb0ef96690f6e6488c1262b598e110b853c111b",
+      "actual_sha256": "1b08b2dbd6f02bafefd485d16fb0ef96690f6e6488c1262b598e110b853c111b",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/fs/tntfs.ko",
+      "expected_sha256": "3e07d980687533ad0986daeb59e40300dd6e767f6b99c7d6497cbf255c7985eb",
+      "actual_sha256": "3e07d980687533ad0986daeb59e40300dd6e767f6b99c7d6497cbf255c7985eb",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/fs/xfs/xfs.ko",
+      "expected_sha256": "aa2b64e71954bdc7aa2e83512abb78caf28b6583b5c1fadc48111bb51ef9d43a",
+      "actual_sha256": "aa2b64e71954bdc7aa2e83512abb78caf28b6583b5c1fadc48111bb51ef9d43a",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/lib/842/842_compress.ko",
+      "expected_sha256": "e56fc9f5c7d0d84cd79919c4dc72bdce5d3c561df102f7f82916733257180a02",
+      "actual_sha256": "e56fc9f5c7d0d84cd79919c4dc72bdce5d3c561df102f7f82916733257180a02",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/lib/842/842_decompress.ko",
+      "expected_sha256": "dd3cd2e927da647ea2c5fe489a3aeb24931b9f2849d2f4ea83b239376f3199fd",
+      "actual_sha256": "dd3cd2e927da647ea2c5fe489a3aeb24931b9f2849d2f4ea83b239376f3199fd",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/lib/lz4/lz4_compress.ko",
+      "expected_sha256": "091c9fd33a068d534694f502be18d4c6fe9b3f9406ce0807b8ab2c7a45d4d179",
+      "actual_sha256": "091c9fd33a068d534694f502be18d4c6fe9b3f9406ce0807b8ab2c7a45d4d179",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/lib/lz4/lz4_decompress.ko",
+      "expected_sha256": "5918ebb0a3816a192308fce4279da4a2f104f2ca8eacd5f3cb3a435f0a97f74b",
+      "actual_sha256": "5918ebb0a3816a192308fce4279da4a2f104f2ca8eacd5f3cb3a435f0a97f74b",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/lib/lz4/lz4hc_compress.ko",
+      "expected_sha256": "ed4eecfb617287770993ef836560f2ec6ee63d764b5a03e6936d5d1309acb348",
+      "actual_sha256": "ed4eecfb617287770993ef836560f2ec6ee63d764b5a03e6936d5d1309acb348",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/lib/raid6/raid6_pq.ko",
+      "expected_sha256": "93553361eb5a5c0ec8d9f14797ee062932529e5fb3223a21116a584e6b4caf95",
+      "actual_sha256": "93553361eb5a5c0ec8d9f14797ee062932529e5fb3223a21116a584e6b4caf95",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/mm/z3fold.ko",
+      "expected_sha256": "92a10d82761ff9875d7a0b7c775e48146cd1f82784895c14e0873d1f2b6d5f55",
+      "actual_sha256": "92a10d82761ff9875d7a0b7c775e48146cd1f82784895c14e0873d1f2b6d5f55",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/mm/zbud.ko",
+      "expected_sha256": "fdc30b01a31c85ad5d2f1c6bf0faec275c7f32174edae69f2ea513288173daa3",
+      "actual_sha256": "fdc30b01a31c85ad5d2f1c6bf0faec275c7f32174edae69f2ea513288173daa3",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/bridge/br_netfilter.ko",
+      "expected_sha256": "af486a907d13488d7d89a527a543171460f30b952620e86627459cab67f65f01",
+      "actual_sha256": "af486a907d13488d7d89a527a543171460f30b952620e86627459cab67f65f01",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/can/can-bcm.ko",
+      "expected_sha256": "07fa3af549919af7280fed1d4e6eb9292cb23ba5448241a8c804e9aeb3ca3329",
+      "actual_sha256": "07fa3af549919af7280fed1d4e6eb9292cb23ba5448241a8c804e9aeb3ca3329",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/can/can-gw.ko",
+      "expected_sha256": "9d28804c58d315ed0734dd9d57d19bf6c4fbc41062aff06e158aadd892c902b8",
+      "actual_sha256": "9d28804c58d315ed0734dd9d57d19bf6c4fbc41062aff06e158aadd892c902b8",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/can/can-raw.ko",
+      "expected_sha256": "d92d59c046084c684962943998a8842bb6b1d4c4f2c2fad836c68080f993b8c6",
+      "actual_sha256": "d92d59c046084c684962943998a8842bb6b1d4c4f2c2fad836c68080f993b8c6",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/can/can.ko",
+      "expected_sha256": "e2f96c06ec80966f3d763f286269fe8bdeaa81cd5f84397e57bb61d9151a083c",
+      "actual_sha256": "e2f96c06ec80966f3d763f286269fe8bdeaa81cd5f84397e57bb61d9151a083c",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/dns_resolver/dns_resolver.ko",
+      "expected_sha256": "55a182e4f9472299200409ff79e883f5bf3f1efba39d71568194a209e8f40858",
+      "actual_sha256": "55a182e4f9472299200409ff79e883f5bf3f1efba39d71568194a209e8f40858",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/ipv4/ah4.ko",
+      "expected_sha256": "cfd381d1b6f3c96cecb7a0a762cfd35fc9acd866b7cba1f566ad4f5e912e9dec",
+      "actual_sha256": "cfd381d1b6f3c96cecb7a0a762cfd35fc9acd866b7cba1f566ad4f5e912e9dec",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/ipv4/esp4.ko",
+      "expected_sha256": "a85e8c077960260af8eb52d11b7eba4e5a2158fa734cd421a33e7e8ed49b1419",
+      "actual_sha256": "a85e8c077960260af8eb52d11b7eba4e5a2158fa734cd421a33e7e8ed49b1419",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/ipv4/ipcomp.ko",
+      "expected_sha256": "d4612f9ccec702b06f62de8d9569f42866a5b33215d0cffeb29f56335a232fe0",
+      "actual_sha256": "d4612f9ccec702b06f62de8d9569f42866a5b33215d0cffeb29f56335a232fe0",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/ipv4/netfilter/ipt_TOS.ko",
+      "expected_sha256": "9acd9d46bb0fe8879904bb3c6840ba4ac87b7355793b14fc2e323fff9907c620",
+      "actual_sha256": "9acd9d46bb0fe8879904bb3c6840ba4ac87b7355793b14fc2e323fff9907c620",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/ipv4/netfilter/ipt_ipp2p.ko",
+      "expected_sha256": "c62fedf7296ac37a41e27a89e3045b8a2cc2001be82354bec47ec4e64a43acc3",
+      "actual_sha256": "c62fedf7296ac37a41e27a89e3045b8a2cc2001be82354bec47ec4e64a43acc3",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/ipv4/netfilter/ipt_tos.ko",
+      "expected_sha256": "83715e4ee35b6aacc50427b418c78b44c6ed12cbd6e9634723af66262e35daaf",
+      "actual_sha256": "83715e4ee35b6aacc50427b418c78b44c6ed12cbd6e9634723af66262e35daaf",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/ipv4/netfilter/ipt_web.ko",
+      "expected_sha256": "a5c6b94da98bd67fba1066c2f8ef7d40277f7fc06e36ad9ea22bf88b41145809",
+      "actual_sha256": "a5c6b94da98bd67fba1066c2f8ef7d40277f7fc06e36ad9ea22bf88b41145809",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/ipv4/netfilter/ipt_webmon.ko",
+      "expected_sha256": "3e58c7f7ec5b9713219a0f446dfdafb686a79588511d252173e053526da824a5",
+      "actual_sha256": "3e58c7f7ec5b9713219a0f446dfdafb686a79588511d252173e053526da824a5",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/ipv4/netfilter/nf_dup_ipv4.ko",
+      "expected_sha256": "2e52ed4aebb823a6eb5f906621f6bcd26f2df8e6d737bb6760ca1aa29deb095f",
+      "actual_sha256": "2e52ed4aebb823a6eb5f906621f6bcd26f2df8e6d737bb6760ca1aa29deb095f",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/ipv4/netfilter/nf_nat_h323.ko",
+      "expected_sha256": "a1c2745a1295a3c4d4d5f3387ff6ba53f1bf5df0a770bba742352fe28ac38adb",
+      "actual_sha256": "a1c2745a1295a3c4d4d5f3387ff6ba53f1bf5df0a770bba742352fe28ac38adb",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/ipv4/netfilter/nf_socket_ipv4.ko",
+      "expected_sha256": "b45a0dfa3c67943c0a021b7615ea8e2abf3e67e6eea87d9704873602ebc8573c",
+      "actual_sha256": "b45a0dfa3c67943c0a021b7615ea8e2abf3e67e6eea87d9704873602ebc8573c",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/ipv4/netfilter/nf_tproxy_ipv4.ko",
+      "expected_sha256": "066a213ebbb9b1e8001f4ebe9ad5275ae396eb1b39cb0ad6f05f55f9684d3efc",
+      "actual_sha256": "066a213ebbb9b1e8001f4ebe9ad5275ae396eb1b39cb0ad6f05f55f9684d3efc",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/ipv4/xfrm4_tunnel.ko",
+      "expected_sha256": "d82e6d4db67ec89116d8695736950ab0ce5b5b7d4ba13b252fef246dbc226fd9",
+      "actual_sha256": "d82e6d4db67ec89116d8695736950ab0ce5b5b7d4ba13b252fef246dbc226fd9",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/ipv6/netfilter/nf_dup_ipv6.ko",
+      "expected_sha256": "d658ad719577f18525e2b0239824c0fd7501149699ad9f9bd1994a57049bcf51",
+      "actual_sha256": "d658ad719577f18525e2b0239824c0fd7501149699ad9f9bd1994a57049bcf51",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/ipv6/netfilter/nf_socket_ipv6.ko",
+      "expected_sha256": "9243cf3993fc431c01e9565d0f044231932823aea75cd9e4b2e1f131cd9b2373",
+      "actual_sha256": "9243cf3993fc431c01e9565d0f044231932823aea75cd9e4b2e1f131cd9b2373",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/ipv6/netfilter/nf_tproxy_ipv6.ko",
+      "expected_sha256": "8797b463129a72bed5ef2594d6890ef66d417c8891e36438f14a45731d8ffbe2",
+      "actual_sha256": "8797b463129a72bed5ef2594d6890ef66d417c8891e36438f14a45731d8ffbe2",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/netfilter/nf_conntrack_ftp.ko",
+      "expected_sha256": "1755290d91bd58b6f67ae5f580d34ad05693012f0a9997c529cd1c4d6a326bce",
+      "actual_sha256": "1755290d91bd58b6f67ae5f580d34ad05693012f0a9997c529cd1c4d6a326bce",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/netfilter/nf_conntrack_h323.ko",
+      "expected_sha256": "a87902f6c75fe6f75c84f959a9d812be82ff4f34821d4fac57e2e33039705462",
+      "actual_sha256": "a87902f6c75fe6f75c84f959a9d812be82ff4f34821d4fac57e2e33039705462",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/netfilter/nf_conntrack_sip.ko",
+      "expected_sha256": "c14dd0c2d1a086720f7353f0cdaf9c431b70c322d7f9835d6386665f8dbae3b2",
+      "actual_sha256": "c14dd0c2d1a086720f7353f0cdaf9c431b70c322d7f9835d6386665f8dbae3b2",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/netfilter/nf_conntrack_tftp.ko",
+      "expected_sha256": "6e06393d37098fdae165c568a7ac0baadc3b5ae5e17ba28f272d0beea2016b7d",
+      "actual_sha256": "6e06393d37098fdae165c568a7ac0baadc3b5ae5e17ba28f272d0beea2016b7d",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/netfilter/nf_nat_ftp.ko",
+      "expected_sha256": "5158bfbdd774dccd06a9c672c2146f6417b6ed5bb80b005f76349ab0afa8e7da",
+      "actual_sha256": "5158bfbdd774dccd06a9c672c2146f6417b6ed5bb80b005f76349ab0afa8e7da",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/netfilter/nf_nat_sip.ko",
+      "expected_sha256": "cef267c7272c735bcc226cf92003bc1e0ebc2e85c5cd2c617fc54293543e5d55",
+      "actual_sha256": "cef267c7272c735bcc226cf92003bc1e0ebc2e85c5cd2c617fc54293543e5d55",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/netfilter/nf_nat_tftp.ko",
+      "expected_sha256": "f487e6be9da02df2e717cb2799cc6027eb29815aba2346921befb84fd8c38d17",
+      "actual_sha256": "f487e6be9da02df2e717cb2799cc6027eb29815aba2346921befb84fd8c38d17",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/netfilter/nf_tables.ko",
+      "expected_sha256": "b6f9c0079fb8e1e354fb4628ad74c1e368bfdf933faad091c912bb4b83a2c045",
+      "actual_sha256": "b6f9c0079fb8e1e354fb4628ad74c1e368bfdf933faad091c912bb4b83a2c045",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/netfilter/xt_HL.ko",
+      "expected_sha256": "66fd9643fbbb8bb846043d0816943eacce3a3f8525fca10f27f0ac86034418e4",
+      "actual_sha256": "66fd9643fbbb8bb846043d0816943eacce3a3f8525fca10f27f0ac86034418e4",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/netfilter/xt_TEE.ko",
+      "expected_sha256": "727fd849e83f5d97185727a92052c6ef95d41dafc438d050dbf5834acaec63ec",
+      "actual_sha256": "727fd849e83f5d97185727a92052c6ef95d41dafc438d050dbf5834acaec63ec",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/netfilter/xt_TPROXY.ko",
+      "expected_sha256": "fc67f0871537515ac821722f0eaca7c971ad39ddf01145e076b0a6e9fc981b3f",
+      "actual_sha256": "fc67f0871537515ac821722f0eaca7c971ad39ddf01145e076b0a6e9fc981b3f",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/netfilter/xt_comment.ko",
+      "expected_sha256": "88e7842b6afaf2a944c74c438ccaadfd767d8c45598e03ab5a0084745469f29b",
+      "actual_sha256": "88e7842b6afaf2a944c74c438ccaadfd767d8c45598e03ab5a0084745469f29b",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/netfilter/xt_condition.ko",
+      "expected_sha256": "096df00c26c8158730056657e66600799cd268270b45403e36eebfbae774d31b",
+      "actual_sha256": "096df00c26c8158730056657e66600799cd268270b45403e36eebfbae774d31b",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/netfilter/xt_geoip.ko",
+      "expected_sha256": "479bc0e9acc58af86ba2f5e4d6a4b60a42fba96bdce10134f4ca9caca17a5c96",
+      "actual_sha256": "479bc0e9acc58af86ba2f5e4d6a4b60a42fba96bdce10134f4ca9caca17a5c96",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/netfilter/xt_hashlimit.ko",
+      "expected_sha256": "40b74c9815287f7aaa8e8d565a32688b9202fe0fed7c81cd5f0995bd23f2bfcf",
+      "actual_sha256": "40b74c9815287f7aaa8e8d565a32688b9202fe0fed7c81cd5f0995bd23f2bfcf",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/netfilter/xt_hl.ko",
+      "expected_sha256": "ec8d0c2571ac18c6ab1d65d14b922584476b8d21b59e9e943b3e986dff6b4f5a",
+      "actual_sha256": "ec8d0c2571ac18c6ab1d65d14b922584476b8d21b59e9e943b3e986dff6b4f5a",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/netfilter/xt_length.ko",
+      "expected_sha256": "e63eab2f9cb181ac4958360b8fd5e41eb4dd49a6c4106045a35b6943580c9f75",
+      "actual_sha256": "e63eab2f9cb181ac4958360b8fd5e41eb4dd49a6c4106045a35b6943580c9f75",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/netfilter/xt_pkttype.ko",
+      "expected_sha256": "fbbe2fc999ff2f48a38f3d3a46d91b6d0fb574076ca0f1bacb997a9af7e077d9",
+      "actual_sha256": "fbbe2fc999ff2f48a38f3d3a46d91b6d0fb574076ca0f1bacb997a9af7e077d9",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/netfilter/xt_quota.ko",
+      "expected_sha256": "0f8aefb94569f61f2ba9ab7b291babbdd1633af2452185ac7d056f11ef2ede3b",
+      "actual_sha256": "0f8aefb94569f61f2ba9ab7b291babbdd1633af2452185ac7d056f11ef2ede3b",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/netfilter/xt_sctp.ko",
+      "expected_sha256": "1c9244ef166c3d9601d201b059875e4bb15cd9f7cb5d84db4cac8edc7518982b",
+      "actual_sha256": "1c9244ef166c3d9601d201b059875e4bb15cd9f7cb5d84db4cac8edc7518982b",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/netfilter/xt_socket.ko",
+      "expected_sha256": "5a796877d71217b9f66f8348c10b9e33844eb9c79577f2712422ee32e9d18dfd",
+      "actual_sha256": "5a796877d71217b9f66f8348c10b9e33844eb9c79577f2712422ee32e9d18dfd",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/sched/em_cmp.ko",
+      "expected_sha256": "e2bab8cc3ab8d8fa7982b060a61cf5fd0b3b06d800453f09491d847987d67991",
+      "actual_sha256": "e2bab8cc3ab8d8fa7982b060a61cf5fd0b3b06d800453f09491d847987d67991",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/sched/em_ipset.ko",
+      "expected_sha256": "f51162a816f6d9ce614828b496a7cc9ec3fef79aa18a89d618b379d6a1388ce9",
+      "actual_sha256": "f51162a816f6d9ce614828b496a7cc9ec3fef79aa18a89d618b379d6a1388ce9",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/sched/em_ipt.ko",
+      "expected_sha256": "97bc9598feae88329d1850cde4b5dba1adbdd1aa99fb164eeb419190a1534694",
+      "actual_sha256": "97bc9598feae88329d1850cde4b5dba1adbdd1aa99fb164eeb419190a1534694",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/sched/em_meta.ko",
+      "expected_sha256": "6e65b234f4b29b1656ad7f6a07a128b553a7cf9a4da7cc191a5304eea8c16c40",
+      "actual_sha256": "6e65b234f4b29b1656ad7f6a07a128b553a7cf9a4da7cc191a5304eea8c16c40",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/sched/em_nbyte.ko",
+      "expected_sha256": "d96339ce8683801bdc78538b5c073a5552475b1eb3f50083d5ac3cecf3bb1bd7",
+      "actual_sha256": "d96339ce8683801bdc78538b5c073a5552475b1eb3f50083d5ac3cecf3bb1bd7",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/sched/em_text.ko",
+      "expected_sha256": "e98f26d5c56e7a2c523ce4afb6d6aa5616544e4bbe902969d424d73c4026b982",
+      "actual_sha256": "e98f26d5c56e7a2c523ce4afb6d6aa5616544e4bbe902969d424d73c4026b982",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/sched/em_u32.ko",
+      "expected_sha256": "0ca6a077dc5dcd7007a9047427554559552c34c01a1556c6c01aaf6fa354180b",
+      "actual_sha256": "0ca6a077dc5dcd7007a9047427554559552c34c01a1556c6c01aaf6fa354180b",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/sched/sch_hfsc.ko",
+      "expected_sha256": "547f519ca9571309ffab42ef4c15993c92eda6ec9568cf5386879f002f2ca277",
+      "actual_sha256": "547f519ca9571309ffab42ef4c15993c92eda6ec9568cf5386879f002f2ca277",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/wireguard/wireguard.ko",
+      "expected_sha256": "c7de3ab52e077d3215c24f2ee048deac652d0029b53a9ee441efc37249ac700c",
+      "actual_sha256": "c7de3ab52e077d3215c24f2ee048deac652d0029b53a9ee441efc37249ac700c",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/wireless/cfg80211.ko",
+      "expected_sha256": "6f04121db811c5bc66ab56834b4843e29165d6f1dee96ecaed4530d78222ac7d",
+      "actual_sha256": "6f04121db811c5bc66ab56834b4843e29165d6f1dee96ecaed4530d78222ac7d",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/kernel/net/xfrm/xfrm_user.ko",
+      "expected_sha256": "39d41d71f88ddfdf1ce01ce1b7991f21ac9b1908c8622699e9beee343ecd4698",
+      "actual_sha256": "39d41d71f88ddfdf1ce01ce1b7991f21ac9b1908c8622699e9beee343ecd4698",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/modules.alias",
+      "expected_sha256": "34c64361d19c9e7f92cd4d24aeb289d02c8ba8bbbae0341b122bcf445f844ef2",
+      "actual_sha256": "34c64361d19c9e7f92cd4d24aeb289d02c8ba8bbbae0341b122bcf445f844ef2",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/modules.alias.bin",
+      "expected_sha256": "b430a179963b16e227d8ec697d397155ac4b47c236cc3e2c9712e34ab166a31d",
+      "actual_sha256": "b430a179963b16e227d8ec697d397155ac4b47c236cc3e2c9712e34ab166a31d",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/modules.builtin",
+      "expected_sha256": "93bc01d98e94ef5acc29afd8556fc1d837cc5e44b33ab7b7b87b38f0b20a39ef",
+      "actual_sha256": "93bc01d98e94ef5acc29afd8556fc1d837cc5e44b33ab7b7b87b38f0b20a39ef",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/modules.builtin.alias.bin",
+      "expected_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/modules.builtin.bin",
+      "expected_sha256": "4ec03dc83b75afebd1496cd64e618e1a263db147f6b11c282b48b6d60b529efd",
+      "actual_sha256": "4ec03dc83b75afebd1496cd64e618e1a263db147f6b11c282b48b6d60b529efd",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/modules.dep",
+      "expected_sha256": "27842ad6b77dde8f79ec00dfd58e1101185c1c587cd5a9dfd71a4132be72d09a",
+      "actual_sha256": "27842ad6b77dde8f79ec00dfd58e1101185c1c587cd5a9dfd71a4132be72d09a",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/modules.dep.bin",
+      "expected_sha256": "cfb9df7aeb092ed2db0e7eca23c8aa24eb43da3b247a09227ac3327ae1b2effa",
+      "actual_sha256": "cfb9df7aeb092ed2db0e7eca23c8aa24eb43da3b247a09227ac3327ae1b2effa",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/modules.devname",
+      "expected_sha256": "d9e4c7512b403fd7c5cd2f0475499fedcee18a1523803ab4b71351f7de72c3bd",
+      "actual_sha256": "d9e4c7512b403fd7c5cd2f0475499fedcee18a1523803ab4b71351f7de72c3bd",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/modules.order",
+      "expected_sha256": "d9065e2a9c97bece5a1373869222e00c79127d8d8ee195ffc93edc6fcf16335a",
+      "actual_sha256": "d9065e2a9c97bece5a1373869222e00c79127d8d8ee195ffc93edc6fcf16335a",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/modules.softdep",
+      "expected_sha256": "1fce29360c40e206f394799596accacaf5e092149deb36aae395ae7ad3eab209",
+      "actual_sha256": "1fce29360c40e206f394799596accacaf5e092149deb36aae395ae7ad3eab209",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/modules.symbols",
+      "expected_sha256": "57100e762f2a202484147b3addf3a7eb20fba02f2237a356d84ab4ac0ab00d6d",
+      "actual_sha256": "57100e762f2a202484147b3addf3a7eb20fba02f2237a356d84ab4ac0ab00d6d",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/modules/4.19.294/modules.symbols.bin",
+      "expected_sha256": "a94c16c2033d6a60c530bc363cfdebe82a4fbc278123ff43c608c8bc759621d5",
+      "actual_sha256": "a94c16c2033d6a60c530bc363cfdebe82a4fbc278123ff43c608c8bc759621d5",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/openssh/sshd-session",
+      "expected_sha256": "c25a3aa76e2fc2fd1ec82bcfa53b27ca7d8f4a1f64b0c0975eb7a004fc06cbfc",
+      "actual_sha256": "c25a3aa76e2fc2fd1ec82bcfa53b27ca7d8f4a1f64b0c0975eb7a004fc06cbfc",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/systemd/system.conf.d/90-leon-trial-watchdog.conf",
+      "expected_sha256": "409353d926b7e7d772910ee80456ed3b6754d5f1bbca0cf2dd90f40f8b3113c4",
+      "actual_sha256": "409353d926b7e7d772910ee80456ed3b6754d5f1bbca0cf2dd90f40f8b3113c4",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/systemd/system/leon-asus-broker.service",
+      "expected_sha256": "d7647d69ef6726fe53184a36d47272ae665883dc2eeada4c29ba380c48892829",
+      "actual_sha256": "d7647d69ef6726fe53184a36d47272ae665883dc2eeada4c29ba380c48892829",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/lib/systemd/systemd",
+      "expected_sha256": "6cf9cdb39c4d7001fc5716ebb0d5b1efa93eecfdbb4310e72e3456c87d73a1e0",
+      "actual_sha256": "6cf9cdb39c4d7001fc5716ebb0d5b1efa93eecfdbb4310e72e3456c87d73a1e0",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/libexec/asus/bsp-ownership",
+      "expected_sha256": "f51beb4faf20bac73df894a7752b385a06436967d782e3c264e48416e24ddbc9",
+      "actual_sha256": "f51beb4faf20bac73df894a7752b385a06436967d782e3c264e48416e24ddbc9",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/libexec/asus/bsp-runner",
+      "expected_sha256": "d3d8a74068eb70af278445e7baf88cd426b3e305d2b8dae862c4038f6519d5ba",
+      "actual_sha256": "d3d8a74068eb70af278445e7baf88cd426b3e305d2b8dae862c4038f6519d5ba",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/libexec/asus/etc-launch",
+      "expected_sha256": "33f942407cd46f5546be8093cae006813f1b0f5430959d921345f6f40ea7457f",
+      "actual_sha256": "33f942407cd46f5546be8093cae006813f1b0f5430959d921345f6f40ea7457f",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/libexec/asus/rc",
+      "expected_sha256": "af9b497f7791d75031772c894d17f886ba99dbac687262d9933133aa65a752fe",
+      "actual_sha256": "af9b497f7791d75031772c894d17f886ba99dbac687262d9933133aa65a752fe",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/libexec/asus/rc-broker",
+      "expected_sha256": "c2cdb625f59d1b2b4c187fe46a9b8df12750e9d0a478c6f82f3aee2f7a5d85fd",
+      "actual_sha256": "c2cdb625f59d1b2b4c187fe46a9b8df12750e9d0a478c6f82f3aee2f7a5d85fd",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/libexec/asus/startup-prepare",
+      "expected_sha256": "27c226d22963fe37a674c0975a5426b88eefd3607dce3cb966334df033bb119c",
+      "actual_sha256": "27c226d22963fe37a674c0975a5426b88eefd3607dce3cb966334df033bb119c",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/libexec/asus/storage-owner",
+      "expected_sha256": "89125432c3108c7d828644106b87d94db316555055ac89690df885f38d8ecd77",
+      "actual_sha256": "89125432c3108c7d828644106b87d94db316555055ac89690df885f38d8ecd77",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/libexec/leon-asus/trial-ack",
+      "expected_sha256": "cc2a0e5b96987c63c8b8a254835c894ccd3fffd59867b5f3a96985eadb246d32",
+      "actual_sha256": "cc2a0e5b96987c63c8b8a254835c894ccd3fffd59867b5f3a96985eadb246d32",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/libexec/leon-asus/trial-health",
+      "expected_sha256": "0d7ca4ce1b4098a9ce819a93a95d523588cea8fb43ca6b54b83b57060595f10c",
+      "actual_sha256": "0d7ca4ce1b4098a9ce819a93a95d523588cea8fb43ca6b54b83b57060595f10c",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    },
+    {
+      "path": "/usr/sbin/sshd",
+      "expected_sha256": "cb296ce9114193caecc95fc799078499e5abf1c729698e883c8822a46fec1778",
+      "actual_sha256": "cb296ce9114193caecc95fc799078499e5abf1c729698e883c8822a46fec1778",
+      "root_owned_regular_nonwritable": true,
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "executed_candidate": false,
+  "device_accessed": false,
+  "scope": "Only guardian table file identities and safe tar metadata; not physical slot, provisioned credentials, network or watchdog validation.",
+  "checker": {
+    "path": "scripts/check-asus-trial-identity-map.py",
+    "sha256": "213f64c9384c78e463d653c2fffa763beb65c4459023ad593d250621cd27b3c5"
+  }
+}

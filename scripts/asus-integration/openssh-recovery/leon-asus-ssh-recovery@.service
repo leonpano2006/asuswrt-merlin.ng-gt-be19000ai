@@ -1,0 +1,25 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+[Unit]
+Description=Native OpenSSH recovery connection
+CollectMode=inactive-or-failed
+# Keep prerequisites on each accepted connection, not the listener. A key
+# provisioned after br0 appears is usable on the next connection.
+ConditionFileNotEmpty=/var/lib/leon-asus-ssh/recovery_authorized_keys
+ConditionPathExists=/etc/ssh/ssh_host_ed25519_key
+RequiresMountsFor=/var/lib/leon-asus-ssh /etc/ssh
+
+[Service]
+Type=exec
+ExecStart=/usr/sbin/sshd -i -e -f /etc/ssh/leon-asus-recovery.conf
+StandardInput=socket
+StandardOutput=socket
+StandardError=journal
+# OpenSSH's compiled privilege-separation path is /run/sshd. Both this
+# template and the ordinary ssh.service preservation drop-in retain it,
+# so either service can stop without deleting it beneath the other.
+RuntimeDirectory=sshd
+RuntimeDirectoryMode=0755
+RuntimeDirectoryPreserve=yes
+KillMode=control-group
+TimeoutStopSec=15s
+UMask=0077

@@ -1,0 +1,60 @@
+{
+  "status": "passed_kernel10_synthetic_native_startup_topology",
+  "manifest": {
+    "path": "build/asus-startup/qemu-v4/manifest.json",
+    "sha256": "c0db8a42aa8d4d5b754bbf1b76cd90833a254429b7a33af9c4976de15b6cd67e"
+  },
+  "qemu_result": {
+    "path": "build/qemu/asus-startup-v4/result.json",
+    "sha256": "09675afdc670310f0445a3afc2ce5175cfb48a1e7ae54aa33af20d1df0d073ff"
+  },
+  "serial_sha256": "9f3108593d3820f3d73c47dc57405db72d3bd787b1fdf38438c5bd66e967d3ea",
+  "kernel_sha256": "4a15601eada042576aed2a3680dcc48e9228eea70f70c478840767aaa89a9f8e",
+  "rootfs_sha256": "be9f1eefe81392ed5449d4e2946e1ba6abc3bebdff7cca06767bf36b4593f322",
+  "initramfs_sha256": "8bdef767a5a3d4f911f6463acab8b9522ad9ab90dd57af97e8e0d7198f0e91ac",
+  "elapsed_seconds": 66.47,
+  "expected_markers": [
+    "LAB_ASUS_STARTUP_MOUNTS_UDEV_PREEXEC_NAMESPACE_PASS",
+    "LAB_ASUS_STARTUP_NONROOT_NSS_PASS",
+    "LAB_ASUS_STARTUP_PRIVATE_COMMAND_PATHS_PASS",
+    "LAB_ASUS_STARTUP_NATIVE_DNS_BOOTSTRAP_PASS",
+    "LAB_ASUS_STARTUP_NATIVE_DNS_PATH_UPDATE_PASS",
+    "LAB_ASUS_STARTUP_BROKER_READINESS_NOTIFY_PASS",
+    "LAB_ASUS_STARTUP_STOP_CGROUP_NATIVE_ISOLATION_PASS",
+    "LAB_ASUS_STARTUP_FORCED_LEFTOVER_CLEANUP_PASS_result=",
+    "LAB_ASUS_STARTUP_RESTART_PASS",
+    "LAB_ASUS_STARTUP_DEPENDENCY_STOP_ORDER_PASS",
+    "LAB_ASUS_STARTUP_PREEXEC_FAIL_CLOSED_PASS",
+    "LAB_ASUS_STARTUP_PACKAGED_MODULE_DEPENDENCIES_PASS",
+    "LAB_ASUS_STARTUP_NATIVE_FILES_UNCHANGED_PASS",
+    "LAB_ASUS_STARTUP_SYNTHETIC_COMPLETE",
+    "LAB_ASUS_STARTUP_EXIT_code=0",
+    "QEMU_UBUNTU26_SYSTEMD_FULL_COMPLETE"
+  ],
+  "forced_leftover_result": "timeout",
+  "forced_leftover_interpretation": "Deliberately noncooperative mock child is removed by systemd final cgroup cleanup. A timeout result remains a recorded failed drain, never relabeled successful normal shutdown.",
+  "proven": [
+    "Native systemd orders four mounts, udev/module preparation and revocable storage ownership before launching the broker",
+    "Broker stays in native mount namespace; launcher/manager remains its direct child and enters private etc/resources/command views",
+    "Readiness waits for manager HELLO/READY, with native broker alone notifying systemd; notification protocol remains functional",
+    "Non-root UID65534 can read private passwd/hosts even when launcher inherits broker socket umask077",
+    "Normal service stop/restart drains mock manager with SIGQUIT, removes synthetic leftover descendants and preserves unrelated native service PID",
+    "Stopping preparation drains broker before revoking proof; tampered resource lower refuses launch before any mock backend instruction",
+    "Packaged kernel module tree resolves and loads overlay/exportfs and peak_usb/CAN/USB dependencies without peripheral passthrough",
+    "Native resolver bootstraps verified192.168.100.1 and path-triggered refresh follows strict policy, without starting a DNS listener",
+    "Native account, shell and resource markers remain unchanged"
+  ],
+  "not_proven": [
+    "No real ASUS rc, NVRAM command, BSP script, WiFi/AI service or hardware callback executed",
+    "No actual BCM storage UUID is mounted, no host block device/NIC/peripheral is passed into QEMU",
+    "The fixture overlays exact module/notify/command/resolver package payload files; it is not their combined apt installation proof",
+    "Launcher is compiled from production source with only the backend pathname changed to the mock; actual production ASUS rc is never entered",
+    "Mock readiness is not hardware health or boot trial commit; hardware watchdog guard remains separate",
+    "Resolver validation and publication do not prove actual br0 route/CCR2216 DNS reachability",
+    "Native independent sleep sentinel proves cgroup isolation, not OpenSSH authentication (separate evidence)"
+  ],
+  "actual_asus_services_executed": false,
+  "automatic_activation": false,
+  "flash_allowed": false,
+  "checker_sha256": "5991ffd93f9e15fc5e506553e80ef1f160f23feca33206ce64cfd883d453cd25"
+}

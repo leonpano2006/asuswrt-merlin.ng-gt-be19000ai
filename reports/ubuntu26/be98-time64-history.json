@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-04",
+  "scope": "Targeted read-only BE98 checkpoint audit; historical outcomes are not a claim about current BE19000AI userspace.",
+  "current_policy": "time64 first for all new and rebuilt components; source repair first, only proven individual legacy ABI boundaries may use a narrow fallback",
+  "findings": [
+    {
+      "id": "busybox-time64-monotonic",
+      "classification": "actual observed hardware failure and source repair",
+      "component": "BusyBox1.25.1, ARM32 softfp, GCC15.2/glibc2.44, CONFIG_MONOTONIC_SYSCALL=y",
+      "cause": "get_mono passed libc struct timespec (16 bytes, tv_nsec offset8, time_t8) to legacy SYS_clock_gettime which wrote only8 bytes; canary bytes in the second half remained unchanged.",
+      "symptom": "ping reported roughly4294827ms after its initial packet while packets still passed.",
+      "fix": "When __USE_TIME_BITS64 is active, use libc clock_gettime(CLOCK_MONOTONIC, ts); keep time64. On the old BE98 kernel glibc handled ENOSYS from clock_gettime64 and translated legacy syscall results.",
+      "recorded_validation": "BE98 loopback, gateway, external ping and3-second deadline checks passed; applet list unchanged. Original record says no reboot or full firmware flash test.",
+      "upstream_project_commit": "https://github.com/leonpano2006/asuswrt-merlin.ng-gt-be98/commit/f80c68e01042c8d29ae994162c780b48f4b36c78",
+      "inputs": [
+        {
+          "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/ping-diagnosis-20260922/README.md",
+          "sha256": "cdb079fd2e515620033b917797d343f3750721648e73973a9b0d3437702cdd7a"
+        },
+        {
+          "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/ping-diagnosis-20260922/busybox-time64.patch",
+          "sha256": "2471fcdee372fd72ae2fcb300bb4749873003a2fdd4cb751d71913cd0b8f588b"
+        },
+        {
+          "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/ping-diagnosis-20260922/src/clock-abi-probe.c",
+          "sha256": "4a15ccf06e5aa49195975ab3a4b17f17e03b4aab67261c355f29ec45215f8b73"
+        },
+        {
+          "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/ping-diagnosis-20260922/result.json",
+          "sha256": "a0fb590e98a0a128ff50f921f694c2fe1a036f56ac8a44e6259a4aedd0b195d1"
+        }
+      ],
+      "required_port_check": "Match current BusyBox source/context before applying; a kernel time64 backport does not fix calls that still invoke the legacy syscall number with the wrong structure."
+    },
+    {
+      "id": "libcrypt-glibc-private",
+      "classification": "actual recorded relocation incompatibility; independent of time64",
+      "component": "Old armel libcrypt used by actual ASUSrc",
+      "cause": "Undefined __snprintf@GLIBC_PRIVATE no longer provided by new glibc.",
+      "fix": "Rebuild libxcrypt4.4.38 with obsolete ABI enabled, preserve existing versioned exports, test DES/MD5 crypt vectors and actualrc relocations.",
+      "source": {
+        "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/systemd-rc-compat-20260916/README.md",
+        "sha256": "15508a078b6b1d9a524265cde58c16af44bb39e1a8947ad76d51537317ebf4f2"
+      },
+      "important_limit": "The public symbol audit explicitly skipped GLIBC_PRIVATE; full loader relocation was necessary to catch this. It is not evidence that every retained binary was exercised and not justification to disable time64."
+    },
+    {
+      "id": "gcc15-default-transition",
+      "classification": "actual compiler default observation plus historical conservative ABI choice; not a reproduced time64 failure for every library",
+      "component": "Ubuntu GCC15.2 armel/hf cross compiler",
+      "observation": "Preprocessing in the current audit directly confirms _TIME_BITS=64 and _FILE_OFFSET_BITS=64 defaults. Earlier four-library migration and multiarch glibc build explicitly cleared them. The historical library probe asserted time_t4/off_t4.",
+      "sources": [
+        {
+          "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/scripts/build-libraries.py",
+          "sha256": "75ce6d458fb8777f2026da1b24a80a10123004bed0e8a927c83323d32d9095eb"
+        },
+        {
+          "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/scripts/library-probe.c",
+          "sha256": "c982b7951cabb3e62ef600b6d75d3aa449e602dc02059d36c526b74fcd5b677d"
+        },
+        {
+          "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/scripts/build-glibc.py",
+          "sha256": "8eb583080ae280c633e775f12bf2a1db2e194c53a7bf3da71c9d8998a9532ad1"
+        }
+      ],
+      "new_policy": "Do not copy those broad -U flags into the new Ubuntu component defaults. Rebuild toward time64, inspect public structures/callers and retain an exception only where a specific incompatibility is proven. Keep glibc internal dual-ABI build rules distinct from application defaults."
+    }
+  ],
+  "positive_test_matrix": [
+    "nativearm64 time_t8",
+    "armel+armhf explicit_TIME_BITS64 and_FILE_OFFSET_BITS64 with size/offset assertions",
+    "post2038 timerfd and utimensat/statx plus large sparse-file offsets",
+    "monotonic progression/ping RTT/deadline under BusyBox repair",
+    "futex/signals/cancellation/sleep and select/poll time64 paths"
+  ],
+  "legacy_boundary_matrix": [
+    "enumerate each cross-DSO/IPC time_t/off_t-bearing interface",
+    "prove caller/callee widths and field offsets",
+    "check symbol versions and raw syscall structures separately",
+    "attempt checked source translation or process isolation before declaring exception",
+    "record component/version/reproducer/narrow fallback and retain positive time64 tests elsewhere"
+  ],
+  "fresh_acceptance": "No new firmware, package install, device write, network probe or BE19000AI userspace test was performed by this history audit."
+}

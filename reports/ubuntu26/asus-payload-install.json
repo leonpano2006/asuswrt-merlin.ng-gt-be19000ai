@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "scope": "Real apt lifecycle inside a disposable Ubuntu v3 clone in isolated user/mount/PID/network namespaces; inert private ASUS files only.",
+  "script_sha256": "ee2a5c019e4c24f5be41edb43d0ea1ab8a4261f689aee1b593af16738d1eae86",
+  "candidate_tar": "build/ubuntu26-rootfs/ubuntu26-bcm-gnu-systemd-b53-v3.tar",
+  "candidate_tar_sha256": "057c52f70d8974691179235c4e273a6be0d474edde11d6c1cb85b09b11b250a4",
+  "candidate_tar_unchanged": true,
+  "package_inputs_unchanged": true,
+  "packages": [
+    {
+      "package": "asus-be19000ai-armel-payload",
+      "version": "0.2+kernel9ui1",
+      "architecture": "armel",
+      "path": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/ubuntu26-asus-packages/asus-be19000ai-armel-payload_0.2+kernel9ui1_armel.deb",
+      "sha256": "9ef8171ec516aa68df63f7782364daa12c77036707d4f43ed268a5e0cf5bb5e8"
+    },
+    {
+      "package": "asus-be19000ai-arm64-payload",
+      "version": "0.2+kernel9ui1",
+      "architecture": "arm64",
+      "path": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/ubuntu26-asus-packages/asus-be19000ai-arm64-payload_0.2+kernel9ui1_arm64.deb",
+      "sha256": "0d9ef274998463fb7a569494cf083c07a7221149561be51f61146c41217c1126"
+    },
+    {
+      "package": "asus-be19000ai-resources-payload",
+      "version": "0.2+kernel9ui1",
+      "architecture": "all",
+      "path": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/ubuntu26-asus-packages/asus-be19000ai-resources-payload_0.2+kernel9ui1_all.deb",
+      "sha256": "fa821b1858cd3b1889ba3c482237f76c66ea6239f1168eb3ff878a6e6ba7971f"
+    }
+  ],
+  "source_packaging_report_sha256": "7e27f83c29b0c25c3aa646a9611ef24ca3501db9470728f927a5208994b6e001",
+  "command": [
+    "mmdebstrap",
+    "--unshare-helper",
+    "unshare",
+    "--net",
+    "/usr/bin/python3",
+    "/tmp/asus-payload-inputs-b325vl35/test-asus-payload-install.py",
+    "--namespace-worker",
+    "/tmp/asus-payload-inputs-b325vl35/plan.json"
+  ],
+  "returncode": 0,
+  "worker_result": {
+    "schema_version": 1,
+    "status": "passed",
+    "namespace_ids": {
+      "user": "user:[4026534351]",
+      "mnt": "mnt:[4026534357]",
+      "pid": "pid:[4026534367]",
+      "net": "net:[4026534363]"
+    },
+    "host_namespace_ids": {
+      "user": "user:[4026531837]",
+      "mnt": "mnt:[4026531832]",
+      "pid": "pid:[4026531836]",
+      "net": "net:[4026531833]"
+    },
+    "phases": [
+      {
+        "name": "install",
+        "passed": true,
+        "payload_files_verified": 3236,
+        "protected_paths_unchanged": true,
+        "dpkg_audit": {
+          "returncode": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        "apt_check": {
+          "returncode": 0,
+          "stdout": "Reading package lists...\nBuilding dependency tree...\nReading state information...\n",
+          "stderr": ""
+        },
+        "dpkg_verify_payload": {
+          "returncode": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        "dpkg_verify_all_matches_baseline": true,
+        "installed_packages": {
+          "returncode": 0,
+          "stdout": "asus-be19000ai-arm64-payload\t0.2+kernel9ui1\tinstalled\nasus-be19000ai-armel-payload:armel\t0.2+kernel9ui1\tinstalled\nasus-be19000ai-resources-payload\t0.2+kernel9ui1\tinstalled\n",
+          "stderr": ""
+        },
+        "apt_transaction_sha256": "9028733fd0845096b177971c5897a06d41bba8426639100bd22b8e450ecf5406"
+      },
+      {
+        "name": "remove",
+        "passed": true,
+        "payload_files_verified": 0,
+        "protected_paths_unchanged": true,
+        "dpkg_audit": {
+          "returncode": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        "apt_check": {
+          "returncode": 0,
+          "stdout": "Reading package lists...\nBuilding dependency tree...\nReading state information...\n",
+          "stderr": ""
+        },
+        "dpkg_verify_payload": {
+          "returncode": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        "dpkg_verify_all_matches_baseline": true,
+        "installed_packages": null,
+        "apt_transaction_sha256": "0d6d047608008bec4e22c490ef202111cd67cbfd5553cbde2864e17a72b3ce36"
+      },
+      {
+        "name": "reinstall",
+        "passed": true,
+        "payload_files_verified": 3236,
+        "protected_paths_unchanged": true,
+        "dpkg_audit": {
+          "returncode": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        "apt_check": {
+          "returncode": 0,
+          "stdout": "Reading package lists...\nBuilding dependency tree...\nReading state information...\n",
+          "stderr": ""
+        },
+        "dpkg_verify_payload": {
+          "returncode": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        "dpkg_verify_all_matches_baseline": true,
+        "installed_packages": {
+          "returncode": 0,
+          "stdout": "asus-be19000ai-arm64-payload\t0.2+kernel9ui1\tinstalled\nasus-be19000ai-armel-payload:armel\t0.2+kernel9ui1\tinstalled\nasus-be19000ai-resources-payload\t0.2+kernel9ui1\tinstalled\n",
+          "stderr": ""
+        },
+        "apt_transaction_sha256": "9028733fd0845096b177971c5897a06d41bba8426639100bd22b8e450ecf5406"
+      }
+    ],
+    "candidate_numeric_ownership_entries_checked": 13933,
+    "character_devices_verified": [
+      "null",
+      "zero",
+      "full",
+      "random",
+      "urandom",
+      "tty"
+    ],
+    "network_namespace_interfaces": "Inter-|   Receive                                                |  Transmit\n face |bytes    packets errs drop fifo frame compressed multicast|bytes    packets errs drop fifo colls carrier compressed\n    lo:       0       0    0    0    0     0          0         0        0       0    0    0    0     0       0          0\n",
+    "intentional_test_fixture": "/usr/sbin/policy-rc.d returns101 in clone only",
+    "protected_entry_count": 13184,
+    "protected_manifest_sha256": "9618d3b1e16d5e22f13bef3becb3dfff493c756f60a9eb30b550254e446ddcfe",
+    "baseline_dpkg_verify": {
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "expected_payload_regular_files": 3236,
+    "runtime_integration_accepted": false,
+    "elapsed_seconds": 50.05
+  },
+  "logs": "build/asus-payload-install/payload02-v3-tmp",
+  "host_installation": false,
+  "router_access": false,
+  "runtime_integration_accepted": false,
+  "disposable_clone": "/tmp/asus-payload-clone-29c9320e724feb12d8c18772d89622c1b775f2b99aea943a",
+  "read_only_input_copies": "/tmp/asus-payload-inputs-b325vl35",
+  "limitations": [
+    "This accepts Debian ownership and inert packaging, not ASUS service/hardware behavior or active multiarch runtime integration.",
+    "The namespace uses the build host kernel; target kernel boot/loader/hardware proofs remain separate.",
+    "No apt update or remote repository is used; existing signed source configuration stays byte-identical and network namespace has no external interface."
+  ]
+}

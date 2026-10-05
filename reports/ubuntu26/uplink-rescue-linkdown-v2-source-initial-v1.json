@@ -1,0 +1,71 @@
+{
+  "schema": 1,
+  "status": "source_only_linkdown_ownership_live_readback_split",
+  "old_source": {
+    "path": "scripts/asus-integration/uplink-rescue/rescue-link.c",
+    "sha256": "491680f38d5cbaf6140a47c867c42e5bdf8b8886938362b8f90e4f0d2a7f9d10"
+  },
+  "new_source": {
+    "path": "scripts/asus-integration/uplink-rescue/rescue-link-v2.c",
+    "sha256": "6b59dd3e111d109fb2b313855dfde279d76d0214ec30c51e26c756fcbfeba325"
+  },
+  "transforms": [
+    {
+      "old": "r->protocol==PROTO&&r->flags==0&&!r->gateway&&!r->multipath&&!r->unknown;}",
+      "new": "r->protocol==PROTO&&(r->flags==0||r->flags==RTNH_F_LINKDOWN)&&!r->gateway&&!r->multipath&&!r->unknown;}"
+    },
+    {
+      "old": "static int objects(const struct snapshot *s,const struct owned *o,unsigned *ac,unsigned *rc){*ac=*rc=0;",
+      "new": "/* Ownership survives the kernel carrier-down marker; READY never does. */\nstatic bool live_route(const struct snapshot *s,const struct owned *o){unsigned matched=0;\n for(unsigned i=0;i<s->routes_n;++i)if(same_route(&s->routes[i],o)){\n  if(s->routes[i].flags!=0)return false;matched++;}\n return matched==1;\n}\nstatic int objects(const struct snapshot *s,const struct owned *o,unsigned *ac,unsigned *rc){*ac=*rc=0;"
+    },
+    {
+      "old": "if(r->prefix==32&&r->has_dst&&r->dst==peer_ip){if(!same_route(r,o)||++*rc>1){errno=EEXIST;return -1;}}",
+      "new": "if(r->prefix==32&&r->has_dst&&r->dst==peer_ip){\n   if(!same_route(r,o)){fprintf(stderr,\"LEON_RESCUE routeflags=%u reason=owned-peer-identity-or-status\\n\",r->flags);errno=EEXIST;return -1;}\n   if(++*rc>1){errno=EEXIST;return -1;}\n   if(r->flags==RTNH_F_LINKDOWN)fprintf(stderr,\"LEON_RESCUE owned-route-kernel-status=%u\\n\",r->flags);\n  }"
+    },
+    {
+      "old": "if(snapshot(s)||objects(s,o,&a,&r)||a!=1||r!=1){errno=EIO;return -1;}",
+      "new": "if(snapshot(s)||objects(s,o,&a,&r)||a!=1||r!=1||!live_route(s,o)){errno=EIO;return -1;}"
+    },
+    {
+      "old": "bool same=d==1&&own.present&&own.phase==P_ACTIVE&&own.index==want.index&&!strcmp(own.name,want.name)&&a==1&&r==1;",
+      "new": "bool same=d==1&&own.present&&own.phase==P_ACTIVE&&own.index==want.index&&!strcmp(own.name,want.name)&&a==1&&r==1&&live_route(s,&own);"
+    },
+    {
+      "old": "||strcmp(want.name,own.name)||a!=1||r!=1||policy(own.name)){",
+      "new": "||strcmp(want.name,own.name)||a!=1||r!=1||!live_route(s,&own)||policy(own.name)){"
+    }
+  ],
+  "reverse_exact_old_source": true,
+  "unchanged_service_sha256": "b7d510fb34b1404e8b3903dd765d9f0be487906497275be65f5a4da11e5585aa",
+  "source_proof": {
+    "ownership_flags_allowed": [
+      0,
+      16
+    ],
+    "ownership_flags_refused_examples": [
+      1,
+      17,
+      8,
+      32
+    ],
+    "live_route_flags_allowed": [
+      0
+    ],
+    "live_route_unique_match_required": true,
+    "live_predicate_call_sites": [
+      "install_owned final ACK/readback",
+      "main same-state determination",
+      "main before READY"
+    ],
+    "other_route_identity_conjuncts_byte_identical": true,
+    "address_local_FIB_MAC_RTA_policy_and_transactions_unchanged": true,
+    "status16_not_ready": "objects recognizes identity for withdrawal, while install/same/READY require live flags0."
+  },
+  "kernel_source_report": {
+    "path": "reports/ubuntu26/uplink-rescue-route-linkdown-source-v1.json",
+    "sha256": "2113983e1079c78b23ec999510e7b90ed8c494f51b872ddab48e99af75f6e139"
+  },
+  "host_model_qualification": "Root one host model ca9184 passed but observed before/after flags0, so it did not confirm actual16. No model retry performed.",
+  "pending_native_compile": true,
+  "tests_build_VM_device_or_network_invocations": 0
+}

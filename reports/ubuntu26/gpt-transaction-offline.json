@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "status": "passed_regular_sparse_file_fault_and_recovery_tests",
+  "candidate_manifest": {
+    "path": "build/ubuntu26-gpt-candidate/v1/manifest.json",
+    "sha256": "60d2b71c6ed8560c311b4b3bd458a09868a025439a22776e08b3beef533c6a12"
+  },
+  "operations": [
+    {
+      "name": "backup_entries",
+      "copy": "backup",
+      "offset": 31347949056,
+      "size": 16384,
+      "old_sha256": "fa4e2bdc8e0aa0ed52988ff4e80e25434bd0966b0518b38941cfef9401094d8f",
+      "new_sha256": "f6900aec87d8ca6d92a1abbd7a758169b938451b0e3cdf1703cc9bded84428d4"
+    },
+    {
+      "name": "backup_header",
+      "copy": "backup",
+      "offset": 31347965440,
+      "size": 512,
+      "old_sha256": "4324b8b878b1c99640430c2d1c6c2b73e4aeeadec10cf63d75b94c7dd21c1b20",
+      "new_sha256": "ba26e1dab9e6ad2eb1e4d9ae29df1130becb9feda276fffb8bad7d3682f06bbf"
+    },
+    {
+      "name": "primary_entries",
+      "copy": "primary",
+      "offset": 1024,
+      "size": 16384,
+      "old_sha256": "fa4e2bdc8e0aa0ed52988ff4e80e25434bd0966b0518b38941cfef9401094d8f",
+      "new_sha256": "f6900aec87d8ca6d92a1abbd7a758169b938451b0e3cdf1703cc9bded84428d4"
+    },
+    {
+      "name": "primary_header",
+      "copy": "primary",
+      "offset": 512,
+      "size": 512,
+      "old_sha256": "6051dc0ac95a1f9c879e91fba090a9852d92181473f3bacc8358432347bea838",
+      "new_sha256": "6ba59b5f3074100bd2354b2ff1990af4754bf92295048644c121b78564656728"
+    }
+  ],
+  "success_and_fault_cases": 129,
+  "fault_cases": 128,
+  "foreign_byte_refused_before_write": true,
+  "unreviewed_extent_refused": true,
+  "backup_fsync_failure_refused_before_write": true,
+  "two_invalid_copies_refused_before_write": true,
+  "kernel_partition_review": {
+    "path": "build/ubuntu26-gpt-transaction/v2/kernel-partition-review.json",
+    "sha256": "79bb580ac4a4066e5eb46ce2347a8439db78bbae867330db950913cc1be1405a"
+  },
+  "every_distinct_persisted_byte_prefix_state_covered": true,
+  "at_least_one_valid_copy_at_every_cut": true,
+  "backups_fsynced_before_transaction_writes": true,
+  "pmbr_and_partition_payload_transaction_writes": false,
+  "independent_sfdisk_candidate_and_restored_checked": true,
+  "physical_procedure": {
+    "path": "build/ubuntu26-gpt-transaction/v2/physical-procedure.json",
+    "sha256": "a15e4c3119f22ce19e7ab8af72c3af73b884898a2770bfe7f514d3864030f9da"
+  },
+  "stock_fallback_evidence": {
+    "path": "reports/ubuntu26/asus-stock-emmc-fallback.json",
+    "sha256": "e180418936d5151178c39ff97625d717b6be22fe989795d2f3288e2c794eea1b"
+  },
+  "device_opened": false,
+  "device_written": false,
+  "network_used": false,
+  "deployment_allowed": false,
+  "limits": [
+    "Regularfile fsync tests do not prove eMMCcontroller powerlossatomicity or cacheflush honesty.",
+    "Distinct byteprefix persistence is a conservative testedfaultmodel, not all arbitrarysectorcorruption patterns.",
+    "Writer has no device/physical mode or arbitrary disk path input. BLKPG semantics were source-reviewed; native helper implementation and target ioctl acceptance remain pending.",
+    "FreshCID, bootedstock2, liveGPT and4mandatoryfilesystemhealth gates remain unsatisfied until a separatelyauthorizedread-onlycapture."
+  ],
+  "source": {
+    "path": "scripts/prepare-ubuntu26-gpt-transaction.py",
+    "sha256": "0700d6945a25d2ec2f73cbb4c34cf724336c5d43050f0c11a137e4e4b9af2598"
+  },
+  "source_snapshot": {
+    "path": "build/ubuntu26-gpt-transaction/v2/builder.py",
+    "sha256": "0700d6945a25d2ec2f73cbb4c34cf724336c5d43050f0c11a137e4e4b9af2598"
+  },
+  "manifest": {
+    "path": "build/ubuntu26-gpt-transaction/v2/manifest.json",
+    "sha256": "29d947356c1c04ac4afac394d29f0cd73fcbfe5c44e6e7e8ac7e43be745e9502"
+  }
+}

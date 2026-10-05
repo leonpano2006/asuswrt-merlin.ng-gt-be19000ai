@@ -1,0 +1,198 @@
+{
+  "schema": 1,
+  "status": "source_only_pending_root_review_then_peer",
+  "files": [
+    {
+      "path": "scripts/asus-integration/trial-snapshot/aimesh-process-v1.sh",
+      "bytes": 10976,
+      "sha256": "cbff4a8d70872f9cba620c4528b0ff250336875213383ffde3288d77c8059375"
+    },
+    {
+      "path": "scripts/asus-integration/trial-snapshot/leon-asus-trial-late-snapshot.service",
+      "bytes": 849,
+      "sha256": "e063e9bdf60aee9acd16e7178c2ebeecca284ea47b227ba0dd6dd3bdd3d6df4c"
+    },
+    {
+      "path": "scripts/asus-integration/trial-snapshot/leon-asus-trial-late-snapshot.timer",
+      "bytes": 306,
+      "sha256": "0e2f2c78d170e118a0535224f01fc33106c1efce27a1f1aaf1f2e937e3a008e1"
+    }
+  ],
+  "runtime_targets": [
+    "/usr/libexec/leon-asus/trial-aimesh-process-snapshot",
+    "/usr/lib/systemd/system/leon-asus-trial-late-snapshot.service",
+    "/usr/lib/systemd/system/leon-asus-trial-late-snapshot.timer"
+  ],
+  "existing_sysctl_helper": {
+    "path": "scripts/asus-integration/trial-snapshot/sysctl-process-v3.sh",
+    "sha256": "142ee8a40e625899ca31fea03191e36fb4f9a3ae7cf402ea67d8b303c7a1a8cb",
+    "manifest": "build/asus-trial-sysctl-diagnostic/package-v3/manifest.json",
+    "manifest_sha256": "96dbaf8104bf6c5a20ba393b1b2be1813b9ad72b3cbb7ac729d4aede8b068a88",
+    "runtime_path": "/usr/libexec/leon-asus/trial-sysctl-process-snapshot"
+  },
+  "alias_source": {
+    "manifest": "build/asus-command-projection/v7/manifest.json",
+    "manifest_sha256": "0b84956849ace87ab4442d2be5e766657c5f5ffbe63063f8caad005aef019f79",
+    "source_peer": "wlan_link_review alias discovery only; draft review deferred until root review"
+  },
+  "comm_executable_pairs": {
+    "amas_bhctrl": "/usr/libexec/asus/rc",
+    "amas_status": "/usr/libexec/asus/rc",
+    "amas_lanctrl": "/usr/libexec/asus/rc",
+    "amas_misc": "/usr/libexec/asus/rc",
+    "amas_wlcconnect": "/usr/libexec/asus/rc",
+    "lldpd": "/usr/libexec/asus/vendor/usr/sbin/lldpd",
+    "udhcpc": "/usr/libexec/asus/busybox"
+  },
+  "stock_vendor_binary_pins": [
+    {
+      "path": "/usr/libexec/asus/busybox",
+      "bytes": 658704,
+      "sha256": "686d6f8557891d97814415092daac5a7b176a94aeacd76c6b96e2a0a868d20c6"
+    },
+    {
+      "path": "/usr/libexec/asus/vendor/usr/sbin/lldpd",
+      "bytes": 147600,
+      "sha256": "c85a35269e1126610a289f4610b6cae1fab4b94d2ab63fb96f15385567c18143"
+    }
+  ],
+  "RC_pin": "Canonical path remains fixed; successor RC hash must be supplied by root deployment inventory, not reused from root07 old RC.",
+  "bounds": {
+    "helper_outer_seconds": 5,
+    "sysctl_v3_outer_seconds": 20,
+    "unit_seconds": 30,
+    "per_timed_read_seconds": 1,
+    "kill_after_seconds": 1,
+    "per_stream_bytes": 8192,
+    "comm_builtin_max_bytes": 16,
+    "matching_processes_total": 16,
+    "committed_outer_process_file_views": 1,
+    "service_fixed_file_stats": 3,
+    "process_root_fixed_file_stats": 3,
+    "proc_file_input_max_bytes": 8192
+  },
+  "timing": {
+    "OnBootSec": "170s",
+    "AccuracySec": "1s",
+    "one_shot": true,
+    "independent_of_broker": true
+  },
+  "service_first_helper_failure": "ExecStart has systemd minus prefix only for the first diagnostic, so 5s timeout/incomplete does not suppress the later sysctl capture. Neither service is an ASUS startup or health gate.",
+  "sandbox": "Same NoNewPrivileges/ProtectSystem/ProtectHome/PrivateTmp/CapabilityBoundingSet=CAP_SYS_PTRACE/TimeoutStartSec=30s as existing snapshot; no SYS_ADMIN/nsenter/new capability.",
+  "privacy": {
+    "candidate_metadata": [
+      "stable PID",
+      "exact whitelisted comm/exe",
+      "pre/post numeric starttime/PPid/State",
+      "State/PPid/Uid/Gid status fields",
+      "cgroup",
+      "wchan",
+      "syscall",
+      "mount namespace"
+    ],
+    "no_argv_environment_config_script_contents_FDcontents_NVRAM": true,
+    "unknown_comm_exe_and_root_strings_not_emitted": true,
+    "race_buffers_discarded": true,
+    "pre_post_root_and_mount_namespace_revalidated_for_every_candidate": true
+  },
+  "socket_metadata": {
+    "service_view": [
+      "/run/lldpd.socket",
+      "/run/lldpd",
+      "/tmp/run_lldpd.sh"
+    ],
+    "stable_process_outer_root_view": [
+      "/var/run/lldpd.socket",
+      "/var/run/lldpd",
+      "/tmp/run_lldpd.sh"
+    ],
+    "approved_root_strings": [
+      "/",
+      "/run/lldpd",
+      "/var/run/lldpd"
+    ],
+    "process_file_stat_requires_root_slash": true,
+    "no_final_symlink_dereference_or_target_output": true,
+    "private_etc_socket": "Skipped explicitly: no source-bound var/run-to-etc mapping; no arbitrary etc leaf invented.",
+    "root07_var_run_symlink": "/var/run -> /run",
+    "chroot_missing_outer_path_does_not_prove_outer_absence": true
+  },
+  "source_refs": [
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/linux/sched.h",
+      "lines": [
+        207
+      ]
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/fs/proc/base.c",
+      "lines": [
+        1560,
+        1570
+      ]
+    },
+    {
+      "path": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-emmc-wdt-cfe-v6/compile-source/release/src/router/rc/services.c",
+      "lines": [
+        23600,
+        23604,
+        23683
+      ]
+    },
+    {
+      "path": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-emmc-wdt-cfe-v6/compile-source/release/src/router/rc/rc.c",
+      "sha256": "9d24fe552e15c03cbab36ca650c8cf1bed664eb813cbe383b3d6738216f62093",
+      "lines": [
+        4124,
+        5140,
+        5143,
+        5146,
+        5163,
+        5169
+      ]
+    },
+    {
+      "path": "build/asus-rc-recovery/source/release/src/router/shared/shutils.c",
+      "sha256": "8f44a33e1037e45fee4476b716baa8cad5ea620fa53255d84ffc09d2a37d4d7f",
+      "lines": [
+        395,
+        510
+      ]
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/fs/exec.c",
+      "sha256": "02ca9a130a1c91ca2b513b2dbf627bbd92debbc508a8b516940b0236541eca05",
+      "lines": [
+        1251,
+        1386
+      ]
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/fs/proc/base.c",
+      "sha256": "9ff82a13686b7b592622bb5de8de9b9d02559e5a260570bf506d1790a67ab3f4",
+      "lines": [
+        166,
+        196,
+        656,
+        1609
+      ]
+    }
+  ],
+  "limits": [
+    "5s helper and 20s sysctl caps can end before matching/committing processes; missing END is incomplete.",
+    "Complete means bounded traversal, never no hang or complete proc visibility.",
+    "Only exact comm/exe pairs match; renamed/deleted executables and identity-read errors are counted but not guessed.",
+    "PrivateTmp service-view absence is not daemon-view absence.",
+    "One stable outer process-root file view is sampled; no broad filesystem/socket inventory.",
+    "No syscall cause or process bug is inferred from a point sample."
+  ],
+  "not_run": [
+    "bash-n",
+    "helper",
+    "native fixture",
+    "package build",
+    "activation",
+    "device"
+  ],
+  "old_files_unchanged": true
+}

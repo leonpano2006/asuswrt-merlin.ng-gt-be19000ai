@@ -1,0 +1,30 @@
+From: GT-BE19000AI Ubuntu userspace development
+Subject: [PATCH] busybox: translate monotonic clock results through time64 libc
+
+Port BE98 f80c68e01042c8d29ae994162c780b48f4b36c78. The legacy ARM
+clock_gettime syscall writes the kernel time32 layout, which is not the
+libc struct timespec layout when _TIME_BITS=64 is active. Calling the
+libc wrapper preserves time64 and lets libc select/translate the ABI.
+Builds without __USE_TIME_BITS64 keep their existing raw call.
+
+This userspace patch is intentionally outside the kernel patch stack.
+It does not replace the running BusyBox or alter Image-v9.
+
+diff --git a/release/src/router/busybox/libbb/time.c b/release/src/router/busybox/libbb/time.c
+--- a/release/src/router/busybox/libbb/time.c
++++ b/release/src/router/busybox/libbb/time.c
+@@ -243,7 +243,14 @@
+  * typically requiring -lrt. We just skip all this mess */
+ static void get_mono(struct timespec *ts)
+ {
++	/* The legacy syscall writes a time32 kernel structure.  With glibc
++	 * time64, libc must translate it into the userspace struct timespec,
++	 * including on older kernels without clock_gettime64. */
++#if defined(__USE_TIME_BITS64)
++	if (clock_gettime(CLOCK_MONOTONIC, ts))
++#else
+ 	if (syscall(__NR_clock_gettime, CLOCK_MONOTONIC, ts))
++#endif
+ 		bb_error_msg_and_die("clock_gettime(MONOTONIC) failed");
+ }
+ unsigned long long FAST_FUNC monotonic_ns(void)

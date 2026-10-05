@@ -1,0 +1,81 @@
+diff --git a/release/src/router/libovpn/Makefile b/release/src/router/libovpn/Makefile
+--- a/release/src/router/libovpn/Makefile
++++ b/release/src/router/libovpn/Makefile
+@@ -1,5 +1,9 @@
+ include ../common.mak
+ include $(SRCBASE)/.config
++
++ifeq ($(LEON_SYSTEMD_RC),y)
++CFLAGS += -DLEON_SYSTEMD_RC=1
++endif
+ 
+ CFLAGS += -Os -Wall $(EXTRACFLAGS) -fPIC
+ CFLAGS += -I. -I$(TOP)/shared -I$(SRCBASE)/include
+diff --git a/release/src/router/libovpn/openvpn_control.c b/release/src/router/libovpn/openvpn_control.c
+--- a/release/src/router/libovpn/openvpn_control.c
++++ b/release/src/router/libovpn/openvpn_control.c
+@@ -1,3 +1,4 @@
++#include "ovpn-manager.h"
+ /*
+  * This program is free software; you can redistribute it and/or
+  * modify it under the terms of the GNU General Public License as
+@@ -499,7 +500,7 @@
+ 	ovpn_cconf_t *cconf;
+ 
+ 	sprintf(buffer, "start_vpnclient%d", unit);
+-	if (getpid() != 1) {
++	if (!ovpn_rc_is_manager()) {
+ 		notify_rc(buffer);
+ 		return;
+ 	}
+@@ -556,7 +557,7 @@
+ 	ovpn_sconf_t *sconf;
+ 
+ 	sprintf(buffer, "start_vpnserver%d", unit);
+-	if (getpid() != 1) {
++	if (!ovpn_rc_is_manager()) {
+ 		notify_rc(buffer);
+ 		return;
+ 	}
+@@ -629,7 +630,7 @@
+ #endif
+ 
+ 	sprintf(buffer, "stop_vpnclient%d", unit);
+-	if (getpid() != 1) {
++	if (!ovpn_rc_is_manager()) {
+ 		notify_rc(buffer);
+ 		return;
+ 	}
+@@ -695,7 +696,7 @@
+ 	char buffer[64];
+ 
+ 	sprintf(buffer, "stop_vpnserver%d", unit);
+-	if (getpid() != 1) {
++	if (!ovpn_rc_is_manager()) {
+ 		notify_rc(buffer);
+ 		return;
+ 	}
+diff --git a/release/src/router/libovpn/ovpn-manager.h b/release/src/router/libovpn/ovpn-manager.h
+--- /dev/null
++++ b/release/src/router/libovpn/ovpn-manager.h
+@@ -0,0 +1,20 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++#ifndef LEON_OVPN_MANAGER_H
++#define LEON_OVPN_MANAGER_H
++#include <unistd.h>
++#ifdef LEON_SYSTEMD_RC
++#if LEON_SYSTEMD_RC != 1
++#error "Ubuntu manager profile requires LEON_SYSTEMD_RC=1"
++#endif
++/* Only the explicit rc export grants manager authority. A UI caller lacking
++ * the symbol remains a client; missing marker also makes the rc export false. */
++extern int leon_rc_is_manager(void) __attribute__((weak));
++static inline int ovpn_rc_is_manager(void)
++{
++    return leon_rc_is_manager && leon_rc_is_manager();
++}
++#else
++/* Independent standalone ASUS build, never runtime missing-marker fallback. */
++static inline int ovpn_rc_is_manager(void) { return getpid() == 1; }
++#endif
++#endif

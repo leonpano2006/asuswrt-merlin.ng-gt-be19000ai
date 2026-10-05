@@ -1,0 +1,70 @@
+{
+  "schema": 1,
+  "status": "source_only_skip_visibility_delta_not_executed",
+  "old_source": "scripts/asus-integration/trial-snapshot/sysctl-process-v2.sh",
+  "old_bytes": 13431,
+  "old_sha256": "3e2c4deefca6f628fbad8bf43c308b3de0e8108f469fcd8cadb5d5200f39b39e",
+  "new_source": "scripts/asus-integration/trial-snapshot/sysctl-process-v3.sh",
+  "new_bytes": 18614,
+  "new_sha256": "142ee8a40e625899ca31fea03191e36fb4f9a3ae7cf402ea67d8b303c7a1a8cb",
+  "old_package_manifest": "build/asus-trial-sysctl-diagnostic/package-v2/manifest.json",
+  "old_package_manifest_sha256": "1c71ab3777acd4dccfc46bc8ad554ea6ef93d6ba26a8a8d9bbde0af529a2d865",
+  "delta": {
+    "patch": "reports/ubuntu26/trial-sysctl-diagnostic-helper-v3-source-delta-v1.patch",
+    "patch_bytes": 9689,
+    "patch_sha256": "ebcccb9a9496c1d7e1623b0a61d5816a67ff280556546ea64140e8b7eb24d4d7",
+    "operation": "replace single scan tail; preserve complete prefix containing all seven existing capture/identity functions",
+    "old_start_byte": 10419,
+    "old_end_byte": 13431,
+    "new_start_byte": 10419,
+    "new_end_byte": 18614,
+    "old_tail_sha256": "f8ff9463449ebc0369bb4510c909c4d037f9dc6a0a3f2ac99de3dfe5b487e7a1",
+    "new_tail_sha256": "290fe94090f9790f4ae2c0e4c1e0afb719f724652ad1b3f34349877cf0027a12",
+    "unchanged_prefix_bytes": 10419,
+    "unchanged_prefix_sha256": "269ac5c8b09e0ba12f0affcdc867d3f8b4bbad90830df06b769ce7c014dfe853",
+    "forward_binding": true,
+    "inverse_binding": true
+  },
+  "unchanged_functions": [
+    "capture",
+    "identity",
+    "emit_stream",
+    "zombie_identity",
+    "chain_identity",
+    "capture_process",
+    "capture_zombie"
+  ],
+  "unchanged_bounds": {
+    "candidates_total": 4,
+    "workers_per_manager": 32,
+    "children_per_worker": 32,
+    "fd_targets_live_class": 8,
+    "per_stream_bytes": 8192,
+    "per_read_seconds": 1,
+    "kill_after_seconds": 1,
+    "outer_deadline_seconds": 20
+  },
+  "allowed_additions": [
+    "fixed own status CapEff/CapPrm/CapBnd/NoNewPrivs/Uid/Gid",
+    "fixed self and PID1 mount/user namespace readlink metadata",
+    "numeric preselection rejection and enumeration/scan counters",
+    "EXIT and TERM/INT/HUP completion markers; missing END is incomplete",
+    "complete means bounded traversal finished; zero matches never proves no hang"
+  ],
+  "preservation": "v1/v2 helper, package, builder, receipts, service/dropin/timer untouched",
+  "not_run": [
+    "bash syntax check",
+    "helper execution",
+    "fixture or native test",
+    "Deb build",
+    "native build",
+    "device operation"
+  ],
+  "limits": [
+    "TERM cannot distinguish external interruption from timeout; marker says term-or-outer-timeout",
+    "SIGKILL cannot run traps; missing END must be treated as incomplete",
+    "identity rejections remain observations rather than proof of access denial",
+    "added own metadata consumes time inside existing global 20-second bound",
+    "the chosen timer and package/build/deployment are deferred"
+  ]
+}

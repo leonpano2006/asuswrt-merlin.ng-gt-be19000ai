@@ -1,0 +1,14 @@
+[Unit]
+Description=Verified BE19000AI BCM defaults filesystem
+# Device identity was read-only verified; this unit never repairs or formats.
+Before=leon-asus-storage.target
+
+[Mount]
+What=/dev/disk/by-uuid/b33c1d3a-f5a1-4beb-b0fe-edfdecba957d
+Where=/mnt/defaults
+Type=ext4
+Options=ro
+TimeoutSec=30s
+
+[Install]
+WantedBy=leon-asus-storage.target

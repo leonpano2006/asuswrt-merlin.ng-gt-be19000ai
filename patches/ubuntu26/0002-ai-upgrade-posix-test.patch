@@ -1,0 +1,39 @@
+diff --git a/release/src/router/rom/apps_scripts/ai_upgrade.sh b/release/src/router/rom/apps_scripts/ai_upgrade.sh
+--- a/release/src/router/rom/apps_scripts/ai_upgrade.sh
++++ b/release/src/router/rom/apps_scripts/ai_upgrade.sh
+@@ -18,7 +18,7 @@
+ fi
+ 
+ ERROR_STATE=$(nvram get webs_state_ai_error)
+-if [ "$ERROR_STATE" == "0" ]; then
++if [ "$ERROR_STATE" = "0" ]; then
+     log "Init AI FW upgrade"
+     UPGRADE_STAGE=$(nvram get webs_state_ai_upgrade)
+ 
+@@ -33,7 +33,7 @@
+     UPGRADE_STAGE=$(nvram get webs_state_ai_upgrade)
+     # Wait for stage 1 → 2
+     START_TIME=$(date +%s)
+-    while [ "$UPGRADE_STAGE" == "1" ]; do
++    while [ "$UPGRADE_STAGE" = "1" ]; do
+         CURRENT_TIME=$(date +%s)
+         if [ $((CURRENT_TIME - START_TIME)) -ge $AI_TX_TIMEOUT ]; then
+             nvram set webs_state_ai_error=9
+@@ -51,7 +51,7 @@
+ 
+     # Wait for stage 2 → 3
+     START_TIME=$(date +%s)
+-    while [ "$UPGRADE_STAGE" == "2" ]; do
++    while [ "$UPGRADE_STAGE" = "2" ]; do
+         CURRENT_TIME=$(date +%s)
+         if [ $((CURRENT_TIME - START_TIME)) -ge $AI_UPG_TIMEOUT ]; then
+             nvram set webs_state_ai_error=10
+@@ -66,7 +66,7 @@
+         log "Upgrade FW timeout [$ERROR_STATE] [$FILENAME]"
+         exit 1
+     fi
+-    if [ "$ERROR_STATE" == "0" ] && [ "$UPGRADE_STAGE" == "3" ]; then
++    if [ "$ERROR_STATE" = "0" ] && [ "$UPGRADE_STAGE" = "3" ]; then
+         log "Succeed in Upgrading FW manually [$FILENAME]"
+     fi
+ fi

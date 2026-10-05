@@ -1,0 +1,691 @@
+{
+  "schema_version": 1,
+  "status": "Diagnostic libcrypt candidate passed kernel10 QEMU loader and standalone vector/ABI validation; full ASUS/Ubuntu integration unaccepted",
+  "source": {
+    "version": "4.4.38",
+    "url": "https://codeload.github.com/besser82/libxcrypt/tar.gz/refs/tags/v4.4.38",
+    "archive": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/systemd-lab-20260916/downloads/libxcrypt-4.4.38.tar.gz",
+    "sha256": "9fb45586b2e83727934fbe046a4fef4804017577f1d048f91d56d0d830a5a98e",
+    "provenance": "cached upstream tag archive, exact hash matches prior source manifest",
+    "pristine_file_inventory": "build/asus-libcrypt-compat/pristine-source-files.json",
+    "pristine_inventory_sha256": "e90468497c384a72c2c5ab673f2f7ba794cdd213190e3c8b4fac94f2fb0237c2",
+    "source_patches": []
+  },
+  "compiler": {
+    "version": "arm-linux-gnueabi-gcc-15 (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+    "wrapper": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/a53-runtimes-20260916/builds/armel/wrappers/cc",
+    "wrapper_sha256": "5d6566012ef4875c1b3201b1fb6a5474ee84297399a685c04724ffe17bd2e1f7",
+    "config_sha256": "59b6b2f91cde8106f2320b5cca530c4d84bcffb0e577e87cc4583a93231cc84d",
+    "target_flags": [
+      "-mcpu=cortex-a53+crypto",
+      "-march=armv8-a+crc+crypto",
+      "-mfpu=crypto-neon-fp-armv8",
+      "-mfloat-abi=softfp"
+    ],
+    "cflags": "-O2 -g -frecord-gcc-switches -D_TIME_BITS=64 -D_FILE_OFFSET_BITS=64",
+    "sdk_libc": "reference BE98 glibc2.44; not final Ubuntu libc6:armel",
+    "final_ubuntu_package_compiler": false
+  },
+  "vendor": {
+    "path": "build/kernel9-ui1-rootfs/lib/libcrypt.so.1",
+    "sha256": "50efa54b898167e3bfbf2673c2f682a74ddc455e686328839d79915d0ca422c5",
+    "elf": {
+      "elf_class": 32,
+      "machine": "EM_ARM",
+      "float_abi_flags": 512,
+      "soname": [
+        "libcrypt.so.1"
+      ],
+      "needed": [
+        "libc.so.6"
+      ],
+      "rpath_runpath": [],
+      "exports": {
+        "encrypt_r@GLIBC_2.4": {
+          "type": "FUNCTION",
+          "binding": "STB_WEAK",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": true,
+          "object_size": null
+        },
+        "crypt_r@GLIBC_2.4": {
+          "type": "FUNCTION",
+          "binding": "STB_WEAK",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": false,
+          "object_size": null
+        },
+        "fcrypt@GLIBC_2.4": {
+          "type": "FUNCTION",
+          "binding": "STB_WEAK",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": true,
+          "object_size": null
+        },
+        "setkey@GLIBC_2.4": {
+          "type": "FUNCTION",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": true,
+          "object_size": null
+        },
+        "GLIBC_2.4@GLIBC_2.4": {
+          "type": "STT_OBJECT",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": false,
+          "object_size": 0
+        },
+        "crypt@GLIBC_2.4": {
+          "type": "FUNCTION",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": false,
+          "object_size": null
+        },
+        "setkey_r@GLIBC_2.4": {
+          "type": "FUNCTION",
+          "binding": "STB_WEAK",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": true,
+          "object_size": null
+        },
+        "encrypt@GLIBC_2.4": {
+          "type": "FUNCTION",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": true,
+          "object_size": null
+        }
+      },
+      "imports": [
+        "_ITM_deregisterTMCloneTable@local",
+        "_ITM_registerTMCloneTable@local",
+        "__close_nocancel@GLIBC_PRIVATE",
+        "__cxa_finalize@GLIBC_2.4",
+        "__explicit_bzero_chk@GLIBC_2.25",
+        "__gmon_start__@local",
+        "__libc_alloca_cutoff@GLIBC_PRIVATE",
+        "__open_nocancel@GLIBC_PRIVATE",
+        "__pthread_mutex_lock@local",
+        "__pthread_mutex_unlock@local",
+        "__read_nocancel@GLIBC_PRIVATE",
+        "__snprintf@GLIBC_PRIVATE",
+        "__stpncpy@GLIBC_2.4",
+        "errno@GLIBC_PRIVATE",
+        "ferror@GLIBC_2.4",
+        "fread@GLIBC_2.4",
+        "free@GLIBC_2.4",
+        "malloc@GLIBC_2.4",
+        "memcpy@GLIBC_2.4",
+        "memset@GLIBC_2.4",
+        "realloc@GLIBC_2.4",
+        "strcspn@GLIBC_2.4",
+        "strlen@GLIBC_2.4",
+        "strncmp@GLIBC_2.4",
+        "strncpy@GLIBC_2.4",
+        "strtol@GLIBC_2.4",
+        "strtoul@GLIBC_2.4"
+      ]
+    }
+  },
+  "candidate": {
+    "path": "build/asus-libcrypt-compat/libcrypt.so.1",
+    "sha256": "c6fb0681837ab69427806d177323747c840fe1a0c8c5a7d27299a7807f6dd7e5",
+    "bytes": 263860,
+    "elf": {
+      "elf_class": 32,
+      "machine": "EM_ARM",
+      "float_abi_flags": 512,
+      "soname": [
+        "libcrypt.so.1"
+      ],
+      "needed": [
+        "libc.so.6",
+        "ld-linux.so.3"
+      ],
+      "rpath_runpath": [],
+      "exports": {
+        "OW_CRYPT_1.0@OW_CRYPT_1.0": {
+          "type": "STT_OBJECT",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": false,
+          "object_size": 0
+        },
+        "xcrypt_r@XCRYPT_2.0": {
+          "type": "FUNCTION",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": true,
+          "object_size": null
+        },
+        "xcrypt_gensalt_r@XCRYPT_2.0": {
+          "type": "FUNCTION",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": true,
+          "object_size": null
+        },
+        "crypt@GLIBC_2.4": {
+          "type": "FUNCTION",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": true,
+          "object_size": null
+        },
+        "crypt@XCRYPT_2.0": {
+          "type": "FUNCTION",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": false,
+          "object_size": null
+        },
+        "setkey@GLIBC_2.4": {
+          "type": "FUNCTION",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": true,
+          "object_size": null
+        },
+        "GLIBC_2.4@GLIBC_2.4": {
+          "type": "STT_OBJECT",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": false,
+          "object_size": 0
+        },
+        "encrypt_r@GLIBC_2.4": {
+          "type": "FUNCTION",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": true,
+          "object_size": null
+        },
+        "crypt_checksalt@XCRYPT_4.3": {
+          "type": "FUNCTION",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": false,
+          "object_size": null
+        },
+        "XCRYPT_2.0@XCRYPT_2.0": {
+          "type": "STT_OBJECT",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": false,
+          "object_size": 0
+        },
+        "setkey_r@GLIBC_2.4": {
+          "type": "FUNCTION",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": true,
+          "object_size": null
+        },
+        "crypt_gensalt_r@XCRYPT_2.0": {
+          "type": "FUNCTION",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": true,
+          "object_size": null
+        },
+        "crypt_rn@XCRYPT_2.0": {
+          "type": "FUNCTION",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": false,
+          "object_size": null
+        },
+        "crypt_rn@GLIBC_2.4": {
+          "type": "FUNCTION",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": true,
+          "object_size": null
+        },
+        "crypt_r@GLIBC_2.4": {
+          "type": "FUNCTION",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": true,
+          "object_size": null
+        },
+        "crypt_r@XCRYPT_2.0": {
+          "type": "FUNCTION",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": false,
+          "object_size": null
+        },
+        "XCRYPT_4.3@XCRYPT_4.3": {
+          "type": "STT_OBJECT",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": false,
+          "object_size": 0
+        },
+        "crypt_ra@XCRYPT_2.0": {
+          "type": "FUNCTION",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": false,
+          "object_size": null
+        },
+        "XCRYPT_4.4@XCRYPT_4.4": {
+          "type": "STT_OBJECT",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": false,
+          "object_size": 0
+        },
+        "crypt_gensalt_rn@GLIBC_2.4": {
+          "type": "FUNCTION",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": true,
+          "object_size": null
+        },
+        "crypt_ra@GLIBC_2.4": {
+          "type": "FUNCTION",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": true,
+          "object_size": null
+        },
+        "crypt_gensalt_rn@XCRYPT_2.0": {
+          "type": "FUNCTION",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": false,
+          "object_size": null
+        },
+        "crypt_gensalt_rn@OW_CRYPT_1.0": {
+          "type": "FUNCTION",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": true,
+          "object_size": null
+        },
+        "crypt_gensalt@GLIBC_2.4": {
+          "type": "FUNCTION",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": true,
+          "object_size": null
+        },
+        "crypt_gensalt@OW_CRYPT_1.0": {
+          "type": "FUNCTION",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": true,
+          "object_size": null
+        },
+        "crypt_gensalt@XCRYPT_2.0": {
+          "type": "FUNCTION",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": false,
+          "object_size": null
+        },
+        "encrypt@GLIBC_2.4": {
+          "type": "FUNCTION",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": true,
+          "object_size": null
+        },
+        "xcrypt@XCRYPT_2.0": {
+          "type": "FUNCTION",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": true,
+          "object_size": null
+        },
+        "crypt_preferred_method@XCRYPT_4.4": {
+          "type": "FUNCTION",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": false,
+          "object_size": null
+        },
+        "xcrypt_gensalt@XCRYPT_2.0": {
+          "type": "FUNCTION",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": true,
+          "object_size": null
+        },
+        "fcrypt@GLIBC_2.4": {
+          "type": "FUNCTION",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": true,
+          "object_size": null
+        },
+        "crypt_gensalt_ra@OW_CRYPT_1.0": {
+          "type": "FUNCTION",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": true,
+          "object_size": null
+        },
+        "crypt_gensalt_ra@GLIBC_2.4": {
+          "type": "FUNCTION",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": true,
+          "object_size": null
+        },
+        "crypt_gensalt_ra@XCRYPT_2.0": {
+          "type": "FUNCTION",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": false,
+          "object_size": null
+        }
+      },
+      "imports": [
+        "_ITM_deregisterTMCloneTable@local",
+        "_ITM_registerTMCloneTable@local",
+        "__assert_fail@GLIBC_2.4",
+        "__cxa_finalize@GLIBC_2.4",
+        "__errno_location@GLIBC_2.4",
+        "__explicit_bzero_chk@GLIBC_2.25",
+        "__gmon_start__@local",
+        "__isoc23_strtoul@GLIBC_2.38",
+        "__snprintf_chk@GLIBC_2.4",
+        "__stack_chk_fail@GLIBC_2.4",
+        "__stack_chk_guard@GLIBC_2.4",
+        "arc4random_buf@GLIBC_2.36",
+        "free@GLIBC_2.4",
+        "malloc@GLIBC_2.4",
+        "memcmp@GLIBC_2.4",
+        "memcpy@GLIBC_2.4",
+        "memmove@GLIBC_2.4",
+        "memset@GLIBC_2.4",
+        "mmap64@GLIBC_2.4",
+        "munmap@GLIBC_2.4",
+        "raise@GLIBC_2.4",
+        "realloc@GLIBC_2.4",
+        "strchr@GLIBC_2.4",
+        "strcspn@GLIBC_2.4",
+        "strlen@GLIBC_2.4",
+        "strncmp@GLIBC_2.4",
+        "strrchr@GLIBC_2.4",
+        "strspn@GLIBC_2.4"
+      ]
+    }
+  },
+  "abi": {
+    "old_versioned_exports": 8,
+    "missing_exports": [],
+    "incompatible_export_metadata": [],
+    "allowed_metadata_changes": {
+      "encrypt_r@GLIBC_2.4": {
+        "old": {
+          "type": "FUNCTION",
+          "binding": "STB_WEAK",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": true,
+          "object_size": null
+        },
+        "new": {
+          "type": "FUNCTION",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": true,
+          "object_size": null
+        }
+      },
+      "crypt_r@GLIBC_2.4": {
+        "old": {
+          "type": "FUNCTION",
+          "binding": "STB_WEAK",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": false,
+          "object_size": null
+        },
+        "new": {
+          "type": "FUNCTION",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": true,
+          "object_size": null
+        }
+      },
+      "fcrypt@GLIBC_2.4": {
+        "old": {
+          "type": "FUNCTION",
+          "binding": "STB_WEAK",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": true,
+          "object_size": null
+        },
+        "new": {
+          "type": "FUNCTION",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": true,
+          "object_size": null
+        }
+      },
+      "crypt@GLIBC_2.4": {
+        "old": {
+          "type": "FUNCTION",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": false,
+          "object_size": null
+        },
+        "new": {
+          "type": "FUNCTION",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": true,
+          "object_size": null
+        }
+      },
+      "setkey_r@GLIBC_2.4": {
+        "old": {
+          "type": "FUNCTION",
+          "binding": "STB_WEAK",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": true,
+          "object_size": null
+        },
+        "new": {
+          "type": "FUNCTION",
+          "binding": "STB_GLOBAL",
+          "visibility": "STV_DEFAULT",
+          "hidden_version": true,
+          "object_size": null
+        }
+      }
+    },
+    "glibc_private_references": [],
+    "obsolete_api_enosys_stubs": false,
+    "rule": "All old callable/object exports, versions, visibility and object sizes preserved. Weak-to-global is compatible; crypt and crypt_r retain GLIBC_2.4 aliases with new XCRYPT_2.0 defaults."
+  },
+  "crypt_data": {
+    "sdk_header": "/home/leonpano/br-sdk/focal-sdks/br-arm/output/host/arm-buildroot-linux-gnueabi/sysroot/usr/include/crypt.h",
+    "sdk_header_sha256": "e292ec266a97406aec10b9d3066aafd79fe0e675747faa2ea903cd7c13918548",
+    "old_armel_size": 131228,
+    "new_size": 32768,
+    "old_initialized_offset": 131224,
+    "identical_layout": false,
+    "compatibility": "Legacy SDK header explicitly declares internal scratch fields opaque and requires all-zero initialization. GLIBC_2.4 is a direct libxcrypt alias, not a layout translator. The versioned probe tests all-zero and also 0xA5-filled data with only the old initialized member zero, six rounds of three salts/algorithms, known answers, pointer containment and buffer guards. No claim that old internal fields are layout-compatible.",
+    "implementation_source": "lib/crypt.c:234-244 crypt_r calls do_crypt and does not read initialized; do_crypt clears internal scratch after each hash",
+    "unverified_boundary": "Consumers that directly inspect internal fields or mix saved crypt state across implementations require separate audit."
+  },
+  "vendor_direct_crypt_imports": {
+    "sbin/rc": [
+      "crypt@GLIBC_2.4"
+    ],
+    "usr/sbin/httpd": [],
+    "usr/libexec/ledg-node/rc": [
+      "crypt@GLIBC_2.4"
+    ]
+  },
+  "probes": [
+    {
+      "path": "build/asus-libcrypt-compat/crypt-probe",
+      "sha256": "9429b646a53802d0d86360d56e7ef0ec2bf5b219b28115bb732fd71f425d1ebe",
+      "source_sha256": "72946ba5f5d9ad6617983ff7eea72009c4ac45dc344f8dae9025ea71d3382e1a",
+      "needed": [
+        "libcrypt.so.1",
+        "libc.so.6",
+        "ld-linux.so.3"
+      ],
+      "imports": [
+        "_ITM_deregisterTMCloneTable@local",
+        "_ITM_registerTMCloneTable@local",
+        "__assert_fail@GLIBC_2.4",
+        "__gmon_start__@local",
+        "__libc_start_main@GLIBC_2.34",
+        "__printf_chk@GLIBC_2.4",
+        "__stack_chk_fail@GLIBC_2.4",
+        "abort@GLIBC_2.4",
+        "crypt@XCRYPT_2.0",
+        "crypt_r@XCRYPT_2.0",
+        "memset@GLIBC_2.4",
+        "puts@GLIBC_2.4",
+        "strcmp@GLIBC_2.4"
+      ],
+      "runtime_tested": true,
+      "expected_markers": [
+        "LAB_ASUS_LIBCRYPT_DES_MD5_TIME64_PASS"
+      ],
+      "returncode": 0,
+      "observed_markers": [
+        "LAB_ASUS_LIBCRYPT_DES_MD5_TIME64_PASS"
+      ],
+      "probe_validation_passed": true
+    },
+    {
+      "path": "build/asus-libcrypt-compat/crypt-legacy-probe-v2",
+      "sha256": "efa70b490deca461f50351e2ff3c28ac10bed7e38b15e257757d6580c6138ea8",
+      "source_sha256": "6f0a259f5a02ea501f806144ffd7fa64de6437cf8b2e8e9b3adf831ec36a3d43",
+      "needed": [
+        "libcrypt.so.1",
+        "libc.so.6",
+        "ld-linux.so.3"
+      ],
+      "imports": [
+        "_ITM_deregisterTMCloneTable@local",
+        "_ITM_registerTMCloneTable@local",
+        "__assert_fail@GLIBC_2.4",
+        "__errno_location@GLIBC_2.4",
+        "__gmon_start__@local",
+        "__libc_start_main@GLIBC_2.34",
+        "__printf_chk@GLIBC_2.4",
+        "__stack_chk_fail@GLIBC_2.4",
+        "abort@GLIBC_2.4",
+        "crypt@GLIBC_2.4",
+        "crypt_r@GLIBC_2.4",
+        "encrypt@GLIBC_2.4",
+        "encrypt_r@GLIBC_2.4",
+        "fcrypt@GLIBC_2.4",
+        "memcmp@GLIBC_2.4",
+        "memset@GLIBC_2.4",
+        "puts@GLIBC_2.4",
+        "setkey@GLIBC_2.4",
+        "setkey_r@GLIBC_2.4",
+        "strcmp@GLIBC_2.4"
+      ],
+      "runtime_tested": true,
+      "expected_markers": [
+        "LAB_ASUS_LIBCRYPT_POISON_INITIALIZED_ONLY_PASS",
+        "LAB_ASUS_LIBCRYPT_GLIBC24_OBSOLETE_ABI_PASS"
+      ],
+      "returncode": 0,
+      "observed_markers": [
+        "LAB_ASUS_LIBCRYPT_POISON_INITIALIZED_ONLY_PASS",
+        "LAB_ASUS_LIBCRYPT_GLIBC24_OBSOLETE_ABI_PASS"
+      ],
+      "probe_validation_passed": true
+    }
+  ],
+  "runtime_probe_markers": [
+    "LAB_ASUS_LIBCRYPT_DES_MD5_TIME64_PASS",
+    "LAB_ASUS_LIBCRYPT_POISON_INITIALIZED_ONLY_PASS",
+    "LAB_ASUS_LIBCRYPT_GLIBC24_OBSOLETE_ABI_PASS"
+  ],
+  "runtime_accepted": false,
+  "vendor_services_executed": false,
+  "baseline_tree_modified": false,
+  "production_deb_built": false,
+  "router_access": false,
+  "hardware_or_flash_operations": false,
+  "commands": "build/asus-libcrypt-compat/commands.json",
+  "build_log_sha256": "be6694c8b5d7a90de81ad2318a07a6193daba96dfcec80790f63e5c125d2dff1",
+  "builder_sha256": "75e6d191d810fe150772cce8362981f04cdd64b579e987e7205c8227c49a7558",
+  "probe_validation_passed": true,
+  "loader_validation_passed": true,
+  "runtime_acceptance_scope": "Full ASUS/Ubuntu integration remains unaccepted. QEMU evidence proves selected loader relocations and standalone libcrypt vectors/ABI only; no ASUS service main/constructors or hardware were run.",
+  "runtime_evidence": {
+    "scope": "Selected loader relocations plus standalone libcrypt DES/MD5/obsolete ABI/time64 probes on kernel10; no service or hardware acceptance",
+    "result": "build/qemu/kernel10-asus-loader-diagnostic-v3-crypt/result.json",
+    "result_sha256": "96b36e5fd1664a134fb77bf0f312799b78826ae4818185c71c92288ebf20db42",
+    "serial_log": "build/qemu/kernel10-asus-loader-diagnostic-v3-crypt/serial.log",
+    "serial_log_sha256": "c17b20dc47cb47df5ac4bfc9c2981827d784cb1e46de9e2ec31673f588d429a0",
+    "kernel_sha256": "4a15601eada042576aed2a3680dcc48e9228eea70f70c478840767aaa89a9f8e",
+    "initramfs_sha256": "e61f350f76ae1621e3ea4ebedd40a7d5458f540c1a7045309eba50045416129a",
+    "guest_complete": true,
+    "panic": false,
+    "loader_summary": {
+      "vendor": {
+        "total": 11,
+        "passed": 11
+      },
+      "glibc244": {
+        "total": 11,
+        "passed": 8
+      },
+      "glibc244_crypt": {
+        "total": 11,
+        "passed": 11
+      }
+    },
+    "negative_control_failures": [
+      {
+        "runtime": "glibc244",
+        "program": "sbin/rc",
+        "returncode": 0,
+        "diagnostics": [
+          "undefined symbol: __snprintf, version GLIBC_PRIVATE\t(/vendor/lib/libcrypt.so.1)"
+        ],
+        "loader_validation_passed": false
+      },
+      {
+        "runtime": "glibc244",
+        "program": "usr/sbin/httpd",
+        "returncode": 0,
+        "diagnostics": [
+          "undefined symbol: __snprintf, version GLIBC_PRIVATE\t(/vendor/lib/libcrypt.so.1)"
+        ],
+        "loader_validation_passed": false
+      },
+      {
+        "runtime": "glibc244",
+        "program": "usr/libexec/ledg-node/rc",
+        "returncode": 0,
+        "diagnostics": [
+          "undefined symbol: __snprintf, version GLIBC_PRIVATE\t(/vendor/lib/libcrypt.so.1)"
+        ],
+        "loader_validation_passed": false
+      }
+    ],
+    "probe_count": 2,
+    "probe_returncodes": [
+      0,
+      0
+    ],
+    "all_expected_markers_present": true,
+    "candidate_library_sha256": "c6fb0681837ab69427806d177323747c840fe1a0c8c5a7d27299a7807f6dd7e5",
+    "vendor_service_execution": false,
+    "full_ubuntu_runtime_acceptance": false,
+    "production_package_acceptance": false,
+    "report_update_only_no_rebuild_or_test_rerun": true
+  }
+}

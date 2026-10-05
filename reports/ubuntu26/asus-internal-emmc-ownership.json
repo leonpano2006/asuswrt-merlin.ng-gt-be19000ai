@@ -1,0 +1,990 @@
+{
+  "status": "source_guards_and_controlled_argument_tests_pass",
+  "source_pin": "9b25e55ca5c56a6f01d6a56264c0f6c47459ada0",
+  "patch": {
+    "path": "patches/ubuntu26/asuswrt6/0018-asus-internal-emmc-ownership.patch",
+    "sha256": "0ad1c46ca76f7d471e05fb0efa919e94788316c686044abfba991e7c79f4c47e"
+  },
+  "base": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-v2/compile-source",
+  "files": [
+    {
+      "path": "release/src/router/rc/usb.c",
+      "before_sha256": "ea694b0a9d6a8b90fa096850c5e915c48669fc7286a125272e995813c8e8f31d",
+      "after_sha256": "3ec324ffe9aa0837cd5f0a736f785146c0ae9cf47e94d00444740a59ad33802f"
+    },
+    {
+      "path": "release/src/router/rc/usb_devices.c",
+      "before_sha256": "d68e6d0586625274e476f70950c5347b3840e2d6ff74df9ab9bdbdcac52fdc90",
+      "after_sha256": "e9c03e7cd2e2766e893efc19136ff963c4ad2910b3ae2c5d3f884cdd49e8dd29"
+    },
+    {
+      "path": "release/src/router/rc/rc-internal-storage.h",
+      "before_sha256": null,
+      "after_sha256": "19b0ed3bdfa4215d589aae94644ea2233a39a5b40934a59b0606679cded633e5"
+    }
+  ],
+  "apply_stdout": "patching file release/src/router/rc/usb.c\npatching file release/src/router/rc/usb_devices.c\npatching file release/src/router/rc/rc-internal-storage.h\n",
+  "fuzz": 0,
+  "name_cases": [
+    {
+      "path": "mmcblk0",
+      "internal": true
+    },
+    {
+      "path": "/dev/mmcblk0",
+      "internal": true
+    },
+    {
+      "path": "/devices/platform/mmc/block/mmcblk0",
+      "internal": true
+    },
+    {
+      "path": "mmcblk0boot0",
+      "internal": true
+    },
+    {
+      "path": "/dev/mmcblk0boot0",
+      "internal": true
+    },
+    {
+      "path": "/devices/platform/mmc/block/mmcblk0boot0",
+      "internal": true
+    },
+    {
+      "path": "mmcblk0boot1",
+      "internal": true
+    },
+    {
+      "path": "/dev/mmcblk0boot1",
+      "internal": true
+    },
+    {
+      "path": "/devices/platform/mmc/block/mmcblk0boot1",
+      "internal": true
+    },
+    {
+      "path": "mmcblk0rpmb",
+      "internal": true
+    },
+    {
+      "path": "/dev/mmcblk0rpmb",
+      "internal": true
+    },
+    {
+      "path": "/devices/platform/mmc/block/mmcblk0rpmb",
+      "internal": true
+    },
+    {
+      "path": "mmcblk0p1",
+      "internal": true
+    },
+    {
+      "path": "/dev/mmcblk0p1",
+      "internal": true
+    },
+    {
+      "path": "/devices/platform/mmc/block/mmcblk0p1",
+      "internal": true
+    },
+    {
+      "path": "mmcblk0p2",
+      "internal": true
+    },
+    {
+      "path": "/dev/mmcblk0p2",
+      "internal": true
+    },
+    {
+      "path": "/devices/platform/mmc/block/mmcblk0p2",
+      "internal": true
+    },
+    {
+      "path": "mmcblk0p3",
+      "internal": true
+    },
+    {
+      "path": "/dev/mmcblk0p3",
+      "internal": true
+    },
+    {
+      "path": "/devices/platform/mmc/block/mmcblk0p3",
+      "internal": true
+    },
+    {
+      "path": "mmcblk0p4",
+      "internal": true
+    },
+    {
+      "path": "/dev/mmcblk0p4",
+      "internal": true
+    },
+    {
+      "path": "/devices/platform/mmc/block/mmcblk0p4",
+      "internal": true
+    },
+    {
+      "path": "mmcblk0p5",
+      "internal": true
+    },
+    {
+      "path": "/dev/mmcblk0p5",
+      "internal": true
+    },
+    {
+      "path": "/devices/platform/mmc/block/mmcblk0p5",
+      "internal": true
+    },
+    {
+      "path": "mmcblk0p6",
+      "internal": true
+    },
+    {
+      "path": "/dev/mmcblk0p6",
+      "internal": true
+    },
+    {
+      "path": "/devices/platform/mmc/block/mmcblk0p6",
+      "internal": true
+    },
+    {
+      "path": "mmcblk0p7",
+      "internal": true
+    },
+    {
+      "path": "/dev/mmcblk0p7",
+      "internal": true
+    },
+    {
+      "path": "/devices/platform/mmc/block/mmcblk0p7",
+      "internal": true
+    },
+    {
+      "path": "mmcblk0p8",
+      "internal": true
+    },
+    {
+      "path": "/dev/mmcblk0p8",
+      "internal": true
+    },
+    {
+      "path": "/devices/platform/mmc/block/mmcblk0p8",
+      "internal": true
+    },
+    {
+      "path": "mmcblk0p9",
+      "internal": true
+    },
+    {
+      "path": "/dev/mmcblk0p9",
+      "internal": true
+    },
+    {
+      "path": "/devices/platform/mmc/block/mmcblk0p9",
+      "internal": true
+    },
+    {
+      "path": "mmcblk0p10",
+      "internal": true
+    },
+    {
+      "path": "/dev/mmcblk0p10",
+      "internal": true
+    },
+    {
+      "path": "/devices/platform/mmc/block/mmcblk0p10",
+      "internal": true
+    },
+    {
+      "path": "mmcblk0p11",
+      "internal": true
+    },
+    {
+      "path": "/dev/mmcblk0p11",
+      "internal": true
+    },
+    {
+      "path": "/devices/platform/mmc/block/mmcblk0p11",
+      "internal": true
+    },
+    {
+      "path": "mmcblk0p12",
+      "internal": true
+    },
+    {
+      "path": "/dev/mmcblk0p12",
+      "internal": true
+    },
+    {
+      "path": "/devices/platform/mmc/block/mmcblk0p12",
+      "internal": true
+    },
+    {
+      "path": "mmcblk0p13",
+      "internal": true
+    },
+    {
+      "path": "/dev/mmcblk0p13",
+      "internal": true
+    },
+    {
+      "path": "/devices/platform/mmc/block/mmcblk0p13",
+      "internal": true
+    },
+    {
+      "path": "mmcblk0p14",
+      "internal": true
+    },
+    {
+      "path": "/dev/mmcblk0p14",
+      "internal": true
+    },
+    {
+      "path": "/devices/platform/mmc/block/mmcblk0p14",
+      "internal": true
+    },
+    {
+      "path": "mmcblk0p15",
+      "internal": true
+    },
+    {
+      "path": "/dev/mmcblk0p15",
+      "internal": true
+    },
+    {
+      "path": "/devices/platform/mmc/block/mmcblk0p15",
+      "internal": true
+    },
+    {
+      "path": "mmcblk0p16",
+      "internal": true
+    },
+    {
+      "path": "/dev/mmcblk0p16",
+      "internal": true
+    },
+    {
+      "path": "/devices/platform/mmc/block/mmcblk0p16",
+      "internal": true
+    },
+    {
+      "path": "mmcblk0p17",
+      "internal": true
+    },
+    {
+      "path": "/dev/mmcblk0p17",
+      "internal": true
+    },
+    {
+      "path": "/devices/platform/mmc/block/mmcblk0p17",
+      "internal": true
+    },
+    {
+      "path": "mmcblk0p18",
+      "internal": true
+    },
+    {
+      "path": "/dev/mmcblk0p18",
+      "internal": true
+    },
+    {
+      "path": "/devices/platform/mmc/block/mmcblk0p18",
+      "internal": true
+    },
+    {
+      "path": "mmcblk0p19",
+      "internal": true
+    },
+    {
+      "path": "/dev/mmcblk0p19",
+      "internal": true
+    },
+    {
+      "path": "/devices/platform/mmc/block/mmcblk0p19",
+      "internal": true
+    },
+    {
+      "path": "mmcblk0p20",
+      "internal": true
+    },
+    {
+      "path": "/dev/mmcblk0p20",
+      "internal": true
+    },
+    {
+      "path": "/devices/platform/mmc/block/mmcblk0p20",
+      "internal": true
+    },
+    {
+      "path": "mmcblk0p21",
+      "internal": true
+    },
+    {
+      "path": "/dev/mmcblk0p21",
+      "internal": true
+    },
+    {
+      "path": "/devices/platform/mmc/block/mmcblk0p21",
+      "internal": true
+    },
+    {
+      "path": "mmcblk0p22",
+      "internal": true
+    },
+    {
+      "path": "/dev/mmcblk0p22",
+      "internal": true
+    },
+    {
+      "path": "/devices/platform/mmc/block/mmcblk0p22",
+      "internal": true
+    },
+    {
+      "path": "mmcblk0p23",
+      "internal": true
+    },
+    {
+      "path": "/dev/mmcblk0p23",
+      "internal": true
+    },
+    {
+      "path": "/devices/platform/mmc/block/mmcblk0p23",
+      "internal": true
+    },
+    {
+      "path": "mmcblk0p24",
+      "internal": true
+    },
+    {
+      "path": "/dev/mmcblk0p24",
+      "internal": true
+    },
+    {
+      "path": "/devices/platform/mmc/block/mmcblk0p24",
+      "internal": true
+    },
+    {
+      "path": "mmcblk0p25",
+      "internal": true
+    },
+    {
+      "path": "/dev/mmcblk0p25",
+      "internal": true
+    },
+    {
+      "path": "/devices/platform/mmc/block/mmcblk0p25",
+      "internal": true
+    },
+    {
+      "path": "mmcblk0p26",
+      "internal": true
+    },
+    {
+      "path": "/dev/mmcblk0p26",
+      "internal": true
+    },
+    {
+      "path": "/devices/platform/mmc/block/mmcblk0p26",
+      "internal": true
+    },
+    {
+      "path": "mmcblk0p27",
+      "internal": true
+    },
+    {
+      "path": "/dev/mmcblk0p27",
+      "internal": true
+    },
+    {
+      "path": "/devices/platform/mmc/block/mmcblk0p27",
+      "internal": true
+    },
+    {
+      "path": "mmcblk0p28",
+      "internal": true
+    },
+    {
+      "path": "/dev/mmcblk0p28",
+      "internal": true
+    },
+    {
+      "path": "/devices/platform/mmc/block/mmcblk0p28",
+      "internal": true
+    },
+    {
+      "path": "mmcblk0p29",
+      "internal": true
+    },
+    {
+      "path": "/dev/mmcblk0p29",
+      "internal": true
+    },
+    {
+      "path": "/devices/platform/mmc/block/mmcblk0p29",
+      "internal": true
+    },
+    {
+      "path": "mmcblk0p30",
+      "internal": true
+    },
+    {
+      "path": "/dev/mmcblk0p30",
+      "internal": true
+    },
+    {
+      "path": "/devices/platform/mmc/block/mmcblk0p30",
+      "internal": true
+    },
+    {
+      "path": "mmcblk0p31",
+      "internal": true
+    },
+    {
+      "path": "/dev/mmcblk0p31",
+      "internal": true
+    },
+    {
+      "path": "/devices/platform/mmc/block/mmcblk0p31",
+      "internal": true
+    },
+    {
+      "path": "mmcblk0p32",
+      "internal": true
+    },
+    {
+      "path": "/dev/mmcblk0p32",
+      "internal": true
+    },
+    {
+      "path": "/devices/platform/mmc/block/mmcblk0p32",
+      "internal": true
+    },
+    {
+      "path": "mmcblk1",
+      "internal": false
+    },
+    {
+      "path": "/dev/mmcblk1",
+      "internal": false
+    },
+    {
+      "path": "/devices/platform/mmc/block/mmcblk1",
+      "internal": false
+    },
+    {
+      "path": "mmcblk1p1",
+      "internal": false
+    },
+    {
+      "path": "/dev/mmcblk1p1",
+      "internal": false
+    },
+    {
+      "path": "/devices/platform/mmc/block/mmcblk1p1",
+      "internal": false
+    },
+    {
+      "path": "mmcblk10p1",
+      "internal": false
+    },
+    {
+      "path": "/dev/mmcblk10p1",
+      "internal": false
+    },
+    {
+      "path": "/devices/platform/mmc/block/mmcblk10p1",
+      "internal": false
+    },
+    {
+      "path": "mmcblk100p11",
+      "internal": false
+    },
+    {
+      "path": "/dev/mmcblk100p11",
+      "internal": false
+    },
+    {
+      "path": "/devices/platform/mmc/block/mmcblk100p11",
+      "internal": false
+    },
+    {
+      "path": "sda",
+      "internal": false
+    },
+    {
+      "path": "/dev/sda",
+      "internal": false
+    },
+    {
+      "path": "/devices/platform/mmc/block/sda",
+      "internal": false
+    },
+    {
+      "path": "sda1",
+      "internal": false
+    },
+    {
+      "path": "/dev/sda1",
+      "internal": false
+    },
+    {
+      "path": "/devices/platform/mmc/block/sda1",
+      "internal": false
+    },
+    {
+      "path": "sdb11",
+      "internal": false
+    },
+    {
+      "path": "/dev/sdb11",
+      "internal": false
+    },
+    {
+      "path": "/devices/platform/mmc/block/sdb11",
+      "internal": false
+    },
+    {
+      "path": "sr0",
+      "internal": false
+    },
+    {
+      "path": "/dev/sr0",
+      "internal": false
+    },
+    {
+      "path": "/devices/platform/mmc/block/sr0",
+      "internal": false
+    },
+    {
+      "path": "",
+      "internal": false
+    },
+    {
+      "path": "/dev/",
+      "internal": false
+    },
+    {
+      "path": "/devices/platform/mmc/block/",
+      "internal": false
+    },
+    {
+      "path": "fixture uuid-alias -> ordinary file mmcblk0p11",
+      "internal": true
+    }
+  ],
+  "event_cases": [
+    {
+      "name": "mmcblk0p1",
+      "action": "add",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p2",
+      "action": "add",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p3",
+      "action": "add",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p4",
+      "action": "add",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p5",
+      "action": "add",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p6",
+      "action": "add",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p7",
+      "action": "add",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p8",
+      "action": "add",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p9",
+      "action": "add",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p10",
+      "action": "add",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p11",
+      "action": "add",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p12",
+      "action": "add",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p13",
+      "action": "add",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p14",
+      "action": "add",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p15",
+      "action": "add",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p16",
+      "action": "add",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p17",
+      "action": "add",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p18",
+      "action": "add",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p19",
+      "action": "add",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p20",
+      "action": "add",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p21",
+      "action": "add",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p22",
+      "action": "add",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p23",
+      "action": "add",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p24",
+      "action": "add",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p25",
+      "action": "add",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p26",
+      "action": "add",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p27",
+      "action": "add",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p28",
+      "action": "add",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p29",
+      "action": "add",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p30",
+      "action": "add",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p31",
+      "action": "add",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p32",
+      "action": "add",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0",
+      "action": "add",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0boot0",
+      "action": "add",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0rpmb",
+      "action": "add",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk1p1",
+      "action": "add",
+      "exit": 0
+    },
+    {
+      "name": "mmcblk10p11",
+      "action": "add",
+      "exit": 0
+    },
+    {
+      "name": "mmcblk0p1",
+      "action": "remove",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p2",
+      "action": "remove",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p3",
+      "action": "remove",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p4",
+      "action": "remove",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p5",
+      "action": "remove",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p6",
+      "action": "remove",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p7",
+      "action": "remove",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p8",
+      "action": "remove",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p9",
+      "action": "remove",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p10",
+      "action": "remove",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p11",
+      "action": "remove",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p12",
+      "action": "remove",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p13",
+      "action": "remove",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p14",
+      "action": "remove",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p15",
+      "action": "remove",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p16",
+      "action": "remove",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p17",
+      "action": "remove",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p18",
+      "action": "remove",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p19",
+      "action": "remove",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p20",
+      "action": "remove",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p21",
+      "action": "remove",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p22",
+      "action": "remove",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p23",
+      "action": "remove",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p24",
+      "action": "remove",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p25",
+      "action": "remove",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p26",
+      "action": "remove",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p27",
+      "action": "remove",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p28",
+      "action": "remove",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p29",
+      "action": "remove",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p30",
+      "action": "remove",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p31",
+      "action": "remove",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0p32",
+      "action": "remove",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0",
+      "action": "remove",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0boot0",
+      "action": "remove",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk0rpmb",
+      "action": "remove",
+      "exit": 125
+    },
+    {
+      "name": "mmcblk1p1",
+      "action": "remove",
+      "exit": 0
+    },
+    {
+      "name": "mmcblk10p11",
+      "action": "remove",
+      "exit": 0
+    },
+    {
+      "command": "hotplug",
+      "name": "block",
+      "action": "add",
+      "exit": 125
+    },
+    {
+      "command": "hotplug",
+      "name": "net",
+      "action": "add",
+      "exit": 0
+    },
+    {
+      "command": "asus_sd",
+      "name": "sda1",
+      "action": "add",
+      "exit": 0
+    },
+    {
+      "command": "asus_tty",
+      "name": "ttyUSB0",
+      "action": "remove",
+      "exit": 0
+    }
+  ],
+  "exact_model_bcm_mmc_enabled": false,
+  "model_context_sha256": "c8f4987c88c39fdff29944c88862d36f49a7df6dd20a2466c8ab460a59a3eded",
+  "entrypoints": [
+    "device-event before callback or node wait",
+    "asus_mmc before NVRAM/USB emulation",
+    "hotplug_usb before action/NVRAM handling (device and DEVPATH)",
+    "mount_r before filesystem probing",
+    "mount_partition before probing/pre-mount hook",
+    "umount_partition before sync/swap enumeration",
+    "uswap_mountpoint and umount_mountpoint before operation",
+    "USB eject disk enumeration",
+    "disk format selection before any partition erase",
+    "disk scan disk enumeration"
+  ],
+  "retained": "External MMC controller names mmcblk1 and above, USB disks and non-storage callbacks retain the stock path.",
+  "stock_fallback": "Private hotplug2 routes only reviewed adapter callbacks; generic block is rejected there. Direct rc hotplug block and enumeration now share source guards. Legacy kernel hotplug helper is rejected by bsp-ownership.",
+  "scope": "C predicates and argument parser executed on synthetic names/files only; no block node, rc or hardware service execution.",
+  "actual_asus_services_executed": false,
+  "flash_allowed": false,
+  "builder_sha256": "c8476fa55f86e49b580f1eb63592d2f9ddd185f63c2665befef548b577f54bc2"
+}

@@ -1,0 +1,218 @@
+{
+  "schema_version": 1,
+  "status": "metadata_only_upgrade_verified",
+  "old_package": {
+    "path": "build/ubuntu26/config-deb-v2/leon-bcm-rootfs-config_0.2_all.deb",
+    "sha256": "3d0a0edb8256b285ec62396b70c835cb30fbc9468854ef9feb6418872158ef58",
+    "version": "0.2"
+  },
+  "package": {
+    "name": "leon-bcm-rootfs-config",
+    "path": "build/ubuntu26/config-deb-v3/leon-bcm-rootfs-config_0.3_all.deb",
+    "sha256": "e033908b8cd78a7b0e5789f26e2216437001aef8a3d16b90346b40f507162c26",
+    "version": "0.3",
+    "architecture": "all"
+  },
+  "payload_file_bytes_unchanged": true,
+  "symlinks_unchanged": true,
+  "maintainer_scripts_unchanged": true,
+  "conffiles_unchanged": true,
+  "changes": [
+    {
+      "path": ".",
+      "old_mode": "0o775",
+      "new_mode": "0o755"
+    },
+    {
+      "path": "./etc",
+      "old_mode": "0o775",
+      "new_mode": "0o755"
+    },
+    {
+      "path": "./etc/apt",
+      "old_mode": "0o775",
+      "new_mode": "0o755"
+    },
+    {
+      "path": "./etc/apt/sources.list.d",
+      "old_mode": "0o775",
+      "new_mode": "0o755"
+    },
+    {
+      "path": "./usr",
+      "old_mode": "0o775",
+      "new_mode": "0o755"
+    },
+    {
+      "path": "./usr/share",
+      "old_mode": "0o775",
+      "new_mode": "0o755"
+    },
+    {
+      "path": "./usr/share/doc",
+      "old_mode": "0o775",
+      "new_mode": "0o755"
+    },
+    {
+      "path": "./usr/share/doc/leon-bcm-rootfs-config",
+      "old_mode": "0o775",
+      "new_mode": "0o755"
+    },
+    {
+      "path": "./usr/share/leon-bcm-rootfs",
+      "old_mode": "0o775",
+      "new_mode": "0o755"
+    }
+  ],
+  "control_change": "Version only: 0.2 to 0.3; no payload version/profile/changelog rewriting.",
+  "payload": {
+    ".": {
+      "type": "5",
+      "mode": 493,
+      "uid": 0,
+      "gid": 0,
+      "linkname": "",
+      "mtime": 1791072000,
+      "sha256": null
+    },
+    "./etc": {
+      "type": "5",
+      "mode": 493,
+      "uid": 0,
+      "gid": 0,
+      "linkname": "",
+      "mtime": 1791072000,
+      "sha256": null
+    },
+    "./etc/apt": {
+      "type": "5",
+      "mode": 493,
+      "uid": 0,
+      "gid": 0,
+      "linkname": "",
+      "mtime": 1791072000,
+      "sha256": null
+    },
+    "./etc/apt/sources.list.d": {
+      "type": "5",
+      "mode": 493,
+      "uid": 0,
+      "gid": 0,
+      "linkname": "",
+      "mtime": 1791072000,
+      "sha256": null
+    },
+    "./etc/apt/sources.list.d/ubuntu.sources": {
+      "type": "0",
+      "mode": 420,
+      "uid": 0,
+      "gid": 0,
+      "linkname": "",
+      "mtime": 1791072000,
+      "sha256": "234229873b084bd0b09712625aa36fc1665eac256ea4815f6db3cfa9b19acb63"
+    },
+    "./usr": {
+      "type": "5",
+      "mode": 493,
+      "uid": 0,
+      "gid": 0,
+      "linkname": "",
+      "mtime": 1791072000,
+      "sha256": null
+    },
+    "./usr/share": {
+      "type": "5",
+      "mode": 493,
+      "uid": 0,
+      "gid": 0,
+      "linkname": "",
+      "mtime": 1791072000,
+      "sha256": null
+    },
+    "./usr/share/doc": {
+      "type": "5",
+      "mode": 493,
+      "uid": 0,
+      "gid": 0,
+      "linkname": "",
+      "mtime": 1791072000,
+      "sha256": null
+    },
+    "./usr/share/doc/leon-bcm-rootfs-config": {
+      "type": "5",
+      "mode": 493,
+      "uid": 0,
+      "gid": 0,
+      "linkname": "",
+      "mtime": 1791072000,
+      "sha256": null
+    },
+    "./usr/share/doc/leon-bcm-rootfs-config/README.Debian": {
+      "type": "0",
+      "mode": 420,
+      "uid": 0,
+      "gid": 0,
+      "linkname": "",
+      "mtime": 1791072000,
+      "sha256": "5349304a2e4e5fb06cb6a579c491de26dca752501597d7b398fd9602d5ac1c12"
+    },
+    "./usr/share/doc/leon-bcm-rootfs-config/changelog.gz": {
+      "type": "0",
+      "mode": 420,
+      "uid": 0,
+      "gid": 0,
+      "linkname": "",
+      "mtime": 1791072000,
+      "sha256": "6e45593454ebe8785abdacee4f44e288ac92861d7802d4c61164b1ebfa5691c2"
+    },
+    "./usr/share/doc/leon-bcm-rootfs-config/copyright": {
+      "type": "0",
+      "mode": 420,
+      "uid": 0,
+      "gid": 0,
+      "linkname": "",
+      "mtime": 1791072000,
+      "sha256": "77d77b566d3a38ebabeb528787cfbf66da689169dd5a37fd10916fb23ef14f55"
+    },
+    "./usr/share/leon-bcm-rootfs": {
+      "type": "5",
+      "mode": 493,
+      "uid": 0,
+      "gid": 0,
+      "linkname": "",
+      "mtime": 1791072000,
+      "sha256": null
+    },
+    "./usr/share/leon-bcm-rootfs/profile.json": {
+      "type": "0",
+      "mode": 420,
+      "uid": 0,
+      "gid": 0,
+      "linkname": "",
+      "mtime": 1791072000,
+      "sha256": "b513cad49526f6ae95ffe88231ccfbaa9813c0977229ffb5e339a875615782a6"
+    },
+    "./usr/share/leon-bcm-rootfs/systemd-policy.json": {
+      "type": "0",
+      "mode": 420,
+      "uid": 0,
+      "gid": 0,
+      "linkname": "",
+      "mtime": 1791072000,
+      "sha256": "83fec0325c2525a01dc40d90b4873ebc2c68a4192a4c4e197fce72809aa1b74b"
+    }
+  },
+  "repack_reproducible": true,
+  "composer_allowed_upgrade": {
+    "package": "leon-bcm-rootfs-config",
+    "from": "0.2",
+    "to": "0.3"
+  },
+  "fresh_builder_directory_mode_fixed": {
+    "path": "scripts/build-ubuntu26-config-deb.py",
+    "sha256": "facd20a681843c68d9551fca6f41a6a6f048c6e757ea941d2547b5ddf1091998"
+  },
+  "installed": false,
+  "router_access": false,
+  "builder_sha256": "fe4b5b8f8c533e4949c733fdb83a9494e7c50a356b8a4b7041a4329f776fb9cc"
+}

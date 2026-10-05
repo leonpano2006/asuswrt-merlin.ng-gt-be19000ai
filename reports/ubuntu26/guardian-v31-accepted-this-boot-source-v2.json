@@ -1,0 +1,294 @@
+{
+  "accepted_policy": {
+    "accept_client": "scripts/asus-integration/accepted-guard/v31-runtime/accept-client.c",
+    "client_propagates_server_refusal_errno": true,
+    "client_verifies_immutable_native_owner_for_operations": [
+      3,
+      4,
+      5,
+      6
+    ],
+    "control_abi_size": 104,
+    "core_bits_required": 7,
+    "core_freshness_ms_exclusive": 15000,
+    "diagnostic_payload_format_unchanged": true,
+    "diagnostic_worker_retained": true,
+    "external_ack_required_before_acceptance": true,
+    "hard_failure_irrevocable": true,
+    "metadata_worker_retained": true,
+    "native_root_and_exact_boot_id_required": true,
+    "purpose_operations": [
+      4,
+      5,
+      6
+    ],
+    "same_watchdog_owner_and_fd": true
+  },
+  "added_source_count": 4,
+  "base_guardian_receipt": {
+    "path": "build/asus-trial-runtime/native-v30-scoped-udev-identity/guardian-receipt.json",
+    "sha256": "ec4a12a9c6d0f4364676a8369ff8533a9abe197a628ca8ea93200950bc0b5439"
+  },
+  "base_manifest": {
+    "path": "build/asus-trial-runtime/native-v30-scoped-udev-identity/manifest.json",
+    "sha256": "e50e65513820de6de5d529c547ec2653bed4192e59c7f0334a342a49ef2e47bd"
+  },
+  "base_source_snapshot_files": {
+    "ack-client.c": "01a904f524d15536938e2a3bddd9eb4da21934bf27e1e496f2e8b1ca3b905bde",
+    "adapter-test.c": "d431aef9d82ee515b3005e95ddc87c11a37a9296b186dbc4df47b5d290fad2ce",
+    "boot-diagnostics.h": "6db67153c5e05327afb92d42bb20765a98e96667fad1b5af66157931bdadb1af",
+    "capture-test.c": "2748404cd4b4c7c0f8afe7c2fdfd305e76b78def6ea45d1f8fcf255c7b549023",
+    "control-client.c": "57dad7b775f7c43a9a4857520d1c28a5378d653ba17a55de1221a559561c6a2c",
+    "control-server.c": "b92a3067881a31fa00bda27210cf71dc671375f94576dc95c034a98273d3579b",
+    "control-server.h": "25d6cf12fb4636ede609ae404d5c9c616f316d6cd6916be76d8011327431c771",
+    "control.h": "a4fda19c1586c5908639d38e0abd7a7864376f2a35fa8445777e903fe369484b",
+    "diagnostic-state.c": "8727a21b37bd8daf18a6d354d5cf9168870a39ab903c396c177b490d89615994",
+    "diagnostic-state.h": "65f9554d9daf4733903041cd2e7187b23116650ef2f63b71282231e38e5b8d73",
+    "guardian.c": "175bee65c76daf1d760edc5f983315ac896c84fba8f215bbfe6bf47ec59a2839",
+    "health-client.c": "cdcffe463398a52cf6a92b60e7f82c0048473828dc79dec8b4c03e9101199fb2",
+    "health-worker.c": "e78b224c450f8399554e4049d05632b62f0a2c02f891f35c2e38fec73877464c",
+    "health-worker.h": "1f43b02be1efe2286b1d043c891304df57f61ce2c310b19073b598cdceb72a6f",
+    "local-health.c": "47099c90d54714079bf2fefeb5cc87b223ac03edf9b7996131d176b95a4d4115",
+    "local-health.h": "a4f289603573de20f210fa9eeeca51954d4791fe107361f23921eb0f89fde07c",
+    "loop-broker-fixture.c": "cc5cf0c022f24f6866f22fbabd253ebcbe5984cb609457297372f488043408ce",
+    "loop-fixture.c": "9d9b42d015734193c5e8d54d58e8620f883bf7053c9ff43d0e844724fb37c2fc",
+    "loop-fixture.h": "01a735fa8ce700922bcedf37749d12740884778ac6b5d8ee14d4b344824943f7",
+    "preflight.c": "834a66f46630e3274cbaa305b34e61c9aa903dca07d15d4947fb024311067130",
+    "preflight.h": "a016aada9fd7c5aeefdebcce61df5c966c2b165d4de5ae6f6c81952420d0b705",
+    "process-auth.c": "2215d497686449df385f16d79bfef0037bab3f720c20001db606b7846bab9d76",
+    "process-auth.h": "3c3443129b157850569254ac5852ae69820b14304635b9fed28747d2e3d8e639",
+    "production.c": "85ae3a711ecb0ed34c76cb6d8087089a80845524a65aeb8aa0be5e11c3c1c337",
+    "server-fixture.c": "408603b5a91cf9abaafc7c974569c83b6fda315b44367425662b9807af60abfe",
+    "sha256-compat.h": "18079008e1a791b72abf5d6513011c5e606a29d3ed0476927f0ed48d6fa1a9a8",
+    "sshd-state.h": "1e315b40f3ca04a3ae7aca73d5b62f30b0822e1f29bc4507d437aa5c8b28d8b7",
+    "trial-handoff.h": "4de3b81e120df030daf6bf939ec42977588afeea70dfc0d7bca35151d2f93089",
+    "trial-policy.c": "9d93784cbaadfee68b41791c357091e1fec4a28b51f53247d756c3d831c38db3",
+    "trial-policy.h": "8e1c2d3d5260bf1bf13f93f24d9bdad339249a353dd54f8b1271a89121d82837",
+    "watchdog-adapter.c": "64304b892dda509abc2c6a535a7db384685b430f56dbbcc9ebc2528acc067270",
+    "worker-test.c": "2a50f0d4d6e843d66843e1008483c98eb56a0ebcd98955d120cd201d21cc3a85"
+  },
+  "changed_source_count": 5,
+  "changed_sources": {
+    "control-client.c": {
+      "after_sha256": "bb252411e1840badee9b874122f9af42a940471e2f1de6e5f6829d05a4145b0b",
+      "before_sha256": "57dad7b775f7c43a9a4857520d1c28a5378d653ba17a55de1221a559561c6a2c"
+    },
+    "control-server.c": {
+      "after_sha256": "2569d76fc996c7c4b6bc6764e30cb9297c29505ff855f27fcdb1e5630c0bdea5",
+      "before_sha256": "b92a3067881a31fa00bda27210cf71dc671375f94576dc95c034a98273d3579b"
+    },
+    "control-server.h": {
+      "after_sha256": "55dbeaddabeb483496a69d961a7fc643f3cb7c5c005847896b8ee6a568d370d6",
+      "before_sha256": "25d6cf12fb4636ede609ae404d5c9c616f316d6cd6916be76d8011327431c771"
+    },
+    "control.h": {
+      "after_sha256": "4df1a2c23af73b6cf2a3287770f959bbd24b5c91a0f56a2ef83261b9b5e0d184",
+      "before_sha256": "a4fda19c1586c5908639d38e0abd7a7864376f2a35fa8445777e903fe369484b"
+    },
+    "production.c": {
+      "after_sha256": "602a9d61a754575166918010f3ed3afb7070838aee83ffbf0cfb37c9cfe087af",
+      "before_sha256": "85ae3a711ecb0ed34c76cb6d8087089a80845524a65aeb8aa0be5e11c3c1c337"
+    }
+  },
+  "control_client_regions": [
+    {
+      "after": "if(m->operation==LEON_TRIAL_ASSERT_ARMED||m->operation==LEON_ACCEPT_CHALLENGE||m->operation==LEON_ACCEPT_THIS_BOOT||m->operation==LEON_ACCEPT_STATUS){",
+      "before": "if(m->operation==LEON_TRIAL_ASSERT_ARMED){",
+      "label": "immutable-owner-peer-for-purpose-operations"
+    },
+    {
+      "after": "if(reply.magic!=LEON_TRIAL_CONTROL_MAGIC||reply.version!=1||reply.operation!=m->operation||reply.reserved||!memchr(reply.boot_id,0,sizeof(reply.boot_id)))goto out;\n    if(reply.error){errno=reply.error;goto out;}",
+      "before": "if(reply.magic!=LEON_TRIAL_CONTROL_MAGIC||reply.version!=1||reply.operation!=m->operation||reply.reserved||reply.error||!memchr(reply.boot_id,0,sizeof(reply.boot_id)))goto out;",
+      "label": "propagate-bounded-refusal-code"
+    }
+  ],
+  "control_client_reverse_matches_exact_v30": true,
+  "device_actions": 0,
+  "directory": "scripts/asus-integration/accepted-guard/v31-runtime",
+  "fixed_auxiliary_inputs": {
+    "diagnostic-build.h": {
+      "path": "build/asus-trial-runtime/native-v30-scoped-udev-identity/diagnostic-build.h",
+      "sha256": "3977711d39abd6cd22f6c11fc50b0822134fa3cda4faf6b29f355b203a74fc74"
+    },
+    "identity-production.h": {
+      "path": "build/asus-trial-runtime/native-v30-scoped-udev-identity/identity-production.h",
+      "sha256": "8b48431ce3982a58c6b39bb5f8c0e846cab4552a53053652f3f7daee8ab91ff6"
+    },
+    "sha256.c": {
+      "path": "build/asus-trial-runtime/native-v30-scoped-udev-identity/sha256.c",
+      "sha256": "a58c66b50180e58fcc96dcb9dda460a1faef23a3bfefe79d2f691353248c091b"
+    }
+  },
+  "focused_new_fixture_needed": {
+    "execution_count": 0,
+    "kernel_module_qemu_rebuild_required": false,
+    "old_tests_to_rerun": [],
+    "scope": [
+      "Call the actual production accepted_metadata_ready predicate at success ages 0/6500/6501, backwards clock, no-success, active health/metadata and failed health/metadata/owner cases.",
+      "Exercise the actual callback plus accepted runtime once with a non-watchdog owned pipe FD: healthy trial+core7+fresh cache accepts; unhealthy/stale-core/busy cases refuse; accepted core failure and metadata failure remain sticky.",
+      "Exercise only the newly added purpose operations using an isolated root/native namespace socket: stale/wrong-boot/replayed/cross-purpose token refuses; actual callback must succeed before the server reports acceptance.",
+      "A targeted same-owner transition observation must show accepted mode continues without further LAN ACK while metadata checks and core observations continue; this is new behavior and old fixture receipts do not validate it."
+    ]
+  },
+  "hardware_watchdog_opened": false,
+  "identity_rows": 213,
+  "identity_rows_changed": 0,
+  "limitations": [
+    "No live swap is possible: this source requires a new immutable guardian successor and the existing boot handoff.",
+    "Acceptance affects only the running boot; COMMITTED2, full metadata bytes and all slot preflight checks remain unchanged.",
+    "Existing diagnostic payload retains the trial phase field; accepted state is explicitly available through control operation6 and the accept client.",
+    "PID1 core observation checks presence/native namespace, not systemd DBus responsiveness.",
+    "No compiler, fixture, target execution, firmware packaging or permanent selection was performed."
+  ],
+  "metadata_acceptance_gate": {
+    "active_health_or_metadata_worker": "EAGAIN",
+    "completed_reaped_result": 1,
+    "failed_worker_or_failed_owner": "EPERM",
+    "have_success_required": true,
+    "maximum_age_ms_inclusive": 6500,
+    "missing_stale_or_backwards_success": "EPERM",
+    "owner_side_block_reads_added": 0
+  },
+  "metadata_committed": 2,
+  "permanent_boot_selection": false,
+  "previous_source_report": {
+    "path": "reports/ubuntu26/guardian-v31-accepted-this-boot-source-v1.json",
+    "sha256": "bf85b9ec21f1bc263024a8e1abba5427d12c5c7b79e103535b32f256b22c5b2d"
+  },
+  "production_regions": [
+    {
+      "after": "#include \"trial-policy.h\"\n#include \"accepted-runtime.h\"\n",
+      "after_sha256": "137f39d99b410ffca16a6a45196644010c415e213b3b1f0335c04e8c3ac4cde9",
+      "before": "#include \"trial-policy.h\"\n",
+      "before_sha256": "9c79e74e4118e137af13a025cc8d87b4fcdb4a9f10d1b4b7d6588f76cb649970",
+      "label": "accepted-runtime-include"
+    },
+    {
+      "after": "/* Acceptance never performs a block read in the watchdog owner. Only a\n * completed, reaped result=1 from the unchanged bounded metadata child can\n * authorize it. An active child is a retryable refusal, never success. */\n#define ACCEPT_METADATA_FRESH_MS UINT64_C(6500)\nstruct accept_context {struct accepted_runtime *normal;struct trial_policy *trial;struct trial_worker *worker,*metadata_worker;bool *failed,*handed,*have_metadata_success;uint64_t *last_metadata_success;};\nstatic int accepted_metadata_ready(const struct accept_context *c,uint64_t now){\n if(*c->failed||!*c->handed||c->normal->failed||c->worker->failed||c->metadata_worker->failed)return EPERM;\n if(c->worker->pid||c->metadata_worker->pid)return EAGAIN;\n if(!*c->have_metadata_success||now<*c->last_metadata_success||now-*c->last_metadata_success>ACCEPT_METADATA_FRESH_MS)return EPERM;\n return 0;\n}\nstatic int accept_current_boot(void *opaque,uint64_t requested_at,uint64_t sequence){\n struct accept_context *c=opaque;uint64_t now=clock_ms();\n if(now<requested_at)return EPERM;\n int ready=accepted_metadata_ready(c,now);if(ready)return ready;\n if(!trial_tick(c->trial,now,true)){trial_diagnostics_failure(\"accept-trial-policy\",c->trial->reason);*c->failed=true;return EPERM;}\n return accepted_runtime_activate(c->normal,now,sequence,c->trial->phase==TRIAL_HEALTHY,true);\n}\nint trial_production_main(void){",
+      "after_sha256": "f5becd9914a38d1c2cb8e416d5e278de77f29eb4f0b9dbf69010d7997e467b54",
+      "before": "int trial_production_main(void){",
+      "before_sha256": "b7321118cbfd2ab13530b082dcef9f099073a14ddb3d7af0e823a04c7c48daee",
+      "label": "cached-metadata-acceptance-callback"
+    },
+    {
+      "after": "struct trial_policy policy={0};bool handed=false,failed=false,have_metadata_success=false;uint64_t armed=clock_ms(),last_ping=armed,last_success=armed,last_metadata=armed,last_metadata_success=0,last_collect=0,local_sequence=0;struct trial_worker worker={0},metadata_worker={0};\n struct accepted_runtime normal;accepted_runtime_init(&normal,watchdog);\n struct accept_context accept={&normal,&policy,&worker,&metadata_worker,&failed,&handed,&have_metadata_success,&last_metadata_success};control.accept_boot=accept_current_boot;control.accept_context=&accept;",
+      "after_sha256": "a085c3e41e03278f317e1c60a61557432ad1ec08430270f5616c57daa9c5410a",
+      "before": "struct trial_policy policy={0};bool handed=false,failed=false;uint64_t armed=clock_ms(),last_ping=armed,last_success=armed,last_metadata=armed,last_collect=0,local_sequence=0;struct trial_worker worker={0},metadata_worker={0};",
+      "before_sha256": "6affb5e6623b0cbae18720a40285f4db1598f58745bb4007215e684d8ee72299",
+      "label": "same-owner-runtime-and-cache-state"
+    },
+    {
+      "after": "   trial_diagnostics_failure(\"metadata-recheck\",EIO);failed=true;\n  }else if(metadata_collected==1){have_metadata_success=true;last_metadata_success=now;}\n  if(!failed&&!metadata_worker.pid",
+      "after_sha256": "f9c79c4e4e3dd07f2781ede2efee96b9faf089aa6a155309ec8ae323f4e59ea3",
+      "before": "   trial_diagnostics_failure(\"metadata-recheck\",EIO);failed=true;\n  }\n  if(!failed&&!metadata_worker.pid",
+      "before_sha256": "9c1b9ea48b4a107bb50807dbce34fbe850730873399f7dfa5f1459679a1e293c",
+      "label": "cache-only-completed-successful-metadata-result"
+    },
+    {
+      "after": "  else if(collected==1&&!failed){\n   if(collected_bits&~(TRIAL_ALL_LOCAL|(ACCEPT_CORE_ALL<<ACCEPT_CORE_SHIFT))){trial_diagnostics_failure(\"worker-result-invalid\",collected_bits);failed=true;}\n   else {accepted_runtime_core(&normal,now,collected_bits>>ACCEPT_CORE_SHIFT);\n    if(normal.failed){trial_diagnostics_failure(\"accepted-core-result\",EPERM);failed=true;}\n    else if(!normal.accepted)(void)trial_local_result(&policy,now,nonce,++local_sequence,collected_bits&TRIAL_ALL_LOCAL);}\n  }",
+      "after_sha256": "8d450314d3b4902b9ee7444fb2d30f171465d3c49c9ff9c8371ab06e5daff666",
+      "before": "  else if(collected==1&&!failed){if(collected_bits&~TRIAL_ALL_LOCAL){trial_diagnostics_failure(\"worker-result-invalid\",collected_bits);failed=true;}else (void)trial_local_result(&policy,now,nonce,++local_sequence,collected_bits);}",
+      "before_sha256": "68fc48d111de81aec267b9b73248861d2b62f79740fa546b8f6ebbd78a725a0e",
+      "label": "bounded-health-child-observes-core-seven"
+    },
+    {
+      "after": "trial_worker_start(&worker,now,boot,normal.accepted?accepted_collect_core:accepted_collect_trial)",
+      "after_sha256": "fdf74f06eaf2d4ae55ec39e7f167239f0b1d44bbd7cae2f54c3c8be9b6f54a48",
+      "before": "trial_worker_start(&worker,now,boot,trial_collect_health)",
+      "before_sha256": "558d0f432a360c4758230a49f333dcc77b0162fc54464de0ad0ffa59e7d37d08",
+      "label": "core-only-collection-after-current-boot-acceptance"
+    },
+    {
+      "after": "   if(normal.accepted){if(!accepted_runtime_tick(&normal,now)){trial_diagnostics_failure(\"accepted-core-expiry\",EPERM);failed=true;}}\n   else if(!trial_tick(&policy,now,!failed)){trial_diagnostics_failure(\"policy-expiry\",policy.reason);failed=true;}",
+      "after_sha256": "55959504db90dbc1ffc0b6580375165a3672e7961bac72e2c267cdf4a32bc12a",
+      "before": "   if(!trial_tick(&policy,now,!failed)){trial_diagnostics_failure(\"policy-expiry\",policy.reason);failed=true;}",
+      "before_sha256": "87e3c51b7e740428a26d44e45b1872aa1ce23a874470b1900346cd1b9fd61077",
+      "label": "accepted-current-boot-core-policy"
+    },
+    {
+      "after": "if(trial_control_serve(server,&control,clock_ms())&&handed&&!failed&&!normal.accepted)(void)trial_lan_ack",
+      "after_sha256": "8835dc6dffc8f91095cb0feb901d8e691993cc50a74b418efbe552622a2b88d5",
+      "before": "if(trial_control_serve(server,&control,clock_ms())&&handed&&!failed)(void)trial_lan_ack",
+      "before_sha256": "25c3bfe1a5a7b6b5d798ff80618bf39612bc320f485656a8772e60ea9efdfc65",
+      "label": "external-ack-required-only-before-acceptance"
+    }
+  ],
+  "production_reverse_matches_exact_v30": true,
+  "schema": 1,
+  "source_compile_count": 0,
+  "source_files": {
+    "accept-client.c": "0f0787cd893b41494a86a758f08209f59a5bd08a2f5a40bf10991d526d741bd9",
+    "accepted-core.c": "478b778638ae0eaa3e22a3480b6805aaf2a3dd46882ece363278003c9b043129",
+    "accepted-runtime.c": "16e391140b36ce4157087ed62da70cacf1e002565113cf369c5387cdc892d040",
+    "accepted-runtime.h": "80f1f0dbb1a8cec6f75bd3e93bf68afe549b1c130a48ee61333f6436225d7654",
+    "ack-client.c": "01a904f524d15536938e2a3bddd9eb4da21934bf27e1e496f2e8b1ca3b905bde",
+    "adapter-test.c": "d431aef9d82ee515b3005e95ddc87c11a37a9296b186dbc4df47b5d290fad2ce",
+    "boot-diagnostics.h": "6db67153c5e05327afb92d42bb20765a98e96667fad1b5af66157931bdadb1af",
+    "capture-test.c": "2748404cd4b4c7c0f8afe7c2fdfd305e76b78def6ea45d1f8fcf255c7b549023",
+    "control-client.c": "bb252411e1840badee9b874122f9af42a940471e2f1de6e5f6829d05a4145b0b",
+    "control-server.c": "2569d76fc996c7c4b6bc6764e30cb9297c29505ff855f27fcdb1e5630c0bdea5",
+    "control-server.h": "55dbeaddabeb483496a69d961a7fc643f3cb7c5c005847896b8ee6a568d370d6",
+    "control.h": "4df1a2c23af73b6cf2a3287770f959bbd24b5c91a0f56a2ef83261b9b5e0d184",
+    "diagnostic-state.c": "8727a21b37bd8daf18a6d354d5cf9168870a39ab903c396c177b490d89615994",
+    "diagnostic-state.h": "65f9554d9daf4733903041cd2e7187b23116650ef2f63b71282231e38e5b8d73",
+    "guardian.c": "175bee65c76daf1d760edc5f983315ac896c84fba8f215bbfe6bf47ec59a2839",
+    "health-client.c": "cdcffe463398a52cf6a92b60e7f82c0048473828dc79dec8b4c03e9101199fb2",
+    "health-worker.c": "e78b224c450f8399554e4049d05632b62f0a2c02f891f35c2e38fec73877464c",
+    "health-worker.h": "1f43b02be1efe2286b1d043c891304df57f61ce2c310b19073b598cdceb72a6f",
+    "local-health.c": "47099c90d54714079bf2fefeb5cc87b223ac03edf9b7996131d176b95a4d4115",
+    "local-health.h": "a4f289603573de20f210fa9eeeca51954d4791fe107361f23921eb0f89fde07c",
+    "loop-broker-fixture.c": "cc5cf0c022f24f6866f22fbabd253ebcbe5984cb609457297372f488043408ce",
+    "loop-fixture.c": "9d9b42d015734193c5e8d54d58e8620f883bf7053c9ff43d0e844724fb37c2fc",
+    "loop-fixture.h": "01a735fa8ce700922bcedf37749d12740884778ac6b5d8ee14d4b344824943f7",
+    "preflight.c": "834a66f46630e3274cbaa305b34e61c9aa903dca07d15d4947fb024311067130",
+    "preflight.h": "a016aada9fd7c5aeefdebcce61df5c966c2b165d4de5ae6f6c81952420d0b705",
+    "process-auth.c": "2215d497686449df385f16d79bfef0037bab3f720c20001db606b7846bab9d76",
+    "process-auth.h": "3c3443129b157850569254ac5852ae69820b14304635b9fed28747d2e3d8e639",
+    "production.c": "602a9d61a754575166918010f3ed3afb7070838aee83ffbf0cfb37c9cfe087af",
+    "server-fixture.c": "408603b5a91cf9abaafc7c974569c83b6fda315b44367425662b9807af60abfe",
+    "sha256-compat.h": "18079008e1a791b72abf5d6513011c5e606a29d3ed0476927f0ed48d6fa1a9a8",
+    "sshd-state.h": "1e315b40f3ca04a3ae7aca73d5b62f30b0822e1f29bc4507d437aa5c8b28d8b7",
+    "trial-handoff.h": "4de3b81e120df030daf6bf939ec42977588afeea70dfc0d7bca35151d2f93089",
+    "trial-policy.c": "9d93784cbaadfee68b41791c357091e1fec4a28b51f53247d756c3d831c38db3",
+    "trial-policy.h": "8e1c2d3d5260bf1bf13f93f24d9bdad339249a353dd54f8b1271a89121d82837",
+    "watchdog-adapter.c": "64304b892dda509abc2c6a535a7db384685b430f56dbbcc9ebc2528acc067270",
+    "worker-test.c": "2a50f0d4d6e843d66843e1008483c98eb56a0ebcd98955d120cd201d21cc3a85"
+  },
+  "status": "source_only_accepted_this_boot_successor_not_compiled",
+  "test_count": 0,
+  "unchanged_frozen_source_count": 27,
+  "unchanged_old_accepted_sources": {
+    "accept-client.c": {
+      "path": "scripts/asus-integration/accepted-guard/runtime/accept-client.c",
+      "sha256": "0f0787cd893b41494a86a758f08209f59a5bd08a2f5a40bf10991d526d741bd9"
+    },
+    "accepted-core.c": {
+      "path": "scripts/asus-integration/accepted-guard/runtime/accepted-core.c",
+      "sha256": "478b778638ae0eaa3e22a3480b6805aaf2a3dd46882ece363278003c9b043129"
+    },
+    "accepted-runtime.c": {
+      "path": "scripts/asus-integration/accepted-guard/runtime/accepted-runtime.c",
+      "sha256": "16e391140b36ce4157087ed62da70cacf1e002565113cf369c5387cdc892d040"
+    },
+    "accepted-runtime.h": {
+      "path": "scripts/asus-integration/accepted-guard/runtime/accepted-runtime.h",
+      "sha256": "80f1f0dbb1a8cec6f75bd3e93bf68afe549b1c130a48ee61333f6436225d7654"
+    },
+    "control-client.c": {
+      "path": "scripts/asus-integration/accepted-guard/runtime/control-client.c",
+      "sha256": "bb252411e1840badee9b874122f9af42a940471e2f1de6e5f6829d05a4145b0b"
+    },
+    "control-server.c": {
+      "path": "scripts/asus-integration/accepted-guard/runtime/control-server.c",
+      "sha256": "2569d76fc996c7c4b6bc6764e30cb9297c29505ff855f27fcdb1e5630c0bdea5"
+    },
+    "control-server.h": {
+      "path": "scripts/asus-integration/accepted-guard/runtime/control-server.h",
+      "sha256": "55dbeaddabeb483496a69d961a7fc643f3cb7c5c005847896b8ee6a568d370d6"
+    },
+    "control.h": {
+      "path": "scripts/asus-integration/accepted-guard/runtime/control.h",
+      "sha256": "4df1a2c23af73b6cf2a3287770f959bbd24b5c91a0f56a2ef83261b9b5e0d184"
+    }
+  }
+}

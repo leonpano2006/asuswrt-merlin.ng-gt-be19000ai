@@ -1,0 +1,75 @@
+{
+  "source_version": "2.44-1ubuntu1",
+  "custom_version": "2.44-1ubuntu1+leonb53.1",
+  "source_authentication": {
+    "version": "2.44-1ubuntu1",
+    "InRelease_verified": true,
+    "source_index_sha512_verified": true,
+    "source_files_sha512_verified": true,
+    "files": [
+      {
+        "name": "glibc_2.44.orig.tar.xz",
+        "bytes": 20620544,
+        "sha256": "37f600f2bef3c5e8300147059568b2a2e40a7ad6ccc65ce942556d49429cc667"
+      },
+      {
+        "name": "glibc_2.44.orig.tar.xz.asc",
+        "bytes": 870,
+        "sha256": "44aabe605a02a56959bab51b92d985945db66dbd0117debe3d741252b2133ec6"
+      },
+      {
+        "name": "glibc_2.44-1ubuntu1.debian.tar.xz",
+        "bytes": 460036,
+        "sha256": "3a81fd2a2f2bfbe2c63d2d3996ce420c06d607cd85ab3b913a682b2076c17d8c"
+      },
+      {
+        "name": "glibc_2.44-1ubuntu1.dsc",
+        "bytes": 9066,
+        "sha256": "8bcf8b7ae788729b5a8ef7a9d9ea7ff499a868219cc2a93db258a8b19b5333c1"
+      }
+    ]
+  },
+  "changes": [
+    "debian/changelog",
+    "debian/sysdeps/linux.mk",
+    "debian/sysdeps/arm64.mk",
+    "debian/debhelper.in/libc.preinst"
+  ],
+  "changes_patch_sha256": "8a68eab23002a150a509279d63f3b82bffde60a011fffa892612a3a3d7fbf7ee",
+  "minimum_kernel": "4.19",
+  "header_policy": "Build against Ubuntu linux-libc-dev UAPI headers while setting glibc minimum kernel to 4.19; do not assume every syscall present in newer headers exists on the router.",
+  "time64_policy": "New apps retain time64 defaults. Preserve glibc internal compatibility ABI by keeping official _DISTRO_EVADE_TIME_BITS / -U_TIME_BITS / -U_FILE_OFFSET_BITS build rules.",
+  "abi_status": {
+    "arm64": "12 native/all packages built; metadata, clean namespace full-five-package upgrade, and exact kernel10 QEMU dynamic wrapper/apt checks passed. Full upstream suite and hardware acceptance remain pending.",
+    "armel": "official packaging supports native armel but matching custom build still pending; no Ubuntu archive armel runtime",
+    "armhf": "matching custom build pending"
+  },
+  "foreign_arch_coinstall": "All Multi-Arch:same runtime/development package ABIs must use identical full version and byte-identical shared files. Do not mix official 2.43 foreign libc6 with custom native 2.44.",
+  "cpu_flags": {
+    "arm64": [
+      "-mcpu=cortex-a53+crypto+crc"
+    ],
+    "future_armel": [
+      "-march=armv8-a+crc+crypto",
+      "-mtune=cortex-a53",
+      "-mfpu=crypto-neon-fp-armv8",
+      "-mfloat-abi=softfp"
+    ],
+    "future_armhf": [
+      "-march=armv8-a+crc+crypto",
+      "-mtune=cortex-a53",
+      "-mfpu=crypto-neon-fp-armv8",
+      "-mfloat-abi=hard"
+    ]
+  },
+  "upstream_source_url": "https://packages.ubuntu.com/source/stonking/glibc",
+  "scope": "Local source preparation and candidate native package build; no host or device runtime changes.",
+  "armel_development_dependency": "Ubuntu linux-libc-dev is architecture-specific and Multi-Arch:same. A native libc6-dev:armel build also requires a corresponding native linux-libc-dev:armel package; registered armel or an SDK -cross package does not satisfy this.",
+  "ccache": {
+    "enabled": true,
+    "jobs": 6,
+    "preserved_archive": "build/ubuntu26-glibc/ccache.tar",
+    "first_build": "cold cache, 48 hits / 12613 cacheable calls",
+    "next_build": "recipe imports preserved cache into isolated namespace and exports it afterward"
+  }
+}

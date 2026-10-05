@@ -1,0 +1,100 @@
+{
+  "schema": 1,
+  "status": "source_only_fixed_https_parent_and_alias_delta",
+  "baseline": {
+    "path": "build/asus-trial-network-v21/install-v1/source/install.c",
+    "sha256": "05d9cb30846c3e3726adf25ad47ef9f442317e7e435b8ea634fe5f427194d193"
+  },
+  "source": {
+    "path": "scripts/asus-integration/https-staging/install-v1.c",
+    "sha256": "2cab747ea8227c929a169abe397737b0591f19f29b0a7fe7f46b97ceced6ef99",
+    "bytes": 31580
+  },
+  "parent_primitive_baseline": {
+    "path": "build/asus-uplink-rescue/install-v3/source/install.c",
+    "sha256": "aec2d619bdad361facb7e016680535772504d2e5c92d212a8fede58f91729216"
+  },
+  "parent_primitive_literal_substitutions": [
+    [
+      "RESCUE_SOCKET_PARENT",
+      "HTTPS_SCRIPTS_PARENT"
+    ],
+    [
+      "RESCUE_SOCKET_LINK",
+      "HTTPS_HELPER"
+    ],
+    [
+      "rescue_socket_parent",
+      "https_scripts_parent"
+    ],
+    [
+      "\"etc/systemd/system/sockets.target.wants\"",
+      "\"usr/libexec/asus/scripts\""
+    ],
+    [
+      "HTTPS_SCRIPTS_PARENT \"/leon-asus-ssh-uplink-rescue.socket\"",
+      "HTTPS_SCRIPTS_PARENT \"/gencert.sh\""
+    ],
+    [
+      "RECOVERY_PAYLOAD_COUNT!=7||RECOVERY_LINK_COUNT!=1||strcmp(recovery_links[0].path,HTTPS_HELPER)||",
+      "RECOVERY_PAYLOAD_COUNT!=2||RECOVERY_LINK_COUNT!=2||strcmp(recovery_payloads[0].path,HTTPS_HELPER)||\n       strcmp(recovery_links[1].path,\"usr/share/asus/commands/sbin/gencert.sh\")||\n       strcmp(recovery_links[1].target,\"/usr/libexec/asus/scripts/gencert.sh\")||"
+    ]
+  ],
+  "literal_substitutions": [
+    [
+      "--install-native-trial-network-v21",
+      "--install-native-https-helper-v1"
+    ],
+    [
+      "native_trial_network_v21_staged",
+      "native_https_helper_v1_staged"
+    ],
+    [
+      "LEON_TRIAL_NETWORK_V21_INSTALL_REFUSED",
+      "LEON_HTTPS_HELPER_V1_INSTALL_REFUSED"
+    ],
+    [
+      "    unsigned enabled=0,replaced=0,sh_replaced=0;\n",
+      "    unsigned enabled=0,replaced=0,sh_replaced=0,directories_created=0;\n"
+    ],
+    [
+      "    struct private_sh_state sh={0};\n",
+      "    struct private_sh_state sh={0};\n    struct https_scripts_parent scripts_parent={0};\n"
+    ],
+    [
+      "    for(unsigned i=0;i<RECOVERY_PAYLOAD_COUNT;i++)\n        if(target_preflight(root,&recovery_payloads[i],&leaves[i]))goto done;\n    for(unsigned i=0;i<RECOVERY_LINK_COUNT;i++)\n        if(candidate_link_check(root,&recovery_links[i],0,&links[i].present,&links[i].before))goto done;\n",
+      "    if(https_scripts_parent_preflight(root,&scripts_parent))goto done;\n    for(unsigned i=0;i<RECOVERY_PAYLOAD_COUNT;i++)\n        if((i!=0||scripts_parent.present)&&target_preflight(root,&recovery_payloads[i],&leaves[i]))goto done;\n    for(unsigned i=0;i<RECOVERY_LINK_COUNT;i++)\n        if(candidate_link_check(root,&recovery_links[i],i==1,&links[i].present,&links[i].before))goto done;\n"
+    ],
+    [
+      "    stage=\"publish-fixed-inactive-uplink-rescue-rule\";\n",
+      "    stage=\"publish-fixed-https-scripts-parent\";\n    if(https_scripts_parent_publish(root,&scripts_parent,&directories_created))goto done;\n    stage=\"publish-fixed-inactive-https-helper\";\n"
+    ],
+    [
+      "    close(root);root=-1;\n",
+      "    if(https_scripts_parent_preserved(root,&scripts_parent))goto done;\n    close(root);root=-1;\n"
+    ],
+    [
+      "mode_changed=%d links=%u sh_replaced=%u retained_for_review=",
+      "mode_changed=%d links=%u sh_replaced=%u directories_created=%u retained_for_review="
+    ],
+    [
+      "stage,temporary,published,replaced,mode_changed,enabled,sh_replaced);",
+      "stage,temporary,published,replaced,mode_changed,enabled,sh_replaced,directories_created);"
+    ],
+    [
+      "\\\"private_sh_links_replaced\\\":%u,\\\"mode_changed\\\":false",
+      "\\\"private_sh_links_replaced\\\":%u,\\\"directories_created\\\":%u,\\\"mode_changed\\\":false"
+    ],
+    [
+      "argv[3],argv[2],published,replaced,temporary,enabled,sh_replaced);",
+      "argv[3],argv[2],published,replaced,temporary,enabled,sh_replaced,directories_created);"
+    ]
+  ],
+  "all_other_install_c_bytes_unchanged": true,
+  "existing_rescue_socket_alias_required": true,
+  "only_new_gencert_alias_may_be_missing": true,
+  "only_scripts_parent_may_be_created": true,
+  "private_sh_verified_noop_retained": true,
+  "no_build_or_target_execution": true,
+  "reverse_literal_and_parent_transform_equals_frozen_install_c": true
+}

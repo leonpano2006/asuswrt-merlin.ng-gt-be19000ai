@@ -1,0 +1,170 @@
+{
+  "actual_compiler_inputs": "Host /usr/bin/cc resolved to /usr/bin/aarch64-linux-gnu-gcc-13. No version probe. This validates fixture logic, not the GCC16.2 deployment binary.",
+  "actual_sources_exercised": [
+    "production.c:accepted_metadata_ready",
+    "production.c:accept_current_boot",
+    "accepted-runtime.c:core/activate/tick",
+    "trial-policy.c:begin/local/ACK/tick",
+    "control-server.c:serve operations4-6",
+    "process-auth.c:trial_process_native"
+  ],
+  "all_passes": [
+    "metadata-age-0-accepted",
+    "metadata-age-6500-inclusive",
+    "metadata-age-6501-refused",
+    "metadata-backwards-clock-refused",
+    "metadata-no-completed-success-refused",
+    "active-health-child-retryable",
+    "active-metadata-child-retryable",
+    "failed-active-metadata-is-hard-refusal",
+    "reaped-failed-metadata-stays-refused",
+    "failed-health-child-refused",
+    "failed-owner-refused",
+    "failed-accepted-runtime-refused",
+    "before-systemd-handoff-refused",
+    "healthy-core7-current-owner-fd-accepts",
+    "accepted-core-policy-does-not-require-lan-ack",
+    "accepted-core-failure-cannot-revive",
+    "incomplete-core-cannot-accept",
+    "no-completed-core-cannot-accept",
+    "stale-core-cannot-accept",
+    "different-owner-cannot-accept",
+    "closed-owned-fd-cannot-accept",
+    "callback-never-accepts-active-metadata",
+    "callback-expiry-latches-owner-failure",
+    "unhealthy-trial-cannot-accept",
+    "original-fd-still-open-and-functional",
+    "op4-nonroot-real-peer-denied",
+    "op4-root-other-mount-namespace-denied",
+    "op4-wrong-boot-denied",
+    "op4-unarmed-owner-denied",
+    "op6-unaccepted-status-readonly",
+    "op5-wrong-nonce-denied",
+    "op6-cannot-consume-op5-purpose-token",
+    "op5-exact-challenge-expiry-denied",
+    "op5-busy-callback-consumes-token-without-success",
+    "op5-owner-failure-never-reported-as-success",
+    "op5-real-callback-accepts-before-success-reply",
+    "op5-replay-denied",
+    "op6-confirms-current-boot-accepted-without-transition",
+    "op6-expiring-owner-refuses-status"
+  ],
+  "cached25_log": {
+    "path": "build/asus-accepted-runtime/v31-focused-host-v1/isolated-execution-v2/fixture.log",
+    "sha256": "ca5a12bafd50a79d6533d41042ae25605d6e04ed1021a59cd6dcfb81d2e0f4c9"
+  },
+  "cached25_proof": {
+    "path": "build/asus-accepted-runtime/v31-focused-host-v1/isolated-execution-v2/result.json",
+    "sha256": "0844ca30bbd5c446de71fb3d97a895329e49eeea0da1825827319e2ace74390c"
+  },
+  "coverage_limits": [
+    "Host GCC fixture does not validate the ARM deployment binary/toolchain.",
+    "Does not execute guardian main, worker scheduling, real metadata partitions, diagnostic storage or watchdog keepalive.",
+    "Does not test PID1/systemd responsiveness, physical networking, boot selection, permanent commit or rollback.",
+    "Control open-path and immutable-client peer checks are not exercised; ops4\u20136 use a private socket and current actual namespace/peer predicates."
+  ],
+  "device_accessed": false,
+  "distinct_cached_callback_core_cases": 25,
+  "distinct_purpose_cases": 14,
+  "firmware_built": false,
+  "fixture_sources": [
+    {
+      "path": "scripts/asus-integration/accepted-guard/v31-fixture-v1.c",
+      "sha256": "7d4be5dcbdd5c92a767c7f669a253d60ead989992b851adc48452d28f53486c4"
+    },
+    {
+      "path": "scripts/asus-integration/accepted-guard/v31-fixture-protocol-only-v2.c",
+      "sha256": "3123abe14ca291a7859d9cd26345271b6861b5133d5cfe09cc338332e2e9154e"
+    }
+  ],
+  "full_production_loop_validated": false,
+  "hardware_watchdog_opened": false,
+  "metadata_committed": 2,
+  "new_host_fixture_compile_count": 2,
+  "old_tests_rerun": false,
+  "passed_case_count": 39,
+  "permanent_commit": false,
+  "physical_boot_validated": false,
+  "preserved_setup_failures": [
+    {
+      "path": "build/asus-accepted-runtime/v31-focused-host-v1/result.json",
+      "sha256": "d8a1d4b4fdd7280b5338a05a368b5c969fbb07f4d56c4ca9334a1ab9ffaacc31"
+    },
+    {
+      "path": "build/asus-accepted-runtime/v31-purpose-host-v2/result.json",
+      "sha256": "1559e6b3bed77c2ef048f0c42e48faf8c4be1961ecad1db92d92732a3ad3dc73"
+    }
+  ],
+  "purpose14_log": {
+    "path": "build/asus-accepted-runtime/v31-purpose-host-v2/relative-execution-v3/fixture.log",
+    "sha256": "c683b4df2704b45820d7eae6a5704c0c8ac8e74c494fe017540ed49c0a6c0c23"
+  },
+  "purpose14_proof": {
+    "path": "build/asus-accepted-runtime/v31-purpose-host-v2/relative-execution-v3/result.json",
+    "sha256": "4044c444a976bc78eaf4e3dc38e1252fb12e1b0e27de21aef5b4f5f5c4d478d8"
+  },
+  "repeated_case_count": 0,
+  "runners": [
+    {
+      "path": "scripts/run-guardian-v31-focused-host-fixture-v1.py",
+      "sha256": "459d7d1eb21a064a8176a7c9aca7d42e3a2d5afcaaf5dc6408a16dcd6a80837c"
+    },
+    {
+      "path": "scripts/run-guardian-v31-purpose-host-fixture-v2.py",
+      "sha256": "96b3d3fda25a6f3f35105b11e437c43dc67671f835e26e96741e7a4e68e029c7"
+    }
+  ],
+  "runtime_source_inventory": {
+    "accept-client.c": "0f0787cd893b41494a86a758f08209f59a5bd08a2f5a40bf10991d526d741bd9",
+    "accepted-core.c": "478b778638ae0eaa3e22a3480b6805aaf2a3dd46882ece363278003c9b043129",
+    "accepted-runtime.c": "16e391140b36ce4157087ed62da70cacf1e002565113cf369c5387cdc892d040",
+    "accepted-runtime.h": "80f1f0dbb1a8cec6f75bd3e93bf68afe549b1c130a48ee61333f6436225d7654",
+    "ack-client.c": "01a904f524d15536938e2a3bddd9eb4da21934bf27e1e496f2e8b1ca3b905bde",
+    "adapter-test.c": "d431aef9d82ee515b3005e95ddc87c11a37a9296b186dbc4df47b5d290fad2ce",
+    "boot-diagnostics.h": "6db67153c5e05327afb92d42bb20765a98e96667fad1b5af66157931bdadb1af",
+    "capture-test.c": "2748404cd4b4c7c0f8afe7c2fdfd305e76b78def6ea45d1f8fcf255c7b549023",
+    "control-client.c": "bb252411e1840badee9b874122f9af42a940471e2f1de6e5f6829d05a4145b0b",
+    "control-server.c": "2569d76fc996c7c4b6bc6764e30cb9297c29505ff855f27fcdb1e5630c0bdea5",
+    "control-server.h": "55dbeaddabeb483496a69d961a7fc643f3cb7c5c005847896b8ee6a568d370d6",
+    "control.h": "4df1a2c23af73b6cf2a3287770f959bbd24b5c91a0f56a2ef83261b9b5e0d184",
+    "diagnostic-state.c": "8727a21b37bd8daf18a6d354d5cf9168870a39ab903c396c177b490d89615994",
+    "diagnostic-state.h": "65f9554d9daf4733903041cd2e7187b23116650ef2f63b71282231e38e5b8d73",
+    "guardian.c": "175bee65c76daf1d760edc5f983315ac896c84fba8f215bbfe6bf47ec59a2839",
+    "health-client.c": "cdcffe463398a52cf6a92b60e7f82c0048473828dc79dec8b4c03e9101199fb2",
+    "health-worker.c": "e78b224c450f8399554e4049d05632b62f0a2c02f891f35c2e38fec73877464c",
+    "health-worker.h": "1f43b02be1efe2286b1d043c891304df57f61ce2c310b19073b598cdceb72a6f",
+    "local-health.c": "47099c90d54714079bf2fefeb5cc87b223ac03edf9b7996131d176b95a4d4115",
+    "local-health.h": "a4f289603573de20f210fa9eeeca51954d4791fe107361f23921eb0f89fde07c",
+    "loop-broker-fixture.c": "cc5cf0c022f24f6866f22fbabd253ebcbe5984cb609457297372f488043408ce",
+    "loop-fixture.c": "9d9b42d015734193c5e8d54d58e8620f883bf7053c9ff43d0e844724fb37c2fc",
+    "loop-fixture.h": "01a735fa8ce700922bcedf37749d12740884778ac6b5d8ee14d4b344824943f7",
+    "preflight.c": "834a66f46630e3274cbaa305b34e61c9aa903dca07d15d4947fb024311067130",
+    "preflight.h": "a016aada9fd7c5aeefdebcce61df5c966c2b165d4de5ae6f6c81952420d0b705",
+    "process-auth.c": "2215d497686449df385f16d79bfef0037bab3f720c20001db606b7846bab9d76",
+    "process-auth.h": "3c3443129b157850569254ac5852ae69820b14304635b9fed28747d2e3d8e639",
+    "production.c": "602a9d61a754575166918010f3ed3afb7070838aee83ffbf0cfb37c9cfe087af",
+    "server-fixture.c": "408603b5a91cf9abaafc7c974569c83b6fda315b44367425662b9807af60abfe",
+    "sha256-compat.h": "18079008e1a791b72abf5d6513011c5e606a29d3ed0476927f0ed48d6fa1a9a8",
+    "sshd-state.h": "1e315b40f3ca04a3ae7aca73d5b62f30b0822e1f29bc4507d437aa5c8b28d8b7",
+    "trial-handoff.h": "4de3b81e120df030daf6bf939ec42977588afeea70dfc0d7bca35151d2f93089",
+    "trial-policy.c": "9d93784cbaadfee68b41791c357091e1fec4a28b51f53247d756c3d831c38db3",
+    "trial-policy.h": "8e1c2d3d5260bf1bf13f93f24d9bdad339249a353dd54f8b1271a89121d82837",
+    "watchdog-adapter.c": "64304b892dda509abc2c6a535a7db384685b430f56dbbcc9ebc2528acc067270",
+    "worker-test.c": "2a50f0d4d6e843d66843e1008483c98eb56a0ebcd98955d120cd201d21cc3a85"
+  },
+  "runtime_sources_changed_during_validation": false,
+  "schema": 1,
+  "setup_history": "First launcher was sandbox-refused before harness entry. First real harness executed25 cases, then mapped-root mkdir failed in hostUID1000/mode0755 output. Protocol-only successor removed25 cases, used a sticky empty parent, and absolute binary traversal was refused before entry at home0750. Relative launch ran only14 new cases. No completed case was rerun.",
+  "source_report": {
+    "path": "reports/ubuntu26/guardian-v31-accepted-this-boot-source-v2.json",
+    "sha256": "9662648aa3d712e675dec799b6fa80751c1f66b2fb043d5ee193d47e5ab2496e"
+  },
+  "status": "v31_new39_focused_cases_passed_without_replay",
+  "test_only_adapters": [
+    "Owned pipe descriptor instead of hardware watchdog",
+    "In-memory diagnostic failure sink",
+    "Private Unix socket instead of production control-open path",
+    "Synthetic trial/core/cache timestamps and fault inputs; real callback monotonic clock",
+    "Isolated mapped-root user/mount/PID/network namespaces; real SO_PEERCRED"
+  ]
+}

@@ -1,0 +1,18 @@
+# SOURCE-ONLY DRAFT. Address is assigned by reviewed helper before binding.
+[Unit]
+Description=Native key-only SSH on the fixed rescue IPv4
+DefaultDependencies=no
+Requires=sysinit.target leon-asus-rescue-link.service
+BindsTo=leon-asus-rescue-link.service
+After=sysinit.target leon-asus-rescue-link.service
+Conflicts=shutdown.target
+Before=shutdown.target
+
+[Socket]
+ListenStream=169.254.190.15:2223
+Accept=yes
+MaxConnections=8
+MaxConnectionsPerSource=2
+TriggerLimitIntervalSec=0
+# Intentionally no BindToDevice and no FreeBind.
+

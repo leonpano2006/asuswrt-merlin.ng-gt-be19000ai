@@ -1,0 +1,267 @@
+{
+  "schema_version": 1,
+  "status": "passed_local_predeployment_evidence_not_physical_acceptance",
+  "passed": true,
+  "scope": "Existing local immutable artifacts, reference hashes and cross-component identities only. No new build, runtime test or device action.",
+  "candidate": {
+    "path": "build/GT-BE19000AI_3006_102.9_leon-kernel10-ubuntu26-trial-v1_TRIAL.pkgtb",
+    "sha256": "1c9a6475fdf064ad5f71c99aa0694f5f638745dc171cc1ed9ba7058a8c4a66a8"
+  },
+  "firmware": {
+    "path": "build/ubuntu26-firmware/kernel10-ubuntu26-trial-v1/manifest.json",
+    "sha256": "bb2b7411816d0da08898764f6cef1466bbf71b6613d7905afa7b904284772faa",
+    "bytes": 20184
+  },
+  "ubuntu_root_archive": {
+    "path": "build/ubuntu26-rootfs/ubuntu26-bcm-asus-runtime07-archive-sealed-v1.tar",
+    "sha256": "2f0eafc638180019bb44b230e71877e200886e9c6afc9895bb299b0d6e4ca688",
+    "bytes": 934307840
+  },
+  "device_root_image": {
+    "path": "build/ubuntu26-device-root/runtime07-archive-v2/ubuntu-root.ext4",
+    "sha256": "aed3ad1dc3e381506af4416228bcd99482fd0eebd4e3f55c2a8ec36969b8991a",
+    "bytes": 12884901888
+  },
+  "transport": {
+    "path": "build/ubuntu26-root-transfer/runtime07-archive-v1/ubuntu-root.ext4.gz",
+    "sha256": "c71d5b7bbb94fa1a1d84dddc10bef510189e86ffe7b17ec785fce8dead6df5ee",
+    "bytes": 492865190
+  },
+  "components": {
+    "firmware": {
+      "path": "build/ubuntu26-firmware/kernel10-ubuntu26-trial-v1/manifest.json",
+      "sha256": "bb2b7411816d0da08898764f6cef1466bbf71b6613d7905afa7b904284772faa",
+      "bytes": 20184
+    },
+    "bootstrap": {
+      "path": "build/ubuntu26-bootstrap/device-enabled-v1/manifest.json",
+      "sha256": "c8283c840fdbe958023e001bc2fa1802449017b0ad9aa849cd92daf5311db964",
+      "bytes": 693431
+    },
+    "bootstrap_inputs": {
+      "path": "build/ubuntu26-bootstrap/device-enabled-v1/qemu-inputs.json",
+      "sha256": "a9679bf5ab83932167f63d455bb59a2e5a1ca8f2b610b29e556a3702fc17c53b",
+      "bytes": 2489
+    },
+    "bootstrap_qemu": {
+      "path": "build/qemu/ubuntu26-bootstrap-enabled-kernel10-v1/result.json",
+      "sha256": "98b75b59bbb91ae684717f8dc087b2c97299509c748cb33eeac52c89cfad63a9",
+      "bytes": 2544
+    },
+    "root_init": {
+      "path": "build/ubuntu26-root-init/device-guarded-v2/manifest.json",
+      "sha256": "ef1a574a0853f28ba47e20d80843d8333bd43ff8a652c6faf4542e4db594a44c",
+      "bytes": 2221
+    },
+    "private_fsck": {
+      "path": "build/ubuntu26-boot-fsck/device-v1/manifest.json",
+      "sha256": "8af51e610ccf5d2baec0a78e5ad288a191506647ca60fc1eb8e30415513feb92",
+      "bytes": 4453
+    },
+    "root_chain": {
+      "path": "reports/ubuntu26/final-root-artifact-chain-v1.json",
+      "sha256": "8c6cfdd408fd3f8fb17e9dc32e723db3b8fcce71d2c35d1c879c32573690f23a",
+      "bytes": 2655
+    },
+    "root_activation": {
+      "path": "build/ubuntu26-provisioning/runtime07-archive-v1/manifest.json",
+      "sha256": "a2fa5cfe4eab0567ba9ed721d1d3142b7eff7de8a6ff4de9f17aa78774cfc876",
+      "bytes": 1826
+    },
+    "root_image": {
+      "path": "build/ubuntu26-device-root/runtime07-archive-v2/manifest.json",
+      "sha256": "80f9fb3cfc588536a829ff02731e79b137c75e538f188ea1f88864332279438e",
+      "bytes": 1693
+    },
+    "root_transfer": {
+      "path": "build/ubuntu26-root-transfer/runtime07-archive-v1/manifest.json",
+      "sha256": "d1f8e3e395e399b3f2b63e436d6492cac70620d8e03ef0a1153bdaad4b03e7e3",
+      "bytes": 887
+    },
+    "guardian": {
+      "path": "build/asus-trial-runtime/native-v17-enabled/guardian-receipt.json",
+      "sha256": "cf8a91cc2de7be670fa6dfeb57a782c12a14938ad134a0a14f4f3734fcfa9723",
+      "bytes": 6057
+    },
+    "guardian_build": {
+      "path": "build/asus-trial-runtime/native-v17-enabled/manifest.json",
+      "sha256": "e34e70507d5bfbf917ed2766b9d69142c0af1757c1556304b7f41d5aebc17fd5",
+      "bytes": 10644
+    },
+    "guardian_loop": {
+      "path": "reports/ubuntu26/asus-trial-loop-production-loop-v6.json",
+      "sha256": "b6bdbf444413d2018b487171d0337e76c280257f5387639fb31f3c35c2a39e25",
+      "bytes": 12158
+    },
+    "guardian_map": {
+      "path": "reports/ubuntu26/asus-trial-identity-map-archive-sealed-runtime07-v4-enabled.json",
+      "sha256": "2323c62707afb24928219afcafc90f3708550f21031b4998a7f695be7e369308",
+      "bytes": 70757
+    },
+    "guardian_peer": {
+      "path": "reports/ubuntu26/asus-trial-production-peer-review-v3.json",
+      "sha256": "a50ad1930ebf9f5c1a9d10121941c64ab112dc6d2737e5090a7038799a727c92",
+      "bytes": 10462
+    },
+    "identity": {
+      "path": "build/asus-device-provision/identity-v8/manifest.json",
+      "sha256": "cdd162ee304c89adc3901f9fac204c6b087f271056325d506dec278bdeaf0589",
+      "bytes": 6529
+    },
+    "identity_validation": {
+      "path": "reports/ubuntu26/asus-device-identity-provision-v2.json",
+      "sha256": "7001895eb81526ad4c72ed70755f741815a737be3bd638fcaf88e0b14727cbce",
+      "bytes": 6478
+    },
+    "slot": {
+      "path": "build/ubuntu26-slot-proof/v7/validated-manifest.json",
+      "sha256": "546d19137c01d4118b7cfd77adee93380bf8371e4b13d86b4c97cbc27a2de6c5",
+      "bytes": 4642
+    },
+    "slot_build": {
+      "path": "build/ubuntu26-slot-proof/v7/manifest.json",
+      "sha256": "2a3db1ff59671dcd39089ec6fe7af67e45b8304047113ff756e9476d7e51c567",
+      "bytes": 5876
+    },
+    "gpt_transaction": {
+      "path": "reports/ubuntu26/gpt-transaction-offline.json",
+      "sha256": "69fa13f9c822eba7afd005e5fb411f8b2ac875aff9b09d5e231a6ab75d45b641",
+      "bytes": 3693
+    },
+    "gpt_host": {
+      "path": "reports/ubuntu26/gpt-host-orchestration-v2.json",
+      "sha256": "8f99dfac800eb17ebe5c94138a9019dd1e840b441bb3b2e1513ca8b4d2f87a65",
+      "bytes": 8277
+    },
+    "gpt_peer": {
+      "path": "reports/ubuntu26/gpt-host-source-review-v2.json",
+      "sha256": "79178118cbe7dc0d86c85ec378dfdb1515f76b923c023d1236416ebc8f179cbb",
+      "bytes": 1155
+    },
+    "p11_host": {
+      "path": "reports/ubuntu26/p11-image-host-orchestration.json",
+      "sha256": "65904ce8c072fe1c6761cd61f3902f269c290b7e4a5225da0f6d44b65c0f6b85",
+      "bytes": 6910
+    },
+    "p11_peer": {
+      "path": "reports/ubuntu26/p11-image-host-source-review-v1.json",
+      "sha256": "31fbdc8f42a77ab7d67631565c854c6a5b8efac101929f63125834fc5263e3ca",
+      "bytes": 1750
+    },
+    "observer": {
+      "path": "reports/ubuntu26/trial-observer.json",
+      "sha256": "f67dbe2ba5562337643c0207cc83ce5644ddbfa1b90d21a992757e7296e36867",
+      "bytes": 5403
+    },
+    "flash_peer": {
+      "path": "reports/ubuntu26/ubuntu-flash-generator-source-review-v2.json",
+      "sha256": "0ed3c2c193695a614125be1931e8a0b3132eaef3169b0a6391647a93d1e48d21",
+      "bytes": 1094
+    }
+  },
+  "validation_summary": {
+    "bootstrap_docker_qemu_seconds": 47.89,
+    "bootstrap_required_markers": 17,
+    "kernel_modules": 181,
+    "asus_loader_scopes": 643,
+    "signed_apt_qemu_seconds": 54.09,
+    "final_root_metadata_entries": 20103,
+    "final_root_regular_bytes_checked_files": 15405,
+    "final_root_symlinks": 3084,
+    "guardian_full_loop_scenarios": 6,
+    "guardian_critical_files": 208,
+    "identity_synthetic_cases": 19,
+    "slot_transaction_cases": 36,
+    "slot_clear_view_cases": 17,
+    "gpt_host_mock_cases": 62,
+    "p11_host_mock_cases": 25
+  },
+  "cross_bindings": {
+    "same_tested_production_source:production.c": true,
+    "same_tested_production_source:trial-policy.c": true,
+    "same_tested_production_source:trial-policy.h": true,
+    "same_tested_production_source:trial-handoff.h": true,
+    "same_tested_production_source:preflight.c": true,
+    "same_tested_production_source:control-server.c": true,
+    "same_tested_production_source:control-server.h": true,
+    "same_tested_production_source:process-auth.c": true,
+    "same_tested_production_source:local-health.c": true,
+    "same_tested_production_source:health-worker.c": true,
+    "same_tested_production_source:health-worker.h": true,
+    "same_tested_production_source:sshd-state.h": true,
+    "loop_case:healthy-lan-expiry": true,
+    "loop_case:healthy-ssh-argv": true,
+    "loop_case:healthy-worker-hang": true,
+    "loop_case:healthy-metadata-change": true,
+    "loop_case:prearm-refuse": true,
+    "loop_case:arm-failure": true,
+    "signed_firmware_receipt": true,
+    "stock_boot_components_preserved": true,
+    "exact_bootstrap_kernel": true,
+    "exact_bootstrap_rootfs": true,
+    "qemu_complete": true,
+    "qemu_no_network": true,
+    "all_17_exact_bootstrap_markers": true,
+    "guardian_enabled_same_staged_binary": true,
+    "guardian_all_six_exact_source": true,
+    "guardian_final_root_208": true,
+    "root_12GiB_exact_transfer": true,
+    "root_activation_chain": true,
+    "identity_pinned_final_root": true,
+    "identity_19_cases": true,
+    "slot_36_plus_17_cases": true,
+    "gpt_62_p11_25_cases": true,
+    "p11_exact_transport": true,
+    "all_trial_only_no_physical_acceptance": true
+  },
+  "errors": [],
+  "historical_receipt_note": "Stage qemu_validated=false records construction before the later exact-image QEMU run. The frozen firmware manifest binds that successful later run; no prior receipt was rewritten.",
+  "physical": false,
+  "trial_only": true,
+  "automatic_boot_commit": false,
+  "physical_ASUS_services_accepted": false,
+  "physical_watchdog_reset_or_stock_fallback_proven": false,
+  "flash_accepted": false,
+  "required_device_conditions_outside_this_report": [
+    "Fresh stock-slot2 identity and read-only preflight; earlier kernel9 captures do not satisfy this.",
+    "Exclusive reviewed GPT/p11 transaction, exact readbacks and clean filesystem checks.",
+    "Device-local selected-account and unique host-key initialization; no secret material in offline artifacts.",
+    "Fresh postflash metadata token, unchanged committed stock slot2, and externally preverified new OpenSSH host public key.",
+    "Bounded external authenticated SSH observer during trial; real ASUS/Wi-Fi/AI services and actual watchdog recovery still require physical acceptance."
+  ],
+  "limits": [
+    "Guardian full-loop scenarios use explicit synthetic storage, ASUS backend and watchdog/reset adapters; real kernel/systemd/namespace/loopback SSH do not prove physical recovery.",
+    "Exact 12 GiB ext4 bytes were checked offline; QEMU root tests are scoped fixtures and are not a boot of that physical partition.",
+    "Docker QEMU verifies kernel/bootstrap container capabilities, not a deployed Ubuntu Docker service or any SL1680 change.",
+    "Before the guardian opens the hardware watchdog, kernel 4.19 may continue core keepalive; arbitrary pre-arm hangs have no proven 40-second hardware recovery.",
+    "This report grants no automatic commit and does not replace device transaction gates."
+  ],
+  "actions_by_this_evidence_checker_only": {
+    "device_connections": 0,
+    "block_devices_opened": 0,
+    "physical_writes": 0,
+    "new_tests_run": 0,
+    "frozen_artifacts_changed": 0
+  },
+  "physical_scope_note": "physical=false means this report accepts no physical result. Concurrent parent deployment operations are outside this local evidence check; it makes no assertion that the router remains unmodified.",
+  "aggregation_correction": {
+    "previous_report": {
+      "path": "reports/ubuntu26/kernel10-ubuntu26-predeployment-v1.json",
+      "sha256": "0732e53f513fcfedbd8bcfac02f8f3c5afb5aac6d4848944eef9a0973bdd07ec",
+      "bytes": 11501
+    },
+    "reason": "The first aggregation incorrectly required a frozen fixture-test.py copy. The receipt records its current script hash; only compiled .c/.h source snapshots are promised and verified. No artifact or test result changed."
+  },
+  "checker": {
+    "path": "build/ubuntu26-predeployment/kernel10-trial-v2/check-evidence.py",
+    "sha256": "2ebf84dbd936d8468286807b84f33ba6647910e1d641c55342d44e8ac983ef7a",
+    "bytes": 13433
+  },
+  "reference_binding_audit": {
+    "path": "build/ubuntu26-predeployment/kernel10-trial-v2/reference-bindings.json",
+    "sha256": "4236689a664a69a5849256fcace8f57094d831ccaaf5879044f2d6127360430b",
+    "bytes": 122311
+  },
+  "files_rehashed": 219,
+  "reference_edges_checked": 293
+}

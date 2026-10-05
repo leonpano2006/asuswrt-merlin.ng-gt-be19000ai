@@ -1,0 +1,152 @@
+{
+  "accepted_runtime_control_metadata_worker_and_watchdog_sources_byte_identical": true,
+  "base_guardian_receipt": {
+    "bytes": 12664,
+    "path": "build/asus-trial-runtime/native-v31-accepted-this-boot/guardian-receipt.json",
+    "sha256": "d52254dc237783d058e58e4901ec8951a3625b785d88bfb502bbf0e856dec95e"
+  },
+  "base_manifest": {
+    "bytes": 45218,
+    "path": "build/asus-trial-runtime/native-v31-accepted-this-boot/manifest.json",
+    "sha256": "1ef66bfa5950fb2a0aed7afd2d592ab7af8e259f82eeb6e2e29e173568b89ab8"
+  },
+  "base_source_files": {
+    "accept-client.c": "0f0787cd893b41494a86a758f08209f59a5bd08a2f5a40bf10991d526d741bd9",
+    "accepted-core.c": "478b778638ae0eaa3e22a3480b6805aaf2a3dd46882ece363278003c9b043129",
+    "accepted-runtime.c": "16e391140b36ce4157087ed62da70cacf1e002565113cf369c5387cdc892d040",
+    "accepted-runtime.h": "80f1f0dbb1a8cec6f75bd3e93bf68afe549b1c130a48ee61333f6436225d7654",
+    "ack-client.c": "01a904f524d15536938e2a3bddd9eb4da21934bf27e1e496f2e8b1ca3b905bde",
+    "adapter-test.c": "d431aef9d82ee515b3005e95ddc87c11a37a9296b186dbc4df47b5d290fad2ce",
+    "boot-diagnostics.h": "6db67153c5e05327afb92d42bb20765a98e96667fad1b5af66157931bdadb1af",
+    "capture-test.c": "2748404cd4b4c7c0f8afe7c2fdfd305e76b78def6ea45d1f8fcf255c7b549023",
+    "control-client.c": "bb252411e1840badee9b874122f9af42a940471e2f1de6e5f6829d05a4145b0b",
+    "control-server.c": "2569d76fc996c7c4b6bc6764e30cb9297c29505ff855f27fcdb1e5630c0bdea5",
+    "control-server.h": "55dbeaddabeb483496a69d961a7fc643f3cb7c5c005847896b8ee6a568d370d6",
+    "control.h": "4df1a2c23af73b6cf2a3287770f959bbd24b5c91a0f56a2ef83261b9b5e0d184",
+    "diagnostic-state.c": "8727a21b37bd8daf18a6d354d5cf9168870a39ab903c396c177b490d89615994",
+    "diagnostic-state.h": "65f9554d9daf4733903041cd2e7187b23116650ef2f63b71282231e38e5b8d73",
+    "guardian.c": "175bee65c76daf1d760edc5f983315ac896c84fba8f215bbfe6bf47ec59a2839",
+    "health-client.c": "cdcffe463398a52cf6a92b60e7f82c0048473828dc79dec8b4c03e9101199fb2",
+    "health-worker.c": "e78b224c450f8399554e4049d05632b62f0a2c02f891f35c2e38fec73877464c",
+    "health-worker.h": "1f43b02be1efe2286b1d043c891304df57f61ce2c310b19073b598cdceb72a6f",
+    "local-health.c": "47099c90d54714079bf2fefeb5cc87b223ac03edf9b7996131d176b95a4d4115",
+    "local-health.h": "a4f289603573de20f210fa9eeeca51954d4791fe107361f23921eb0f89fde07c",
+    "loop-broker-fixture.c": "cc5cf0c022f24f6866f22fbabd253ebcbe5984cb609457297372f488043408ce",
+    "loop-fixture.c": "9d9b42d015734193c5e8d54d58e8620f883bf7053c9ff43d0e844724fb37c2fc",
+    "loop-fixture.h": "01a735fa8ce700922bcedf37749d12740884778ac6b5d8ee14d4b344824943f7",
+    "preflight.c": "834a66f46630e3274cbaa305b34e61c9aa903dca07d15d4947fb024311067130",
+    "preflight.h": "a016aada9fd7c5aeefdebcce61df5c966c2b165d4de5ae6f6c81952420d0b705",
+    "process-auth.c": "2215d497686449df385f16d79bfef0037bab3f720c20001db606b7846bab9d76",
+    "process-auth.h": "3c3443129b157850569254ac5852ae69820b14304635b9fed28747d2e3d8e639",
+    "production.c": "602a9d61a754575166918010f3ed3afb7070838aee83ffbf0cfb37c9cfe087af",
+    "server-fixture.c": "408603b5a91cf9abaafc7c974569c83b6fda315b44367425662b9807af60abfe",
+    "sha256-compat.h": "18079008e1a791b72abf5d6513011c5e606a29d3ed0476927f0ed48d6fa1a9a8",
+    "sshd-state.h": "1e315b40f3ca04a3ae7aca73d5b62f30b0822e1f29bc4507d437aa5c8b28d8b7",
+    "trial-handoff.h": "4de3b81e120df030daf6bf939ec42977588afeea70dfc0d7bca35151d2f93089",
+    "trial-policy.c": "9d93784cbaadfee68b41791c357091e1fec4a28b51f53247d756c3d831c38db3",
+    "trial-policy.h": "8e1c2d3d5260bf1bf13f93f24d9bdad339249a353dd54f8b1271a89121d82837",
+    "watchdog-adapter.c": "64304b892dda509abc2c6a535a7db384685b430f56dbbcc9ebc2528acc067270",
+    "worker-test.c": "2a50f0d4d6e843d66843e1008483c98eb56a0ebcd98955d120cd201d21cc3a85"
+  },
+  "baseline_source_report": {
+    "bytes": 20724,
+    "path": "reports/ubuntu26/guardian-v31-accepted-this-boot-source-v2.json",
+    "sha256": "9662648aa3d712e675dec799b6fa80751c1f66b2fb043d5ee193d47e5ab2496e"
+  },
+  "changed_source_count": 1,
+  "changed_sources": {
+    "accepted-core.c": {
+      "after_sha256": "c8172b73b9e8db0e3e9a62d6a7ef379830fb3f90a8f05f92681f7ab8c12358ab",
+      "before_sha256": "478b778638ae0eaa3e22a3480b6805aaf2a3dd46882ece363278003c9b043129"
+    }
+  },
+  "device_actions": 0,
+  "directory": "scripts/asus-integration/accepted-guard/v32-runtime",
+  "identity_rows": 213,
+  "identity_rows_changed": 0,
+  "limitations": [
+    "New parser and identity are source-only; no compiler/fixture/target execution performed.",
+    "Old 25 cached-policy/callback and 14 purpose cases are ancestry, not new PID1 coverage.",
+    "Current compiled v31 guardian cannot be live-swapped; a new immutable guardian/bootstrap successor is required.",
+    "No acceptance, ACK, metadata/selection, service or watchdog action is performed.",
+    "Each core sample still uses the unchanged bounded worker; PID1 checks do not prove systemd DBus responsiveness."
+  ],
+  "old_proofs_reused_not_reexecuted": {
+    "bytes": 9296,
+    "path": "reports/ubuntu26/guardian-v31-focused-validation-v1.json",
+    "sha256": "3990ccc55feb827195d968bc2534c25b352c46677a9a97c9fae6be502382c2be"
+  },
+  "physical_diagnostic_capture": {
+    "bytes": 22853,
+    "path": "evidence/ubuntu26/trial-live/twentysecond-accept-diagnostic-v1/capture.txt",
+    "sha256": "7662fb9b33e0aa9855d6579d69a51ddbec8a08e03e710957e6eff9a21b020edf"
+  },
+  "physical_diagnostic_receipt": {
+    "bytes": 1274,
+    "path": "evidence/ubuntu26/trial-live/twentysecond-accept-diagnostic-v1/result.json",
+    "sha256": "710a0462d6d4d55ac61e9dbea9da2c229a2f56d6dc070bcb1e6d6abdda7fe8aa"
+  },
+  "process_auth_byte_identical": true,
+  "regions": [
+    {
+      "after": "#include \"process-auth.h\"\n#include <errno.h>\n#include <fcntl.h>\n#include <stdint.h>\n#include <string.h>\n#include <unistd.h>\n",
+      "before": "#include \"process-auth.h\"\n",
+      "label": "bounded_pid1_parser_headers"
+    },
+    {
+      "after": "/* PID1 is created at boot time zero on kernel10. This fixed-purpose parser\n * permits zero only for the literal PID1/PPID0 observation; generic SSH process\n * lifetime authentication continues to reject a zero start time unchanged. */\n#define ACCEPT_PID1_STAT_CAPACITY 4096U\nstatic int accepted_parse_pid1_stat(const char *data,size_t length,uint64_t *started){\n if(!data||!started||!length||length>=ACCEPT_PID1_STAT_CAPACITY||memchr(data,0,length)||length<4||memcmp(data,\"1 (\",3))return -1;\n const char *end=NULL,*limit=data+length;\n for(const char *p=data+3;p<limit;++p)if(*p==')')end=p;\n if(!end||(size_t)(limit-end)<3||end[1]!=' ')return -1;\n const char *cursor=end+2;\n for(unsigned field=3;field<=22;++field){\n  const char *token=cursor;while(cursor<limit&&*cursor!=' '&&*cursor!='\\n')++cursor;\n  size_t n=(size_t)(cursor-token);if(!n)return -1;\n  if(field==3&&(n!=1||!strchr(\"RSDTtKWPIN\",token[0])))return -1;\n  if(field==4&&(n!=1||token[0]!='0'))return -1;\n  if(field==22){\n   uint64_t value=0;\n   for(size_t i=0;i<n;++i){if(token[i]<'0'||token[i]>'9')return -1;unsigned digit=(unsigned)(token[i]-'0');if(value>(UINT64_MAX-digit)/10)return -1;value=value*10+digit;}\n   if(cursor==limit)return -1;\n   *started=value;return 0;\n  }\n  if(cursor==limit||*cursor!=' ')return -1;\n  ++cursor;\n }\n return -1;\n}\nstatic int accepted_read_pid1_stat(uint64_t *started){\n char data[ACCEPT_PID1_STAT_CAPACITY];size_t used=0;\n int fd=open(\"/proc/1/stat\",O_RDONLY|O_CLOEXEC|O_NOFOLLOW|O_NONBLOCK);if(fd<0)return -1;\n while(used<sizeof(data)-1){ssize_t n=read(fd,data+used,sizeof(data)-1-used);if(n<0&&errno==EINTR)continue;if(n<0){close(fd);return -1;}if(!n)break;used+=(size_t)n;}\n char extra;ssize_t n;do{n=read(fd,&extra,1);}while(n<0&&errno==EINTR);close(fd);\n if(n)return -1;\n return accepted_parse_pid1_stat(data,used,started);\n}\nstatic int accepted_pid1_identity(void){\n uint64_t before,after;struct stat proc;\n if(accepted_read_pid1_stat(&before)||stat(\"/proc/1\",&proc)||!S_ISDIR(proc.st_mode)||proc.st_uid||trial_process_native(getpid())||trial_process_executable(1,\"/usr/lib/systemd/systemd\"))return -1;\n if(accepted_read_pid1_stat(&after)||before!=after||stat(\"/proc/1\",&proc)||!S_ISDIR(proc.st_mode)||proc.st_uid||trial_process_native(getpid())||trial_process_executable(1,\"/usr/lib/systemd/systemd\"))return -1;\n return 0;\n}\n",
+      "before": "",
+      "label": "fixed_pid1_parser_and_identity"
+    },
+    {
+      "after": "unsigned accepted_collect_core(const char *boot){(void)boot;unsigned bits=0;\n if(!accepted_pid1_identity())bits|=ACCEPT_CORE_PID1;",
+      "before": "unsigned accepted_collect_core(const char *boot){(void)boot;unsigned bits=0;struct trial_process init;struct stat exe;\n if(!trial_process_read(1,&init)&&init.parent==0&&init.uid==0&&!trial_process_native(1)&&!stat(\"/proc/1/exe\",&exe)&&S_ISREG(exe.st_mode)&&exe.st_uid==0)bits|=ACCEPT_CORE_PID1;",
+      "label": "pid1_core_call_only"
+    }
+  ],
+  "reverse_matches_exact_v31": true,
+  "schema": 1,
+  "source_compile_count": 0,
+  "source_files": {
+    "accept-client.c": "0f0787cd893b41494a86a758f08209f59a5bd08a2f5a40bf10991d526d741bd9",
+    "accepted-core.c": "c8172b73b9e8db0e3e9a62d6a7ef379830fb3f90a8f05f92681f7ab8c12358ab",
+    "accepted-runtime.c": "16e391140b36ce4157087ed62da70cacf1e002565113cf369c5387cdc892d040",
+    "accepted-runtime.h": "80f1f0dbb1a8cec6f75bd3e93bf68afe549b1c130a48ee61333f6436225d7654",
+    "ack-client.c": "01a904f524d15536938e2a3bddd9eb4da21934bf27e1e496f2e8b1ca3b905bde",
+    "adapter-test.c": "d431aef9d82ee515b3005e95ddc87c11a37a9296b186dbc4df47b5d290fad2ce",
+    "boot-diagnostics.h": "6db67153c5e05327afb92d42bb20765a98e96667fad1b5af66157931bdadb1af",
+    "capture-test.c": "2748404cd4b4c7c0f8afe7c2fdfd305e76b78def6ea45d1f8fcf255c7b549023",
+    "control-client.c": "bb252411e1840badee9b874122f9af42a940471e2f1de6e5f6829d05a4145b0b",
+    "control-server.c": "2569d76fc996c7c4b6bc6764e30cb9297c29505ff855f27fcdb1e5630c0bdea5",
+    "control-server.h": "55dbeaddabeb483496a69d961a7fc643f3cb7c5c005847896b8ee6a568d370d6",
+    "control.h": "4df1a2c23af73b6cf2a3287770f959bbd24b5c91a0f56a2ef83261b9b5e0d184",
+    "diagnostic-state.c": "8727a21b37bd8daf18a6d354d5cf9168870a39ab903c396c177b490d89615994",
+    "diagnostic-state.h": "65f9554d9daf4733903041cd2e7187b23116650ef2f63b71282231e38e5b8d73",
+    "guardian.c": "175bee65c76daf1d760edc5f983315ac896c84fba8f215bbfe6bf47ec59a2839",
+    "health-client.c": "cdcffe463398a52cf6a92b60e7f82c0048473828dc79dec8b4c03e9101199fb2",
+    "health-worker.c": "e78b224c450f8399554e4049d05632b62f0a2c02f891f35c2e38fec73877464c",
+    "health-worker.h": "1f43b02be1efe2286b1d043c891304df57f61ce2c310b19073b598cdceb72a6f",
+    "local-health.c": "47099c90d54714079bf2fefeb5cc87b223ac03edf9b7996131d176b95a4d4115",
+    "local-health.h": "a4f289603573de20f210fa9eeeca51954d4791fe107361f23921eb0f89fde07c",
+    "loop-broker-fixture.c": "cc5cf0c022f24f6866f22fbabd253ebcbe5984cb609457297372f488043408ce",
+    "loop-fixture.c": "9d9b42d015734193c5e8d54d58e8620f883bf7053c9ff43d0e844724fb37c2fc",
+    "loop-fixture.h": "01a735fa8ce700922bcedf37749d12740884778ac6b5d8ee14d4b344824943f7",
+    "preflight.c": "834a66f46630e3274cbaa305b34e61c9aa903dca07d15d4947fb024311067130",
+    "preflight.h": "a016aada9fd7c5aeefdebcce61df5c966c2b165d4de5ae6f6c81952420d0b705",
+    "process-auth.c": "2215d497686449df385f16d79bfef0037bab3f720c20001db606b7846bab9d76",
+    "process-auth.h": "3c3443129b157850569254ac5852ae69820b14304635b9fed28747d2e3d8e639",
+    "production.c": "602a9d61a754575166918010f3ed3afb7070838aee83ffbf0cfb37c9cfe087af",
+    "server-fixture.c": "408603b5a91cf9abaafc7c974569c83b6fda315b44367425662b9807af60abfe",
+    "sha256-compat.h": "18079008e1a791b72abf5d6513011c5e606a29d3ed0476927f0ed48d6fa1a9a8",
+    "sshd-state.h": "1e315b40f3ca04a3ae7aca73d5b62f30b0822e1f29bc4507d437aa5c8b28d8b7",
+    "trial-handoff.h": "4de3b81e120df030daf6bf939ec42977588afeea70dfc0d7bca35151d2f93089",
+    "trial-policy.c": "9d93784cbaadfee68b41791c357091e1fec4a28b51f53247d756c3d831c38db3",
+    "trial-policy.h": "8e1c2d3d5260bf1bf13f93f24d9bdad339249a353dd54f8b1271a89121d82837",
+    "watchdog-adapter.c": "64304b892dda509abc2c6a535a7db384685b430f56dbbcc9ebc2528acc067270",
+    "worker-test.c": "2a50f0d4d6e843d66843e1008483c98eb56a0ebcd98955d120cd201d21cc3a85"
+  },
+  "status": "source_only_fixed_pid1_zero_start_successor_not_compiled",
+  "test_count": 0,
+  "unchanged_source_count": 35,
+  "volume_function_and_checks_byte_identical": true
+}

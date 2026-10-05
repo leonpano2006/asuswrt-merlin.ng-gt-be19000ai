@@ -1,0 +1,721 @@
+{
+  "schema_version": 1,
+  "upstream": "https://github.com/RMerl/asuswrt-merlin.ng.git",
+  "commit": "69838e4a60564e5550e97f11d8a8cf2c6260c4f0",
+  "files": [
+    {
+      "path": "release/src/router/rc/Makefile",
+      "git_blob": "4a110f3fb1617bc782fb1ad64cc00c7f0a223be0",
+      "sha256": "a45a47574bdf62207c16e1c781af63f60f6715f482bbfc2bc055ab025b0ae6ce",
+      "bytes": 76488
+    },
+    {
+      "path": "release/src/router/rc/ai_service.c",
+      "git_blob": "9494177bacfbfc8dae59930ec0b9a5eaada87f15",
+      "sha256": "2dd0013fb961494965ce6d6030c9f46957b1ca34fcba2c6bd31f202f348b86ea",
+      "bytes": 49964
+    },
+    {
+      "path": "release/src/router/rc/alt_watchdog.c",
+      "git_blob": "ba8232f1d96c6b95dacef246da3826ef988ea99d",
+      "sha256": "87a35b7777ba67e3cbbbed6b63e4444aebc8516a44537bb14485af11f61285bd",
+      "bytes": 1869
+    },
+    {
+      "path": "release/src/router/rc/antled.c",
+      "git_blob": "2f5ee7f8ecb103b7c109e82a65eb15dde96c3ff4",
+      "sha256": "c062bfa533029b04fbec1c60b1f00a112959bd05949d3d00a16b75694a9579c6",
+      "bytes": 20217
+    },
+    {
+      "path": "release/src/router/rc/arpreq.c",
+      "git_blob": "000c5ea619ab47c7ce01332e3aaf0a96d1cf61ce",
+      "sha256": "0ae4b8bf658247f8fc995b49b573d3d39e7a3c29165c331153893c426088ae11",
+      "bytes": 4056
+    },
+    {
+      "path": "release/src/router/rc/asm1042.c",
+      "git_blob": "f6ba696c54f80091f7ef4f0b49d54eb3b97202b1",
+      "sha256": "2a842afed9e542288a8953bcd257aa26d3060c79ececfde94cdb454ef48a12e1",
+      "bytes": 2476
+    },
+    {
+      "path": "release/src/router/rc/asus_ddns.c",
+      "git_blob": "ad3a044c268366bcedd842e77f602bd18aa13d19",
+      "sha256": "9eade7262f2b35f0d6f685d25eddd1b3b1d6ce2d3def3f0bf7fc2002c027cf2b",
+      "bytes": 13376
+    },
+    {
+      "path": "release/src/router/rc/asustest.c",
+      "git_blob": "1102e57e8551b2d818eb09e2305003102c8f6b90",
+      "sha256": "d6f6603fc83dd28da7b7e95707a15a892956e245115f92656cd8de2f23a37b22",
+      "bytes": 791
+    },
+    {
+      "path": "release/src/router/rc/ate.c",
+      "git_blob": "816f370048c7d7cb072b5d1d79447440897c22e3",
+      "sha256": "51947e410876bbf77b4bb20ac8970b3b6dcfeba467111ba9f870215ff0773c2c",
+      "bytes": 141506
+    },
+    {
+      "path": "release/src/router/rc/auth.c",
+      "git_blob": "3c89970fbfab0eac5f98c9d2c3dca4e860c65606",
+      "sha256": "9a97dedd517def9914366137dd7c20af31c26f19f97862b02db56dface4a5763",
+      "bytes": 6648
+    },
+    {
+      "path": "release/src/router/rc/btnsetup.c",
+      "git_blob": "5757e7b287bff0bd51ba4ed4d8fc517db30e6b72",
+      "sha256": "46a11314775dfabdfb5b0133e9f0f2611fd66b625be46487015b5c20bfd34955",
+      "bytes": 44054
+    },
+    {
+      "path": "release/src/router/rc/check_watchdog.c",
+      "git_blob": "44efd095d1218ed823e0076a896e9a3a6d052290",
+      "sha256": "bf2b990f3315ce0e3641e9ab88e8f5fd0a2f480103ffc8d127f7341dbee22af1",
+      "bytes": 2426
+    },
+    {
+      "path": "release/src/router/rc/cifs.c",
+      "git_blob": "fbee84807cd6825d095ae80c0ec81c487378276d",
+      "sha256": "5bd154947dac40f2917e45d641bcc2c6c65436758e2eba86e22b5391c08bf750",
+      "bytes": 2664
+    },
+    {
+      "path": "release/src/router/rc/cmp-pressure.c",
+      "git_blob": "c7039b76417a79fbb2ca9c470c45d34100cdc4c5",
+      "sha256": "7f30773cf233609b6a1919a33ad1c811dce99c07b17db2342b57128fcfbcbb8c",
+      "bytes": 6206
+    },
+    {
+      "path": "release/src/router/rc/common.c",
+      "git_blob": "c0d173fcb74b3a905ed8f676f2a6f7865a5a4e11",
+      "sha256": "84aa8e560cc31cbef655cee0bfa1a90ed6be9f4f22fbb01d5ce0a26f8aba3186",
+      "bytes": 52672
+    },
+    {
+      "path": "release/src/router/rc/conn_diag_log.c",
+      "git_blob": "fa145f89ad8657050fe1d3e2af7b0c1ed706a6af",
+      "sha256": "6640c608ee6fdbfac96269c4526790b8d5b70e172ae3d10df79633ee53e5ded6",
+      "bytes": 8372
+    },
+    {
+      "path": "release/src/router/rc/crypto.c",
+      "git_blob": "9efcf878d33f09d5638b3db7a495644b6e85004f",
+      "sha256": "7aece630350ed188af427473f33e68191f4c4651be3c657e15ab04bac6d38041",
+      "bytes": 7574
+    },
+    {
+      "path": "release/src/router/rc/det_dns.c",
+      "git_blob": "4827736f4fabb28e3daa8dae57967d459d19b357",
+      "sha256": "120ac62d379468ef483621263d85d870405a3f22c288d790dfea99ca90dabb66",
+      "bytes": 11973
+    },
+    {
+      "path": "release/src/router/rc/detectWAN_arp.c",
+      "git_blob": "464a4492973adc754166e1c661cae996074e67c1",
+      "sha256": "961519aac4f631da2fc82920a2325c458deee98ce52e510e45064ee9765041a2",
+      "bytes": 13223
+    },
+    {
+      "path": "release/src/router/rc/detect_plc.c",
+      "git_blob": "56c8fcab4e2f96db1d9efab3c215aa41fa49e26d",
+      "sha256": "9fda0c16cdc0e4f995aee7955374c73f266510fecc1e33a32cdf2417a8f4aa26",
+      "bytes": 12691
+    },
+    {
+      "path": "release/src/router/rc/dnsfilter.c",
+      "git_blob": "7d45cb1836c0a7ae9a00901445aed0bf97deef8d",
+      "sha256": "07fbe1979eaf95f8c0a19d69a45585bfb1a51be1942cc138f0e612789f0bc0fd",
+      "bytes": 21129
+    },
+    {
+      "path": "release/src/router/rc/dsl.c",
+      "git_blob": "3e1afdae42f1deddf5dcd5a810058f5c3fd68eee",
+      "sha256": "052b2fec2a020ed0cdf84dd7522491000da218b6120f1dcc5813bfa13cebff8d",
+      "bytes": 32719
+    },
+    {
+      "path": "release/src/router/rc/dsld.c",
+      "git_blob": "a29f133b04bd62132fd97470bb17c6a7b5021e26",
+      "sha256": "c18ceb361daa63102a2ea5fd8a0884ec544d68c6f51902affa7fb61399162f09",
+      "bytes": 14280
+    },
+    {
+      "path": "release/src/router/rc/dualwan.c",
+      "git_blob": "e228f159c235f9bea39ad96e98f4b6f3afc22720",
+      "sha256": "fca08130ea9dffd55b02fe6ec051418b57c15402c5db5f326e4d9e5c273d16d1",
+      "bytes": 3959
+    },
+    {
+      "path": "release/src/router/rc/erp_monitor.c",
+      "git_blob": "1657e02935251ef0769014b2f5acedc158d98643",
+      "sha256": "5cb5d8f122733ef58591c20157ae81da8daba177081c9fa2d4a2c30f75f54cd9",
+      "bytes": 30109
+    },
+    {
+      "path": "release/src/router/rc/firewall.c",
+      "git_blob": "583ad55fa37b6f794359b206951ed9df48733c68",
+      "sha256": "df244bc395646eaa7353fc9d0bab904fabae7894a69ba65e89811fe043cc8871",
+      "bytes": 290314
+    },
+    {
+      "path": "release/src/router/rc/firewall_sdn.c",
+      "git_blob": "069c9b7a1dbbf92917c247af16701a5e2087ece2",
+      "sha256": "c44bf8a50085422a0a13086ecd6956b7787731b56980a407e2e7dcda9c97690d",
+      "bytes": 59017
+    },
+    {
+      "path": "release/src/router/rc/format.c",
+      "git_blob": "96501d9bb7a063037b65e96840dabf49c8d21b7c",
+      "sha256": "cf00faf0cb845604b43ec674f3f9fe587e7e6887a72ef9100438108f50e7ba84",
+      "bytes": 7932
+    },
+    {
+      "path": "release/src/router/rc/futest.c",
+      "git_blob": "99237a78ec3802cfa3f98eabaff7b7d2b3112e16",
+      "sha256": "8baaaabd868b416c3652e05daf4b855a93ae21b1d452f004ea15bbe52e85c2b4",
+      "bytes": 27676
+    },
+    {
+      "path": "release/src/router/rc/fwupg_flashing.c",
+      "git_blob": "4700ab52e316f47ab060634f2f56b8d4682aa49f",
+      "sha256": "c8cd49e5bf3b95a3d18c1f3bba4af4ab3ee65e680a619b174cf5a76cccf2ea08",
+      "bytes": 2463
+    },
+    {
+      "path": "release/src/router/rc/gn_wbl.c",
+      "git_blob": "cc208adbb5338cb8f3611eb791e8f1a32e17a87b",
+      "sha256": "5adf6e7ada83a8299cc6d925a4783df611b53510692e4973711ecf522993fe48",
+      "bytes": 8567
+    },
+    {
+      "path": "release/src/router/rc/gre.c",
+      "git_blob": "5212167c13e2fdedef7c99009b4d5c920b3163f4",
+      "sha256": "39e2b67a9b406704158112b419236625a498c237cfe8a8281cdc923765d0254c",
+      "bytes": 17429
+    },
+    {
+      "path": "release/src/router/rc/hour_monitor.c",
+      "git_blob": "78c06c75e1031eff0bf61b63dbc6fc63e0023eb7",
+      "sha256": "81659b51a35d8f208a98d34557fac5d6b6f8215b2aa5c711d63bc7b4624e4119",
+      "bytes": 5460
+    },
+    {
+      "path": "release/src/router/rc/ic.c",
+      "git_blob": "516bc0228440e95b641b33104fb8ddff11065e9a",
+      "sha256": "44cecc7568d66417e690132a47ba2094ba24f9a5fd353640354cc2adabc4a252",
+      "bytes": 19559
+    },
+    {
+      "path": "release/src/router/rc/icmp.c",
+      "git_blob": "bb8e0ac9aedb4346acfe11378479098340e08853",
+      "sha256": "29a6db1ed951004c96dfae45085a2ee008a1dcb105492b6444eb619c7c16e144",
+      "bytes": 4663
+    },
+    {
+      "path": "release/src/router/rc/init.c",
+      "git_blob": "511708976f952d39adabc35a8944669c6e9f2009",
+      "sha256": "404eb8d0f1c4a89f34104470259f042e5e1b1a5bce419f34c9760dda42eb29ab",
+      "bytes": 940181
+    },
+    {
+      "path": "release/src/router/rc/interface.c",
+      "git_blob": "cd5f7327e717cf7d846cf64eced278a5258a3ee2",
+      "sha256": "cb31fe46d3a1840bc20864386ac63d1eead7bdf9f4fd7e5700fc756e710e9264",
+      "bytes": 25151
+    },
+    {
+      "path": "release/src/router/rc/jffs2.c",
+      "git_blob": "92d7cc2be8bef009a5ac6539928977f5c46fa93c",
+      "sha256": "7248e23870ae1077063abedd49b3cf939e68d71fab6eadc5eac4246517a7a2d5",
+      "bytes": 12812
+    },
+    {
+      "path": "release/src/router/rc/lan.c",
+      "git_blob": "4db0781dc2605be81217ddb0358cf28802002d49",
+      "sha256": "383664aad7fcd86ee5987406d41d284ffab9995e1b814132f88ace7b973e600d",
+      "bytes": 213950
+    },
+    {
+      "path": "release/src/router/rc/led_monitor.c",
+      "git_blob": "952566a7cb3aef230725de5f157ee617640afa46",
+      "sha256": "9015cd83e3f54e7b8852acd2ba05f75aabbe7fb341e8b801577a9852ce05975b",
+      "bytes": 36415
+    },
+    {
+      "path": "release/src/router/rc/ledbtn.c",
+      "git_blob": "390153d7db6c23156db08083bd509e012361dbf3",
+      "sha256": "516db498009b35ff81c355805229083de1329da3cddd3737d0da4ad2902a28e3",
+      "bytes": 6372
+    },
+    {
+      "path": "release/src/router/rc/linklist.c",
+      "git_blob": "5847ece73f8023f9dc33092bd0375c2b9f667d25",
+      "sha256": "b10b3c42f35411d277da86de589fa1187326256efb010c61acf8b6a443376111",
+      "bytes": 3235
+    },
+    {
+      "path": "release/src/router/rc/lteled.c",
+      "git_blob": "a1576bc13419f56f6485c6d4bb2f991b41ea5342",
+      "sha256": "f48c5f496e8b90679d90cac5d670e984f62988c327e306c71beb4ee4587a1634",
+      "bytes": 10575
+    },
+    {
+      "path": "release/src/router/rc/moca.c",
+      "git_blob": "607d8e4239adabe7a366b83cb572c2c392612126",
+      "sha256": "38afe870c34f04bfdc4f1d94b7cdf1f5fcb7437f8135253ced4444570a7a2609",
+      "bytes": 41600
+    },
+    {
+      "path": "release/src/router/rc/monitor.c",
+      "git_blob": "63df213e7f62c6f29bbaab1aea59ed1a2ddd5c1a",
+      "sha256": "af10e6894ffca85c542c623ff41576219621a80183617a61fd13c97a954e9215",
+      "bytes": 2342
+    },
+    {
+      "path": "release/src/router/rc/mtd.c",
+      "git_blob": "d9b45a51eabc8c77776772caaba3de04756c5137",
+      "sha256": "057ac17a9c4de28a07acbca7aeb449071573a636e1453fb7e26332f6c745fa9f",
+      "bytes": 36382
+    },
+    {
+      "path": "release/src/router/rc/mtd_curl.c",
+      "git_blob": "0ca3cc5ff05b32de959d6f40aa44dca0ffa2e640",
+      "sha256": "7179cff4fdd7963f449e3209d6fb13d111c8d3bc161fb7f9067a56db7a0fae28",
+      "bytes": 7077
+    },
+    {
+      "path": "release/src/router/rc/mtd_sflash.c",
+      "git_blob": "0770fcd2b18c3e51a715084b64c63ca7a1a91b8e",
+      "sha256": "de257af8e6eb7f68d26f61a1ab85f8e6ebd6c7eb6cd6bb2e6c549a90d74d8909",
+      "bytes": 13241
+    },
+    {
+      "path": "release/src/router/rc/mtwan_detect_internet.c",
+      "git_blob": "af502bf3cd995b196b9ad464b17991590953a107",
+      "sha256": "d11b1733ea566108c813577acc79684a55ae65ef31d902241cedf27faa9a5447",
+      "bytes": 8650
+    },
+    {
+      "path": "release/src/router/rc/mtwanduck.c",
+      "git_blob": "a42c15c82ec2a4a675e53e5882b3199aa26ecaa3",
+      "sha256": "2e8550b5115faac472fd826a8f8bf22d39429617539b6a32ec9203af1bc238bb",
+      "bytes": 13378
+    },
+    {
+      "path": "release/src/router/rc/multi_wan.c",
+      "git_blob": "33c8d6f5a07fa3005d0463adc95d4935a8df062c",
+      "sha256": "f6f2061ceb186e83b6ad8f0ce8730f771bad0ffffb15d5e0a29b8f93d68b0dd2",
+      "bytes": 73274
+    },
+    {
+      "path": "release/src/router/rc/multi_wan_ipv6.c",
+      "git_blob": "22f27bd25e85b595bd2a92094cb2a62cd0d66564",
+      "sha256": "b33d82c1e3136bccfa4b064ccfe3156fa8612c4c879641cad6a683cb112c485c",
+      "bytes": 17206
+    },
+    {
+      "path": "release/src/router/rc/natnl_api.c",
+      "git_blob": "36c00b474bcd89ea8541175963522b0819bf9aed",
+      "sha256": "e683b2e66e0c71157f516a141fd0d5a6b4a9ffceff9cba692189d2ff691495aa",
+      "bytes": 5621
+    },
+    {
+      "path": "release/src/router/rc/nbr_monitor.c",
+      "git_blob": "c557ab5166bbfc1f6651c97491e87b873f538f31",
+      "sha256": "866f5e737c0758402a2aab7a21500e8e25dda09e434e570a1f77a9e16c954706",
+      "bytes": 1926
+    },
+    {
+      "path": "release/src/router/rc/netool.c",
+      "git_blob": "b94c66d96cd804ea32a8bfa866e276a62bb5823e",
+      "sha256": "a7d398e5438f4b9b8760e9b6bf9ae003860978f0e61a6ac881cbe49e9873eb71",
+      "bytes": 21109
+    },
+    {
+      "path": "release/src/router/rc/ntp.c",
+      "git_blob": "3a7a25d83bd8940cfee38ad95c309e10ab633942",
+      "sha256": "80b35d51098bcc59fd65d245de0dc2c691489fc894c3f18ebd5b3013b8cfcf84",
+      "bytes": 7776
+    },
+    {
+      "path": "release/src/router/rc/ntpd.c",
+      "git_blob": "7881d9bbba4b38442a76b1f94f86bc4abddcd280",
+      "sha256": "aaa7723c3a0d1bc31ed4cc59c6959558e75fd50c281337b0b7fd59ccff7c9813",
+      "bytes": 3415
+    },
+    {
+      "path": "release/src/router/rc/oam.c",
+      "git_blob": "2b74351eec453fe9e5f90d642fa31a030928e7f9",
+      "sha256": "2fa625886520f4ffb72e07688aa4a30f9cf30f3a8bdd73509021dc6907a8c003",
+      "bytes": 2226
+    },
+    {
+      "path": "release/src/router/rc/openvpn.c",
+      "git_blob": "c6600e851da54c46193fa39e08b4416a79ce4072",
+      "sha256": "2c69e88f25b7b5a4ed16e40fb0152321c8eb253d5cbcaae9030ff539128f29ed",
+      "bytes": 4280
+    },
+    {
+      "path": "release/src/router/rc/ovpn.c",
+      "git_blob": "430b425f21edbc7a174d684a30d2973e9480ff01",
+      "sha256": "15a765e1bb8f89bb566408b7bf5c1f41267f1c9c2ad9ba1fd16a3906bc055e95",
+      "bytes": 1948
+    },
+    {
+      "path": "release/src/router/rc/pc.c",
+      "git_blob": "3094dfdff6e9f0cb4af24b61265a466521519b27",
+      "sha256": "17e13bb47b1c86d5d81cb09507809e149460d4ec9cae2c45e0509392bd052ab1",
+      "bytes": 65827
+    },
+    {
+      "path": "release/src/router/rc/pc_block.c",
+      "git_blob": "bf49109778708380eb983d8e8e47f3c1f5ff83b1",
+      "sha256": "bffdceeee27e68574b340bb7eb111b4e4addedf72b969e93b2a2631d8909edb9",
+      "bytes": 23328
+    },
+    {
+      "path": "release/src/router/rc/pc_reward.c",
+      "git_blob": "aaf12d04b6c2fd919a225a43c438c95d79a124a7",
+      "sha256": "f5d3982f90ed0d97b8984f325d7f61c2efb9da66bac3528df67e198206752232",
+      "bytes": 13499
+    },
+    {
+      "path": "release/src/router/rc/pc_tmp.c",
+      "git_blob": "5bbd955baeccead7501d956e24d8dda1ff28839d",
+      "sha256": "a780b114afef39dce4320d461b3bf0bba74b31c1f88b3ae98d15c0cd01144042",
+      "bytes": 6713
+    },
+    {
+      "path": "release/src/router/rc/pctime.c",
+      "git_blob": "2dcc2523d3df3c3b7a0de2be698f1b22a6ce0600",
+      "sha256": "c76fc95e577887f78ea392b01e24dc8fbd6486fb443f438836ae7246c4f1cc30",
+      "bytes": 6796
+    },
+    {
+      "path": "release/src/router/rc/phy_tempsense.c",
+      "git_blob": "211a622cedf590eaecf6210c858641021f58a1ec",
+      "sha256": "4ffbddd2f5b1d4649ab0ebcf85997f444546fbf4fc52af82df76952ee30e8ac6",
+      "bytes": 6650
+    },
+    {
+      "path": "release/src/router/rc/ppp.c",
+      "git_blob": "d93aa3da20f7b11f3f29bf2e700efe13a297351b",
+      "sha256": "5cadba2445f29914ce1d23ee604328fe9c3c1ab3bb94ae6f41ffd114749a1ee7",
+      "bytes": 9551
+    },
+    {
+      "path": "release/src/router/rc/pppd.c",
+      "git_blob": "edbe86c0c6ba8df7fcdb034cace1921ef988d6bd",
+      "sha256": "73dfe0d3449b50a43c07cd51e88207ab52566bc06d6f33754a97456c51519c16",
+      "bytes": 13432
+    },
+    {
+      "path": "release/src/router/rc/pressure.c",
+      "git_blob": "0497b51de4c4d53497afa32079cdd44272eb2a03",
+      "sha256": "6df9fe802b3afb1ce3c3b03d46675089ee5c448eeeb3aee301ab1361cd3734e3",
+      "bytes": 12490
+    },
+    {
+      "path": "release/src/router/rc/qmacc.c",
+      "git_blob": "cd3a8a0e8b73b58b7db59aa52880bffa327b80e4",
+      "sha256": "a7bd960342cea280ece7940c90e706f61e81fdd133dd0318f1a8ef99246226ca",
+      "bytes": 346
+    },
+    {
+      "path": "release/src/router/rc/qos.c",
+      "git_blob": "c3d10fec3e7678dca3fdf9b96bff69a2565ebe45",
+      "sha256": "8f6437d83992faef6780253ab60dff4b94305467a3c29ae419013a9530ef412f",
+      "bytes": 88566
+    },
+    {
+      "path": "release/src/router/rc/qos_multi_wan_if.c",
+      "git_blob": "14b275dd9939708df60cb92e8ecdfde83ad58074",
+      "sha256": "3c732c3610dbd2be59aae7269a0103b1c6499021089f58c5ec54befd1d855371",
+      "bytes": 63318
+    },
+    {
+      "path": "release/src/router/rc/qos_multiwan.c",
+      "git_blob": "f235eaeff29e78f43a1aba51e09d5d5b206e1b7d",
+      "sha256": "f1b89fce3176ef86845261466a987f344b812f07ea52967667e2de1fcc572df4",
+      "bytes": 83199
+    },
+    {
+      "path": "release/src/router/rc/qtn_monitor.c",
+      "git_blob": "eadc6f1f781e23340914aa329b8b460817f5cee4",
+      "sha256": "d62351cfc471b4edb4bb073dedd51e06ebd006935b90c971afd3815034416f24",
+      "bytes": 12556
+    },
+    {
+      "path": "release/src/router/rc/rc.c",
+      "git_blob": "cd7836578be11375bb511667eeaca1a0703719e6",
+      "sha256": "215ac3c6322f3d6dfa0a8389e21b12701b69e4f50de4ec016e4c6f62c1f39e45",
+      "bytes": 172353
+    },
+    {
+      "path": "release/src/router/rc/rc_ipsec.c",
+      "git_blob": "257ffd7d73930a07d7ed7aa866a73cd66c921b04",
+      "sha256": "1c179654cf6de1eeb1710667f11d00f8108828cd003d217ffeebc7925d487017",
+      "bytes": 128585
+    },
+    {
+      "path": "release/src/router/rc/re_wpsc.c",
+      "git_blob": "4ac540ca925cecc8fee60ab60e274d426608817c",
+      "sha256": "7c6fa63575410832a8ad6e905f83b00e55efd07e45ff2c06970e35d9c68fa888",
+      "bytes": 27090
+    },
+    {
+      "path": "release/src/router/rc/readmem.c",
+      "git_blob": "214e38a0b3f7b6a65a2465d495d724fd80dc6796",
+      "sha256": "bd417726e1a12c0aed7da0a64d3d82f0df623f800f9026005315b692691f418e",
+      "bytes": 4318
+    },
+    {
+      "path": "release/src/router/rc/rmd.c",
+      "git_blob": "4347e8b096a44b093d77d0dc074ea7537976b289",
+      "sha256": "88fa5a6f9399c64372d1bd88ebd9c68d650c231abd3416c16185d01bb07186b9",
+      "bytes": 5416
+    },
+    {
+      "path": "release/src/router/rc/sched_daemon.c",
+      "git_blob": "e0515d44b1178d9cd70e90276a96f2424ce5f6c1",
+      "sha256": "71e026657b36f4e89fae8c6ada6634e28ae41521e82e6fee7b45bffd1985ce9b",
+      "bytes": 50323
+    },
+    {
+      "path": "release/src/router/rc/sdn.c",
+      "git_blob": "87aafff9237e58e4088e980feef708f4e2ac5880",
+      "sha256": "847cff25feb4c3d196e059017fb3a70937e8c02807b830699cf8aa031e171985",
+      "bytes": 48897
+    },
+    {
+      "path": "release/src/router/rc/sendm.c",
+      "git_blob": "2bbda6ebc5f5a2b0083e90065b001b36975e3e0f",
+      "sha256": "e310c05c8a04875eab24b72ee8a6cdd37a69fb3549f3a881fca4df6ee612f600",
+      "bytes": 1550
+    },
+    {
+      "path": "release/src/router/rc/services.c",
+      "git_blob": "e75c3588eac21725f4404151eb6d660bf23d4f37",
+      "sha256": "667a87807e299a1911d81973c94cf9e6b41ab4af85df100fbbc2df6e1b6a8664",
+      "bytes": 720250
+    },
+    {
+      "path": "release/src/router/rc/smarthaul.c",
+      "git_blob": "48831b3fa127874cdc38d3c4402a49412d783837",
+      "sha256": "3d184c4bc077c2b27e597b4e9c4c48053113c8678d150adfc813f8bb44d3a85a",
+      "bytes": 47858
+    },
+    {
+      "path": "release/src/router/rc/snmpd.c",
+      "git_blob": "021baec2c79e63a5b2287d64cdd783d01753749a",
+      "sha256": "5bc7ecc5c8c1f9499026e6655a1b444772e4ebbca600213d1b8e0f4552bc88a8",
+      "bytes": 3988
+    },
+    {
+      "path": "release/src/router/rc/ssh.c",
+      "git_blob": "54b37920d4c5fc1c59e236522b844604cef569f5",
+      "sha256": "79cacf5ec327bfcd8fd77a5c73e1f5dcb79dbac854427930bb9cb097852fd9c0",
+      "bytes": 2905
+    },
+    {
+      "path": "release/src/router/rc/sysdeps/dsl-upg.c",
+      "git_blob": "afc8dd435a7e093593f8f56a703b0511c1f7b76b",
+      "sha256": "c174414d305dca4ac319d4ba7501574d85585740ebf9730ea1aa240eaff21a2b",
+      "bytes": 15784
+    },
+    {
+      "path": "release/src/router/rc/sysdeps/init-broadcom-dsl.c",
+      "git_blob": "543da9bdf1eceb8969f1084628c55239f681bf72",
+      "sha256": "8d93f4a7bd80f601e60ff135685569d2641e6e1a04c0b30766f0e474a0851b89",
+      "bytes": 7294
+    },
+    {
+      "path": "release/src/router/rc/sysdeps/init-broadcom.c",
+      "git_blob": "825ce2784411ce1177449e2af3f6a058218f8749",
+      "sha256": "4a954978e5f4506d3f467a2fd08940f9faa535863704c38004bac241b3019f74",
+      "bytes": 761878
+    },
+    {
+      "path": "release/src/router/rc/sysdeps/qtn/qtn.c",
+      "git_blob": "014c12490c22b24837a0db8d3bcaf5c1e46a0dd0",
+      "sha256": "7870a80758e937eee37aac7ef1a66e2b9fc7242d13aa03ac3915ba9521a215ee",
+      "bytes": 28230
+    },
+    {
+      "path": "release/src/router/rc/sysdeps/wps-broadcom.c",
+      "git_blob": "4a6312510c6f46d9cd67117face857f293556c6b",
+      "sha256": "345cd3486b58d2bb545c937456c0271010753b79647408fc5ee5574f51bfefb6",
+      "bytes": 32068
+    },
+    {
+      "path": "release/src/router/rc/tc_utils.c",
+      "git_blob": "6e74441bd3b5ce05635388160e7a2bf9218121ce",
+      "sha256": "6f831ccfe123e0bb80e8d13a298f65372ce599b1a90f713c2b6f5f9125bd2a01",
+      "bytes": 24609
+    },
+    {
+      "path": "release/src/router/rc/tcpcheck.c",
+      "git_blob": "ed2711c33cb8c68be316b08b580de495179f80e7",
+      "sha256": "43cf11928712ddc253972ed50e3fecbb4e1e86cf3e59417aa44af0ed9cdb5cfd",
+      "bytes": 13249
+    },
+    {
+      "path": "release/src/router/rc/time_quota.c",
+      "git_blob": "185255a9e0b073a9c9eaee6d55bbd2bd8ca5de5f",
+      "sha256": "39aa37d00da7f2ba8f3e595b1a12e199d23f5890f734c6ad68fec66610640b98",
+      "bytes": 32624
+    },
+    {
+      "path": "release/src/router/rc/timemachine.c",
+      "git_blob": "97d46a33b4b18330c8f353012aa9d0a9cd00a112",
+      "sha256": "92b814b35ba586bc3310d673483381ff65779efb1b8e98b9ad14588142dcf9d0",
+      "bytes": 16289
+    },
+    {
+      "path": "release/src/router/rc/traffic_limiter.c",
+      "git_blob": "94b26b1ea7da45db3febd267673b6f7e631b71f9",
+      "sha256": "583cba92b5f375fde8b0d7bebfbbc5c0de545af7826fe3a31a49fba9474419fd",
+      "bytes": 5507
+    },
+    {
+      "path": "release/src/router/rc/ubifs.c",
+      "git_blob": "9ac61dac30c4f7a645e5e2636df855e171e6ea0a",
+      "sha256": "0bacea6445a78f037065cbfeecb0074c04c1ae4485b37565196bf0e2c9233e61",
+      "bytes": 9412
+    },
+    {
+      "path": "release/src/router/rc/udhcpc.c",
+      "git_blob": "8e92875dca6e506a6c6799299ef41785d49ac43d",
+      "sha256": "9f308bc1670d6f8031f039e912f1aaae9f7af1917dba068e0d33d989bd69c199",
+      "bytes": 78215
+    },
+    {
+      "path": "release/src/router/rc/usb.c",
+      "git_blob": "2d057e9f89e7d3f821c3e8b8006961f915e461d9",
+      "sha256": "119aef8f37faa14cc3a4ee82aa7732ebfa614ea4dda961d3271d86ae3bf938f9",
+      "bytes": 166138
+    },
+    {
+      "path": "release/src/router/rc/usb_devices.c",
+      "git_blob": "5fb89ca1f4356c8f0b83ac3bb70e11bfc55e0387",
+      "sha256": "01b88789b9e8693bfe69b42e961ca867123d525923c45b0b6631412c40ad6788",
+      "bytes": 194459
+    },
+    {
+      "path": "release/src/router/rc/usbled.c",
+      "git_blob": "ac35b092365d47489bf5cd47011a1925fddca1b1",
+      "sha256": "8267231d2a7ebd3f610f4dd22d903c0a7d4a7b040a218df6dfdbe6df1faafcf5",
+      "bytes": 7298
+    },
+    {
+      "path": "release/src/router/rc/usdsvr.c",
+      "git_blob": "98d47d70abc0725dc3365b6bb4e3f7a2e2b57f81",
+      "sha256": "92cc25f4e7b58861164ee2d09fa1d940d35fcf8e1edf2f276498ad853a9c7233",
+      "bytes": 4880
+    },
+    {
+      "path": "release/src/router/rc/vlan.c",
+      "git_blob": "1d687d92bc9fe29e7429090971a85847212ad1c0",
+      "sha256": "5564fbe12fc97f448dce3f83a56ba94ac7bf8369dc32e705a44e68870301ce18",
+      "bytes": 32970
+    },
+    {
+      "path": "release/src/router/rc/vpn.c",
+      "git_blob": "d3146975d4650ba553a4c9da1b338d693524794f",
+      "sha256": "42b006b6f5435597d93483df87cfe796ea40e0f04136d9968343627e70ab3998",
+      "bytes": 11584
+    },
+    {
+      "path": "release/src/router/rc/vpnc.c",
+      "git_blob": "f572da02b70a5407346a8206df4ea28a258ebcf1",
+      "sha256": "16227cb5fcfb1d7f0df2f0a7ebaac50ba5e5da60bbcc7ad2a60cac59ec5a7da6",
+      "bytes": 26107
+    },
+    {
+      "path": "release/src/router/rc/vpnc_fusion.c",
+      "git_blob": "71ffc86d4121d5bdbc138fd4433aae49c9df0af1",
+      "sha256": "81970dc79ab4cbe1b8984963ecbd65cf419fae19a43f3efd7640eda7ac827dcb",
+      "bytes": 83178
+    },
+    {
+      "path": "release/src/router/rc/vpnc_legacy.c",
+      "git_blob": "d9a3629b2ee74e1c4ea5c5cf8530fda91e817f3a",
+      "sha256": "43d548a41cd7e39ed5fdce759863636890e904372e0ebb86bab3126a48fb6d07",
+      "bytes": 25812
+    },
+    {
+      "path": "release/src/router/rc/wan.c",
+      "git_blob": "8fddfc821ee2f11edd1cce76bd2c8ca4dcc6ca9b",
+      "sha256": "d15a04710eee1ad4f5a95f634bd8152505daf97f5a24eb11e92a58c9fcac5cf0",
+      "bytes": 174987
+    },
+    {
+      "path": "release/src/router/rc/wanduck.c",
+      "git_blob": "36b11c2c5fc8ca483e3fddfb713400f6ba1d259e",
+      "sha256": "78d8b42d60b3d80310571237bb117fd335974ee0e181b46082dec1085073adca",
+      "bytes": 167356
+    },
+    {
+      "path": "release/src/router/rc/watchdog.c",
+      "git_blob": "b1651accd7c450e96864d91677b040a7ae608e12",
+      "sha256": "a69c2cbc95681e7d5538795532cfec3a0d93db81e01f3b75310ae500fff5fa66",
+      "bytes": 340340
+    },
+    {
+      "path": "release/src/router/rc/wireguard.c",
+      "git_blob": "a6e9eed80f9e0e87e3c9755dc5781ff48d5535f9",
+      "sha256": "2241959aa6f52b4b0e1191f6e3331e2b320ad6d6a46390f9428012f47eaf5baf",
+      "bytes": 60667
+    },
+    {
+      "path": "release/src/router/rc/wireless.c",
+      "git_blob": "5478e26033ac27bf275d77f5d616732fb554caaa",
+      "sha256": "dfece1992bd68dac3204309907520d7f3645f7bc3eae709f03afb7cd2b92401a",
+      "bytes": 18171
+    },
+    {
+      "path": "release/src/router/rc/wlcmon.c",
+      "git_blob": "338b2430bbe732946f06bbe2354573ef9c0fd859",
+      "sha256": "e6976d88a5f11d9f6648de95667e2247a1c5421fe67bf24147348fa62c0177d4",
+      "bytes": 9396
+    },
+    {
+      "path": "release/src/router/rc/wpsaide.c",
+      "git_blob": "8b67cf9586e91864be27f15ddeed1b41e4bdbbd0",
+      "sha256": "73f4add4373433aaa81a3cd751f56bb4471ac4f5fa2653e584dfef7808342328",
+      "bytes": 2774
+    },
+    {
+      "path": "release/src/router/rc/wtfast.c",
+      "git_blob": "a2065503aab835a21a08eb83147386ab53e73063",
+      "sha256": "678b290d0db081cb9d4275f3a7212f1052e87a744aaf7119597722a73dbe6b8f",
+      "bytes": 1726
+    },
+    {
+      "path": "release/src/router/rc/yaffs.c",
+      "git_blob": "4235bd20f490c4bb4f4a9dcd6705a40b40bf29cc",
+      "sha256": "58a607371861233981ed7abdff3ec032b13e93819c32bc7049da1383304215fc",
+      "bytes": 3413
+    }
+  ],
+  "foundation": [
+    {
+      "path": "scripts/asus-integration/src/rc-bridge.h",
+      "sha256": "d783338114a358da8d66d64f7bf3f03494fbf0ed4c176a505b6d64c6747c7e12"
+    },
+    {
+      "path": "scripts/asus-integration/src/rc-client.c",
+      "sha256": "070a5cf8bf674019f920806296922fc090c0caed0dd488b2c99f8f74073fe17a"
+    },
+    {
+      "path": "scripts/asus-integration/src/rc-manager.c",
+      "sha256": "3f152ae20d12a9a4199d2d50249f12a25906d09b3b85dcbeb6a047c7f3463b50"
+    },
+    {
+      "path": "scripts/asus-integration/src/rc-legacy.c",
+      "sha256": "5b47de6d3bc72ef2c6620ca6b15243365107eda74fb4438f8e314f91e50e3f6e"
+    }
+  ]
+}

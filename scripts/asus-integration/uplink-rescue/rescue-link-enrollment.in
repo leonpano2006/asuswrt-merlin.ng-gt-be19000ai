@@ -1,0 +1,7 @@
+LEON_UPLINK_RESCUE_V1
+router=169.254.190.15/32
+peer=169.254.190.51/32
+eth0=02:00:00:f0:00:01
+br0=02:00:00:f0:00:01
+labels=eth0:lr,br0:lr
+route=main,186,42760

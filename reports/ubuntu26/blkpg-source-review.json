@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "status": "reviewed_no_actionable_defect_found",
+  "scope": "Read-only source review; production device helper not executed",
+  "inputs": [
+    {
+      "path": "scripts/ubuntu26-gpt/add-p11.c",
+      "sha256": "5c28397cec0b38c1b6105211feaafe934af067c225c1369d64b5971840bd6b9b"
+    },
+    {
+      "path": "build/ubuntu26-blkpg-helper/v1/gpt-policy.h",
+      "sha256": "e9f3b26714860c28cf75c448af7566829b5219e0ed61216cce9daa7bfce99c02"
+    }
+  ],
+  "checked": [
+    "Fixed production /dev/mmcblk0 with 179:0 and exact CID; separate compile-time loop fixture",
+    "O_RDONLY/O_NOFOLLOW device open, root checks, full exact primary+backup GPT byte validation",
+    "Exact disk/logical-sector geometry, all existing partition 1-10 sysfs ranges, no unexpected partitions",
+    "64-bit positive aligned p11 byte start/length with overflow/end-of-disk constraints",
+    "Exact existing p11 is a no-op; otherwise sole mutation is BLKPG_ADD_PARTITION for p11",
+    "Identity/geometry/GPT/partition checks repeated before and after ADD; no DEL/BLKRRPART/GPT write",
+    "Advisory lock explicitly does not claim serialization against unrelated firmware writers"
+  ],
+  "actionable_findings": [],
+  "limitations": [
+    "Kernel 4.19 BLKPG_ADD_PARTITION with NULL partition_meta_info does not create PARTUUID/PARTNAME until full GPT scan/reboot. Use verified sysfs start/size/dev and filesystem UUID for immediate consumers.",
+    "Source review does not prove hardware eMMC behavior, power-loss transaction safety, or firmware concurrent writer exclusion."
+  ],
+  "hardware_accessed": false,
+  "ioctl_executed_by_reviewer": false
+}

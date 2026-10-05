@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "scope": "candidate-device-policy",
+  "flash_accepted": false,
+  "lookup": "filesystem-uuid",
+  "emmc_cid": "00000000000000000000000000000001",
+  "device": "/dev/mmcblk0p11",
+  "start_sysfs": "/sys/dev/block/179:11/start",
+  "major": 179,
+  "minor": 11,
+  "start_sector": 26849280,
+  "sectors": 25165824,
+  "uuid": "ea8e47b8-c606-406c-b931-d2244d26ec55",
+  "generation": "be19000ai-ubuntu26-kernel10-systemd-v1\n",
+  "fsck": "/usr/libexec/leon-boot/fsck",
+  "fsck_timeout": 60,
+  "ubuntu_init": "/usr/lib/systemd/systemd",
+  "vendor_init": "/sbin/rc",
+  "guardian": {
+    "required": true,
+    "program": "/usr/libexec/leon-boot/trial-guardian",
+    "expected_watchdog_seconds": 40,
+    "preflight_timeout_ms": 15000,
+    "arm_timeout_ms": 3000
+  },
+  "emergency_fault_sink": false,
+  "guardian_exec_failure_fixture": false
+}

@@ -1,0 +1,56 @@
+{
+  "status": "source_authenticated; candidate_packages_built; native_namespace_acceptance_passed",
+  "upstream": "16.2.0",
+  "ubuntu_source_version": "16.2.0-3ubuntu1",
+  "candidate_version": "16.2.0-3ubuntu1+leonb53.1",
+  "source_authentication": {
+    "suite": "stonking",
+    "InRelease_sha256": "b62a16a5354b7951ff088539d41b2c2572fe2724ddce836be06ffa89156c0832",
+    "verification": "gpgv Ubuntu archive signing key2018 + SHA512 Sources + SHA512 source files",
+    "version": "16.2.0-3ubuntu1",
+    "files": [
+      {
+        "path": "gcc-16_16.2.0.orig.tar.gz",
+        "bytes": 112184330,
+        "sha512": "6eb6fb95b7d08335b4036f20c8794b1c009d5f8e0f227c2f3503813b48e8512a13044c639d7c409072d8c49a294a0d21d420349ec69c168a85adcede9604c8e2",
+        "sha256": "9296231e5ff5d044f417023a8c2027d766d74a42bc12bcffb4b1d890016e2011"
+      },
+      {
+        "path": "gcc-16_16.2.0-3ubuntu1.debian.tar.xz",
+        "bytes": 2856792,
+        "sha512": "f1aa0a259c23a027d5d62c3c7242f7731ad9906093548156af878684b0876c27e82dd8524ab713e17203b53a2546969eaac7a7bcaa28910737dac4a2d9d9d709",
+        "sha256": "7bec34440fcf39dc2b4724ebaa767c5bccc4b277f7c7648167fd1a9ffce951ec"
+      },
+      {
+        "path": "gcc-16_16.2.0-3ubuntu1.dsc",
+        "bytes": 52946,
+        "sha512": "31dfb11ef5c83808c7622f563ebdc216e2900fbec03a4d7b26a7df7e44c7285b6dfbc4a210cb4117f538a3bb02b56f8d2ac18a43c3f755f97b405bb8a9f2593a",
+        "sha256": "9be584892e73a00bfb03e323f62e92e7a4d19cfcb3e03fafbbf82ce41771bfb1"
+      }
+    ]
+  },
+  "sources": [
+    "https://archive.ubuntu.com/ubuntu/dists/stonking/InRelease",
+    "https://archive.ubuntu.com/ubuntu/dists/stonking/main/source/Sources.xz",
+    "https://archive.ubuntu.com/ubuntu/pool/main/g/gcc-16/"
+  ],
+  "build_distribution": "Ubuntu 26.04 resolute",
+  "source_distribution_only": "Ubuntu 26.10 stonking; no stonking binary repository added to the resolute build environment",
+  "cpu_default": "cortex-a53+crypto+crc",
+  "native_triplet": "aarch64-linux-gnu",
+  "parallel_jobs": 6,
+  "scope": "C/C++ native arm64 packages; no device write or base rootfs mutation",
+  "candidate_limitations": [
+    "No full three-stage bootstrap or DejaGNU suite in candidate build; dedicated functional acceptance required.",
+    "ARM32 cross-compilers not built in this task."
+  ],
+  "time64_source_evidence": {
+    "rules_defs": "timet64_archs includes armel armhf; resolute is not excluded",
+    "gcc_distro_specs_diff_sha256": "4a98525356d94a62f2a0f47e8057cbb639f6d5203eb40864b156db530a6c95d5",
+    "defaults": "DIST_DEFAULT_TIMET64 emits _TIME_BITS=64 and _FILE_OFFSET_BITS=64; explicit escape remains available for narrow proven exceptions",
+    "arm64": "native time_t/off_t64; actual compile and post2038 runtime checks pending"
+  },
+  "build_recipe": "scripts/build-ubuntu26-gcc.py",
+  "acceptance_recipe": "scripts/build-ubuntu26-gcc-acceptance.py",
+  "build_result": "reports/ubuntu26/gcc16-build.json"
+}

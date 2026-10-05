@@ -1,0 +1,11 @@
+[Unit]
+Description=Validate ASUS nameserver update against native upstream policy
+Requires=leon-asus-resolver-bootstrap.service
+After=leon-asus-resolver-bootstrap.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/libexec/asus/resolver-export --update
+TimeoutStartSec=10s
+UMask=0022
+

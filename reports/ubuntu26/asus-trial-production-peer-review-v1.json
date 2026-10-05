@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "status": "source_review_two_fixed_one_in_progress",
+  "scope": "Read-only independent review; no hardware or production guardian execution",
+  "sources": [
+    {
+      "path": "scripts/asus-integration/trial-guard/runtime/production.c",
+      "sha256": "fb7b3f7d93c0a427d9c8da4739177b92639cd0f21a73af26569938ca52ecaa49"
+    },
+    {
+      "path": "scripts/asus-integration/trial-guard/runtime/preflight.c",
+      "sha256": "b57bdd3fa8608eb94245dfbdb7761472c3598732014abb7e36095181d30196d5"
+    },
+    {
+      "path": "scripts/asus-integration/trial-guard/runtime/control-client.c",
+      "sha256": "57dad7b775f7c43a9a4857520d1c28a5378d653ba17a55de1221a559561c6a2c"
+    },
+    {
+      "path": "scripts/asus-integration/trial-guard/runtime/control-server.c",
+      "sha256": "b92a3067881a31fa00bda27210cf71dc671375f94576dc95c034a98273d3579b"
+    },
+    {
+      "path": "scripts/asus-integration/trial-guard/runtime/process-auth.c",
+      "sha256": "0c85656bf9ccfee9d6a0cc29f0d3de59fbc96000662f7f2709a4202460e560fd"
+    },
+    {
+      "path": "scripts/asus-integration/trial-guard/runtime/local-health.c",
+      "sha256": "9133fc6cad610afb45c61fec7be163783383222e0d21cdfed850a1fa3e726cc9"
+    },
+    {
+      "path": "scripts/asus-integration/trial-guard/runtime/health-worker.c",
+      "sha256": "50e41de817c396e850c3651f248920e7bc6f4400e0157cf86d6b59c5a5e302cd"
+    }
+  ],
+  "findings": [
+    {
+      "id": "guardian-emergency-driver-shutdown",
+      "severity": "high",
+      "status": "source_fixed_build_pending",
+      "detail": "RB_AUTOBOOT invokes bcm96xxx watchdog shutdown. Current production source prefers verified PROC_SUPER_MAGIC sysrq-trigger b and declares lack of WDT backup on syscall fallback."
+    },
+    {
+      "id": "collector-lost-child-pid",
+      "severity": "medium",
+      "status": "source_fixed_build_pending",
+      "detail": "Original collector forgot PID immediately after nonblocking wait; new health-worker retains PID until confirmed reap, latches timeout/invalid exit, rejects overlap and polls without blocking feeding loop. Capture waits stay in alarm-bounded disposable worker."
+    },
+    {
+      "id": "running-sshd-config-unverified",
+      "severity": "medium",
+      "status": "fix_in_progress",
+      "detail": "sshd -T validates the desired config, not the active master process argv. Native-control owner is adding exact active command validation; local-health must consume matching proof before accepting applied policy."
+    }
+  ],
+  "other_reviewed_contracts": {
+    "watchdog_open_after_exact_arm_request": true,
+    "gate_closed_unarmed_refusal": true,
+    "metadata_both_crc_tokens_readonly_fullbyte_comparison": true,
+    "known_good_slot2_complete_partition_hashes": true,
+    "current_boot_and_one_shot_intent_readback": true,
+    "broker_ready_protocol_and_real_process_namespace_checks": true,
+    "ssh_ack_real_authenticated_native_ancestry_and_tcp_endpoint": true,
+    "ssh_ack_distinct_session_same_lan_endpoint_nonce_binding": true
+  },
+  "immutable_guardian_identity_qemu": {
+    "path": "reports/ubuntu26/squashfs-pivot-guardian-health-v1.json",
+    "sha256": "27d3fc5a1f0efb1e9ecba5acf5be81c38edea535956032de47400436245cdeb8"
+  },
+  "parent_emergency_qemu": {
+    "path": "reports/ubuntu26/squashfs-pivot-guardian-emergency-v1.json",
+    "sha256": "9a2c569e3ec4c57153ca18262a2bdd7e3df9629bf9825a803645eb8081637101"
+  },
+  "limitations": [
+    "Source review is not deployed hardware validation.",
+    "Identity test uses mocked hardware-armed responses and real frozen trial-health, not actual watchdog arming.",
+    "Actual Wi-Fi, switch, AiMesh and AI services remain separate acceptance checks."
+  ],
+  "hardware_accessed": false,
+  "deployment_accepted": false
+}

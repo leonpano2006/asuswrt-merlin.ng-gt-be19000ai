@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "status": "actual rc startup boundaries reviewed; runtime0.6 loader and native/mock topology accepted; actual BCM initialization remains untested",
+  "production_ready": false,
+  "reference_revision": "device-ssh-bsp-rgb-stop-v2; internal eMMC0018 successor building",
+  "source_inputs": [
+    {
+      "path": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-v2/compile-source/release/src/router/rc/rc.c",
+      "sha256": "9d24fe552e15c03cbab36ca650c8cf1bed664eb813cbe383b3d6738216f62093"
+    },
+    {
+      "path": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-v2/compile-source/release/src/router/rc/init.c",
+      "sha256": "b10708eee117ee7e2372ba8bc48966c371e593a5bdea13549adc593ae7d4aa1b"
+    },
+    {
+      "path": "scripts/asus-integration/private-resource-launch.c",
+      "sha256": "6495da965d21a90ef0e78fc6b9852b9474383dbaa14ff4b0e4228ceb2bff79d4"
+    },
+    {
+      "path": "scripts/asus-integration/src/rc-manager.c",
+      "sha256": "3f152ae20d12a9a4199d2d50249f12a25906d09b3b85dcbeb6a047c7f3463b50"
+    }
+  ],
+  "entry_sequence": [
+    "Native systemd mounts and verifies real UUID-owned persistent filesystems, then creates managed marker/broker.",
+    "Native broker starts namespace launcher as a direct child; launcher preserves child PID and signals.",
+    "Launcher creates private /etc and reviewed ROM/web/command views, installs scoped notify and checks storage/BSP proof before exec.",
+    "exec /usr/libexec/asus/rc with argv[0]=/sbin/init and --leon-systemd dispatches the actual init_main.",
+    "rc main first enforces private /etc guard; init_main enforces private /etc and storage guard, then manager broker handshake.",
+    "Only after those guards, model init_main loads bcm_knvram and enters sysinit; sysinit verifies persistent/BSP ownership and executes ordered BSP scripts.",
+    "ASUS starts wireless/network/AiMesh/AI services; manager reports READY after the real initialization path, not at exec."
+  ],
+  "critical_ordering_note": "In rc, bcm_knvram insmod precedes sysinit BSP guard. Native launcher therefore must verify BSP ownership before any rc exec; peer is adding that early guard. Merely relying on sysinit is insufficient.",
+  "qemu_valid_boundaries": [
+    "Exact final ELF PT_INTERP/DT_NEEDED relocation and plugin owner exports without main/constructors (done for prior revision; successors must rerun).",
+    "Real native systemd broker/private namespace/ordered units with explicit mock rc backend (peer owns combined test).",
+    "Synthetic missing marker, peer UID mismatch, manager/fork roles, signal-block/reset, bounded subprocess timeout/cleanup and state-machine negative paths.",
+    "Private read-only command/ROM/resource paths and native host/account/shell preservation; helper input proof gates use explicitly synthetic RAM ext4 UUIDs.",
+    "Actual native kmod metadata/query against exact181 packaged kernel10 modules without loading BCM modules."
+  ],
+  "qemu_does_not_prove": [
+    "Broadcom nvram/devices/switch/Wi-Fi initialization or working interface configuration.",
+    "AiMesh communications, AI board service handshakes, USB mass-storage/peripheral behavior, RGB hardware output.",
+    "Vendor constructors/dlopen side effects or successful full rc main execution: loader trace suppresses these by design."
+  ],
+  "next_actual_rc_execution_policy": "Do not run full vendor init as an unsupervised generic QEMU process. Before any constrained main-entry rejection test, explicitly isolate guest disks/network/device tree, bound runtime, prevent host/root power or module actions, review constructor paths and label the expected failure separately. Positive functional start requires BCM-specific driver/device environment and separate rollback-gated hardware acceptance.",
+  "remaining_software_gates": [
+    "Private command/absolute plugin projection namespace test and package install.",
+    "Final0018 internal eMMC protection source revision, notify/GCC/config metadata updates and repeat exact package/loader acceptance.",
+    "Native SSH policy and startup unit package combined lifecycle tests.",
+    "Boot/pivot/rollback marker ownership; no ASUS mark-good writes."
+  ],
+  "no_real_rc_main_or_hardware_execution": true,
+  "successor_revision": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-emmc-v3/revision-result.json",
+  "successor_rc_sha256": "0e7d292380862a8bab36f77c228edf09be54fb1b58c86990264ba55ae69d1590",
+  "successor_source_changes": [
+    "0017 broker-owned stop; generic stop_services preserves native SSH",
+    "0018 blocks internal mmcblk0 descendants from USB/storage/format/eject/swap callbacks"
+  ],
+  "historical_source_review": {
+    "path": "build/asus-runtime-projection/v6/startup-boundaries-before-acceptance.json",
+    "sha256": "811ddcc82e3340e822fd4837919477b0cd9e00ba2b4cd5a14f314727d47ba300"
+  },
+  "acceptance_followup": {
+    "runtime_candidate": {
+      "path": "reports/ubuntu26/asus-runtime06-candidate.json",
+      "sha256": "54e2cafcbce63f600f435323458dcfb8811d32bc3ed0ca595bd05990f9d5cb37"
+    },
+    "native_topology": {
+      "path": "reports/ubuntu26/asus-startup-wiring.json",
+      "sha256": "41685b00b06a478526eda50439ef527322f12e2b508afc11d51298754448c0f5"
+    },
+    "early_bsp_guard": "Implemented before rc exec in production launcher and exercised by fail-closed native/mock Kernel10 topology fixture; actual rc was not launched.",
+    "completed_since_source_review": [
+      "Exact runtime0.6 package composition,643 loader scopes and native file preservation on Kernel10.",
+      "Private command/absolute-path namespace projection and native kmod/peak_usb module dependencies.",
+      "0018 internal eMMC protection compiled into exact linked rc0.6.",
+      "Native SSH control package included; its separate authentication fixture passed, automatic live identity migration remains disabled."
+    ],
+    "remaining": [
+      "Native hardware watchdog sole-owner guardian plus rc0019 and repeated successor acceptance.",
+      "Resolver0.2 bounded FIFO handling and corresponding dependency revision.",
+      "Native device identity/account migration and final rollback/trial activation gates.",
+      "Broadcom-specific actual rc, WiFi/AiMesh/AI/RGB/peripheral functional acceptance."
+    ]
+  }
+}

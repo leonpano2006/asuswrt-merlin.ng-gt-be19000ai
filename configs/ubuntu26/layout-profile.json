@@ -1,0 +1,270 @@
+{
+  "schema_version": 1,
+  "profile_id": "gt-be19000ai-bcm-ubuntu26",
+  "profile_version": "0.2",
+  "status": "local_native_package_candidate_validated_foreign_and_ASUS_integration_pending",
+  "device_scope": "GT-BE19000AI BCM6813 / Brahma-B53; excludes the separate AI board",
+  "distribution": {
+    "name": "Ubuntu",
+    "version": "26.04",
+    "codename": "resolute",
+    "native_architecture": "arm64",
+    "registered_foreign_architectures": [
+      "armel",
+      "armhf"
+    ],
+    "official_archive_architectures": [
+      "arm64",
+      "armhf"
+    ],
+    "registered_does_not_mean_installed": true
+  },
+  "apt": {
+    "source_file": "/etc/apt/sources.list.d/ubuntu.sources",
+    "types": [
+      "deb"
+    ],
+    "uris": [
+      "https://ports.ubuntu.com/ubuntu-ports"
+    ],
+    "suites": [
+      "resolute",
+      "resolute-updates",
+      "resolute-security"
+    ],
+    "components": [
+      "main",
+      "restricted",
+      "universe",
+      "multiverse"
+    ],
+    "architectures": [
+      "arm64",
+      "armhf"
+    ],
+    "signed_by": "/usr/share/keyrings/ubuntu-archive-keyring.gpg",
+    "local_repository": {
+      "enabled": false,
+      "uri": null,
+      "signing_key": null,
+      "reason": "Enable only after actual custom .deb packages and signed Release/InRelease metadata exist; no invented URI or trust bypass.",
+      "armel_policy": "Supply native armel packages from the project repository only. Ubuntu armel-cross packages are build sysroots, not a native armel distribution."
+    }
+  },
+  "filesystem": {
+    "usrmerge_symlinks": {
+      "/bin": "usr/bin",
+      "/sbin": "usr/sbin",
+      "/lib": "usr/lib"
+    },
+    "persistent": [
+      "/etc",
+      "/usr",
+      "/var/lib/dpkg",
+      "/var/lib/apt",
+      "/var/cache/apt",
+      "/var/log"
+    ],
+    "transient": [
+      "/run",
+      "/tmp"
+    ],
+    "requirements": [
+      "Use persistent writable storage for installed packages and their database; a writable /usr alone is insufficient.",
+      "Do not inherit ASUS whole-/var tmpfs or volatile /etc for dpkg-owned configuration and package state.",
+      "Reserve /usr/local for administrator-managed additions; distribute this system's components as .deb packages under /usr.",
+      "Keep /lib/ld-linux*.so.* interpreter entries as valid links through usrmerge to the corresponding ABI loader.",
+      "The configuration package does not convert paths, create filesystems, or choose/modify any live boot slot."
+    ]
+  },
+  "cpu": {
+    "hardware": "Broadcom Brahma-B53",
+    "compiler_tuning_alias": "cortex-a53",
+    "isa": "ARMv8.0-A with CRC, Crypto and FP/NEON",
+    "exclude_unconditional_isa": [
+      "LSE",
+      "SVE"
+    ],
+    "build_host_caution": "Do not use -march=native on the GB10 build host for router executables."
+  },
+  "abis": {
+    "arm64": {
+      "triplet": "aarch64-linux-gnu",
+      "library_directory": "/usr/lib/aarch64-linux-gnu",
+      "loader_entry": "/lib/ld-linux-aarch64.so.1",
+      "flags": [
+        "-mcpu=cortex-a53+crypto+crc"
+      ],
+      "role": "Native Ubuntu base and new or successfully ported components",
+      "time_t_bits": 64
+    },
+    "armel": {
+      "triplet": "arm-linux-gnueabi",
+      "library_directory": "/usr/lib/arm-linux-gnueabi",
+      "loader_entry": "/lib/ld-linux.so.3",
+      "flags": [
+        "-march=armv8-a+crc+crypto",
+        "-mtune=cortex-a53",
+        "-mfpu=crypto-neon-fp-armv8",
+        "-mfloat-abi=softfp"
+      ],
+      "role": "Existing BCM SDK vendor ABI and source-rebuilt components with vendor dependencies",
+      "default_new_and_rebuilt_component_flags": [
+        "-D_TIME_BITS=64",
+        "-D_FILE_OFFSET_BITS=64"
+      ],
+      "default_new_and_rebuilt_time_t_bits": 64,
+      "existing_vendor_blobs": "Preserve their actual ABI until a specific interface is audited; architecture alone does not justify a time32 exception for newly built components."
+    },
+    "armhf": {
+      "triplet": "arm-linux-gnueabihf",
+      "library_directory": "/usr/lib/arm-linux-gnueabihf",
+      "loader_entry": "/lib/ld-linux-armhf.so.3",
+      "flags": [
+        "-march=armv8-a+crc+crypto",
+        "-mtune=cortex-a53",
+        "-mfpu=crypto-neon-fp-armv8",
+        "-mfloat-abi=hard"
+      ],
+      "role": "Optional additional packages; current BCM SDK does not require this ABI",
+      "activation": "Architecture registration permits later package installation; no armhf runtime is installed by this configuration package.",
+      "time_policy": "Use consistent Ubuntu time64/file-offset64 defaults. An exception requires a proven individual legacy boundary and a recorded narrow workaround.",
+      "default_new_and_rebuilt_component_flags": [
+        "-D_TIME_BITS=64",
+        "-D_FILE_OFFSET_BITS=64"
+      ],
+      "default_new_and_rebuilt_time_t_bits": 64
+    }
+  },
+  "package_policy": {
+    "ownership": "All shipped base, toolchain, runtime and vendor additions must have truthful dpkg ownership/version/dependency metadata. Never overwrite packaged libc with loose files while retaining old package metadata.",
+    "glibc": {
+      "target_upstream_release": "2.44",
+      "minimum_kernel": "4.19",
+      "reuse": "Use authenticated Ubuntu glibc 2.44-1ubuntu1 source and packaging; reuse BE98 time64/legacy-boundary findings as regression requirements.",
+      "coinstallation": "Custom libc6 packages marked Multi-Arch: same for arm64, armel and armhf must carry an identical full Debian version and coinstall cleanly. Their matching development packages and architecture-independent shared files must follow the same version/coownership rules.",
+      "packaging": "Rebase Ubuntu/Debian packaging onto pinned upstream source, preserve maintainer scripts, ldconfig triggers, symbols/shlibs and matching libc-bin/libc6-dev/locale dependencies. Signed local repository policy must prevent accidental replacement by an incompatible runtime.",
+      "kernel_assumptions": "Keep --enable-kernel=4.19; time64 backports do not justify assuming every API from Linux 5.1 or newer.",
+      "time64": "Expose time64 APIs to new/rebuilt applications by default while retaining correctly implemented legacy ABI symbols for existing vendor binaries. Any application-level time32 exception must satisfy time64_policy.",
+      "libc_internal_build": "Keep Ubuntu libc internal _DISTRO_EVADE_TIME_BITS and legacy symbol build rules; _TIME_BITS=64 application policy must not erase libc implementations of the old ABI."
+    },
+    "gcc": {
+      "target_upstream_release": "16.2.0",
+      "package_entry_points": [
+        "/usr/bin/gcc-16",
+        "/usr/bin/g++-16"
+      ],
+      "native_tuple": "aarch64-linux-gnu",
+      "prefix": "/usr",
+      "multiarch": true,
+      "version_directory": "16",
+      "rebuild": "Rebuild in Ubuntu/Debian package layout with --enable-multiarch and major-version paths, standard /usr/include and ABI library locations. Remove the BE98 USB build's /opt sysroot/interpreter and USB rpaths. Use separate armel/armhf cross-compiler packages when required; AArch64 GCC -m32 is not an ARM32 compiler."
+    },
+    "binutils": {
+      "target_upstream_release": "2.47",
+      "host_architecture": "arm64",
+      "host_optimization_flags": [
+        "-O2",
+        "-mcpu=cortex-a53+crypto+crc"
+      ],
+      "packaging": "Build Ubuntu/Debian-style native B53 packages and the required separate target cross-binutils; preserve plugin/LTO support and truthful shared-library dependencies. Benchmark link workloads before claiming a performance improvement."
+    },
+    "vendor_components": "Keep closed-source ABI and required hardcoded paths; audit BE19000AI-specific collisions and private plugins before reusing BE98 compatibility links. All kernel modules remain AArch64 and follow kernel Kbuild flags.",
+    "systemd": {
+      "baseline": "Ubuntu 26.04 systemd 259.5-0ubuntu3.4",
+      "approach": "Keep matching Ubuntu source/package family; narrow legacy credential mount fallback required for kernel4.19 after real pidfd backport. Preserve credential access control and read-only ramfs.",
+      "policy": "/usr/share/leon-bcm-rootfs/systemd-policy.json",
+      "full_acceptance": "Must pass full base boot, supplied credentials and apt service transactions before claiming compatibility; ASUS orchestration remains separate."
+    }
+  },
+  "configuration_package_actions": [
+    "Install an Ubuntu deb822 source file with explicit supported archive architectures and archive-keyring trust.",
+    "Install this informational CPU/ABI/layout/package profile and its package documentation.",
+    "On configure, require native dpkg architecture arm64 and register foreign architectures armel and armhf."
+  ],
+  "acceptance_pending": [
+    "Build and test the custom glibc/GCC/binutils Debian packages; this profile does not supply them.",
+    "Validate package install/upgrade/solver behavior and every enabled ABI in a disposable writable Ubuntu rootfs.",
+    "Validate systemd and complete ASUS service integration with the actual kernel9 in QEMU before hardware acceptance."
+  ],
+  "time64_policy": {
+    "priority": "Use time64 for every new or rebuilt component that can support it; repair source bugs before considering a legacy workaround.",
+    "arm64": "Native LP64 time_t is already 64-bit.",
+    "arm32_defaults": [
+      "-D_TIME_BITS=64",
+      "-D_FILE_OFFSET_BITS=64"
+    ],
+    "no_blanket_architecture_exception": true,
+    "exception_required_evidence": [
+      "component and source/package version",
+      "exact caller/callee or IPC boundary",
+      "proven time_t/off_t/struct layout or symbol ABI mismatch",
+      "test reproducing the mismatch",
+      "narrow repair or compatibility shim attempted first",
+      "limited flags or isolated boundary retained if repair is infeasible",
+      "positive time64 and legacy regression results",
+      "documented exit criteria for removing the exception"
+    ],
+    "last_resort_legacy_component_flags": [
+      "-U_TIME_BITS",
+      "-U_FILE_OFFSET_BITS"
+    ],
+    "legacy_flags_scope": "Only the recorded individual component or ABI boundary; never the default for armel, armhf or the entire SDK.",
+    "glibc_build_internals": "Application time64 defaults must not blindly override libc internal build rules: preserve glibc time32 compatibility symbols for unchanged consumers while exposing time64 to new applications.",
+    "raw_syscall_rule": "Do not pass libc time64 struct timespec/timeval into legacy time32 syscall numbers. Use libc wrappers or explicitly sized kernel UAPI structures with verified translation.",
+    "existing_blob_boundary": "Keep unchanged vendor blobs isolated with their existing ABI until interoperation is proven; preserve compatible symbol versions and use checked translation across unavoidable time32 boundaries."
+  },
+  "time64_acceptance_matrix": [
+    {
+      "case": "native_arm64",
+      "required": "Compile and run sizeof(time_t)==8 plus post-2038 timer/file timestamp checks."
+    },
+    {
+      "case": "new_armel_and_armhf",
+      "required": "Compile with _TIME_BITS=64 and _FILE_OFFSET_BITS=64; assert time_t/off_t==8, confirm exported symbol bindings, and test post-2038 timerfd, utimensat/statx and sparse-file offsets."
+    },
+    {
+      "case": "old_raw_syscall_consumers",
+      "required": "Audit BusyBox and rebuilt source for legacy raw clock/time syscalls; test struct offsets and canary tails. Reuse BE98 get_mono repair and verify monotonic progression, ping RTT/deadline and timeout behavior."
+    },
+    {
+      "case": "each_vendor_boundary",
+      "required": "Record both sides structure sizes/offsets, integer widths, symbol versions and serialized formats; prove no implicit reinterpretation/truncation before integrating the rebuilt component."
+    },
+    {
+      "case": "legacy_exception",
+      "required": "A reproduced, named incompatibility plus narrow fallback test is mandatory. Keep positive time64 tests for other components passing."
+    },
+    {
+      "case": "glibc_private_dependency",
+      "required": "Full relocation/loader test in addition to public symbol scans; audit old libcrypt GLIBC_PRIVATE references and rebuild compatible libxcrypt if needed."
+    },
+    {
+      "case": "libc_runtime_regression",
+      "required": "Cache-disabled and cached resolution, TLS/pthreads, signals/cancellation/futex waits, DNS/NSS, C++ unwinding and exact ABI loaders."
+    }
+  ],
+  "be98_known_pitfalls": [
+    {
+      "id": "busybox-monotonic-time64",
+      "checkpoint": "ping-diagnosis-20260922",
+      "commit": "f80c68e01042c8d29ae994162c780b48f4b36c78",
+      "symptom": "ARM32 time64 timespec was passed to old clock_gettime syscall; only half the structure was written and ping reported enormous RTTs.",
+      "resolution": "Keep time64 and call libc clock_gettime() under __USE_TIME_BITS64 so glibc handles syscall selection/translation.",
+      "status": "Recorded BE98 hardware success; must be ported/tested against this candidate, not assumed deployed."
+    },
+    {
+      "id": "old-libcrypt-private-glibc-symbol",
+      "checkpoint": "systemd-rc-compat-20260916",
+      "symptom": "Old armel libcrypt required __snprintf@GLIBC_PRIVATE absent from the new glibc.",
+      "resolution": "Rebuild libxcrypt4.4.38 with obsolete ABI support, preserve versioned exports and test DES/MD5 crypt vectors.",
+      "classification": "libc private ABI dependency, not a reason to disable time64."
+    },
+    {
+      "id": "gcc15-arm32-defaults",
+      "checkpoint": "armel-multiarch-20260915 and multiarch-loader-20260916",
+      "symptom": "Ubuntu GCC15 already enables time64 and large-file defaults, unlike earlier build assumptions.",
+      "resolution": "Make defaults explicit for new builds. Earlier broad -U preservation settings are historical; migrate source components to time64 and keep only proven per-component exceptions."
+    }
+  ]
+}

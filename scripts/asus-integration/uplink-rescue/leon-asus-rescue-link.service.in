@@ -1,0 +1,35 @@
+# SOURCE-ONLY DRAFT. Helper source exists but is not built; no enable/preset.
+[Unit]
+Description=Owned link-local backup on the enrolled Ethernet uplink
+DefaultDependencies=no
+Requires=sysinit.target
+After=sysinit.target
+Conflicts=shutdown.target
+Before=shutdown.target
+ConditionPathExists=/etc/leon/rescue-link-enrollment
+
+[Service]
+Type=notify
+NotifyAccess=main
+ExecStart=/usr/libexec/leon-asus/rescue-link --monitor
+ExecStopPost=/usr/libexec/leon-asus/rescue-link --cleanup-owned
+RuntimeDirectory=leon-asus-rescue-link
+RuntimeDirectoryMode=0700
+RuntimeDirectoryPreserve=yes
+Restart=no
+# Initial wait stops at 250s. Full in-flight install/READY can consume 24s,
+# then exact cleanup at most 19s: 293s total remains below this deadline.
+TimeoutStartSec=300s
+# SIGTERM may arrive during that complete 24s transaction, followed by 19s
+# cleanup. Retain intents on ambiguity; no automatic restart or adoption.
+TimeoutStopSec=60s
+KillMode=control-group
+UMask=0077
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+# Fixed /proc/1/ns/net and /proc/1/root checks use READ_FSCREDS ptrace checks
+# against full-capability PID1. No arbitrary process inspection is implemented.
+CapabilityBoundingSet=CAP_NET_ADMIN CAP_SYS_PTRACE
+RestrictAddressFamilies=AF_UNIX AF_NETLINK

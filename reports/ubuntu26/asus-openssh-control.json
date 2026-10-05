@@ -1,0 +1,348 @@
+{
+  "schema_version": 1,
+  "status": "component_validated_inactive_candidate",
+  "component_runtime_validation_passed": true,
+  "runtime_accepted": false,
+  "production_ready": false,
+  "runtime_acceptance_scope": "Actual native Ubuntu ssh.service, synthetic single-account identity, IPv4/IPv6 guest loopback and ARMEL/native request transport under target kernel10. Full ASUS userspace, physical LAN/WAN policy and real device identity cutover remain unaccepted.",
+  "package": {
+    "path": "build/asus-ssh-integration/native-v3/leon-asus-openssh-control_0.3+leonb53.1_arm64.deb",
+    "sha256": "326595f6849bdd6b2592a86abe4623f6b4368b901bec4e8b60d56b5c098ccd58",
+    "version": "0.3+leonb53.1",
+    "architecture": "arm64"
+  },
+  "package_payload": [
+    {
+      "path": "usr/lib/systemd/system/leon-asus-ssh.socket",
+      "mode": "0o644",
+      "sha256": "31b8fab29dc1105c88a14b201cc0a765bb7040938c0771a59a2aff61df195630"
+    },
+    {
+      "path": "usr/lib/systemd/system/leon-asus-ssh@.service",
+      "mode": "0o644",
+      "sha256": "8d08a69d443c686f65974306890b034a14a63efb64cf22aabc736e400a400d20"
+    },
+    {
+      "path": "usr/libexec/leon-asus/ssh-control",
+      "mode": "0o755",
+      "sha256": "7299beff50aa13cccbb61a9eeaeabb98fd10e7711665f550ca2ceeceab0f6a85"
+    },
+    {
+      "path": "usr/share/doc/leon-asus-openssh-control/README",
+      "mode": "0o644",
+      "sha256": "d0adf65d3dd93e780722003cbcc0b0f184a2d37e2e3f6e48a0abaab3ec1a0b38"
+    },
+    {
+      "path": "usr/share/doc/leon-asus-openssh-control/copyright",
+      "mode": "0o644",
+      "sha256": "59f9cc32b34746e2f6b53cb688c69b808b940e6973e061724774ef8ca5162b1a"
+    }
+  ],
+  "package_installs_services_enabled": false,
+  "package_creates_accounts_or_host_keys": false,
+  "candidate": {
+    "path": "build/ubuntu26-rootfs/ubuntu26-bcm-gnu-systemd-openssh-control-b53-v4.tar",
+    "sha256": "9699098b82cbf73fb3c09cd71d9d5a2825fc645161bf78c02101a92329b7db7f",
+    "base_unchanged": true,
+    "custom_versions_preserved": {
+      "binutils": "2.47-6ubuntu1+leonb53.1",
+      "binutils-aarch64-linux-gnu": "2.47-6ubuntu1+leonb53.1",
+      "binutils-arm-linux-gnueabi": "2.47-6ubuntu1+leonb53.1",
+      "binutils-arm-linux-gnueabihf": "2.47-6ubuntu1+leonb53.1",
+      "binutils-common:arm64": "2.47-6ubuntu1+leonb53.1",
+      "cpp-16": "16.2.0-3ubuntu1+leonb53.1",
+      "cpp-16-aarch64-linux-gnu": "16.2.0-3ubuntu1+leonb53.1",
+      "g++-16": "16.2.0-3ubuntu1+leonb53.1",
+      "g++-16-aarch64-linux-gnu": "16.2.0-3ubuntu1+leonb53.1",
+      "gcc-16": "16.2.0-3ubuntu1+leonb53.1",
+      "gcc-16-aarch64-linux-gnu": "16.2.0-3ubuntu1+leonb53.1",
+      "gcc-16-base:arm64": "16.2.0-3ubuntu1+leonb53.1",
+      "leon-asus-notify:arm64": "0.1+leonb53.1",
+      "leon-asus-notify:armel": "0.1+leonb53.1",
+      "libasan8:arm64": "16.2.0-3ubuntu1+leonb53.1",
+      "libatomic1:arm64": "16.2.0-3ubuntu1+leonb53.1",
+      "libbinutils:arm64": "2.47-6ubuntu1+leonb53.1",
+      "libc-bin": "2.44-1ubuntu1+leonb53.1",
+      "libc-dev-bin": "2.44-1ubuntu1+leonb53.1",
+      "libc-gconv-modules-extra:arm64": "2.44-1ubuntu1+leonb53.1",
+      "libc-gconv-modules-extra:armel": "2.44-1ubuntu1+leonb53.1",
+      "libc6:arm64": "2.44-1ubuntu1+leonb53.1",
+      "libc6:armel": "2.44-1ubuntu1+leonb53.1",
+      "libc6-dev:arm64": "2.44-1ubuntu1+leonb53.1",
+      "libcc1-0:arm64": "16.2.0-3ubuntu1+leonb53.1",
+      "libcrypt1:arm64": "1:4.5.1-1+leonb53.1",
+      "libcrypt1:armel": "1:4.5.1-1+leonb53.1",
+      "libctf-nobfd0:arm64": "2.47-6ubuntu1+leonb53.1",
+      "libctf0:arm64": "2.47-6ubuntu1+leonb53.1",
+      "libgcc-16-dev:arm64": "16.2.0-3ubuntu1+leonb53.1",
+      "libgcc-s1:arm64": "16.2.0-3ubuntu1+leonb53.1",
+      "libgomp1:arm64": "16.2.0-3ubuntu1+leonb53.1",
+      "libgprofng0:arm64": "2.47-6ubuntu1+leonb53.1",
+      "libhwasan0:arm64": "16.2.0-3ubuntu1+leonb53.1",
+      "libitm1:arm64": "16.2.0-3ubuntu1+leonb53.1",
+      "liblsan0:arm64": "16.2.0-3ubuntu1+leonb53.1",
+      "libsframe3:arm64": "2.47-6ubuntu1+leonb53.1",
+      "libstdc++-16-dev:arm64": "16.2.0-3ubuntu1+leonb53.1",
+      "libstdc++6:arm64": "16.2.0-3ubuntu1+leonb53.1",
+      "libsystemd-shared:arm64": "259.5-0ubuntu3.4+leonb53.2",
+      "libsystemd0:arm64": "259.5-0ubuntu3.4+leonb53.2",
+      "libtsan2:arm64": "16.2.0-3ubuntu1+leonb53.1",
+      "libubsan1:arm64": "16.2.0-3ubuntu1+leonb53.1",
+      "libudev1:arm64": "259.5-0ubuntu3.4+leonb53.2",
+      "systemd": "259.5-0ubuntu3.4+leonb53.2",
+      "systemd-sysv": "259.5-0ubuntu3.4+leonb53.2",
+      "udev": "259.5-0ubuntu3.4+leonb53.2"
+    },
+    "new_packages": {
+      "leon-asus-openssh-control": "0.3+leonb53.1",
+      "sudo": "1.9.17p2-1ubuntu3.1",
+      "sudo-common": "1.2ubuntu"
+    },
+    "apt_install_reinstall_passed": true,
+    "protected_native_files": {
+      "etc/passwd": "9bce4c8228f69cf916214330cee1ebf3574bb2b1862956504a2e4a71f992476a",
+      "etc/shadow": "1a265af84b250a62dc99a3cb7a0515d99807fc2ac5fd6d99aaea18583b7b5c90",
+      "etc/group": "328be8a27dad9bb2704eeb31c050a9f4d0665b0c7f0b80bed5a84d9dc10a08cf",
+      "etc/ssh/ssh_host_ed25519_key": "aa4e3e3fd6db9646cbbdd5d545f691b029f8e184cf108ad774a6656392004496",
+      "etc/ssh/ssh_host_rsa_key": "6b47c1092e2c80f7e6521796f50ac9a4958d85550d21e154cef66cabe81b6e94",
+      "etc/ssh/ssh_host_ecdsa_key": "037bc13a6ffe5a977cc9a8a7617908fd628f7ef8802394c39588ef4d32369f2d",
+      "usr/bin/dash": "87630eb41654f7888e28fa5ef3ed0a351682e939d382b9239a24a8aefe84aeb9",
+      "usr/lib/aarch64-linux-gnu/libc.so.6": "2bf692ce79a92025aec7d4eb779ba19a7c1bc4813dbabe3f83fdf528f9bf578a",
+      "usr/lib/systemd/systemd": "6cf9cdb39c4d7001fc5716ebb0d5b1efa93eecfdbb4310e72e3456c87d73a1e0",
+      "usr/sbin/sshd": "cb296ce9114193caecc95fc799078499e5abf1c729698e883c8822a46fec1778",
+      "usr/bin/gcc-16": "3ccd10d7c19b0562d16b97c0672a978b06767a5323a86dac29746ced88cddb04",
+      "usr/lib/aarch64-linux-gnu/libstdc++.so.6": "80c3e70a21991a276612f43a671101d296f46eeddb19d4630307c26b81508d11",
+      "usr/lib/aarch64-linux-gnu/libgcc_s.so.1": "1ef0fc40831dad80351c39a3e87081fc6987851dbfa2166ba6c3a959f7521518"
+    },
+    "formal_identity_migrated": false,
+    "contains_prototype_host_keys_must_be_sealed": true
+  },
+  "sealed_candidate": {
+    "archive": {
+      "path": "build/ubuntu26-rootfs/ubuntu26-bcm-gnu-systemd-openssh-control-sealed-b53-v2.tar",
+      "sha256": "1c5935f62568a86aae00ff85e370baa547f392eb0a60a7bd69f610d8f5180798"
+    },
+    "report": {
+      "path": "build/ubuntu26-rootfs/ubuntu26-bcm-gnu-systemd-openssh-control-sealed-b53-v2.hostkey-seal.json",
+      "sha256": "59cf4eb6910dff6c9ab4ee006a8d5eeb366b5d628b8ed855497d831f5daf36e8"
+    },
+    "all_non_key_bytes_and_metadata_unchanged": true,
+    "device_keys_generated": false
+  },
+  "installed_mode_peer_audit": {
+    "report": {
+      "path": "reports/ubuntu26/installed-modes-ssh-sealed-v2.json",
+      "sha256": "cf06e45a45d1879a26902075dd9ff8dd5611f669ef896cbd8c8d46690ebf1469"
+    },
+    "inherited_critical_paths": 11,
+    "inherited_packages_requiring_metadata_fix": [
+      "leon-asus-notify 0.1",
+      "leon-gcc15-runtime 15.2.0-0leonb53.1",
+      "leon-bcm-rootfs-config 0.2"
+    ],
+    "ssh_control_package_violations": 0,
+    "writable_executables": 0
+  },
+  "official_packages": [
+    {
+      "Package": "sudo-common",
+      "Version": "1.2ubuntu",
+      "Architecture": "all",
+      "path": "build/asus-ssh-integration/gnu-systemd-openssh-control-b53-v4/official-archives/sudo-common_1.2ubuntu_all.deb",
+      "sha256": "ba909e8e796115f442d0915ed3baa1b752e8809ec4d8e723d2bbd0d177750d2c",
+      "ubuntu_metadata_sha256_matches": true,
+      "filename": "pool/main/s/sudo-common/sudo-common_1.2ubuntu_all.deb"
+    },
+    {
+      "Package": "sudo",
+      "Version": "1.9.17p2-1ubuntu3.1",
+      "Architecture": "arm64",
+      "path": "build/asus-ssh-integration/gnu-systemd-openssh-control-b53-v4/official-archives/sudo_1.9.17p2-1ubuntu3.1_arm64.deb",
+      "sha256": "7f14a53b18b28abe8ea529aa68e17d4dabe0dc2572561b3872f9da79a1e7a459",
+      "ubuntu_metadata_sha256_matches": true,
+      "filename": "pool/main/s/sudo/sudo_1.9.17p2-1ubuntu3.1_arm64.deb"
+    }
+  ],
+  "source_pin": "9b25e55ca5c56a6f01d6a56264c0f6c47459ada0",
+  "source_audit_inputs": [
+    {
+      "path": "release/src/router/www/Advanced_System_Content.asp",
+      "sha256": "638c64ca403a8c97eae515692f2001657e5b82d78b739dab43db03e16a961e7f",
+      "saved": "build/asus-ssh-integration/source-audit/Advanced_System_Content.asp"
+    },
+    {
+      "path": "release/src/router/httpd/web.c",
+      "sha256": "a6728d4b36ee87db2867b87ff63990bf63378d1ff4df855628844f2a64a514da",
+      "saved": "build/asus-ssh-integration/source-audit/web.c"
+    },
+    {
+      "path": "release/src/router/rc/ssh.c",
+      "sha256": "79cacf5ec327bfcd8fd77a5c73e1f5dcb79dbac854427930bb9cb097852fd9c0",
+      "saved": "build/asus-ssh-integration/source-audit/ssh.c"
+    },
+    {
+      "path": "release/src/router/rc/services.c",
+      "sha256": "7a335be5c2aa64518b6971368ac0c9ad5298fbda96b9dd0cceb26ed2946e1fba",
+      "saved": "build/asus-ssh-integration/source-audit/services.c"
+    },
+    {
+      "path": "release/src/router/rc/firewall.c",
+      "sha256": "4139a76240bbb4074b0cbe8228cca65acc7c0a83f99d31744bf1f6c841b8ab5d",
+      "saved": "build/asus-ssh-integration/source-audit/firewall.c"
+    }
+  ],
+  "source_findings": {
+    "sshd_enable_values": {
+      "0": "disabled",
+      "2": "LAN only",
+      "1": "LAN and WAN; rejected by native helper"
+    },
+    "web_apply": "Advanced_System_Content.asp invokes restart_time; services.c time handler stop/starts sshd. Explicit sshd handler also retained.",
+    "identity_sync": "setup_passwd hook sends only selected private getspnam crypt hash, never plaintext NVRAM password or an entire account database.",
+    "generic_stop": "0014 stop_sshd ignores generic stop while sshd_enable is nonzero. Overall broker shutdown stop_services path needs independent native ownership policy; coordinated with startup agent.",
+    "legacy_window": "sshd_rwb is a Dropbear receive-window parameter without a claimed native mapping.",
+    "ipv6": "Vendor firewall opens WAN IPv6 SSH only when sshd_enable==1. Native helper enumerates br0 IPv4+IPv6 addresses, explicit binds and per-prefix AllowUsers; physical firewall integration still requires real deployment validation."
+  },
+  "identity_policy": {
+    "name": "MastermixStudios",
+    "uid": "Native useradd allocated ordinary UID >=1000; persisted marker; no UID0 vendor alias copied.",
+    "privileges": "sudo group; official default sudo policy requiring password; no NOPASSWD override.",
+    "password_storage": "Validated existing crypt encoding, atomic selected shadow entry under lckpwdf; all unrelated entries preserved.",
+    "allowed_hash_formats": [
+      "DES",
+      "MD5 crypt",
+      "SHA256 crypt",
+      "SHA512 crypt",
+      "yescrypt j9T"
+    ],
+    "unsupported_hash_policy": "Unsupported formats or excessive configured rounds fail closed; no password algorithm silently converted.",
+    "authorized_keys": "ASUS keys kept in separate owned file; native home authorized_keys remains an additional source.",
+    "host_keys": "Explicit native device initialization only; refuses existing unmarked keys, uses no-overwrite links and fsync before marker; idempotent retry preserves existing marked keys. No automatic local Dropbear conversion is implemented."
+  },
+  "request_boundary": {
+    "socket_type": "UNIX SOCK_SEQPACKET",
+    "request_bytes": 3440,
+    "reply_bytes": 16,
+    "peer": "root SO_PEERCRED and exact approved rc inode",
+    "namespace": "native PID1 mount namespace and native /etc identity",
+    "scope": "fixed apply/identity operations and exact username; no shell command transport",
+    "timeout_limit": "Normal request and subprocess execution have alarms plus systemd RuntimeMaxSec. Uninterruptible kernel I/O cannot be given a hard userspace deadline."
+  },
+  "qemu": {
+    "result": {
+      "path": "build/qemu/asus-openssh-control-kernel10-v5/result.json",
+      "sha256": "48b0469fd9572e4d2cf14935c8b126ee4b8f26a62144056755bc6fca70bdc6fe"
+    },
+    "serial_log": {
+      "path": "build/qemu/asus-openssh-control-kernel10-v5/serial.log",
+      "sha256": "8ebbc171bcd73a84f3f1f2754678d74da87aaddb41827e2b815be3e24838768a"
+    },
+    "fixture": {
+      "path": "build/asus-ssh-integration/qemu-v5/manifest.json",
+      "sha256": "0fe883a15a105473114835909651ae08de6342c024b6e4da9f110301fba5c100"
+    },
+    "kernel_sha256": "4a15601eada042576aed2a3680dcc48e9228eea70f70c478840767aaa89a9f8e",
+    "initramfs_sha256": "51cebb2f538e0d8c5eae986f5b707f7b2bc15f8e4c4e02174fc97288a8f92fc9",
+    "elapsed_seconds": 121.91,
+    "expected_markers": {
+      "LAB_SSH_CONTROL_DEVICE_KEYS_PASS": true,
+      "LAB_SSH_CONTROL_REJECT_INVALID_NO_CHANGE_PASS": true,
+      "LAB_SSH_CONTROL_IDENTITY_ONLY_NO_START_PASS": true,
+      "LAB_SSH_CONTROL_ARMEL_TIME64_TRANSPORT_PASS": true,
+      "LAB_SSH_CONTROL_IPV4_IPV6_LAN_CONFIG_PASS": true,
+      "LAB_SSH_CONTROL_KEY_LOGIN_AND_REJECT_PASS": true,
+      "LAB_SSH_CONTROL_PASSWORD_SUDO_POLICY_PASS": true,
+      "LAB_SSH_CONTROL_LEGACY_MD5_AUTH_PASS": true,
+      "LAB_SSH_CONTROL_IDEMPOTENT_SINGLE_ENTRY_PASS": true,
+      "LAB_SSH_CONTROL_PASSWORD_DISABLE_PASS": true,
+      "LAB_SSH_CONTROL_SERVICE_RESTART_PASS": true,
+      "LAB_SSH_CONTROL_DISABLE_PASS": true,
+      "LAB_SSH_CONTROL_KERNEL10_COMPLETE": true,
+      "QEMU_UBUNTU26_SYSTEMD_FULL_COMPLETE": true
+    },
+    "command": [
+      "qemu-system-aarch64",
+      "-machine",
+      "virt-8.2,gic-version=2",
+      "-accel",
+      "tcg,thread=multi",
+      "-cpu",
+      "cortex-a53",
+      "-smp",
+      "2",
+      "-m",
+      "4096",
+      "-nodefaults",
+      "-nic",
+      "none",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-no-reboot",
+      "-sandbox",
+      "on,obsolete=deny,elevateprivileges=deny,spawn=deny,resourcecontrol=deny",
+      "-kernel",
+      "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/Image-v10",
+      "-initrd",
+      "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/asus-ssh-integration/qemu-v5/initramfs.cpio.gz",
+      "-append",
+      "console=ttyAMA0 earlycon=pl011,mmio32,0x09000000 rdinit=/init panic=0 oops=panic nokaslr loglevel=8 initcall_debug initcall_blacklist=bcm_pmc_drv_reg,bcm_ubus_drv_init,pmc_xrdp_init,pmc_wan_initcall,bcmbca_vreg_sync_drv_reg "
+    ],
+    "fixture_seams": "Approved executable path and LAN interface overridden to synthetic test client and lo; production helper used unchanged for device key initialization. Two ABI fixture clients are fresh builds. No QEMU NIC, forwarding, host block device or hardware passthrough."
+  },
+  "quarantined_package_versions": [
+    "0.1+leonb53.1: pre-fsync fix and noncanonical staging modes",
+    "0.2+leonb53.1: staging umask leaked group-writable metadata; binaries not a permission bypass, archive not accepted"
+  ],
+  "historical_failures": [
+    {
+      "result": "build/qemu/asus-openssh-control-kernel10-v1/result.json",
+      "cause": "Fixture lacked parent directory for injected client; device key ownership tests passed."
+    },
+    {
+      "result": "build/qemu/asus-openssh-control-kernel10-v3/result.json",
+      "cause": "Generic initramfs builder skipped tar root metadata; StrictModes correctly refused unsafe default /. Input rootfs / is 0755 root:root; fixed by preserving exact tar metadata, never by disabling StrictModes."
+    }
+  ],
+  "additional_fixture_failure": {
+    "result": "build/qemu/asus-openssh-control-kernel10-v4/result.json",
+    "cause": "Synthetic askpass reset generated an empty answer due to nested printf formatting. Fixed fixture with literal heredoc and exact-output guard; PAM and crypt policy unchanged."
+  },
+  "evidence": {
+    "native_build": {
+      "path": "build/asus-ssh-integration/native-v3/manifest.json",
+      "sha256": "fcbe5a1d1f2cf8e0ac0e3f7d7ce09fb5aedff8aea813e50f0ca2f00e1e112c9e"
+    },
+    "candidate_build": {
+      "path": "build/asus-ssh-integration/gnu-systemd-openssh-control-b53-v4/build.json",
+      "sha256": "8dedabcbfd5d3c093f91ad8cd908bb675413e07029e9d21804c6e6b66eeae166"
+    },
+    "clients_build": {
+      "path": "build/asus-ssh-integration/clients-v1/manifest.json",
+      "sha256": "42c8522ae657d6f954f97cdbb135187d56393f604309af93b8d67365ec230e99"
+    },
+    "official_archive_metadata": {
+      "path": "build/asus-ssh-integration/gnu-systemd-openssh-control-b53-v4/official-source-metadata.txt",
+      "sha256": "e0256c1e8d62deada8dab0d9bf64e199b852a2e119ce5acbb5a011e3f1afdb88"
+    },
+    "rc_patch": {
+      "path": "patches/ubuntu26/asuswrt6/0014-asus-native-openssh-control.patch",
+      "sha256": "994ac258bf7d01d4e454e4247cfb80ab71ebb0d59c6a94ba4b4cf774e4efe25d"
+    }
+  },
+  "remaining_before_deployment": [
+    "Merge the parent-owned metadata-only repairs for inherited notify/GCC15/rootfs-config packages and rerun the installed mode audit.",
+    "Use the hash-guarded sealer on the final assembled rootfs (a separate sealed candidate is already provided), then provision or explicitly migrate device-local identity without exporting private keys.",
+    "Activate control socket only as part of reviewed native startup ordering after storage and current approved rc inode are present.",
+    "Migrate real selected admin identity locally and validate exact original credential/hash format without printing or packaging credentials.",
+    "Verify physical br0 addresses, IPv4/IPv6 LAN/WAN firewall and ASUS Web apply end-to-end on guarded device trial.",
+    "Complete full ASUS service and closed-blob integration acceptance."
+  ],
+  "router_access": false,
+  "real_passwords_read": false,
+  "host_ssh_changed": false,
+  "checker_sha256": "63c3738f3030b5472983f9e72e21d1985c5bf0ead71bc017e06349b727b7346b"
+}

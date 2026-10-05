@@ -1,0 +1,20 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+[Unit]
+Description=One bounded late-trial AiMesh and sysctl process snapshot
+
+[Service]
+Type=oneshot
+# The first diagnostic may time out; its explicit incomplete marker must not
+# suppress the separately bounded later sysctl capture. It is no startup gate.
+ExecStart=-/usr/bin/timeout --signal=TERM --kill-after=1s 5s /bin/bash /usr/libexec/leon-asus/trial-aimesh-process-snapshot
+ExecStartPost=/usr/bin/timeout --signal=TERM --kill-after=1s 20s /bin/bash /usr/libexec/leon-asus/trial-sysctl-process-snapshot
+TimeoutStartSec=30s
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+# Only read protected proc metadata; no network or namespace modification.
+CapabilityBoundingSet=CAP_SYS_PTRACE
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=leon-asus-trial-late-snapshot

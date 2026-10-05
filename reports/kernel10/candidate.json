@@ -1,0 +1,313 @@
+{
+  "schema_version": 1,
+  "checked_at_utc": "2026-10-04T15:24:10.787744+00:00",
+  "status": "local_kernel_and_module_candidate_validated_not_flashed",
+  "kernel": "4.19.294 #10",
+  "image": {
+    "path": "build/Image-v10",
+    "bytes": 12851208,
+    "sha256": "4a15601eada042576aed2a3680dcc48e9228eea70f70c478840767aaa89a9f8e"
+  },
+  "vmlinux": {
+    "path": "build/kernel10/attempt1/vmlinux",
+    "bytes": 16866048,
+    "sha256": "54b285dea80df67f17f1a6b173226cc84f5bdf332fbaef1ecde7f0029ac88f2a"
+  },
+  "config": {
+    "path": "configs/kernel10.config",
+    "bytes": 118732,
+    "sha256": "1c495c39d80319246f26a38192eb481b54860ea938d46bbc8156b4fa676a8216"
+  },
+  "config_unchanged_from_kernel9": true,
+  "ccache_enabled": true,
+  "patch_stack": [
+    {
+      "path": "patches/0001-be98-kernel-feature-port.patch",
+      "bytes": 1613560,
+      "sha256": "08ac709548e4e22ba640ff35e9c938bf045975a8f5c2ad5496f732dd24e104c9"
+    },
+    {
+      "path": "patches/0002-be19000ai-netdev-abi.patch",
+      "bytes": 2663,
+      "sha256": "346913ea57bda1ec1b65d59c8d9e0492d169cc930c54496f4767e1d5d97f14d8"
+    },
+    {
+      "path": "patches/0003-trial-metadata-protection.patch",
+      "bytes": 2982,
+      "sha256": "0790bdade92bc1672ba2ab930d03033770e60506c65f3ab3277dbd10d0bb8c61"
+    },
+    {
+      "path": "patches/0004-cpu-cpuset-blkio-userns-abi.patch",
+      "bytes": 58734,
+      "sha256": "b4b01ec3c612ab9c9595240371392106b44af978fbb15f0451cd5d8802b3b455"
+    },
+    {
+      "path": "patches/0005-psi-cgroup-monitoring-abi.patch",
+      "bytes": 80010,
+      "sha256": "e2ee130ef931ba8d5737edcf9d4a3a265dbccdf81bb7fb4aae74644f9ba73737"
+    },
+    {
+      "path": "patches/0006-psi-workingset-refault-abi.patch",
+      "bytes": 19934,
+      "sha256": "6e2b2a186b16944c8204be4b148c1691f960a05a33daa8ff5970ab021e1c3c9b"
+    },
+    {
+      "path": "patches/0007-arm32-time64-compat.patch",
+      "bytes": 14357,
+      "sha256": "efd6466a359036c2fa8bfa85db76dc65a96187334f526223c22b821bcc6585ae"
+    },
+    {
+      "path": "patches/0008-pidfd-process-handles-abi.patch",
+      "bytes": 21890,
+      "sha256": "1154d1c602d54dd98936962a38b60989fa7f666c1b553d9bf9fdcc7b33d841be"
+    },
+    {
+      "path": "patches/0009-pcan-usb-fd-new-mcu.patch",
+      "bytes": 6908,
+      "sha256": "1da59191b96abecb123d452c4201a9fc73526df35c33377f4936e8ac796c8cd1"
+    }
+  ],
+  "new_features": {
+    "pidfd": [
+      "pidfd_open",
+      "pidfd_send_signal",
+      "clone(CLONE_PIDFD)",
+      "waitid(P_PIDFD)",
+      "poll/epoll",
+      "fdinfo"
+    ],
+    "pidfd_not_implemented": [
+      "clone3",
+      "PIDFD_NONBLOCK",
+      "pidfd_getfd",
+      "pidfs ioctls"
+    ],
+    "pcan": "PCAN-USB FD late-2022 MCU endpoint descriptors plus firmware response type>=2 correction",
+    "pcan_usb_id": "0c72:0012",
+    "pcan_config": "CONFIG_CAN_PEAK_USB=m"
+  },
+  "module_bundle": {
+    "root": "build/kernel10-module-root",
+    "total_modules": 181,
+    "changed_modules": [
+      "kernel/drivers/net/can/usb/peak_usb/peak_usb.ko"
+    ],
+    "pcan": {
+      "path": "build/kernel10-module-root/lib/modules/4.19.294/kernel/drivers/net/can/usb/peak_usb/peak_usb.ko",
+      "bytes": 58856,
+      "sha256": "dbf8d5178501d11f13a0eae6a378670bdc78a313cf3ec076bb0449d35a53d878"
+    },
+    "report": "reports/kernel10/modules-stage.json",
+    "delivery_requirement": "Deploy Image and this matching module bundle together; replacing Image alone cannot deliver the PCAN module change."
+  },
+  "abi": {
+    "report": "reports/kernel10/abi-check.json",
+    "passed": true,
+    "vmlinux_named_types_compared": 543,
+    "pid_task_file_signal_types_compared": 376,
+    "layout_changes": [],
+    "old_export_changes": [],
+    "old_syscall_dispatch_changes": []
+  },
+  "pidfd_semantics": {
+    "report": "reports/ubuntu26/pidfd-regression.json",
+    "assertions": 296,
+    "kernel9_negative_control_passed": true,
+    "cgroup_failure_cleanup_pid_reuse_and_thread_exit_tested": true
+  },
+  "qemu": [
+    {
+      "label": "kernel10-pcan-usb-fd",
+      "result": "build/qemu/kernel10-pcan-usb-fd/result.json",
+      "result_sha256": "dab6cbb47cc5a9ab7be3e82db25434bea4af4a8c0a7fe864501b145acee02a8f",
+      "initramfs_sha256": "aca7b44d86efb0a706c5b6cea67d70e544fcd6674d3010feee097fe99572be70",
+      "log_sha256": "008780e20e2c9b90b9834e0edfb3cdc9a1d13fef4d8a6ace9e7a5ef8b33a1ca9",
+      "passed": true,
+      "lab_lines": [
+        "LAB_PCAN_MODULE_LOADED=usb-common",
+        "LAB_PCAN_MODULE_LOADED=usbcore",
+        "LAB_PCAN_MODULE_LOADED=can",
+        "LAB_PCAN_MODULE_LOADED=can-raw",
+        "LAB_PCAN_MODULE_LOADED=can-dev",
+        "LAB_PCAN_MODULE_LOADED=peak_usb",
+        "LAB_PCAN_REGISTERED_PASS",
+        "LAB_PCAN_MODULE_UNLOADED=peak_usb",
+        "LAB_PCAN_MODULE_UNLOADED=can_raw",
+        "LAB_PCAN_MODULE_UNLOADED=can_dev",
+        "LAB_PCAN_MODULE_UNLOADED=can",
+        "LAB_PCAN_MODULE_UNLOADED=usbcore",
+        "LAB_PCAN_MODULE_UNLOADED=usb_common",
+        "LAB_PCAN_UNREGISTERED_PASS"
+      ]
+    },
+    {
+      "label": "kernel10-pidfd-full-v4",
+      "result": "build/qemu/kernel10-pidfd-full-v4/result.json",
+      "result_sha256": "d30ab40ae2f369365336014bd0648dc80571ed21ba2d8d007d4513864b1375a7",
+      "initramfs_sha256": "c4682b0323030e2493424fccf1052752617febaeb0f0955b98929de7d6aaba3d",
+      "log_sha256": "afdd35923facec815652e45707bb0dbfc4ece6ed5e6c5674d7f1bbcbf6027add",
+      "passed": true,
+      "lab_lines": []
+    },
+    {
+      "label": "ubuntu26-kernel10-systemd-proof",
+      "result": "build/qemu/ubuntu26-kernel10-systemd-proof/result.json",
+      "result_sha256": "501e7a71cdb101dd875732f1be3a71a51918897b6449f0216f79d837e348a2bd",
+      "initramfs_sha256": "ff08c5824f1e3ce6da7e824f7999ed3c684ac9627f04813dd0dc9647a7f5341c",
+      "log_sha256": "0604d9f076b15ebcd7f46dd7305140497c0110f28a92da5b3fc7d3bc15d4595d",
+      "passed": true,
+      "lab_lines": [
+        "LAB_SYSTEMD_SERVICE_STARTED",
+        "LAB_SYSTEMD_SERVICE_PROOF_PRESENT"
+      ]
+    },
+    {
+      "label": "kernel10-time64-confirmed",
+      "result": "build/qemu/kernel10-time64-confirmed/result.json",
+      "result_sha256": "cdc4faab8a04dc334e1797094ae4f549532a516a4b553b97103106877b856122",
+      "initramfs_sha256": "e95aac883b674e0a3847e2681a824385021d2beb3ff4bc940adcb21e327b28ee",
+      "log_sha256": "74d4c6e1d42832bc8599fe11242a970ae149776a41350fd4aed2b3f0f810c1dd",
+      "passed": true,
+      "lab_lines": [
+        "LAB_TIME64_ABI_PASS abi=aarch64-native64",
+        "LAB_TIME64_ABI_PASS abi=arm32-softfloat-direct-time64",
+        "LAB_TIME64_ABI_PASS abi=arm32-hardfloat-direct-time64",
+        "LAB_TIME64_GLIBC_PASS abi=armel",
+        "LAB_TIME64_GLIBC_PASS abi=armhf"
+      ]
+    },
+    {
+      "label": "kernel10-resource",
+      "result": "build/qemu/kernel10-resource/result.json",
+      "result_sha256": "057b38a7cbda758ca7144dbcce5bb02aea4afdd8464812f7271044b053facf11",
+      "initramfs_sha256": "48301057190eac901c0925c18a5910e4be8087e6069ac1e9a5ab6e63e9410e93",
+      "log_sha256": "3446ad8b06785ac59c2b9df40716a00a992f7c00c5956e211ccdf12e052133d7",
+      "passed": true,
+      "lab_lines": [
+        "LAB_CPU_STAT nr_periods=31",
+        "LAB_CPU_STAT nr_throttled=31",
+        "LAB_CPU_STAT throttled_time=5372042176",
+        "LAB_RESOURCE_PASS cpu_quota_two_busy_children",
+        "LAB_RESOURCE_PASS cpuset_cpu1_and_fork_inheritance",
+        "LAB_IO_WRITE_SECONDS 3.998",
+        "LAB_IO_READ_SECONDS 4.004",
+        "LAB_RESOURCE_PASS block_read_write_bandwidth_and_data",
+        "LAB_RESOURCE_PASS unprivileged_uid_gid_mount_net_pid_namespaces"
+      ]
+    },
+    {
+      "label": "kernel10-psi",
+      "result": "build/qemu/kernel10-psi/result.json",
+      "result_sha256": "5dbc5397a3513e1e5d8cc5d0f96f1734fbd7f8f7e1aeaebf4c416449c2ac2ada",
+      "initramfs_sha256": "0555ee0a8e7dbbc85563dd720f5750d0f5393b2e2c5e1039ce82d181b8daf389",
+      "log_sha256": "738aadd0fa63ccd0cc484cbf0a0f41e640a2d68ca1c1b9e4dfe048c64ef50ca8",
+      "passed": true,
+      "lab_lines": [
+        "LAB_KERNEL 4.19.294 #10 SMP PREEMPT Sat Oct 3 12:00:00 UTC 2026",
+        "LAB_PSI_PASS parser_fixtures count=15",
+        "LAB_PSI_PASS threshold_abi path=/proc/pressure/cpu",
+        "LAB_PSI_PASS threshold_abi path=/sys/fs/cgroup/psi-probe/a/cpu.pressure",
+        "LAB_PSI_PASS threshold_abi path=/proc/pressure/memory",
+        "LAB_PSI_PASS threshold_abi path=/sys/fs/cgroup/psi-probe/a/memory.pressure",
+        "LAB_PSI_PASS threshold_abi path=/proc/pressure/io",
+        "LAB_PSI_PASS threshold_abi path=/sys/fs/cgroup/psi-probe/a/io.pressure",
+        "LAB_PSI_PASS unregistered_pressure_poll_epoll_error_semantics",
+        "LAB_PSI_PASS generic_cgroup_events_populated_0_1_0_poll_rearm",
+        "LAB_PSI_PASS global_cpu_poll_epoll_read_rearm total_delta=1248676",
+        "LAB_PSI_PASS hierarchy_and_live_migration child_delta=751777 parent_delta=752230 destination_delta=753812",
+        "LAB_PSI_PASS single_worker_cpu_max some_delta=982891 full_delta=982891 full_supported=1",
+        "LAB_PSI_PASS one_worker_competes_with_other_cgroup some_delta=628468 full_delta=628467",
+        "LAB_PSI_PASS system_cpu_full_zero full_supported=1",
+        "LAB_PSI_PASS bounded_memory_high_epoll some_delta=4369 full_delta=4369 allocation_limit=25165824",
+        "LAB_PSI_PASS cgroup_remove_with_open_pressure_and_epoll_fds rounds=16",
+        "LAB_PSI_PASS global_and_cgroup_cpu_memory_io_format_and_monotonic_totals",
+        "LAB_PSI_LIMIT io_notification_generation_not_tested_no_real_or_host_disk"
+      ]
+    },
+    {
+      "label": "kernel10-docker",
+      "result": "build/qemu/kernel10-docker/result.json",
+      "result_sha256": "82e0d2a3eba45c1adacaa2465c28060316336bdaf54b3c5b9d2cbfc4fcb2fdec",
+      "initramfs_sha256": "798305e03b6b8d5d549a0c5e523d33194da9ec7e60e77b746f64d0c361cf72af",
+      "log_sha256": "ce56512049bbfba2dac97cc212c7b69e2806ff3642866127e008833766d82ba1",
+      "passed": true,
+      "lab_lines": [
+        "LAB_ROOTFS_PASS zstd_mount_and_all_userspace_hashes",
+        "LAB_ZSWAP_BOOT_POOL_PASS",
+        "LAB_MODULE_BEGIN tfat",
+        "LAB_MODULE_END tfat rc=0 errno=0 message=Success",
+        "LAB_MODULE_BEGIN tntfs",
+        "LAB_MODULE_END tntfs rc=0 errno=0 message=Success",
+        "LAB_MODULE_BEGIN thfsplus",
+        "LAB_MODULE_END thfsplus rc=0 errno=0 message=Success",
+        "LAB_MODULE_BEGIN raid6_pq",
+        "LAB_MODULE_END raid6_pq rc=0 errno=0 message=Success",
+        "LAB_MODULE_BEGIN xor",
+        "LAB_MODULE_END xor rc=0 errno=0 message=Success",
+        "LAB_MODULE_BEGIN btrfs",
+        "LAB_MODULE_END btrfs rc=0 errno=0 message=Success",
+        "LAB_MODULE_BEGIN exportfs",
+        "LAB_MODULE_END exportfs rc=0 errno=0 message=Success",
+        "LAB_MODULE_BEGIN overlay",
+        "LAB_MODULE_END overlay rc=0 errno=0 message=Success",
+        "LAB_DOCKER_PASS memory_and_memswap_limit_visible",
+        "LAB_DOCKER_PASS cpu_quota_cpuset_blkio_flags",
+        "LAB_DOCKER_PASS btrfs_overlay_pagecache",
+        "LAB_DOCKER_PASS oom_isolated_and_reported",
+        "LAB_DOCKER_PASS swap_charge_reclaim_and_data_roundtrip",
+        "LAB_DOCKER_PASS survives_oom"
+      ]
+    }
+  ],
+  "ubuntu_writable_root": {
+    "report": "reports/ubuntu26/writable-root-test-writable-systemd-kernel10.json",
+    "passed": true,
+    "base_glibc": "2.43-2ubuntu2.4",
+    "systemd": "259.5-0ubuntu3.4",
+    "scope": "Real initramfs to ext4 switch_root, apt install/remove, full unmount/remount, persistent etc/var/dpkg state, then original Ubuntu systemd PID1 and one proven service."
+  },
+  "independent_review": "reports/kernel10/peer-review.json",
+  "ubuntu_original_full_base_boot": {
+    "passed": false,
+    "report": "reports/ubuntu26/systemd259-kernel10-full-boot.json",
+    "result": "build/qemu/ubuntu26-kernel10-systemd-full/result.json",
+    "blocker": "Credentials setup requires the new mount API; fsopen is not implemented in kernel10. Minimal service success does not establish full boot compatibility."
+  },
+  "deployment": {
+    "firmware_packaged": false,
+    "flashed": false,
+    "partition_created": false,
+    "device_root_switched": false,
+    "ai_board_modified": false,
+    "permanent_boot_commit": false
+  },
+  "limitations": [
+    "QEMU is not BCM board bring-up; proprietary ASUS services, real radios and the physical PCAN adapter have not been tested on kernel10.",
+    "ABI comparison covers available complete DWARF types and exports, not every proprietary ABI assumption.",
+    "Writable ext4 lives in guest RAM during these tests; unmount/remount persistence is proven, power-loss recovery and physical eMMC persistence are not.",
+    "Bad-UUID test takes a safe marker/poweroff branch; full stock recovery boot is not emulated.",
+    "Full ASUS service integration and physical root-transition acceptance remain necessary before production use.",
+    "GCC16, glibc2.44 and optimized binutils package builds are separate userspace work and are not present in the original rootfs used for this manifest."
+  ],
+  "ubuntu_native_followup": {
+    "report": "reports/ubuntu26/gnu-systemd-candidate.json",
+    "status": "native_ubuntu_base_QEMU_and_ext4_passed_not_deployed",
+    "rootfs": {
+      "rootfs_tar": "build/ubuntu26-rootfs/ubuntu26-bcm-gnu-systemd-b53-v3.tar",
+      "sha256": "057c52f70d8974691179235c4e273a6be0d474edde11d6c1cb85b09b11b250a4",
+      "bytes": 512396800,
+      "hostname": "be19000ai-bcm"
+    },
+    "versions": {
+      "glibc": "2.44-1ubuntu1+leonb53.1",
+      "gcc": "16.2.0-3ubuntu1+leonb53.1",
+      "binutils": "2.47-6ubuntu1+leonb53.1",
+      "systemd": "259.5-0ubuntu3.4+leonb53.2"
+    },
+    "full_base_boot_passed": true,
+    "apt_service_transactions_and_credentials_passed": true,
+    "ext4_passed": true,
+    "update_deployment_gate": "not_ready",
+    "scope": "Separate native GNU/systemd candidate; no ASUS integration or physical root switch."
+  }
+}

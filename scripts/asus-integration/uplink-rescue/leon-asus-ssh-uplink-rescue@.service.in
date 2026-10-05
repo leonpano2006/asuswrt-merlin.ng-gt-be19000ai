@@ -1,0 +1,21 @@
+# SOURCE-ONLY DRAFT. No helper/account/key provisioning or automatic start.
+[Unit]
+Description=Native uplink rescue SSH connection
+CollectMode=inactive-or-failed
+ConditionFileNotEmpty=/var/lib/leon-asus-ssh/recovery_authorized_keys
+ConditionPathExists=/etc/ssh/ssh_host_ed25519_key
+RequiresMountsFor=/var/lib/leon-asus-ssh /etc/ssh
+
+[Service]
+Type=exec
+ExecStart=/usr/sbin/sshd -i -e -f /etc/ssh/leon-asus-uplink-rescue.conf
+StandardInput=socket
+StandardOutput=socket
+StandardError=journal
+RuntimeDirectory=sshd
+RuntimeDirectoryMode=0755
+RuntimeDirectoryPreserve=yes
+KillMode=control-group
+TimeoutStopSec=15s
+UMask=0077
+

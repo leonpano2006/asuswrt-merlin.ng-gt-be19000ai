@@ -1,0 +1,241 @@
+{
+  "date_utc": "2026-10-04T14:24:42.626899+00:00",
+  "device": {
+    "name": "PEAK-System PCAN-USB FD",
+    "usb_id": "0c72:0012",
+    "scope": "New MCU revision introduced at end of 2022; same USB ID as original revision",
+    "official_minimum_mainline_kernel": {
+      "original": "4.0",
+      "new_mcu": "6.0"
+    },
+    "note": "The minimum describes unmodified mainline releases. Backporting the driver support makes a full kernel major-version upgrade unnecessary."
+  },
+  "primary_sources": [
+    "https://www.peak-system.com/fileadmin/media/linux/index.php",
+    "https://www.peak-system.com/produktcd/Pdf/English/PCAN-USB-FD_UserMan_eng.pdf",
+    "https://github.com/torvalds/linux/commit/4f232482467a354a74e08633faa1ed93fe00ee5e",
+    "https://github.com/torvalds/linux/commit/788199b73b6efe4ee2ade4d7457b50bb45493488"
+  ],
+  "implementation": {
+    "patch": {
+      "path": "patches/0009-pcan-usb-fd-new-mcu.patch",
+      "sha256": "1da59191b96abecb123d452c4201a9fc73526df35c33377f4936e8ac796c8cd1",
+      "bytes": 6908
+    },
+    "source": {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/drivers/net/can/usb/peak_usb/pcan_usb_fd.c",
+      "sha256": "a497cff6277de017cf0614ed8f1b99d6cd8fe574e0b4ce827ea21484495d15f5",
+      "bytes": 37863
+    },
+    "upstream_patches": [
+      {
+        "path": "build/pcan-usb-fd/upstream/4f232482467a.patch",
+        "sha256": "24ff66ac93641ffd9366cb66f99dfdcab9185fbeac281b0405b82f0ad1ca3076",
+        "bytes": 7547,
+        "url": "https://github.com/torvalds/linux/commit/4f232482467a.patch"
+      },
+      {
+        "path": "build/pcan-usb-fd/upstream/788199b73b6efe4ee2ade4d7457b50bb45493488.patch",
+        "sha256": "0df9284bd21efbbfdfc09e7149c8ee06465f395a96b90c20000bc977a585014f",
+        "bytes": 3002,
+        "url": "https://github.com/torvalds/linux/commit/788199b73b6efe4ee2ade4d7457b50bb45493488.patch"
+      }
+    ],
+    "semantics": [
+      "Read extended firmware endpoint data",
+      "Use device command endpoint for synchronous USB bulk command and asynchronous restart URB",
+      "Use advertised receive/transmit data endpoints per CAN controller for firmware response type >= 2",
+      "Retain static endpoints for original firmware response type 1",
+      "Claim CAN interface number zero for PCAN-USB FD instead of inferring endpoint layout"
+    ],
+    "backport_adjustments": [
+      "Preserve vendor source comment spelling to apply upstream patch without fuzz",
+      "Retain Linux4.19 device_number field name rather than newer can_channel_id",
+      "Merge 2025 type >=2 fix into original Linux6.0 patch"
+    ],
+    "public_or_broadcom_structure_changes": false,
+    "shared_config_modified": false,
+    "module_config": {
+      "CONFIG_CAN": "m",
+      "CONFIG_CAN_RAW": "m",
+      "CONFIG_CAN_BCM": "m",
+      "CONFIG_CAN_GW": "m",
+      "CONFIG_CAN_DEV": "m",
+      "CONFIG_CAN_CALC_BITTIMING": "y",
+      "CONFIG_CAN_PEAK_USB": "m"
+    },
+    "patch_checks": {
+      "original_sha256": "eb8511b9f72fe4973666fade98820eceb0a2e216db233ef8b49e2a8780bf941b",
+      "patched_sha256": "a497cff6277de017cf0614ed8f1b99d6cd8fe574e0b4ce827ea21484495d15f5",
+      "patch_sha256": "1da59191b96abecb123d452c4201a9fc73526df35c33377f4936e8ac796c8cd1",
+      "reverse_check": true
+    }
+  },
+  "validation": {
+    "module_build": {
+      "returncode": 0,
+      "seconds": 0.78,
+      "shared_config_unchanged": true,
+      "module_sha256": "dbf8d5178501d11f13a0eae6a378670bdc78a313cf3ec076bb0449d35a53d878"
+    },
+    "module": {
+      "path": "build/pcan-usb-fd/work/kernel/linux-4.19/drivers/net/can/usb/peak_usb/peak_usb.ko",
+      "sha256": "dbf8d5178501d11f13a0eae6a378670bdc78a313cf3ec076bb0449d35a53d878",
+      "bytes": 58856
+    },
+    "build_log": {
+      "path": "build/pcan-usb-fd/build.log",
+      "sha256": "74182eacee80a9b67a4a2e4e4374a1067cb9c8ea7e86b690bd54afb3d1e70432",
+      "bytes": 1817
+    },
+    "build_command": {
+      "path": "build/pcan-usb-fd/build-command.json",
+      "sha256": "31ae714d382780a1fe0b9c569fbb19f2d43bb7c45b1dfad45ac753568e190f17",
+      "bytes": 2364
+    },
+    "modinfo": "filename:       /home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/pcan-usb-fd/work/kernel/linux-4.19/drivers/net/can/usb/peak_usb/peak_usb.ko\nlicense:        GPL v2\ndescription:    CAN driver for PEAK-System USB adapters\nauthor:         Stephane Grosjean <s.grosjean@peak-system.com>\nalias:          usb:v0C72p0014d*dc*dsc*dp*ic*isc*ip*in*\nalias:          usb:v0C72p0013d*dc*dsc*dp*ic*isc*ip*in*\nalias:          usb:v0C72p0011d*dc*dsc*dp*ic*isc*ip*in*\nalias:          usb:v0C72p0012d*dc*dsc*dp*ic*isc*ip*in*\nalias:          usb:v0C72p000Dd*dc*dsc*dp*ic*isc*ip*in*\nalias:          usb:v0C72p000Cd*dc*dsc*dp*ic*isc*ip*in*\ndepends:        can-dev,usbcore\nname:           peak_usb\nvermagic:       4.19.294 SMP preempt mod_unload aarch64\n",
+    "descriptor_fixtures": {
+      "source": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/drivers/net/can/usb/peak_usb/pcan_usb_fd.c",
+      "source_sha256": "a497cff6277de017cf0614ed8f1b99d6cd8fe574e0b4ce827ea21484495d15f5",
+      "compile_command": [
+        "gcc",
+        "-O1",
+        "-g",
+        "-std=gnu11",
+        "-Wall",
+        "-Wextra",
+        "-Wno-unused-parameter",
+        "-Wno-sign-compare",
+        "-fsanitize=address,undefined",
+        "-fno-omit-frame-pointer",
+        "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/pcan-usb-fd/descriptor-fixtures/pcan-usb-fd-fixture.c",
+        "-o",
+        "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/pcan-usb-fd/descriptor-fixtures/pcan-usb-fd-fixture"
+      ],
+      "compile_returncode": 0,
+      "run_returncode": 0,
+      "stdout": "PASS only_interface_zero_claimed\nPASS firmware_type=1 speed=3 legacy_or_dynamic_endpoints second_channel sync_async_dispatch disconnected_no_send\nPASS firmware_type=1 speed=2 legacy_or_dynamic_endpoints second_channel sync_async_dispatch disconnected_no_send\nPASS firmware_type=2 speed=3 legacy_or_dynamic_endpoints second_channel sync_async_dispatch disconnected_no_send\nPASS firmware_type=2 speed=2 legacy_or_dynamic_endpoints second_channel sync_async_dispatch disconnected_no_send\nPASS firmware_type=3 speed=3 legacy_or_dynamic_endpoints second_channel sync_async_dispatch disconnected_no_send\nPASS firmware_type=3 speed=2 legacy_or_dynamic_endpoints second_channel sync_async_dispatch disconnected_no_send\nPCAN_USB_FD_DESCRIPTOR_FIXTURES_PASS\n",
+      "stderr": "",
+      "tested_actual_functions": [
+        "static inline void *pcan_usb_fd_cmd_buffer(",
+        "static int pcan_usb_fd_send_cmd(",
+        "static int pcan_usb_fd_restart_async(",
+        "static int pcan_usb_fd_probe(",
+        "static int pcan_usb_fd_init("
+      ],
+      "hardware_test": false
+    },
+    "regression_negative_control": {
+      "purpose": "Same real-function fixture against Linux6.0 initial support without 2025 fix must fail for firmware type3",
+      "result": {
+        "source": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/pcan-usb-fd/linux6-initial-only/drivers/net/can/usb/peak_usb/pcan_usb_fd.c",
+        "source_sha256": "89e2a7395291b7981e1e3f4b45364044dc43cc0415decbac6ed54d699dda82f7",
+        "compile_command": [
+          "gcc",
+          "-O1",
+          "-g",
+          "-std=gnu11",
+          "-Wall",
+          "-Wextra",
+          "-Wno-unused-parameter",
+          "-Wno-sign-compare",
+          "-fsanitize=address,undefined",
+          "-fno-omit-frame-pointer",
+          "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/pcan-usb-fd/linux6-initial-only-negative/pcan-usb-fd-fixture.c",
+          "-o",
+          "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/pcan-usb-fd/linux6-initial-only-negative/pcan-usb-fd-fixture"
+        ],
+        "compile_returncode": 0,
+        "run_returncode": -6,
+        "stdout": "",
+        "stderr": "pcan-usb-fd-fixture: /home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/pcan-usb-fd/linux6-initial-only-negative/pcan-usb-fd-fixture.c:450: test_firmware: Assertion `first.usb_if->fw_info.cmd_out_ep == cmd' failed.\n",
+        "tested_actual_functions": [
+          "static inline void *pcan_usb_fd_cmd_buffer(",
+          "static int pcan_usb_fd_send_cmd(",
+          "static int pcan_usb_fd_restart_async(",
+          "static int pcan_usb_fd_probe(",
+          "static int pcan_usb_fd_init("
+        ],
+        "hardware_test": false
+      },
+      "expected_failure": true
+    },
+    "qemu_module_load_unload": {
+      "label": "pcan-usb-fd-kernel9",
+      "command": [
+        "qemu-system-aarch64",
+        "-machine",
+        "virt-8.2,gic-version=2",
+        "-accel",
+        "tcg,thread=multi",
+        "-cpu",
+        "cortex-a53",
+        "-smp",
+        "2",
+        "-m",
+        "1024",
+        "-nodefaults",
+        "-nic",
+        "none",
+        "-display",
+        "none",
+        "-monitor",
+        "none",
+        "-serial",
+        "stdio",
+        "-no-reboot",
+        "-sandbox",
+        "on,obsolete=deny,elevateprivileges=deny,spawn=deny,resourcecontrol=deny",
+        "-kernel",
+        "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/Image-v9",
+        "-initrd",
+        "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/pcan-usb-fd/qemu/pcan-usb-fd-module.cpio.gz",
+        "-append",
+        "console=ttyAMA0 earlycon=pl011,mmio32,0x09000000 rdinit=/init panic=0 oops=panic nokaslr loglevel=8 initcall_debug initcall_blacklist=bcm_pmc_drv_reg,bcm_ubus_drv_init,pmc_xrdp_init,pmc_wan_initcall,bcmbca_vreg_sync_drv_reg "
+      ],
+      "stop_reason": "qemu_exit",
+      "exit_code": 0,
+      "elapsed_seconds": 1.2,
+      "kernel_sha256": "cf4f036d1ff03cb4d13e6f41aedb1b31665d6921a0dd93ff0b8fc951ae18e073",
+      "initramfs_sha256": "aca7b44d86efb0a706c5b6cea67d70e544fcd6674d3010feee097fe99572be70",
+      "log_sha256": "2cd53989628d83009faf2d3617155586d5aadd6377dbd4a938ee7565cb82dc24",
+      "init_reached": true,
+      "guest_complete": true,
+      "panic": false,
+      "lab_lines": [
+        "LAB_PCAN_MODULE_LOADED=usb-common",
+        "LAB_PCAN_MODULE_LOADED=usbcore",
+        "LAB_PCAN_MODULE_LOADED=can",
+        "LAB_PCAN_MODULE_LOADED=can-raw",
+        "LAB_PCAN_MODULE_LOADED=can-dev",
+        "LAB_PCAN_MODULE_LOADED=peak_usb",
+        "LAB_PCAN_REGISTERED_PASS",
+        "LAB_PCAN_MODULE_UNLOADED=peak_usb",
+        "LAB_PCAN_MODULE_UNLOADED=can_raw",
+        "LAB_PCAN_MODULE_UNLOADED=can_dev",
+        "LAB_PCAN_MODULE_UNLOADED=can",
+        "LAB_PCAN_MODULE_UNLOADED=usbcore",
+        "LAB_PCAN_MODULE_UNLOADED=usb_common",
+        "LAB_PCAN_UNREGISTERED_PASS"
+      ]
+    },
+    "qemu_fixture": {
+      "path": "build/pcan-usb-fd/qemu/pcan-usb-fd-module.cpio.gz",
+      "sha256": "aca7b44d86efb0a706c5b6cea67d70e544fcd6674d3010feee097fe99572be70",
+      "bytes": 1251494
+    }
+  },
+  "deployment": {
+    "flashed": false,
+    "router_writes": false,
+    "physical_adapter_tested": false,
+    "module_in_candidate_source": true,
+    "packaging_required": "kernel10 rootfs must replace peak_usb.ko, regenerate depmod metadata and module inventory; changing Image alone cannot deliver a modular driver backport"
+  },
+  "limitations": [
+    "No physical adapter was exposed to QEMU or used on the build host; USB enumeration with actual adapter firmware and CAN/CAN FD bus traffic remain to test.",
+    "SocketCAN netdev driver only; does not add the separate PCAN-Basic character-device API.",
+    "No adapter EEPROM settings, adapter firmware, CAN bitrate, network interface state or USB host bindings were changed.",
+    "CAN RX internal timestamps use kernel ktime_t; ARM32 new socket timestamp UAPI/time64 ancillary-format support remains a separate kernel9 limitation, outside this USB endpoint backport."
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "schema": 1,
+  "status": "source_only_canonical_sdk419_8437_rule_decoder_successor",
+  "old_source": {
+    "path": "scripts/asus-integration/uplink-rescue/rescue-link-v5.c",
+    "sha256": "3d980d63514c7e9dc0e4352a364a437c89afab7c12319530cb29832eb1a7f78e",
+    "bytes": 34526
+  },
+  "new_source": {
+    "path": "scripts/asus-integration/uplink-rescue/rescue-link-v6.c",
+    "sha256": "d303d5dbe77d872e76881ae98983fa0c4a348bd1a489105f34c41b427077ba5e",
+    "bytes": 35499
+  },
+  "transforms": [
+    {
+      "old": "static int parse_rule(struct snapshot *s,const struct nlmsghdr *h){\n const char *reason=\"rule-header\";struct rtattr *a;int len;\n if(attributes(h,sizeof(struct fib_rule_hdr),&a,&len))goto refused;\n const struct fib_rule_hdr *m=NLMSG_DATA(h);uint32_t table=m->table,priority=0,v;unsigned seen=0;\n reason=\"rule-selector-flags-or-action\";\n if(m->family!=AF_INET||m->src_len||m->dst_len||m->tos||m->res1||m->res2||m->flags||m->action!=FR_ACT_TO_TBL)goto refused;\n for(;RTA_OK(a,len);a=RTA_NEXT(a,len)){unsigned attribute;reason=\"rule-attribute-shape\";\n  switch(a->rta_type&NLA_TYPE_MASK){\n   case FRA_TABLE:attribute=1;if(!u32attr(a,&v)||(table&&table!=v))goto refused;table=v;break;\n   case FRA_PRIORITY:attribute=2;if(!u32attr(a,&priority))goto refused;break;\n   case FRA_SUPPRESS_PREFIXLEN:attribute=4;if(!u32attr(a,&v)||v!=UINT32_MAX)goto refused;break;\n   case FRA_PROTOCOL:attribute=8;if(RTA_PAYLOAD(a)!=1)goto refused;break;\n   case FRA_PAD:attribute=16;if(RTA_PAYLOAD(a))goto refused;break;\n   default:reason=\"rule-unknown-attribute\";goto refused;\n  }\n  if(seen&attribute){reason=\"rule-duplicate-attribute\";goto refused;}seen|=attribute;\n }\n if(len){reason=\"rule-attribute-tail\";goto refused;}\n /* This one ASUS lookup may contain only canonical destinations disjoint\n  * from both rescue endpoints; snapshot_until checks every8437 row. */\n unsigned bit=table==RT_TABLE_LOCAL&&priority==0?1:table==RT_TABLE_MAIN&&priority==32766?2:table==RT_TABLE_DEFAULT&&priority==32767?4:table==8437&&priority==20?8:0;\n if(!bit){reason=\"rule-table-or-priority\";goto refused;}\n if(s->rules_mask&bit){reason=\"rule-duplicate\";goto refused;}s->rules_mask|=bit;return 0;\nrefused:\n fprintf(stderr,\"LEON_RESCUE parser-refused stage=%s\\n\",reason);return -1;\n}\n",
+      "new": "static int parse_rule(struct snapshot *s,const struct nlmsghdr *h){\n const char *reason=\"rule-header\";struct rtattr *a;int len;\n unsigned header_table=0,attribute_type=0,attribute_bytes=0,seen=0;\n uint32_t table=0,full_table=0,priority=0,v;bool has_table=false;\n if(attributes(h,sizeof(struct fib_rule_hdr),&a,&len))goto refused;\n const struct fib_rule_hdr *m=NLMSG_DATA(h);header_table=m->table;table=header_table;\n reason=\"rule-selector-flags-or-action\";\n if(m->family!=AF_INET||m->src_len||m->dst_len||m->tos||m->res1||m->res2||m->flags||m->action!=FR_ACT_TO_TBL)goto refused;\n for(;RTA_OK(a,len);a=RTA_NEXT(a,len)){unsigned attribute;reason=\"rule-attribute-shape\";\n  attribute_type=a->rta_type&NLA_TYPE_MASK;attribute_bytes=RTA_PAYLOAD(a);\n  switch(attribute_type){\n   case FRA_TABLE:\n    attribute=1;reason=\"rule-table-duplicate\";if(has_table)goto refused;\n    reason=\"rule-table-shape\";if(!u32attr(a,&v))goto refused;full_table=v;has_table=true;\n    /* SDK4.19 fib_nl_fill_rule emits252 plus FRA_TABLE for IDs>=256.\n     * Permit this canonical representation only for the existing20/8437\n     * lookup; mandatory defaults and every8437 disjoint-route gate remain. */\n    reason=\"rule-table-conflict-or-noncanonical\";\n    if((header_table==RT_TABLE_COMPAT&&v!=8437)||\n       (header_table!=RT_TABLE_COMPAT&&(v==8437||(table&&table!=v))))goto refused;\n    table=v;break;\n   case FRA_PRIORITY:attribute=2;if(!u32attr(a,&priority))goto refused;break;\n   case FRA_SUPPRESS_PREFIXLEN:attribute=4;if(!u32attr(a,&v)||v!=UINT32_MAX)goto refused;break;\n   case FRA_PROTOCOL:attribute=8;if(RTA_PAYLOAD(a)!=1)goto refused;break;\n   case FRA_PAD:attribute=16;if(RTA_PAYLOAD(a))goto refused;break;\n   default:reason=\"rule-unknown-attribute\";goto refused;\n  }\n  if(seen&attribute){reason=\"rule-duplicate-attribute\";goto refused;}seen|=attribute;\n }\n if(len){reason=\"rule-attribute-tail\";goto refused;}\n reason=\"rule-compat-table-missing\";if(header_table==RT_TABLE_COMPAT&&(!has_table||table!=8437))goto refused;\n /* This one ASUS lookup may contain only canonical destinations disjoint\n  * from both rescue endpoints; snapshot_until checks every8437 row. */\n unsigned bit=table==RT_TABLE_LOCAL&&priority==0?1:table==RT_TABLE_MAIN&&priority==32766?2:table==RT_TABLE_DEFAULT&&priority==32767?4:table==8437&&priority==20?8:0;\n if(!bit){reason=\"rule-table-or-priority\";goto refused;}\n if(s->rules_mask&bit){reason=\"rule-duplicate\";goto refused;}s->rules_mask|=bit;return 0;\nrefused:\n fprintf(stderr,\"LEON_RESCUE parser-refused stage=%s header_table=%u full_table=%u table_attr=%u priority=%u attr_type=%u attr_bytes=%u\\n\",\n  reason,header_table,full_table,has_table?1U:0U,priority,attribute_type,attribute_bytes);return -1;\n}\n"
+    }
+  ],
+  "reverse_exact_old_source": true,
+  "unchanged_functions_except": [
+    "parse_rule"
+  ],
+  "canonical_8437": "Exactly one four-byte FRA_TABLE8437 with header RT_TABLE_COMPAT252; missing, duplicate, malformed, conflicting, header0+8437 or unknown table representations refuse.",
+  "mandatory_rule_masks": [
+    7,
+    15
+  ],
+  "preserved": [
+    "parse_route",
+    "asus_8437_route_disjoint",
+    "snapshot_until",
+    "net_exchange",
+    "objects",
+    "desired",
+    "install_owned",
+    "withdraw",
+    "main",
+    "all writes/ACK/ownership/enrollment/timeouts/service contract"
+  ],
+  "no_epROTO_retry_or_new_write_retry": true,
+  "diagnostics": "Fixed rule refusal reasons and numeric header/full table, attribute presence/type/bytes and priority only; no address, destination, credentials, argv or configuration.",
+  "kernel_evidence": [
+    {
+      "path": "build/pcan-usb-fd/work/kernel/linux-4.19/net/core/fib_rules.c",
+      "sha256": "7ecab57ddfc9ddca27ac983b4d99dc8d9db22c897eed288e496b972f35cac2b5",
+      "bytes": 29225
+    },
+    {
+      "path": "build/pcan-usb-fd/work/kernel/linux-4.19/include/uapi/linux/rtnetlink.h",
+      "sha256": "05c70fdb9fba73294e0d6a12ea9c158f1056fe9291ffb04d4ec9bd1609d43994",
+      "bytes": 18853
+    }
+  ],
+  "kernel_lines": {
+    "fib_nl_fill_rule_compat_and_full_table": [
+      971,
+      973
+    ],
+    "default_suppress_protocol_and_nonzero_priority": [
+      974,
+      1010
+    ],
+    "RT_TABLE_COMPAT": 304
+  },
+  "actual_V20_rule_refusal": "Parent authenticated live log reports rule-attribute-shape with RTM_NEWRULE expected32 and formatted optional priority20/table8437; raw failed packet was not captured. Source canonical decoder defect is proven; original packet bytes remain unproven.",
+  "compiled": false,
+  "fixtures_executed": false,
+  "device_accessed": false
+}

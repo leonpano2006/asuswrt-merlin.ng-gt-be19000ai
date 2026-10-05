@@ -1,0 +1,540 @@
+{
+  "schema_version": 1,
+  "status": "passed_dual_abi_private_preload_component",
+  "component_runtime_validated": true,
+  "full_asus_runtime_accepted": false,
+  "production_ready": false,
+  "scope": "Exact paired Ubuntu multiarch packages coinstalled. ARMEL GCC15.2/time64 and native GCC16/time64 helpers automatically loaded by literal /usr/$LIB/leon-asus/libleon-rc-notify.so exclusively inside the real private-/etc launcher namespace.",
+  "package_manifest": {
+    "path": "build/asus-notify-packages/v1/manifest.json",
+    "sha256": "c109c36200ee0c33dfc7a56b0e93429c62c5299b2acf954a2c33a7613b6ce1e6"
+  },
+  "packages": [
+    {
+      "package": {
+        "name": "leon-asus-notify",
+        "architecture": "arm64",
+        "version": "0.1+leonb53.1",
+        "path": "build/asus-notify-packages/v1/leon-asus-notify_0.1+leonb53.1_arm64.deb",
+        "sha256": "7443121bb1f5a802153aabc51984ec736f28408b3ff2a9e00c3e7c259c7439c6",
+        "library_path": "usr/lib/aarch64-linux-gnu/leon-asus/libleon-rc-notify.so",
+        "library_sha256": "9a68be4f05845cb0e4d550bdf3a17453eff38aed49ac2828773509948fbd6c77"
+      },
+      "control": "Package: leon-asus-notify\nVersion: 0.1+leonb53.1\nArchitecture: arm64\nMulti-Arch: same\nSection: libs\nPriority: optional\nMaintainer: Leon BCM Project <noreply@localhost>\nDepends: libc6 (>= 2.44)\nDescription: Inactive ASUS notification compatibility library\n ABI-specific library for the private ASUS service namespace.\n No services or global preload configuration are activated by this package.\n",
+      "elf": {
+        "elf_class": 64,
+        "machine": "EM_AARCH64",
+        "float_abi_flags": 0,
+        "soname": [
+          "libleon-rc-notify.so"
+        ],
+        "needed": [
+          "libc.so.6",
+          "ld-linux-aarch64.so.1"
+        ],
+        "rpath_runpath": [],
+        "exports": {
+          "notify_rc_and_period_wait@global": {
+            "type": "FUNCTION",
+            "binding": "STB_GLOBAL",
+            "visibility": "STV_DEFAULT",
+            "hidden_version": false,
+            "object_size": null
+          },
+          "leon_rc_reboot@global": {
+            "type": "FUNCTION",
+            "binding": "STB_GLOBAL",
+            "visibility": "STV_DEFAULT",
+            "hidden_version": false,
+            "object_size": null
+          },
+          "leon_rc_exchange@global": {
+            "type": "FUNCTION",
+            "binding": "STB_GLOBAL",
+            "visibility": "STV_DEFAULT",
+            "hidden_version": false,
+            "object_size": null
+          },
+          "leon_rc_managed@global": {
+            "type": "FUNCTION",
+            "binding": "STB_GLOBAL",
+            "visibility": "STV_DEFAULT",
+            "hidden_version": false,
+            "object_size": null
+          },
+          "notify_rc@global": {
+            "type": "FUNCTION",
+            "binding": "STB_GLOBAL",
+            "visibility": "STV_DEFAULT",
+            "hidden_version": false,
+            "object_size": null
+          },
+          "leon_rc_signal@global": {
+            "type": "FUNCTION",
+            "binding": "STB_GLOBAL",
+            "visibility": "STV_DEFAULT",
+            "hidden_version": false,
+            "object_size": null
+          },
+          "leon_rc_preload_ready@global": {
+            "type": "FUNCTION",
+            "binding": "STB_GLOBAL",
+            "visibility": "STV_DEFAULT",
+            "hidden_version": false,
+            "object_size": null
+          },
+          "leon_rc_notify_protocol@global": {
+            "type": "FUNCTION",
+            "binding": "STB_GLOBAL",
+            "visibility": "STV_DEFAULT",
+            "hidden_version": false,
+            "object_size": null
+          },
+          "notify_rc_and_wait@global": {
+            "type": "FUNCTION",
+            "binding": "STB_GLOBAL",
+            "visibility": "STV_DEFAULT",
+            "hidden_version": false,
+            "object_size": null
+          },
+          "notify_rc_after_period_wait@global": {
+            "type": "FUNCTION",
+            "binding": "STB_GLOBAL",
+            "visibility": "STV_DEFAULT",
+            "hidden_version": false,
+            "object_size": null
+          },
+          "kill@global": {
+            "type": "FUNCTION",
+            "binding": "STB_GLOBAL",
+            "visibility": "STV_DEFAULT",
+            "hidden_version": false,
+            "object_size": null
+          },
+          "notify_rc_and_wait_1min@global": {
+            "type": "FUNCTION",
+            "binding": "STB_GLOBAL",
+            "visibility": "STV_DEFAULT",
+            "hidden_version": false,
+            "object_size": null
+          },
+          "notify_rc_and_wait_2min@global": {
+            "type": "FUNCTION",
+            "binding": "STB_GLOBAL",
+            "visibility": "STV_DEFAULT",
+            "hidden_version": false,
+            "object_size": null
+          },
+          "notify_rc_after_wait@global": {
+            "type": "FUNCTION",
+            "binding": "STB_GLOBAL",
+            "visibility": "STV_DEFAULT",
+            "hidden_version": false,
+            "object_size": null
+          }
+        },
+        "imports": [
+          "_ITM_deregisterTMCloneTable@local",
+          "_ITM_registerTMCloneTable@local",
+          "__cxa_finalize@GLIBC_2.17",
+          "__errno_location@GLIBC_2.17",
+          "__gmon_start__@local",
+          "__stack_chk_fail@GLIBC_2.17",
+          "__stack_chk_guard@GLIBC_2.17",
+          "access@GLIBC_2.17",
+          "close@GLIBC_2.17",
+          "connect@GLIBC_2.17",
+          "dlsym@GLIBC_2.34",
+          "getpid@GLIBC_2.17",
+          "getsockopt@GLIBC_2.17",
+          "recv@GLIBC_2.17",
+          "send@GLIBC_2.17",
+          "setsockopt@GLIBC_2.17",
+          "socket@GLIBC_2.17",
+          "syscall@GLIBC_2.17"
+        ]
+      },
+      "data_members": [
+        {
+          "path": ".",
+          "mode": "0o775",
+          "uid": 0,
+          "gid": 0
+        },
+        {
+          "path": "usr",
+          "mode": "0o775",
+          "uid": 0,
+          "gid": 0
+        },
+        {
+          "path": "usr/lib",
+          "mode": "0o775",
+          "uid": 0,
+          "gid": 0
+        },
+        {
+          "path": "usr/lib/aarch64-linux-gnu",
+          "mode": "0o775",
+          "uid": 0,
+          "gid": 0
+        },
+        {
+          "path": "usr/lib/aarch64-linux-gnu/leon-asus",
+          "mode": "0o775",
+          "uid": 0,
+          "gid": 0
+        },
+        {
+          "path": "usr/lib/aarch64-linux-gnu/leon-asus/libleon-rc-notify.so",
+          "mode": "0o644",
+          "uid": 0,
+          "gid": 0,
+          "sha256": "9a68be4f05845cb0e4d550bdf3a17453eff38aed49ac2828773509948fbd6c77"
+        },
+        {
+          "path": "usr/share",
+          "mode": "0o775",
+          "uid": 0,
+          "gid": 0
+        },
+        {
+          "path": "usr/share/doc",
+          "mode": "0o775",
+          "uid": 0,
+          "gid": 0
+        },
+        {
+          "path": "usr/share/doc/leon-asus-notify",
+          "mode": "0o775",
+          "uid": 0,
+          "gid": 0
+        },
+        {
+          "path": "usr/share/doc/leon-asus-notify/README",
+          "mode": "0o664",
+          "uid": 0,
+          "gid": 0,
+          "sha256": "73b6bf7b44bcc7a41fb92873da714d7b97b291d8bfa9f8ac703b04f233c8e7b5"
+        },
+        {
+          "path": "usr/share/doc/leon-asus-notify/copyright",
+          "mode": "0o664",
+          "uid": 0,
+          "gid": 0,
+          "sha256": "99e0b3910aa7654da8607bae4d6b2b7a176790da4db4e2dd0f7cb2f19f1537b7"
+        }
+      ],
+      "deterministic_repack_same_sha256": true
+    },
+    {
+      "package": {
+        "name": "leon-asus-notify",
+        "architecture": "armel",
+        "version": "0.1+leonb53.1",
+        "path": "build/asus-notify-packages/v1/leon-asus-notify_0.1+leonb53.1_armel.deb",
+        "sha256": "a7b4d8dbc16bb8beb0ec4d172e7e0ccdca9b675d991c865863298644df52714e",
+        "library_path": "usr/lib/arm-linux-gnueabi/leon-asus/libleon-rc-notify.so",
+        "library_sha256": "e562b0ed2f5d55478c4f810efdfbbe98a512446da4949d5ab342a60f9e6a225b"
+      },
+      "control": "Package: leon-asus-notify\nVersion: 0.1+leonb53.1\nArchitecture: armel\nMulti-Arch: same\nSection: libs\nPriority: optional\nMaintainer: Leon BCM Project <noreply@localhost>\nDepends: libc6 (>= 2.44), leon-gcc15-runtime (>= 15.2.0-0leonb53.1)\nDescription: Inactive ASUS notification compatibility library\n ABI-specific library for the private ASUS service namespace.\n No services or global preload configuration are activated by this package.\n",
+      "elf": {
+        "elf_class": 32,
+        "machine": "EM_ARM",
+        "float_abi_flags": 512,
+        "soname": [
+          "libleon-rc-notify.so"
+        ],
+        "needed": [
+          "libc.so.6",
+          "ld-linux.so.3"
+        ],
+        "rpath_runpath": [],
+        "exports": {
+          "notify_rc_and_period_wait@global": {
+            "type": "FUNCTION",
+            "binding": "STB_GLOBAL",
+            "visibility": "STV_DEFAULT",
+            "hidden_version": false,
+            "object_size": null
+          },
+          "leon_rc_reboot@global": {
+            "type": "FUNCTION",
+            "binding": "STB_GLOBAL",
+            "visibility": "STV_DEFAULT",
+            "hidden_version": false,
+            "object_size": null
+          },
+          "leon_rc_exchange@global": {
+            "type": "FUNCTION",
+            "binding": "STB_GLOBAL",
+            "visibility": "STV_DEFAULT",
+            "hidden_version": false,
+            "object_size": null
+          },
+          "leon_rc_managed@global": {
+            "type": "FUNCTION",
+            "binding": "STB_GLOBAL",
+            "visibility": "STV_DEFAULT",
+            "hidden_version": false,
+            "object_size": null
+          },
+          "notify_rc@global": {
+            "type": "FUNCTION",
+            "binding": "STB_GLOBAL",
+            "visibility": "STV_DEFAULT",
+            "hidden_version": false,
+            "object_size": null
+          },
+          "leon_rc_signal@global": {
+            "type": "FUNCTION",
+            "binding": "STB_GLOBAL",
+            "visibility": "STV_DEFAULT",
+            "hidden_version": false,
+            "object_size": null
+          },
+          "leon_rc_preload_ready@global": {
+            "type": "FUNCTION",
+            "binding": "STB_GLOBAL",
+            "visibility": "STV_DEFAULT",
+            "hidden_version": false,
+            "object_size": null
+          },
+          "leon_rc_notify_protocol@global": {
+            "type": "FUNCTION",
+            "binding": "STB_GLOBAL",
+            "visibility": "STV_DEFAULT",
+            "hidden_version": false,
+            "object_size": null
+          },
+          "notify_rc_and_wait@global": {
+            "type": "FUNCTION",
+            "binding": "STB_GLOBAL",
+            "visibility": "STV_DEFAULT",
+            "hidden_version": false,
+            "object_size": null
+          },
+          "notify_rc_after_period_wait@global": {
+            "type": "FUNCTION",
+            "binding": "STB_GLOBAL",
+            "visibility": "STV_DEFAULT",
+            "hidden_version": false,
+            "object_size": null
+          },
+          "kill@global": {
+            "type": "FUNCTION",
+            "binding": "STB_GLOBAL",
+            "visibility": "STV_DEFAULT",
+            "hidden_version": false,
+            "object_size": null
+          },
+          "notify_rc_and_wait_1min@global": {
+            "type": "FUNCTION",
+            "binding": "STB_GLOBAL",
+            "visibility": "STV_DEFAULT",
+            "hidden_version": false,
+            "object_size": null
+          },
+          "notify_rc_and_wait_2min@global": {
+            "type": "FUNCTION",
+            "binding": "STB_GLOBAL",
+            "visibility": "STV_DEFAULT",
+            "hidden_version": false,
+            "object_size": null
+          },
+          "notify_rc_after_wait@global": {
+            "type": "FUNCTION",
+            "binding": "STB_GLOBAL",
+            "visibility": "STV_DEFAULT",
+            "hidden_version": false,
+            "object_size": null
+          }
+        },
+        "imports": [
+          "_ITM_deregisterTMCloneTable@local",
+          "_ITM_registerTMCloneTable@local",
+          "__cxa_finalize@GLIBC_2.4",
+          "__errno_location@GLIBC_2.4",
+          "__getsockopt64@GLIBC_2.34",
+          "__gmon_start__@local",
+          "__setsockopt64@GLIBC_2.34",
+          "__stack_chk_fail@GLIBC_2.4",
+          "__stack_chk_guard@GLIBC_2.4",
+          "__tls_get_addr@GLIBC_2.4",
+          "access@GLIBC_2.4",
+          "close@GLIBC_2.4",
+          "connect@GLIBC_2.4",
+          "dlsym@GLIBC_2.34",
+          "getpid@GLIBC_2.4",
+          "memset@GLIBC_2.4",
+          "recv@GLIBC_2.4",
+          "send@GLIBC_2.4",
+          "socket@GLIBC_2.4",
+          "syscall@GLIBC_2.4"
+        ]
+      },
+      "data_members": [
+        {
+          "path": ".",
+          "mode": "0o775",
+          "uid": 0,
+          "gid": 0
+        },
+        {
+          "path": "usr",
+          "mode": "0o775",
+          "uid": 0,
+          "gid": 0
+        },
+        {
+          "path": "usr/lib",
+          "mode": "0o775",
+          "uid": 0,
+          "gid": 0
+        },
+        {
+          "path": "usr/lib/arm-linux-gnueabi",
+          "mode": "0o775",
+          "uid": 0,
+          "gid": 0
+        },
+        {
+          "path": "usr/lib/arm-linux-gnueabi/leon-asus",
+          "mode": "0o775",
+          "uid": 0,
+          "gid": 0
+        },
+        {
+          "path": "usr/lib/arm-linux-gnueabi/leon-asus/libleon-rc-notify.so",
+          "mode": "0o644",
+          "uid": 0,
+          "gid": 0,
+          "sha256": "e562b0ed2f5d55478c4f810efdfbbe98a512446da4949d5ab342a60f9e6a225b"
+        },
+        {
+          "path": "usr/share",
+          "mode": "0o775",
+          "uid": 0,
+          "gid": 0
+        },
+        {
+          "path": "usr/share/doc",
+          "mode": "0o775",
+          "uid": 0,
+          "gid": 0
+        },
+        {
+          "path": "usr/share/doc/leon-asus-notify",
+          "mode": "0o775",
+          "uid": 0,
+          "gid": 0
+        },
+        {
+          "path": "usr/share/doc/leon-asus-notify/README",
+          "mode": "0o664",
+          "uid": 0,
+          "gid": 0,
+          "sha256": "73b6bf7b44bcc7a41fb92873da714d7b97b291d8bfa9f8ac703b04f233c8e7b5"
+        },
+        {
+          "path": "usr/share/doc/leon-asus-notify/copyright",
+          "mode": "0o664",
+          "uid": 0,
+          "gid": 0,
+          "sha256": "99e0b3910aa7654da8607bae4d6b2b7a176790da4db4e2dd0f7cb2f19f1537b7"
+        }
+      ],
+      "deterministic_repack_same_sha256": true
+    }
+  ],
+  "rootfs": {
+    "path": "build/ubuntu26-rootfs/ubuntu26-bcm-gnu-systemd-openssh-armel15-notify-b53-v1.tar",
+    "sha256": "cdd80b6d202d4b9caf09810931c11f4276dc51e10b83434741805272887c793a"
+  },
+  "shared_documentation_identical": true,
+  "native_v3_exports_imports_identical": true,
+  "global_preload_installed": false,
+  "services_enabled": false,
+  "isolated_install": {
+    "new_packages": {
+      "leon-asus-notify:arm64": "0.1+leonb53.1",
+      "leon-asus-notify:armel": "0.1+leonb53.1",
+      "leon-asus-shell": "0.2+asus3006.102.9"
+    },
+    "existing_custom_versions_unchanged": 45,
+    "protected_hashes": {
+      "etc/passwd": "9bce4c8228f69cf916214330cee1ebf3574bb2b1862956504a2e4a71f992476a",
+      "etc/shadow": "1a265af84b250a62dc99a3cb7a0515d99807fc2ac5fd6d99aaea18583b7b5c90",
+      "etc/group": "328be8a27dad9bb2704eeb31c050a9f4d0665b0c7f0b80bed5a84d9dc10a08cf",
+      "usr/bin/dash": "87630eb41654f7888e28fa5ef3ed0a351682e939d382b9239a24a8aefe84aeb9",
+      "usr/lib/aarch64-linux-gnu/libc.so.6": "2bf692ce79a92025aec7d4eb779ba19a7c1bc4813dbabe3f83fdf528f9bf578a",
+      "usr/lib/systemd/systemd": "6cf9cdb39c4d7001fc5716ebb0d5b1efa93eecfdbb4310e72e3456c87d73a1e0",
+      "usr/sbin/sshd": "cb296ce9114193caecc95fc799078499e5abf1c729698e883c8822a46fec1778",
+      "usr/bin/gcc-16": "3ccd10d7c19b0562d16b97c0672a978b06767a5323a86dac29746ced88cddb04",
+      "usr/lib/aarch64-linux-gnu/libstdc++.so.6": "80c3e70a21991a276612f43a671101d296f46eeddb19d4630307c26b81508d11",
+      "usr/lib/aarch64-linux-gnu/libgcc_s.so.1": "1ef0fc40831dad80351c39a3e87081fc6987851dbfa2166ba6c3a959f7521518"
+    },
+    "worker_result": {
+      "path": "build/asus-notify-packages/gnu-systemd-openssh-armel15-notify-b53-v1/worker-result.json",
+      "sha256": "919fa9ca21ced5ee2cf6c2a3b1fe3895f9426d32d1696e21b8c513615f66f774"
+    },
+    "worker_log": {
+      "path": "build/asus-notify-packages/gnu-systemd-openssh-armel15-notify-b53-v1/worker.log",
+      "sha256": "2fed7a819daf958983d8176bccd30362208c3b6b0f89575ad18c44097b928218"
+    },
+    "apt_install_passed": true,
+    "exact_archive_reinstall_passed": true,
+    "dpkg_audit_clean": true
+  },
+  "qemu": {
+    "result": {
+      "path": "build/qemu/asus-notify-kernel10-v1/result.json",
+      "sha256": "f34b7521d64a88b9dc42e7fa3583cb9a3119c6dc25ff1d0b44da6891f19e856f"
+    },
+    "serial_log": {
+      "path": "build/qemu/asus-notify-kernel10-v1/serial.log",
+      "sha256": "071a4c0f22ec3e74dd15f2246e443ae08e43f6c42f52dfd1866b5b063f0502b2"
+    },
+    "fixture_manifest": {
+      "path": "build/asus-notify-packages/qemu-v1/manifest.json",
+      "sha256": "2dc12f2b9c6d66cf4bef10556858b1dd11d4e84e2be0f0b5eef6b458812fd777"
+    },
+    "kernel": {
+      "path": "build/Image-v10",
+      "sha256": "4a15601eada042576aed2a3680dcc48e9228eea70f70c478840767aaa89a9f8e"
+    },
+    "elapsed_seconds": 74.33,
+    "markers": [
+      "LAB_NOTIFY_NO_PRELOAD_FAIL_CLOSED_PASS",
+      "LAB_NOTIFY_ARM64_PRIVATE_EXEC_LIB_PASS",
+      "LAB_NOTIFY_ARMEL_PRIVATE_EXEC_LIB_PASS",
+      "LAB_NOTIFY_arm64_SEVEN_CALLS_SELF_SIGNAL_PASS",
+      "LAB_NOTIFY_armel_SEVEN_CALLS_SELF_SIGNAL_PASS",
+      "LAB_NOTIFY_arm64_MISSING_BROKER_PASS",
+      "LAB_NOTIFY_armel_MISSING_BROKER_PASS",
+      "LAB_NOTIFY_DUAL_ABI_PRIVATE_ETC_PASS",
+      "LAB_NOTIFY_NATIVE_ETC_UNCHANGED_PASS",
+      "LAB_NOTIFY_KERNEL10_COMPLETE",
+      "QEMU_UBUNTU26_SYSTEMD_FULL_COMPLETE"
+    ],
+    "positive_notify_call_count": 14,
+    "missing_broker_count": 2,
+    "outside_namespace_no_preload_count": 4,
+    "private_preload_LIB_correct_for_both_ABIs": true,
+    "all_helpers_time_t_off_t_64": true,
+    "no_host_disk_or_nic": true
+  },
+  "boundaries": [
+    "Broker in this fixture is a benign root-owned SOCK_SEQPACKET protocol server; existing production-broker lifecycle evidence remains separate.",
+    "Calls reuse notify-caller.c and notify-fixture.c; proprietary libshared and ASUS daemons are not executed here.",
+    "No global preload entry or service unit is installed. Production launcher will activate the shim only in its private namespace.",
+    "ASUS hardware/full runtime acceptance and deployment remain pending."
+  ],
+  "router_access": false,
+  "host_ssh_modified": false,
+  "flash_performed": false,
+  "checker": {
+    "path": "scripts/check-asus-notify.py",
+    "sha256": "ab1ab61dc0d8d78f09bd8bdf5fc0e9aae326d5ec593f30fe1bd5c04959b0d4bc"
+  }
+}

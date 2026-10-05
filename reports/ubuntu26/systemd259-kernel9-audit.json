@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "audited_at_utc": "2026-10-04T14:11:36.937725+00:00",
+  "scope": "Exact Ubuntu systemd259.5-0ubuntu3.4 plus glibc2.43-2ubuntu2.4 on Image-v9. Read-only source and binary audit; no kernel patch, package replacement or device change.",
+  "qemu_observation": {
+    "label": "ubuntu26-kernel9-systemd",
+    "kernel_sha256": "cf4f036d1ff03cb4d13e6f41aedb1b31665d6921a0dd93ff0b8fc951ae18e073",
+    "initramfs_sha256": "c00f25834592e326cbc577b2a59dc39ca6e7904a0e3ad7c3a4e35a48d72f5369",
+    "log_sha256": "4d9a0df89aa437e35987f978b0b244541b9d3920d9455bbb979eed14d39ea2f4",
+    "manager_pid1_started": true,
+    "audit_service_started": false,
+    "exact_failure": "leon-audit.service: Failed to spawn executor: Function not implemented",
+    "failure_line": 1968,
+    "audit_target_failed_dependency": true,
+    "guest_poweroff_watchdog_is_not_service_success": true,
+    "note": "The log prints the planned ExecStart command containing LAB_SYSTEMD_SERVICE_STARTED. That occurrence is not proof the service executed; subsequent spawn failure proves it did not."
+  },
+  "conclusion": {
+    "observed": "The manager reaches service scheduling, but cannot spawn systemd-executor. This is a concrete service-start failure rather than merely a documented old-kernel warning.",
+    "source_attribution": "Confirmed by a PID1-preserving syscall trace: raw waitid(P_PIDFD, INT_MAX, NULL, WEXITED|WNOHANG) returns EINVAL on kernel9. glibc pidfd_spawn caches that capability as unsupported and returns ENOSYS before attempting clone3 for the executor.",
+    "confidence": "Direct syscall trace plus exact Ubuntu glibc/systemd source and actual binary imports agree.",
+    "not_pidfd_open_only": "pidfd_open is a separate missing API and will matter elsewhere, but it is not the direct syscall used by this pidfd_spawn capability gate. Implementing pidfd_open alone cannot fix this service spawn.",
+    "not_clone3_unconditionally": "For pidfd_spawn without POSIX_SPAWN_SETCGROUP, glibc2.43 can fall back from clone3 to legacy clone(CLONE_PIDFD). systemd retries without the SETCGROUP flag. Therefore clone3 itself is not unconditionally required for this specific executor path; complete usable pidfd semantics are required."
+  },
+  "actual_binary": {
+    "path": "build/ubuntu26-audit/systemd259-binary/libsystemd-shared-259.so",
+    "sha256": "7d5fcab16932f1a108159643dedd2bb83a6674f9877edd9632444351ee403f17",
+    "relevant_dynamic_symbols": [
+      "102: 0000000000000000     0 FUNC    GLOBAL DEFAULT  UND posix_spawnattr_setcgroup_np@GLIBC_2.39 (9)",
+      "370: 0000000000000000     0 FUNC    GLOBAL DEFAULT  UND pidfd_spawn@GLIBC_2.39 (9)",
+      "531: 0000000000000000     0 FUNC    GLOBAL DEFAULT  UND pidfd_open@GLIBC_2.36 (17)"
+    ],
+    "finding": "Official libsystemd-shared-259.so imports pidfd_spawn@GLIBC_2.39 and uses its compiled HAVE_PIDFD_SPAWN path. No ordinary posix_spawn import was found in this binary."
+  },
+  "call_chain": [
+    {
+      "source": "build/ubuntu26-audit/systemd-source/systemd-259.5/src/core/execute.c",
+      "lines": [
+        535,
+        586,
+        605
+      ],
+      "behavior": "exec_spawn serializes the service invocation and calls posix_spawn_wrapper for the pinned systemd-executor file descriptor. A negative result is logged as Failed to spawn executor."
+    },
+    {
+      "source": "build/ubuntu26-audit/systemd-source/systemd-259.5/src/basic/process-util.c",
+      "lines": [
+        2156,
+        2189,
+        2193,
+        2209,
+        2211,
+        2220
+      ],
+      "behavior": "The HAVE_PIDFD_SPAWN build first requests POSIX_SPAWN_SETCGROUP. Supported errors trigger one retry after clearing SETCGROUP; that retry still calls pidfd_spawn. The ordinary posix_spawn branch is compile-time #else, not a runtime ENOSYS fallback."
+    },
+    {
+      "source": "build/ubuntu26-audit/glibc-source/glibc-2.43/sysdeps/unix/sysv/linux/spawni.c",
+      "lines": [
+        323,
+        331,
+        402,
+        418,
+        421,
+        425,
+        430
+      ],
+      "behavior": "If SPAWN_XFLAGS_RET_PIDFD is set, __clone_pidfd_supported() is evaluated first. Failure returns positive ENOSYS directly. After that gate, clone3 gets CLONE_PIDFD, CLONE_VM, CLONE_VFORK, CLONE_CLEAR_SIGHAND and optional CLONE_INTO_CGROUP. On ENOSYS/EINVAL and no SETCGROUP, legacy clone fallback remains available."
+    },
+    {
+      "source": "build/ubuntu26-audit/glibc-source/glibc-2.43/sysdeps/unix/sysv/linux/clone-pidfd-support.c",
+      "lines": [
+        35,
+        54,
+        56
+      ],
+      "behavior": "Capability detection issues raw waitid with P_PIDFD and an intentionally impossible descriptor INT_MAX. Only EBADF means pidfd wait is supported; EINVAL caches unsupported. This is not pidfd_open, and it occurs before spawning a helper child."
+    },
+    {
+      "source": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/exit.c",
+      "lines": [
+        1613,
+        1627,
+        1641
+      ],
+      "behavior": "kernel_waitid accepts P_ALL, P_PID and P_PGID only. Other which values, including P_PIDFD, return EINVAL. Kernel9 time64 changes do not add P_PIDFD."
+    },
+    {
+      "source": "build/ubuntu26-audit/glibc-source/glibc-2.43/sysdeps/unix/sysv/linux/clone-internal.c",
+      "lines": [
+        47,
+        64
+      ],
+      "behavior": "The legacy fallback forwards the low clone flags and pidfd return pointer through parent_tid. It requires genuine legacy clone(CLONE_PIDFD) support, which current kernel9 does not provide."
+    },
+    {
+      "source": "build/ubuntu26-audit/systemd-source/systemd-259.5/src/basic/pidref.c",
+      "lines": [
+        103,
+        106
+      ],
+      "behavior": "Other pidref_set_pid paths use pidfd_open and only tolerate resource-exhaustion fallback. ENOSYS is not accepted. This is an additional compatibility requirement, separate from the first executor failure."
+    }
+  ],
+  "requirements_to_fix_properly": [
+    "Do not change only the waitid error to EBADF or fake the feature probe. That would bypass glibc protection while legacy kernel clone may ignore unsupported CLONE_PIDFD and fail to return a real descriptor. The entire pidfd object/lifetime/wait semantics must be implemented first.",
+    "Backport real pollable pidfd lifetime/reference semantics and kernel9 ABI-preserving structure integration, not just syscall numbers.",
+    "Provide waitid(P_PIDFD) with valid descriptor lookup, correct EBADF/EINVAL behavior, child ownership checks, WNOHANG/WNOWAIT and exit/reap semantics.",
+    "Provide safe CLONE_PIDFD through legacy clone or fully implemented clone3; test CLOEXEC, parent_tid interactions, child creation failures and file descriptor cleanup.",
+    "Add pidfd_open and pidfd_send_signal for manager lifecycle paths and verify PID-reuse safety, permissions and process exit behavior.",
+    "CLONE_INTO_CGROUP can remain unsupported for initial executor bring-up because systemd259 retries without it; do not pretend that this covers resource-control/sandbox feature completeness.",
+    "Retest the actual Ubuntu service, executor, restart/reexec and child reaping after each backport; subsequent API gaps may appear after this first failure."
+  ],
+  "verification_plan": {
+    "read_only_probe": "Run raw waitid(P_PIDFD, INT_MAX, NULL, WEXITED|WNOHANG) in a disposable kernel9 QEMU guest: expected current errno EINVAL; a real supported implementation should return EBADF for this invalid descriptor.",
+    "glibc_probe": "Using exact Ubuntu glibc, call pidfd_spawn on a harmless /bin/true first with no cgroup flag, then with a dedicated cgroup and the same retry behavior as systemd. Record the function return value (positive errno), not only global errno.",
+    "trace": "Completed in ubuntu26-kernel9-systemd-trace. PID1 waitid capability gate returned EINVAL, and no clone3/clone/execve follows this gate before the audit watchdog powers off.",
+    "negative_control": "Ordinary posix_spawn on /bin/true should be tested independently to show that generic process creation works while pidfd_spawn does not.",
+    "post_fix": "Require successful helper execution, poll/close/waitid on returned pidfd, no leaked child or fd, and LAB_SYSTEMD_SERVICE_STARTED emitted by the actual child rather than the debug command line."
+  },
+  "version_distinctions": [
+    "Ubuntu26.04 ships systemd259.5 here, not262. Exact259.5 minimum supported kernel is5.4, recommended5.7.",
+    "259.5 keeps mountpoint fallback without STATX_ATTR_MOUNT_ROOT and probes optional cgroup mount flags; kernel9 manager boot demonstrates those older-kernel fallbacks operate far enough to reach service spawning.",
+    "The glibc package overall supports older kernels, but optional APIs such as pidfd_spawn require kernel features newer than that general libc baseline.",
+    "The waitid capability gate failure is now directly observed in the PID1 syscall trace, not only inferred from source."
+  ],
+  "trace_followup_pending": false,
+  "source_sha256": {
+    "build/ubuntu26-audit/systemd-source/systemd-259.5/src/core/execute.c": "2d5148d435eb211be9cfa81472244a618245fc1ef429f36e9fce1261eab6e49c",
+    "build/ubuntu26-audit/systemd-source/systemd-259.5/src/basic/process-util.c": "b1b9575a105f933c4e8b01dd01ae7cc3cae8462627db4cacc0e671ef82e9a32b",
+    "build/ubuntu26-audit/systemd-source/systemd-259.5/src/basic/pidref.c": "758ccf1262f0f927f350ac4ba780061519ff307ad2e49d9afcf1419121aa48ff",
+    "build/ubuntu26-audit/glibc-source/glibc-2.43/sysdeps/unix/sysv/linux/spawni.c": "c03cf7328a31d21af4a98b1ed840a414b4d916831fb55ce542b19d9bd8f696de",
+    "build/ubuntu26-audit/glibc-source/glibc-2.43/sysdeps/unix/sysv/linux/clone-pidfd-support.c": "16d86e6a22b4af684816883fb182e285517975b90edb28ae70e766a1926c153f",
+    "build/ubuntu26-audit/glibc-source/glibc-2.43/sysdeps/unix/sysv/linux/clone-internal.c": "6d9ac95e2b2e5731c4187626b51fc6c18fb5a3e53e6357a03b88ecb82bd988dd",
+    "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/exit.c": "3801f796ab9fd5773853763ce03e1044e09415e1ed045fe5522faa702b17c792",
+    "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/fork.c": "1ec86dbef5bb09016b0cf3f5a9323e97a5bb38194ecd4b9b5c1b60534ee7e683",
+    "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/uapi/linux/sched.h": "0b14d44219819e179366293a72107c35346c1975afc434f548be0dcb3327c54c",
+    "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/uapi/asm-generic/unistd.h": "9ef8cc9befe8a0b60e44071829fdf3783598f29f93c28e86b5ec9f21077e677a",
+    "build/ubuntu26-audit/systemd259-binary/libsystemd-shared-259.so": "7d5fcab16932f1a108159643dedd2bb83a6674f9877edd9632444351ee403f17"
+  },
+  "source_archives": {
+    "systemd259.5": "80ed55a8a69c4bd1fb12a36659303372b37baf9ee224ef4f032db4b748be0f76",
+    "glibc2.43": "d9c86c6b5dbddb43a3e08270c5844fc5177d19442cf5b8df4be7c07cd5fa3831"
+  },
+  "trace_observation": {
+    "label": "ubuntu26-kernel9-systemd-trace",
+    "kernel_sha256": "cf4f036d1ff03cb4d13e6f41aedb1b31665d6921a0dd93ff0b8fc951ae18e073",
+    "initramfs_sha256": "89388b15b22a100b73727b42490d80940a1405a93e45700a5b10cb44af07bac9",
+    "log_sha256": "29e5efd64da7cb5c1b4af3f014a8948494c3a46f5327873243075890d0a18db7",
+    "elapsed_seconds": 32.87,
+    "serial_log": "build/qemu/ubuntu26-kernel9-systemd-trace/serial.log",
+    "events": [
+      {
+        "line": 2635,
+        "event": "1     waitid(P_PIDFD, 2147483647, NULL, WNOHANG|WEXITED, 0x7f9f5974bc) = -1 EINVAL (Invalid argument)"
+      }
+    ],
+    "trace_preserves_systemd_pid1": true,
+    "actual_failure_confirmed": "PID1 raw waitid(P_PIDFD, INT_MAX, NULL, WNOHANG|WEXITED, ...) returned EINVAL; the manager reports pidfd_spawn executor failure ENOSYS.",
+    "subsequent_spawn_syscalls_after_gate": [],
+    "interpretation": "The pidfd capability gate blocks this executor path before any subsequent clone3/clone or executor execve. Earlier generator forks are unrelated."
+  }
+}

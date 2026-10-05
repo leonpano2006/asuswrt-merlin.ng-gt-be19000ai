@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "status": "source_review_pass_no_blockers",
+  "scope": "Read-only plan, builder, input hashes and inherited dependency/compiler evidence; no builder invocation, compiler, linker, tests, runtime or device actions.",
+  "reviewed": {
+    "plan": {
+      "path": "build/asus-lan-ssh-lease/build-plan-v2-policy/plan.json",
+      "sha256": "4a5b34094032b9478bfa1b36672e58346339194c9d105282fb70c51b2dfb8130"
+    },
+    "builder": {
+      "path": "scripts/asus-integration/build-rc-lan-ssh-successor.py",
+      "sha256": "19ab5d45bbbb1a34fe707e106374631655f569f82f2a8a05b54e8528edf4064e"
+    },
+    "v6_compile": "09f18e359e19fe4d78e2f47094dcd0fde073acbf2f4a84a2d12dc06259045493",
+    "v6_link": "df295115cfeee1aee44930422a3f799ebb722129d25174ded764fa6c61fdd4a1",
+    "ssh_source_manifest": "53636a1a692b111bbf778e615d45db7933e8c4f2dda801bcb05a02833c9dd221",
+    "policy_source_manifest": "1397b908ca0c149bb743c0f7fa006800f09db39b0d4f84887ff4add992e9bd24"
+  },
+  "independent_read_checks": {
+    "input_rows_matched": 295,
+    "source_inventory_rows_matched": 188,
+    "retained_object_rows_matched": 121,
+    "retained_rows_equal_remaining_link_objects": true,
+    "sysroot_inventory_sha256": "12ecb757f4b85eceeae0ac483e224eb3cfe82d283d1492d4ca389abf0c7a549e",
+    "sysroot_file_rows_matched": 1441,
+    "baseline_init_dependency_paths_covered": 86,
+    "baseline_udhcpc_dependency_paths_covered": 57,
+    "new_output_absent_at_review": true
+  },
+  "command_scope": {
+    "commands": 3,
+    "translation_units": ["init.c", "udhcpc.c"],
+    "each_compile_argv_length": 189,
+    "compile_differences_only": ["-MF operand", "-c operand", "-o operand"],
+    "link_argv_length": 178,
+    "link_differences_only": ["RC output", "init.o path", "udhcpc.o path"],
+    "total_link_objects": 123,
+    "recompiled_objects": 2,
+    "retained_objects": 121,
+    "libovpn_sha256": "c524b4b1944b49ac21227e5d37f86decb0b7f7aeea3bb0609b3f6f5d8fee7915",
+    "libovpn_search_and_argument_unchanged": true
+  },
+  "source_and_environment": [
+    "init.c uses the frozen policy source with its local rc-trial-network-policy.h; udhcpc.c uses the frozen SSH v2 source with its local rc-lan-ssh-update.h.",
+    "Original v6 include flags and compile-source/release/src/router/rc working directory remain byte-identical; inherited local headers resolve from the pinned v6 include directory.",
+    "Compiler SHA e365a6b1721565fe88f9d11a9d28b144d9c12b0279c82fece55ac5c660ab2c59, ccache 4.12.3 loader prefix, config SHA 5e9608c4904d2dcb0739d592b0dbdc73e68eece9836af4875ed829f3089bdf60 and disabled remote storage are retained.",
+    "The exact inherited flags include LEON_SYSTEMD_RC=1, cortex-a53, crypto-neon-fp-armv8, softfp, ARM mode, TIME_BITS=32 and FILE_OFFSET_BITS=32.",
+    "ABI/compiler validation is inherited evidence, with the baseline time32 cross-DSO audit limitation retained; this review performs no ABI or runtime execution."
+  ],
+  "builder_controls": [
+    "load_plan reconstructs exact commands from pinned v6 receipts, verifies source variant and input hashes before execution, and rejects changed cwd.",
+    "Execution requires the exact reviewed plan SHA; exclusive output mkdir fails if any prior complete or partial output exists.",
+    "Only the three reviewed argv lists are passed directly to subprocess.run with fixed environment and 300-second command bounds; no make or test/runtime subprocess is present.",
+    "Retained inputs are verified again after commands; failures preserve output and do not retry.",
+    "Generated receipt requires all three zero return codes, exactly the two object files and RC output, ARM ELF32 soft-float headers and matching plan/commands/output hashes."
+  ],
+  "blockers": [],
+  "build_invoked_by_peer": false,
+  "tests_run_by_peer": false,
+  "device_access_by_peer": false,
+  "runtime_validated_by_peer": false
+}

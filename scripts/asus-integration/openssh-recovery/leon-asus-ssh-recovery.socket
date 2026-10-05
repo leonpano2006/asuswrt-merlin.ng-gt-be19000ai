@@ -1,0 +1,22 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+[Unit]
+Description=Native OpenSSH recovery on the LAN bridge
+# br0 is created by the ASUS broker after basic.target. Do not order this
+# device-triggered socket before sockets.target and thereby delay that broker.
+DefaultDependencies=no
+Requires=sysinit.target
+After=sysinit.target
+Conflicts=shutdown.target
+Before=shutdown.target
+
+[Socket]
+ListenStream=0.0.0.0:2222
+BindToDevice=br0
+Accept=yes
+MaxConnections=8
+MaxConnectionsPerSource=2
+# A scan must not leave the only recovery listener permanently failed.
+TriggerLimitIntervalSec=0
+
+[Install]
+WantedBy=sys-subsystem-net-devices-br0.device

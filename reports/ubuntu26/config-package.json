@@ -1,0 +1,58 @@
+{
+  "package": "leon-bcm-rootfs-config",
+  "version": "0.1",
+  "architecture": "all",
+  "deb": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/ubuntu26/config-deb/leon-bcm-rootfs-config_0.1_all.deb",
+  "bytes": 8432,
+  "sha256": "7a7417905be9d0d2fb98f1b81b8c606a0b39a3292665bcb226bd10571f18a2dd",
+  "profile_sha256": "3e74a7e31f8c67b9d842ab8bef68b46934ec7a831135cfb484a2e747944d906e",
+  "source_date_epoch": 1791072000,
+  "installed": false,
+  "payload": [
+    {
+      "path": "/etc/apt/sources.list.d/ubuntu.sources",
+      "sha256": "234229873b084bd0b09712625aa36fc1665eac256ea4815f6db3cfa9b19acb63",
+      "mode": "0o644"
+    },
+    {
+      "path": "/usr/share/doc/leon-bcm-rootfs-config/README.Debian",
+      "sha256": "03fd22060fa81be9b8e2d91fb4f0419119c95bd4136d4dd6031a815f65616481",
+      "mode": "0o644"
+    },
+    {
+      "path": "/usr/share/doc/leon-bcm-rootfs-config/changelog.gz",
+      "sha256": "27281fdb9984c9016dd53bd8a7209f5230dd383b4f847b64ea2a40f0dc05934f",
+      "mode": "0o644"
+    },
+    {
+      "path": "/usr/share/doc/leon-bcm-rootfs-config/copyright",
+      "sha256": "77d77b566d3a38ebabeb528787cfbf66da689169dd5a37fd10916fb23ef14f55",
+      "mode": "0o644"
+    },
+    {
+      "path": "/usr/share/leon-bcm-rootfs/profile.json",
+      "sha256": "3e74a7e31f8c67b9d842ab8bef68b46934ec7a831135cfb484a2e747944d906e",
+      "mode": "0o644"
+    }
+  ],
+  "postinst_sha256": "d7cca03e98b3403bd944742d585607a8644d5be1d515ecfdc999d1af0db1e0c6",
+  "conffiles": [
+    "/etc/apt/sources.list.d/ubuntu.sources"
+  ],
+  "scope": "Configuration-only build; parent owns installation into the disposable mmdebstrap rootfs. No package installation performed by this subtask.",
+  "reproducible_builds": 2,
+  "deb_field_inspection": "pass",
+  "conffile_and_signed_arch_filtered_sources": "pass",
+  "extracted_profile_matches_source": "pass",
+  "all_tar_members_root_owned": true,
+  "postinst_syntax": "pass",
+  "payload_regular_files": [
+    "./etc/apt/sources.list.d/ubuntu.sources",
+    "./usr/share/doc/leon-bcm-rootfs-config/README.Debian",
+    "./usr/share/doc/leon-bcm-rootfs-config/changelog.gz",
+    "./usr/share/doc/leon-bcm-rootfs-config/copyright",
+    "./usr/share/leon-bcm-rootfs/profile.json"
+  ],
+  "build_command": "python3 scripts/build-ubuntu26-config-deb.py",
+  "offline_install_contract": "Copy .deb into the disposable Ubuntu arm64 rootfs and run dpkg -i there, using parent rootfs builder. Remove only duplicate bootstrap-generated sources first. Do not install this .deb on the build host or live ASUS rootfs."
+}

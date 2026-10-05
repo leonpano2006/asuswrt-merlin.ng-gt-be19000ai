@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "status": "source_only_pre_first_mutation_readonly_snapshot_timeout_successor",
+  "old_source": {
+    "path": "scripts/asus-integration/uplink-rescue/rescue-link-v2.c",
+    "sha256": "63b27e024035c5610f3a902caf5ed195d1cfce23839ec0b52f4f762ff877a12b"
+  },
+  "new_source": {
+    "path": "scripts/asus-integration/uplink-rescue/rescue-link-v3.c",
+    "sha256": "935fe3b61e0aae34a45fb718c1081b0ae4b42867043eaedb88cc38c5b35c8cd0"
+  },
+  "transforms": [
+    {
+      "old": "static int initialize(void){",
+      "new": "/* A new socket discards an incomplete readonly dump. Keep the sequence\n * monotonic so the next request cannot adopt an old request's reply. */\nstatic int netlink_reopen(void){\n if(nl>=0){int fd=nl;nl=-1;if(close(fd))return fail(\"netlink-close\");}\n nl_port=0;\n nl=socket(AF_NETLINK,SOCK_RAW|SOCK_CLOEXEC|SOCK_NONBLOCK,NETLINK_ROUTE);if(nl<0)return fail(\"netlink-socket\");\n struct sockaddr_nl sa={.nl_family=AF_NETLINK};socklen_t sz=sizeof(sa);\n if(bind(nl,(void*)&sa,sizeof(sa))||getsockname(nl,(void*)&sa,&sz)||sz!=sizeof(sa)||!sa.nl_pid)return fail(\"netlink-bind\");\n nl_port=sa.nl_pid;return 0;\n}\nstatic int initialize(void){"
+    },
+    {
+      "old": " nl=socket(AF_NETLINK,SOCK_RAW|SOCK_CLOEXEC|SOCK_NONBLOCK,NETLINK_ROUTE);if(nl<0)return fail(\"netlink-socket\");\n struct sockaddr_nl sa={.nl_family=AF_NETLINK};socklen_t sz=sizeof(sa);\n if(bind(nl,(void*)&sa,sizeof(sa))||getsockname(nl,(void*)&sa,&sz)||sz!=sizeof(sa)||!sa.nl_pid)return fail(\"netlink-bind\");\n nl_port=sa.nl_pid;return 0;\n}\nstatic int owned_load",
+      "new": " return netlink_reopen();\n}\nstatic int owned_load"
+    },
+    {
+      "old": "static int snapshot(struct snapshot *s){memset(s,0,sizeof(*s));int64_t end=now_ms()+SNAPSHOT_MS;",
+      "new": "static int snapshot_until(struct snapshot *s,int64_t deadline){memset(s,0,sizeof(*s));int64_t end=now_ms()+SNAPSHOT_MS;\n if(deadline&&deadline<end)end=deadline;"
+    },
+    {
+      "old": "  if(net_exchange(request,h->nlmsg_len,answers[i],s,NULL,end))return -1;",
+      "new": "  int64_t dump_started=now_ms();\n  int result;if(now_ms()>=end){errno=ETIMEDOUT;result=-1;}else result=net_exchange(request,h->nlmsg_len,answers[i],s,NULL,end);\n  if(result){\n   int e=errno;\n   if(e==ETIMEDOUT){static const char *const kinds[]={\"link\",\"address\",\"route\",\"rule\"};\n    fprintf(stderr,\"LEON_RESCUE snapshot-timeout dump=%s elapsed_ms=%lld\\n\",kinds[i],(long long)(now_ms()-dump_started));}\n   errno=e;return -1;\n  }"
+    },
+    {
+      "old": " }if(s->rules_mask!=7){errno=EPROTO;return -1;}return 0;\n}\nstatic const struct link *find_link",
+      "new": " }if(s->rules_mask!=7){errno=EPROTO;return -1;}return 0;\n}\nstatic int snapshot(struct snapshot *s){return snapshot_until(s,0);}\nstatic const struct link *find_link"
+    },
+    {
+      "old": " bool ready=false;int64_t started=now_ms();int rc=0;",
+      "new": " bool ready=false,ever_mutated=own.present;int64_t started=now_ms();int rc=0;"
+    },
+    {
+      "old": " while(!stopping){unsigned a,r;struct owned want;\n  if(native_ns()||snapshot(s)||objects(s,&own,&a,&r)){rc=125;fail(\"snapshot-or-foreign-state\");break;}",
+      "new": " while(!stopping){unsigned a,r;struct owned want;\n  if(!ready&&now_ms()-started>=250000){errno=ETIMEDOUT;rc=125;fail(\"initial-uplink-timeout\");break;}\n  if(native_ns()){rc=125;fail(\"snapshot-or-foreign-state\");break;}\n  if((!ready&&!own.present&&!ever_mutated)?snapshot_until(s,started+250000):snapshot(s)){\n   int e=errno;\n   /* Retry only an incomplete READ before any mutation attempt or ownership.\n    * Protocol/foreign-state errors and every write/ACK/readback/cleanup\n    * failure keep their original refusal; there is no process restart. */\n   if(e==ETIMEDOUT&&!ready&&!own.present&&!ever_mutated&&!stopping&&now_ms()-started<250000){\n    fprintf(stderr,\"LEON_RESCUE readonly-snapshot-retry-before-first-mutation elapsed_ms=%lld\\n\",(long long)(now_ms()-started));\n    if(netlink_reopen()){rc=125;break;}\n    int64_t left=250000-(now_ms()-started);\n    if(left<=0){errno=ETIMEDOUT;rc=125;fail(\"initial-uplink-timeout\");break;}\n    struct timespec wait={.tv_sec=left>=1000?1:0,.tv_nsec=left<1000?left*1000000:0};\n    while(nanosleep(&wait,&wait)&&errno==EINTR&&!stopping){}\n    continue;\n   }\n   errno=e;rc=125;fail(\"snapshot-or-foreign-state\");break;\n  }\n  if(objects(s,&own,&a,&r)){rc=125;fail(\"snapshot-or-foreign-state\");break;}"
+    },
+    {
+      "old": "  if(d==1&&!same){if(install_owned(&own,&want,s)){rc=125;break;}}",
+      "new": "  if(d==1&&!same){ever_mutated=true;if(install_owned(&own,&want,s)){rc=125;break;}}"
+    }
+  ],
+  "reverse_exact_old_source": true,
+  "service_unchanged": true,
+  "retry_guard": "Only snapshot ETIMEDOUT; !ready && !own.present && !ever_mutated && !stopping; within absolute250000ms.",
+  "ever_mutated_latched_before_install_owned": true,
+  "existing_ownership_initializes_latch_true": true,
+  "fresh_socket_bound_each_retry_sequence_monotonic": true,
+  "retry_wait_max_ms": 1000,
+  "initial_deadline_ms": 250000,
+  "snapshot_deadline_ms": 5000,
+  "write_deadline_ms": 2000,
+  "fatal_protocol_foreign_write_intent_cleanup_paths_unchanged": true,
+  "fixed_timeout_metadata": "dump kind and per-dump elapsed_ms, no message/payload export",
+  "compiled": false,
+  "executed": false,
+  "fixtures_tests_QEMU_device": false,
+  "limits": [
+    "ActualV15 proves snapshot errno110 and dependent socket failure; RTNL contention or exact blocked syscall remains an inference.",
+    "Kernel syscall blocking can exceed a userspace snapshot deadline; existing unit300s and guardian deadlines are unchanged.",
+    "No service ordering/restart or timeout increase; no write retry/adoption."
+  ],
+  "absolute_pre_first_mutation_snapshot_deadline_clamped": true,
+  "snapshot_after_ownership_write_cleanup_deadlines_unchanged": true
+}

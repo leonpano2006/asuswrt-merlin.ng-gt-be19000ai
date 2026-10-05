@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "checked_at_utc": "2026-10-04T14:46:48.835565+00:00",
+  "status": "full_base_boot_not_accepted_credentials_mount_api_missing",
+  "kernel_sha256": "4a15601eada042576aed2a3680dcc48e9228eea70f70c478840767aaa89a9f8e",
+  "rootfs_tar_sha256": "b29e45106d9aa00437295bf1aaf1cb4db20396fbedd23ee1ab2abd65c2ad7262",
+  "systemd_version": "259.5-0ubuntu3.4",
+  "qemu_result": "build/qemu/ubuntu26-kernel10-systemd-full/result.json",
+  "qemu_result_sha256": "75d50d5d8b238ba348898debbeab63f56b0b74f2ea1d4cf1d68fbe97e5e0eec7",
+  "qemu_log_sha256": "618ed3bdcf8628515cd075f254fec85b0ac9f5bcbae06b199f4b39a04776ab1b",
+  "observed": "multi-user.target reached but journald, sysusers, tmpfiles and getty fail status243/CREDENTIALS, Function not implemented; udev started",
+  "source_chain": [
+    "src/core/exec-credential.c:setup_credentials_internal",
+    "src/shared/mount-util.c:fsmount_credentials_fs",
+    "fsopen(tmpfs, FSOPEN_CLOEXEC)"
+  ],
+  "kernel_source_confirmation": "kernel10 ABI-check leaves syscall430 fsopen as ENOSYS; this is source-correlated diagnosis, not a full-boot strace capture",
+  "existing_tests_still_valid": [
+    "real pidfd semantics 296 assertions",
+    "minimal original Ubuntu259 service",
+    "ext4 root transition and apt state across unmount/remount"
+  ],
+  "repair_requirements": [
+    "Preserve credential ramfs/no-swap preference, readonly filesystem, access controls and cleanup",
+    "Use matching Ubuntu source/deb packaging for a reviewed old mount API fallback if feasible",
+    "Do not clear ImportCredential or fake syscall return values to make the test pass",
+    "Re-run full base boot and apt service-install/remove tests after repair"
+  ],
+  "device_modified": false
+}

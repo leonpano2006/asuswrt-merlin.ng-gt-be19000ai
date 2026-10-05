@@ -1,0 +1,85 @@
+{
+  "schema": 1,
+  "updated_utc": "2026-10-05T12:18:33.235482+00:00",
+  "stock": {
+    "status": "existing_enrolled_key_login_confirmed",
+    "host": "192.168.100.15",
+    "user": "MastermixStudios",
+    "gateway": "192.168.100.51",
+    "fingerprint": "SHA256:OGmBB2r67iuaWTCdU391rX5+CBuBFwmgxwKznXxBQMo",
+    "private_key_remains_on_gateway": "/root/.ssh/netpanel",
+    "script": "scripts/management/be19000ai-backup-login.sh",
+    "script_sha256": "74433a7084f525e635b78d4f3b34fe3092cc7d577cdd9338f216cc0e44b3df3f",
+    "evidence": "evidence/ubuntu26/management-backup/stock-key-cli-check-v3.txt",
+    "evidence_sha256": "7640a47faf7abfe98a15367ce3dccdc1120500db158e3369595e18f68c7cb622",
+    "boot_id": "00000000-0000-4000-8000-000000000014",
+    "host_key_validation": "Strict on both hops",
+    "password_authentication_used": false,
+    "tested_script_sha256": "e4dd914fbda3ecfc6d2613cfc424b8410c6fc2737587942009b5ba968f880109",
+    "stock_branch_unchanged_after_check": true
+  },
+  "chrome": {
+    "new_tab": "269471324",
+    "url": "https://192.168.100.15:8443/index.html",
+    "original_credentials_login": true,
+    "marked_deliverable": true,
+    "screenshot": "/tmp/be19000ai-fresh-management-20261005.jpg"
+  },
+  "ubuntu": {
+    "status": "independent_recovery_overlay_provisioned_physical_login_pending",
+    "existing_gap": "Vendor shadow validation and broker request previously gated native config regeneration.",
+    "acceptance_required": [
+      "No-password key login on physical Ubuntu",
+      "Backup socket usable while ASUS broker/control apply unavailable",
+      "Same public host identity across service restart and boot",
+      "Main SSH and backup key login both work before permanent boot acceptance"
+    ],
+    "host_identity_alias_preloaded_on_gateway": true,
+    "host_identity_alias_evidence": "evidence/ubuntu26/management-backup/ubuntu-host-key-alias-v1.txt",
+    "host_identity_fingerprint": "SHA256:RfC1T1zKLkLwvjJG2t4UD3b0+z2+St0MhAumhVCrCMI",
+    "future_client_flag": "--ubuntu-recovery",
+    "production_recovery_service_or_key_provisioned": true,
+    "focused_qemu": "build/qemu/openssh-recovery-focused-v2/result.json",
+    "design": {
+      "path": "reports/ubuntu26/asus-openssh-recovery-design-v1.json",
+      "sha256": "4cbe59ecda71ce12b617f4532795f4032bdd3e91692a5294c1cc731b3063b2ca"
+    },
+    "focused_proof": {
+      "path": "reports/ubuntu26/asus-openssh-recovery-focused-v2.json",
+      "sha256": "e3d35906037500a99bb97a9354857d031bc46f9e1ba1306cf2688ec2e97ea720"
+    },
+    "package": {
+      "path": "build/asus-ssh-recovery/recovery-source-v1/leon-asus-openssh-recovery_0.1+leonb53.1_all.deb",
+      "sha256": "30d10fe3b809c95bc5018024a029a8058e77dcff1c5ad249ebd12bf435e23bff"
+    },
+    "elapsed_seconds": 61.6,
+    "deployment_prerequisites": [
+      "Root-owned 0644 exact enrolled h0 public key at /var/lib/leon-asus-ssh/recovery_authorized_keys",
+      "Verify/chmod all directory ancestors traversable and root-owned, not writable by group/others; /var/lib/leon-asus-ssh should be0755",
+      "Enable only br0.device.wants socket link; preserve existing native account, shadow/PAM and ED host keys",
+      "Verify main and independent key login on physical Ubuntu before permanent acceptance"
+    ],
+    "known_umask_traversal_requirement": "identity_provision calls mkdir0755 under coordinator umask077, so a new STATE directory is0700 unless explicitly corrected. Recovery fixture uses0755. Next installer must check and correct enrolled directory permissions before key auth, preserving each0600 private marker.",
+    "acceptance_client_flags": [
+      "--ubuntu-primary-check",
+      "--ubuntu-recovery-check"
+    ],
+    "native_account_uid": 1000,
+    "acceptance_flags_used_on_physical_ubuntu": false,
+    "stock_and_existing_recovery_branches_unchanged": true,
+    "before_acceptance_flag_script": {
+      "path": "evidence/ubuntu26/management-backup/client-before-acceptance-flags.sh",
+      "sha256": "f06a0c240041ffbcab86d17334f19a97d5fe31018d3a140858879123110c89e4"
+    },
+    "state_permission_corrected_on_p11": true,
+    "deployment_evidence": {
+      "path": "evidence/ubuntu26/device-cfe-recovery-live/install-v1/result.json",
+      "sha256": "f6bab4f4224d5647237033b2f2c1c3238ef77d6df1643d7e4f980a64ca975cda"
+    },
+    "native_identity_preserved_by_installer": true,
+    "native_dpkg_registration_pending": true
+  },
+  "device_reset_or_reboot": false,
+  "new_credentials_created": false,
+  "private_key_exported": false
+}

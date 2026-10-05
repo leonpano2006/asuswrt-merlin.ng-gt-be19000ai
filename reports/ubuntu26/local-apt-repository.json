@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "status": "signed_local_archive_and_candidate_passed_kernel10",
+  "scope": "Native Ubuntu plus verified ARMEL runtime and matching private ASUS shell. No actual ASUS service activation.",
+  "rootfs": {
+    "path": "build/ubuntu26-rootfs/ubuntu26-bcm-gnu-systemd-openssh-armel15-archive-b53-v1.tar",
+    "sha256": "fb9d3cfbafe1391ba4a55f896578737c8e2075102f35212b02dec23ee5f3ebc7",
+    "bytes": 671508480
+  },
+  "kernel_sha256": "4a15601eada042576aed2a3680dcc48e9228eea70f70c478840767aaa89a9f8e",
+  "repository": {
+    "origin": "Leon-BE19000AI-BCM",
+    "suite": "bcm26-candidate",
+    "signing_fingerprint": "2D17D7E071790F72F1EA792086CF59ED77B1DD3D",
+    "valid_until_utc": "2026-11-03T17:22:40+00:00",
+    "package_count": 47,
+    "private_key_in_rootfs": false,
+    "published": false,
+    "transport": "file:/var/lib/leon-apt/repository"
+  },
+  "checks": {
+    "actual_signed_apt_update_and_fetch_on_kernel10": true,
+    "package_scoped_exact_release_pins": true,
+    "signed_future_version_blocked_with_pins_and_selected_without_pins": true,
+    "tampered_InRelease_rejected_without_cached_positive_lists": true,
+    "signed_multiarch_runtime_reinstall": true,
+    "archive_deb_install_remove_reinstall": true,
+    "Ubuntu_official_sources_and_keyring_preserved": true,
+    "native_identity_shell_OpenSSH_systemd_and_prior_versions_preserved": true,
+    "dpkg_audit_clean": true
+  },
+  "evidence": [
+    {
+      "path": "build/ubuntu26-local-repository/multiarch-v1/manifest.json",
+      "sha256": "10daa3c27fe82869e04372ea5fb024511d8154f2ad864a9a7ac51e1e3c311f68"
+    },
+    {
+      "path": "build/ubuntu26-local-repository/tests/multiarch-v1/result.json",
+      "sha256": "2f60149ee99106c2383ed99858dd786678c2abc11f57f29c4c9dd6756715962d"
+    },
+    {
+      "path": "build/ubuntu26-local-repository/packages/0.1+20261004.1/manifest.json",
+      "sha256": "dbe497921f13b5d5eecccf00a119d7355acd7f7814eb41618fd476ca55f8ca42"
+    },
+    {
+      "path": "build/ubuntu26-local-repository/candidates/gnu-systemd-openssh-armel15-archive-b53-v1/result.json",
+      "sha256": "44e05e52a82ed92a9b4d33de339716029b35b6ba0e2b74cf88164cdf379243a2"
+    },
+    {
+      "path": "build/ubuntu26-local-repository/qemu/v1/manifest.json",
+      "sha256": "1d67e46fc3e4d29a0119503b1e2cd27b6112634a555d75add79f20637cd4139c"
+    },
+    {
+      "path": "build/qemu/ubuntu26-kernel10-local-apt-v1/result.json",
+      "sha256": "d23167a813971d6fb368445e9788c4eee7be01ef98b0d79992596ec77f4e650a"
+    },
+    {
+      "path": "build/qemu/ubuntu26-kernel10-local-apt-v1/serial.log",
+      "sha256": "e2faf6ed8c71adbfd43017aa4f6e7812af922fbfc4ad9704a69019e54c9f7dba"
+    }
+  ],
+  "limits": [
+    "Pins prevent unintended replacement; they do not import upstream security fixes.",
+    "The local signed snapshot expires after30days and needs a tested signed successor.",
+    "No internet-hosted project update service or automatic rebuild/upgrade is claimed.",
+    "ASUS application, BSP, storage bootstrap and production login acceptance remain separate."
+  ],
+  "full_ASUS_accepted": false,
+  "flash_allowed": false,
+  "router_modified": false
+}

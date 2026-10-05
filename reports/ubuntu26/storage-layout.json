@@ -1,0 +1,116 @@
+{
+  "primary_header": {
+    "current": 1,
+    "alternate": 61226495,
+    "first_usable": 34,
+    "last_usable": 61226462,
+    "entries_lba": 2,
+    "entry_count": 128,
+    "entry_size": 128,
+    "entry_crc": 2770902481
+  },
+  "backup_header": {
+    "current": 61226495,
+    "alternate": 1,
+    "first_usable": 34,
+    "last_usable": 61226462,
+    "entries_lba": 61226463,
+    "entry_count": 128,
+    "entry_size": 128,
+    "entry_crc": 2770902481
+  },
+  "headers_crc_valid": true,
+  "entries_crc_valid": true,
+  "primary_backup_entries_identical": true,
+  "partitions": [
+    {
+      "partition": 1,
+      "name": "metadata1",
+      "start": 512,
+      "end": 1023,
+      "size_bytes": 262144,
+      "attributes": 0
+    },
+    {
+      "partition": 2,
+      "name": "metadata2",
+      "start": 1024,
+      "end": 1535,
+      "size_bytes": 262144,
+      "attributes": 0
+    },
+    {
+      "partition": 3,
+      "name": "bootfs1",
+      "start": 2048,
+      "end": 104447,
+      "size_bytes": 52428800,
+      "attributes": 0
+    },
+    {
+      "partition": 4,
+      "name": "rootfs1",
+      "start": 106496,
+      "end": 516095,
+      "size_bytes": 209715200,
+      "attributes": 0
+    },
+    {
+      "partition": 5,
+      "name": "bootfs2",
+      "start": 516096,
+      "end": 618495,
+      "size_bytes": 52428800,
+      "attributes": 0
+    },
+    {
+      "partition": 6,
+      "name": "rootfs2",
+      "start": 618496,
+      "end": 1028095,
+      "size_bytes": 209715200,
+      "attributes": 0
+    },
+    {
+      "partition": 7,
+      "name": "data",
+      "start": 1028096,
+      "end": 1232895,
+      "size_bytes": 104857600,
+      "attributes": 0
+    },
+    {
+      "partition": 8,
+      "name": "defaults",
+      "start": 1232896,
+      "end": 1273855,
+      "size_bytes": 20971520,
+      "attributes": 0
+    },
+    {
+      "partition": 9,
+      "name": "jffs",
+      "start": 1273856,
+      "end": 1683455,
+      "size_bytes": 209715200,
+      "attributes": 0
+    },
+    {
+      "partition": 10,
+      "name": "aiboard",
+      "start": 1683456,
+      "end": 26849279,
+      "size_bytes": 12884901888,
+      "attributes": 0
+    }
+  ],
+  "unallocated_tail_first_sector": 26849280,
+  "unallocated_tail_last_sector": 61226462,
+  "unallocated_tail_bytes": 17601117696,
+  "unallocated_tail_GiB": 16.39231824874878,
+  "evidence_sha256": {
+    "evidence/ubuntu26/emmc-primary-gpt.bin": "c45aca529ec345fccafc8b267fba53cf8666703f9896cfc2cf8b059b044a7664",
+    "evidence/ubuntu26/emmc-backup-gpt.bin": "e6480bb8cc9b3cc0bed6d5c8db0d04695783c65e751ac632b9b7b6af0cd37b9b"
+  },
+  "warning": "Unallocated in GPT only; not proof stock updater or bootloader will preserve future added partitions. No write performed."
+}

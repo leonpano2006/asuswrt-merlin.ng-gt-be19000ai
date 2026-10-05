@@ -1,0 +1,12 @@
+diff --git a/release/src/router/rc/conn_diag_log.c b/release/src/router/rc/conn_diag_log.c
+--- a/release/src/router/rc/conn_diag_log.c
++++ b/release/src/router/rc/conn_diag_log.c
+@@ -197,7 +197,7 @@
+             }
+ 
+ 
+-            int nfd = open(CONNDIAG_LOG_PATH, O_WRONLY | O_APPEND | O_CREAT);
++            int nfd = open(CONNDIAG_LOG_PATH, O_WRONLY | O_APPEND | O_CREAT, 0600);
+             dprintf(nfd, WHERESTR, ts, file, func, line);
+             va_start(ap, fmt);
+             vdprintf(nfd, fmt, ap);

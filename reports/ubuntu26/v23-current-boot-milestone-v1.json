@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "status": "actual_v23_current_boot_accepted_and_observer_free_survival_passed",
+  "recorded_utc": "2026-10-05T23:37:27.552825+00:00",
+  "native_boot_id": "00000000-0000-4000-8000-000000000008",
+  "kernel": "4.19.294 #10",
+  "pid1": "systemd",
+  "root_filesystem": "ext4",
+  "root_uuid": "ea8e47b8-c606-406c-b931-d2244d26ec55",
+  "root_read_write": true,
+  "asus_read_only_functional_checks": 30,
+  "primary_ssh_pass": true,
+  "physical_uplink_backup_ssh_pass": true,
+  "current_boot_accepted": true,
+  "observer_stopped_and_reaped": true,
+  "observer_free_seconds_before_after_snapshot_completion": 134.010340872,
+  "same_guardian_pid": 144,
+  "same_guardian_starttime": 162,
+  "same_watchdog_fd": 6,
+  "same_watchdog_identity": "6:1084:fa:0",
+  "same_diagnostic_file_identity": "45835:19999",
+  "diagnostic_sequence_before": 822,
+  "diagnostic_sequence_after": 1363,
+  "local_core_health_bits": 7,
+  "policy_lan_sequence_before": 8,
+  "policy_lan_sequence_after": 8,
+  "keepalive_advancing": true,
+  "guardian_failed": false,
+  "permanent_boot_default_slot": 2,
+  "permanent_ubuntu_activation": false,
+  "manual_power_cycle_during_v22_return_and_v23": false,
+  "sl1680_modified": false,
+  "source_fix": "PID1-only proc stat parser permits legitimate starttime 0 while retaining exact PID1/systemd/UID/namespace/inode/stability checks; generic SSH process checks unchanged.",
+  "evidence": {
+    "primary_login": {
+      "path": "evidence/ubuntu26/trial-live/twentythird-primary-readonly-v1/result.json",
+      "sha256": "31f4df3520f9cc3f955cf12a08391894280d0902ec9661fb15f2da78a161884a",
+      "bytes": 813
+    },
+    "initial_backup_login": {
+      "path": "evidence/ubuntu26/trial-live/twentythird-uplink-backup/result.json",
+      "sha256": "3e64fa50c60d543f6c0a9060ddbb4e2f6a93f5af2eb76a75dc87bf4d06c76c40",
+      "bytes": 721
+    },
+    "asus_functional_checks": {
+      "path": "evidence/ubuntu26/trial-live/twentythird-repair-readonly-v1/result.json",
+      "sha256": "b56c69a2938773091a520f1b368fb96a2a24c90a18dd869bf2d7709649b6fe17",
+      "bytes": 2457
+    },
+    "accept_this_boot": {
+      "path": "evidence/ubuntu26/trial-live/twentythird-current-boot-accept-v1/result.json",
+      "sha256": "a4507ab5ed5ed62557e4f2044b7cce2b0d75d6c0081a72e3170e4af01fea8cbf",
+      "bytes": 1342
+    },
+    "before_survival": {
+      "path": "evidence/ubuntu26/trial-live/twentythird-accepted-survival-before-v1/result.json",
+      "sha256": "c89e2863d62bf2894c123c779675848971ec71a536da619fbbe4c3db503be4df",
+      "bytes": 4171
+    },
+    "observer_stop": {
+      "path": "evidence/ubuntu26/trial-live/twentythird-observer-stop-v1/result.json",
+      "sha256": "fd655662f724a3fb5933faad9d581b9e67a1e1f26382289173350cd350459c90",
+      "bytes": 729
+    },
+    "after_survival": {
+      "path": "evidence/ubuntu26/trial-live/twentythird-accepted-survival-after-v1/result.json",
+      "sha256": "09d9163ac46864e0b846a6252294c8a32a223d8606387c05d0068e30857ff699",
+      "bytes": 4602
+    },
+    "after_backup_login": {
+      "path": "evidence/ubuntu26/trial-live/twentythird-accepted-uplink-backup/result.json",
+      "sha256": "7b949d681a706904aa7cff90027de91891b897b2644beefe2de763977690487d",
+      "bytes": 727
+    }
+  },
+  "limitations": [
+    "Accepted state is in memory for this boot; reboot still defaults to retained original slot2.",
+    "Observer-free point snapshots do not establish failure injection, power-loss atomicity, or permanent NORMAL1 rollback.",
+    "GUI certificate trust, physical Wi-Fi/RGB/AI/USB-CAN operation are not established by these server-side checks.",
+    "Private evidence, secrets, binaries and device captures remain outside the public source commit."
+  ]
+}

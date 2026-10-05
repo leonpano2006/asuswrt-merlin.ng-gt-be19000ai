@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "status": "local_diagnostics_foundation_built",
+  "production_device_action_performed": false,
+  "common_header": {
+    "path": "scripts/asus-integration/boot-diagnostics/boot-diagnostics.h",
+    "sha256": "6db67153c5e05327afb92d42bb20765a98e96667fad1b5af66157931bdadb1af"
+  },
+  "reader_source": {
+    "path": "scripts/asus-integration/boot-diagnostics/reader.c",
+    "sha256": "1a60ef84eb12bf7d44f79f167589db4bfff2d86feae5e460fabbdc05a356e6a8"
+  },
+  "provisioner_build": {
+    "path": "build/ubuntu26-boot-diagnostics/native-v4-uuid-fd/manifest.json",
+    "sha256": "a0acb4bc366e29b697a10f0d41a25202ac745354c25a86d222870497ccd22879"
+  },
+  "format_evidence": {
+    "path": "build/ubuntu26-boot-diagnostics/native-v3/manifest.json",
+    "sha256": "aab0e7e6598e66431bd613ec9cf9dc9f1de835396e5066bee87846e28c8d1d8b"
+  },
+  "readonly_exporter": {
+    "path": "build/ubuntu26-root-forensics/native-v4-fixed-diag/manifest.json",
+    "sha256": "12eb8962ef27a4ada73f1b3fb0ba4893f25a8772ba9355d933e6b6dfa7f94c5e"
+  },
+  "export_fixtures": {
+    "path": "build/ubuntu26-root-forensics/native-v4-fixed-diag/fixture-check/result.json",
+    "sha256": "3850100d9768ae1e2dc7fdaf28540f8a1412979da46a6605b08d0b196f10722d"
+  },
+  "full_root_verifier": {
+    "state": "source_only_opt_in_two_payload_overlay",
+    "builder": {
+      "path": "scripts/build-ubuntu26-root-verifier.py",
+      "sha256": "f8472c5d2d5513b702ec6605d698307dcd53e14c1a1f966d1c0487ec7bf96e57"
+    },
+    "source": {
+      "path": "scripts/asus-integration/root-verify/verify.c",
+      "sha256": "037c3321d0d08dc295332da97f18c3db5942c004f54bd8d908d27761ce49ab0d"
+    },
+    "limitation": "No claim the current booted root passes the original archive verifier: pre-existing journal/machine-id/slot-proof changes remain outside its exact immutable baseline."
+  },
+  "limitations": [
+    "In-memory prefix/CRC corruption cases are not hardware power-cut tests.",
+    "Physical provisioner requires clean p11 and all frozen stock2 gates; no automatic fsck or block writes outside normal explicit ext4 file creation.",
+    "Diagnostic slot contents are evidence only, never a boot-acceptance or guardian authorization token.",
+    "Root-init/guardian integration and physical trial are owned by parent; this report does not claim they ran."
+  ]
+}

@@ -1,0 +1,164 @@
+diff --git a/release/src/router/rc/udhcpc.c b/release/src/router/rc/udhcpc.c
+--- a/release/src/router/rc/udhcpc.c
++++ b/release/src/router/rc/udhcpc.c
+@@ -36,6 +36,7 @@
+ #include <bcmnvram.h>
+ #include <shutils.h>
+ #include <rc.h>
++#include "rc-lan-ssh-update.h"
+ 
+ #ifdef RTCONFIG_AMAS
+ #include <amas-utils.h>
+@@ -1207,6 +1208,10 @@
+ deconfig_lan(void)
+ {
+ 	char *lan_ifname = safe_getenv("interface");
++#if defined(LEON_SYSTEMD_RC) && LEON_SYSTEMD_RC == 1
++	struct leon_lan_ssh_address leon_ssh_before = leon_lan_ssh_snapshot(lan_ifname);
++	int leon_lan_install_status = -1;
++#endif
+ 
+ 	//ifconfig(lan_ifname, IFUP, "0.0.0.0", NULL);
+ _dprintf("%s: IFUP.\n", __FUNCTION__);
+@@ -1216,7 +1221,11 @@
+ 	else
+ #endif
+ 	if (nvram_match("lan_proto", "static"))
++#if defined(LEON_SYSTEMD_RC) && LEON_SYSTEMD_RC == 1
++		leon_lan_install_status = ifconfig(lan_ifname, IFUP | IFF_ALLMULTI, nvram_safe_get("lan_ipaddr"), nvram_safe_get("lan_netmask"));
++#else
+ 		ifconfig(lan_ifname, IFUP | IFF_ALLMULTI, nvram_safe_get("lan_ipaddr"), nvram_safe_get("lan_netmask"));
++#endif
+ 	else {
+ 		nvram_set("lan_ipaddr", nvram_default_get("lan_ipaddr"));
+ 		nvram_set("lan_netmask", nvram_default_get("lan_netmask"));
+@@ -1224,12 +1233,19 @@
+ 		nvram_set("lan_lease", nvram_default_get("lan_lease"));
+ 		nvram_set("lan_dns", nvram_default_get("lan_dns"));
+ 
++#if defined(LEON_SYSTEMD_RC) && LEON_SYSTEMD_RC == 1
++		leon_lan_install_status = ifconfig(lan_ifname, IFUP | IFF_ALLMULTI, nvram_default_get("lan_ipaddr"), nvram_default_get("lan_netmask"));
++#else
+ 		ifconfig(lan_ifname, IFUP | IFF_ALLMULTI, nvram_default_get("lan_ipaddr"), nvram_default_get("lan_netmask"));
++#endif
+ 	}
+ 
+ 	expires_lan(lan_ifname, 0);
+ 
+ 	lan_down(lan_ifname);
++#if defined(LEON_SYSTEMD_RC) && LEON_SYSTEMD_RC == 1
++	leon_lan_ssh_after_install(lan_ifname, &leon_ssh_before, leon_lan_install_status);
++#endif
+ 
+ 	_dprintf("done\n");
+ 	return 0;
+@@ -1252,6 +1268,10 @@
+ #endif
+ 	int lanchange = 0;
+ 	const char *ipaddr;
++#if defined(LEON_SYSTEMD_RC) && LEON_SYSTEMD_RC == 1
++	struct leon_lan_ssh_address leon_ssh_before = leon_lan_ssh_snapshot(lan_ifname);
++	int leon_lan_install_status = -1;
++#endif
+ 
+ 
+ 	if ((value = getenv("ip"))) {
+@@ -1355,10 +1375,18 @@
+ 	}
+ #endif
+ 
++#if defined(LEON_SYSTEMD_RC) && LEON_SYSTEMD_RC == 1
++	leon_lan_install_status = ifconfig(lan_ifname, IFUP | IFF_ALLMULTI, nvram_safe_get("lan_ipaddr"),
++		nvram_safe_get("lan_netmask"));
++#else
+ 	ifconfig(lan_ifname, IFUP | IFF_ALLMULTI, nvram_safe_get("lan_ipaddr"),
+ 		nvram_safe_get("lan_netmask"));
++#endif
+ 
+ 	lan_up(lan_ifname);
++#if defined(LEON_SYSTEMD_RC) && LEON_SYSTEMD_RC == 1
++	leon_lan_ssh_after_install(lan_ifname, &leon_ssh_before, leon_lan_install_status);
++#endif
+ 
+ 	_dprintf("%s: done\n", __FUNCTION__);
+ 	logmessage("udhcpc", "bound_lan %s with IP/netmask %s/%s", lan_ifname, nvram_safe_get("lan_ipaddr"), nvram_safe_get("lan_netmask"));
+diff --git a/release/src/router/rc/init.c b/release/src/router/rc/init.c
+--- a/release/src/router/rc/init.c
++++ b/release/src/router/rc/init.c
+@@ -27141,6 +27141,9 @@
+ 
+ int init_main(int argc, char *argv[])
+ {
++#if defined(LEON_SYSTEMD_RC) && LEON_SYSTEMD_RC == 1
++	int leon_lan_ssh_startup_reconciled = 0;
++#endif
+ 	leon_rc_private_etc_require();
+ 	leon_storage_require();
+ 	int state, i;
+@@ -28227,6 +28230,16 @@
+ 			perror("ASUS rc READY");
+ 			return 1;
+ 		}
++#if defined(LEON_SYSTEMD_RC) && LEON_SYSTEMD_RC == 1
++		/* DHCP may finish after the initial SSH apply but before READY.
++		 * Reconcile once after READY; later address changes use notify_rc.
++		 * Keep the existing authenticated manager/native policy path. */
++		if (!leon_lan_ssh_startup_reconciled) {
++			leon_lan_ssh_startup_reconciled = 1;
++			if (nvram_get_int("sshd_enable") != 0 && start_sshd() != 0)
++				logmessage("sshd", "Post-READY native SSH policy reconciliation failed");
++		}
++#endif
+ #endif
+ 		if (!(g_reboot || g_upgrade) && !nvram_get_int("asus_mfg")) {
+ 			chld_reap(0);	/* Periodically reap zombies. */
+diff --git a/release/src/router/rc/rc-lan-ssh-update.h b/release/src/router/rc/rc-lan-ssh-update.h
+--- /dev/null
++++ b/release/src/router/rc/rc-lan-ssh-update.h
+@@ -0,0 +1,46 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++#ifndef LEON_RC_LAN_SSH_UPDATE_H
++#define LEON_RC_LAN_SSH_UPDATE_H
++#if defined(LEON_SYSTEMD_RC) && LEON_SYSTEMD_RC == 1
++
++struct leon_lan_ssh_address {
++    struct in_addr address;
++    int known;
++};
++
++/* getifaddr() has shared scratch storage: copy the parsed value immediately. */
++static inline struct leon_lan_ssh_address leon_lan_ssh_snapshot(const char *interface)
++{
++    struct leon_lan_ssh_address result = { { 0 }, 0 };
++    const char *current = getifaddr(interface, AF_INET, 0);
++    if (current && inet_pton(AF_INET, current, &result.address) == 1)
++        result.known = 1;
++    return result;
++}
++
++static inline void leon_lan_ssh_after_install(const char *interface,
++        const struct leon_lan_ssh_address *before, int install_status)
++{
++    struct leon_lan_ssh_address after;
++    struct in_addr configured;
++    /* Never turn on disabled SSH, infer a change from a failed address query,
++     * or refresh policy for some other interface's DHCP callback. */
++    if (install_status != 0 || !before->known ||
++        nvram_get_int("sshd_enable") == 0 ||
++        strcmp(interface, nvram_safe_get("lan_ifname")))
++        return;
++    after = leon_lan_ssh_snapshot(interface);
++    if (!after.known || after.address.s_addr == before->address.s_addr ||
++        after.address.s_addr == htonl(INADDR_ANY) ||
++        after.address.s_addr == htonl(INADDR_BROADCAST) ||
++        inet_pton(AF_INET, nvram_safe_get("lan_ipaddr"), &configured) != 1 ||
++        after.address.s_addr != configured.s_addr)
++        return;
++    /* The existing notify shim authenticates the broker/manager path. Native
++     * policy, identity and secrets remain exclusively in that existing path.
++     * No wait here: DHCP callbacks can run while the manager is starting LAN. */
++    if (notify_rc("restart_sshd"))
++        logmessage("sshd", "LAN address changed; native SSH policy refresh was not queued");
++}
++#endif
++#endif

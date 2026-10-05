@@ -1,0 +1,965 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-04",
+  "scope": "Local read-only BE98 source/artifact inspection and compiler/loader metadata queries. No device access, compiler rebuild, package install, runtime replacement, Git mutation or hardware acceptance.",
+  "status": "audit_complete; distro-packaged toolchain rebuild and BE19000AI userspace acceptance pending",
+  "source_root": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100",
+  "verified_upstream_release_targets": {
+    "checked_on": "2026-10-04",
+    "gcc": {
+      "version": "16.2.0",
+      "release_date": "2026-08-07",
+      "source": "https://gcc.gnu.org/gcc-16/"
+    },
+    "glibc": {
+      "version": "2.44",
+      "release_date": "2026-07-25",
+      "source": "https://sourceware.org/glibc/"
+    },
+    "binutils": {
+      "version": "2.47",
+      "source": "https://gcc.gnu.org/ftp/binutils/releases/",
+      "announcement": "https://sourceware.org/pipermail/binutils/2026-July/150520.html"
+    },
+    "limitation": "Official release pages/index checked; downloaded release signatures and current stable-branch head must be verified/pinned again when building. Existing pinned glibc commit is not claimed to include all subsequent stable-branch fixes."
+  },
+  "compilers": {
+    "aarch64": {
+      "configuration": {
+        "source_commit": "2d5421ffca8893534d5e02ad38c28acd8e778fa3",
+        "glibc": "2.44",
+        "abi": "aarch64",
+        "cpu_requested": "b53",
+        "cpu_resolved": "cortex-a53",
+        "flags": [
+          "-O2",
+          "-g",
+          "-mcpu=cortex-a53+crypto+crc",
+          "-U_TIME_BITS",
+          "-U_FILE_OFFSET_BITS"
+        ],
+        "cc": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/gcc/xgcc -B/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/gcc/ -B/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/aarch64-unknown-linux-gnu/libgcc/ --sysroot=/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/sysroot",
+        "cxx": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/gcc/xg++ -B/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/gcc/ -B/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/aarch64-unknown-linux-gnu/libgcc/ --sysroot=/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/sysroot",
+        "compiler_version": "16.2.0",
+        "headers": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/github-push-20260915/dependency-sdks/arm64/aarch64-buildroot-linux-gnu/sysroot/usr/include",
+        "kernel_header_version_sha256": "49aa7756dd75da60de5f0733cf0a4178a589a3a46120d7bae83d5d78f8188c92",
+        "configuration": {
+          "host": "aarch64-unknown-linux-gnu",
+          "cpu_flags": [
+            "-mcpu=cortex-a53+crypto+crc"
+          ],
+          "slibdir": "/lib/aarch64-linux-gnu",
+          "rtlddir": "/lib",
+          "libdir": "/usr/lib/aarch64-linux-gnu"
+        },
+        "minimum_kernel": "4.19",
+        "source_tree_sha256": "242f632e2eb82ac282a01b4d28085e11bb26651748346d010f6fc4e8e29ecab4",
+        "ubuntu_patch_sha256": "2c1da2d290b3720a1cd1e5b14a777e7c977b7fb6e8dc2116b8ff8d5db7d9ef74"
+      },
+      "executable_sha256": "eefcb1122ea429b2453bc2a02d3be05e23c96a8220b59743f974b76d80c15e23",
+      "queries": {
+        "-dumpmachine": {
+          "command": [
+            "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/gcc/xgcc",
+            "-B/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/gcc/",
+            "-B/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/aarch64-unknown-linux-gnu/libgcc/",
+            "--sysroot=/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/sysroot",
+            "-dumpmachine"
+          ],
+          "returncode": 0,
+          "stdout": "aarch64-unknown-linux-gnu",
+          "stderr": ""
+        },
+        "-dumpfullversion": {
+          "command": [
+            "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/gcc/xgcc",
+            "-B/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/gcc/",
+            "-B/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/aarch64-unknown-linux-gnu/libgcc/",
+            "--sysroot=/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/sysroot",
+            "-dumpfullversion"
+          ],
+          "returncode": 0,
+          "stdout": "16.2.0",
+          "stderr": ""
+        },
+        "-print-multiarch": {
+          "command": [
+            "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/gcc/xgcc",
+            "-B/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/gcc/",
+            "-B/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/aarch64-unknown-linux-gnu/libgcc/",
+            "--sysroot=/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/sysroot",
+            "-print-multiarch"
+          ],
+          "returncode": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        "-print-sysroot": {
+          "command": [
+            "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/gcc/xgcc",
+            "-B/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/gcc/",
+            "-B/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/aarch64-unknown-linux-gnu/libgcc/",
+            "--sysroot=/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/sysroot",
+            "-print-sysroot"
+          ],
+          "returncode": 0,
+          "stdout": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/sysroot",
+          "stderr": ""
+        },
+        "-print-search-dirs": {
+          "command": [
+            "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/gcc/xgcc",
+            "-B/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/gcc/",
+            "-B/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/aarch64-unknown-linux-gnu/libgcc/",
+            "--sysroot=/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/sysroot",
+            "-print-search-dirs"
+          ],
+          "returncode": 0,
+          "stdout": "install: /home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/gcc/../lib/gcc/aarch64-unknown-linux-gnu/16.2.0/\nprograms: =/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/gcc/aarch64-unknown-linux-gnu/16.2.0/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/gcc/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/aarch64-unknown-linux-gnu/libgcc/aarch64-unknown-linux-gnu/16.2.0/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/aarch64-unknown-linux-gnu/libgcc/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/gcc/../libexec/gcc/aarch64-unknown-linux-gnu/16.2.0/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/gcc/../libexec/gcc/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/gcc/../lib/gcc/aarch64-unknown-linux-gnu/16.2.0/../../../../aarch64-unknown-linux-gnu/bin/aarch64-unknown-linux-gnu/16.2.0/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/gcc/../lib/gcc/aarch64-unknown-linux-gnu/16.2.0/../../../../aarch64-unknown-linux-gnu/bin/\nlibraries: =/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/gcc/aarch64-unknown-linux-gnu/16.2.0/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/gcc/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/aarch64-unknown-linux-gnu/libgcc/aarch64-unknown-linux-gnu/16.2.0/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/aarch64-unknown-linux-gnu/libgcc/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/gcc/../lib/gcc/aarch64-unknown-linux-gnu/16.2.0/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/gcc/../lib/gcc/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/gcc/../lib/gcc/aarch64-unknown-linux-gnu/16.2.0/../../../../aarch64-unknown-linux-gnu/lib/aarch64-unknown-linux-gnu/16.2.0/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/gcc/../lib/gcc/aarch64-unknown-linux-gnu/16.2.0/../../../../aarch64-unknown-linux-gnu/lib/../lib64/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/gcc/../lib/gcc/aarch64-unknown-linux-gnu/16.2.0/../../../aarch64-unknown-linux-gnu/16.2.0/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/gcc/../lib/gcc/aarch64-unknown-linux-gnu/16.2.0/../../../../lib64/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/sysroot/lib/aarch64-unknown-linux-gnu/16.2.0/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/sysroot/lib/../lib64/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/sysroot/usr/lib/aarch64-unknown-linux-gnu/16.2.0/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/sysroot/usr/lib/../lib64/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/gcc/../lib/gcc/aarch64-unknown-linux-gnu/16.2.0/../../../../aarch64-unknown-linux-gnu/lib/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/gcc/../lib/gcc/aarch64-unknown-linux-gnu/16.2.0/../../../:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/sysroot/lib/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/sysroot/usr/lib/",
+          "stderr": ""
+        },
+        "-print-file-name=libgcc_s.so.1": {
+          "command": [
+            "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/gcc/xgcc",
+            "-B/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/gcc/",
+            "-B/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/aarch64-unknown-linux-gnu/libgcc/",
+            "--sysroot=/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/sysroot",
+            "-print-file-name=libgcc_s.so.1"
+          ],
+          "returncode": 0,
+          "stdout": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/gcc/libgcc_s.so.1",
+          "stderr": ""
+        },
+        "-print-file-name=crt1.o": {
+          "command": [
+            "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/gcc/xgcc",
+            "-B/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/gcc/",
+            "-B/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/aarch64-unknown-linux-gnu/libgcc/",
+            "--sysroot=/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/sysroot",
+            "-print-file-name=crt1.o"
+          ],
+          "returncode": 0,
+          "stdout": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/sysroot/lib/crt1.o",
+          "stderr": ""
+        },
+        "-print-prog-name=ld": {
+          "command": [
+            "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/gcc/xgcc",
+            "-B/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/gcc/",
+            "-B/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/obj/aarch64-unknown-linux-gnu/libgcc/",
+            "--sysroot=/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/sysroot",
+            "-print-prog-name=ld"
+          ],
+          "returncode": 0,
+          "stdout": "ld",
+          "stderr": ""
+        },
+        "specs": {
+          "returncode": 0,
+          "sha256": "1c54a6523677a3f8a2d536c17893d864f4cc8111d367868aacfd1b19816ec165",
+          "link": "%{!static|static-pie:--eh-frame-hdr} %{h*}\t\t   %{static:-Bstatic}\t\t\t\t   %{shared:-shared}\t\t\t\t   %{symbolic:-Bsymbolic}\t\t\t   %{!static:%{!static-pie:\t\t\t     %{rdynamic:-export-dynamic}\t\t     %{!shared:-dynamic-linker %{muclibc:/lib/ld-uClibc.so.0;:%{mbionic:/system/bin/linker;:%{mmusl:/lib/ld-musl-aarch64%{mbig-endian:_be}%{mabi=ilp32:_ilp32}.so.1;:/lib/ld-linux-aarch64%{mbig-endian:_be}%{mabi=ilp32:_ilp32}.so.1}}}}}}    %{static-pie:-Bstatic -pie --no-dynamic-linker -z text}    -X\t\t\t\t\t\t   %{mbig-endian:-EB} %{mlittle-endian:-EL}        -maarch64linux%{mabi=ilp32:32}%{mbig-endian:b}    %{%:sanitize(memtag-stack):%{!fsanitize-memtag-mode:-z memtag-stack -z memtag-mode=sync}}    %{%:sanitize(memtag-stack):%{fsanitize-memtag-mode=*:-z memtag-stack -z memtag-mode=%}} %{mcpu=*:%{%:is_local_not_armv8_base(%{mcpu=*:%*}):; mfix-cortex-a53-835769:--fix-cortex-a53-835769}; march=*:%{%:is_local_not_armv8_base(%{march=*:%*}):;mfix-cortex-a53-835769:--fix-cortex-a53-835769}; mfix-cortex-a53-835769:--fix-cortex-a53-835769 } %{mcpu=*:%{%:is_local_not_armv8_base(%{mcpu=*:%*}):; mfix-cortex-a53-843419:--fix-cortex-a53-843419}; march=*:%{%:is_local_not_armv8_base(%{march=*:%*}):;mfix-cortex-a53-843419:--fix-cortex-a53-843419}; mfix-cortex-a53-843419:--fix-cortex-a53-843419 }"
+        },
+        "b53_preprocessor": {
+          "flags": [
+            "-mcpu=cortex-a53+crypto+crc"
+          ],
+          "returncode": 0,
+          "macros": {
+            "__ARM_FEATURE_AES": "1",
+            "__ARM_FEATURE_IDIV": "1",
+            "__ARM_NEON_SVE_BRIDGE": "1",
+            "__ARM_FEATURE_CLZ": "1",
+            "__ARM_FEATURE_CRYPTO": "1",
+            "__aarch64__": "1",
+            "__ARM_FEATURE_FMA": "1",
+            "__ARM_FEATURE_SHA2": "1",
+            "__ARM_ARCH_PROFILE": "65",
+            "__ARM_PCS_AAPCS64": "1",
+            "__ARM_ARCH": "8",
+            "__ARM_ARCH_8A": "1",
+            "__ARM_FEATURE_UNALIGNED": "1",
+            "__ARM_FEATURE_CRC32": "1",
+            "__ARM_NEON": "1",
+            "__ARM_FEATURE_NUMERIC_MAXMIN": "1",
+            "__ARM_ARCH_ISA_A64": "1"
+          },
+          "stderr": ""
+        },
+        "ld_version": {
+          "command": [
+            "ld",
+            "--version"
+          ],
+          "returncode": 0,
+          "stdout": "GNU ld (GNU Binutils for Ubuntu) 2.42\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis program is free software; you may redistribute it under the terms of\nthe GNU General Public License version 3 or (at your option) a later version.\nThis program has absolutely no warranty.",
+          "stderr": ""
+        }
+      }
+    },
+    "armel": {
+      "configuration": {
+        "source_commit": "2d5421ffca8893534d5e02ad38c28acd8e778fa3",
+        "glibc": "2.44",
+        "abi": "armel",
+        "cpu_requested": "b53",
+        "cpu_resolved": "cortex-a53",
+        "flags": [
+          "-O2",
+          "-g",
+          "-mcpu=cortex-a53",
+          "-mfpu=crypto-neon-fp-armv8",
+          "-mfloat-abi=softfp",
+          "-U_TIME_BITS",
+          "-U_FILE_OFFSET_BITS"
+        ],
+        "cc": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain/usr/bin/arm-linux-gnueabi-gcc-15 --sysroot=/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain",
+        "cxx": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain/usr/bin/arm-linux-gnueabi-g++-15 --sysroot=/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain",
+        "compiler_version": "15.2.0",
+        "headers": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/github-push-20260915/dependency-sdks/arm32/arm-buildroot-linux-gnueabi/sysroot/usr/include",
+        "kernel_header_version_sha256": "49aa7756dd75da60de5f0733cf0a4178a589a3a46120d7bae83d5d78f8188c92",
+        "configuration": {
+          "host": "arm-linux-gnueabi",
+          "cpu_flags": [
+            "-mcpu=cortex-a53",
+            "-mfpu=crypto-neon-fp-armv8",
+            "-mfloat-abi=softfp"
+          ],
+          "slibdir": "/lib/arm-linux-gnueabi",
+          "rtlddir": "/lib",
+          "libdir": "/usr/lib/arm-linux-gnueabi"
+        },
+        "minimum_kernel": "4.19",
+        "source_tree_sha256": "242f632e2eb82ac282a01b4d28085e11bb26651748346d010f6fc4e8e29ecab4",
+        "ubuntu_patch_sha256": "2c1da2d290b3720a1cd1e5b14a777e7c977b7fb6e8dc2116b8ff8d5db7d9ef74",
+        "host_library_dir": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain/usr/lib/aarch64-linux-gnu"
+      },
+      "executable_sha256": "e365a6b1721565fe88f9d11a9d28b144d9c12b0279c82fece55ac5c660ab2c59",
+      "queries": {
+        "-dumpmachine": {
+          "command": [
+            "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain/usr/bin/arm-linux-gnueabi-gcc-15",
+            "--sysroot=/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain",
+            "-dumpmachine"
+          ],
+          "returncode": 0,
+          "stdout": "arm-linux-gnueabi",
+          "stderr": ""
+        },
+        "-dumpfullversion": {
+          "command": [
+            "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain/usr/bin/arm-linux-gnueabi-gcc-15",
+            "--sysroot=/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain",
+            "-dumpfullversion"
+          ],
+          "returncode": 0,
+          "stdout": "15.2.0",
+          "stderr": ""
+        },
+        "-print-multiarch": {
+          "command": [
+            "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain/usr/bin/arm-linux-gnueabi-gcc-15",
+            "--sysroot=/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain",
+            "-print-multiarch"
+          ],
+          "returncode": 0,
+          "stdout": "arm-linux-gnueabi",
+          "stderr": ""
+        },
+        "-print-sysroot": {
+          "command": [
+            "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain/usr/bin/arm-linux-gnueabi-gcc-15",
+            "--sysroot=/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain",
+            "-print-sysroot"
+          ],
+          "returncode": 0,
+          "stdout": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain",
+          "stderr": ""
+        },
+        "-print-search-dirs": {
+          "command": [
+            "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain/usr/bin/arm-linux-gnueabi-gcc-15",
+            "--sysroot=/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain",
+            "-print-search-dirs"
+          ],
+          "returncode": 0,
+          "stdout": "install: /home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain/usr/bin/../lib/gcc-cross/arm-linux-gnueabi/15/\nprograms: =/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain/usr/bin/../libexec/gcc-cross/arm-linux-gnueabi/15/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain/usr/bin/../libexec/gcc-cross/arm-linux-gnueabi/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain/usr/bin/../libexec/gcc-cross/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain/usr/bin/../lib/gcc-cross/arm-linux-gnueabi/15/../../../../arm-linux-gnueabi/bin/arm-linux-gnueabi/15/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain/usr/bin/../lib/gcc-cross/arm-linux-gnueabi/15/../../../../arm-linux-gnueabi/bin/arm-linux-gnueabi/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain/usr/bin/../lib/gcc-cross/arm-linux-gnueabi/15/../../../../arm-linux-gnueabi/bin/\nlibraries: =/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain/usr/bin/../lib/gcc-cross/arm-linux-gnueabi/15/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain/usr/bin/../lib/gcc-cross/arm-linux-gnueabi/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain/usr/bin/../lib/gcc-cross/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain/usr/bin/../lib/gcc-cross/arm-linux-gnueabi/15/../../../../arm-linux-gnueabi/lib/arm-linux-gnueabi/15/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain/usr/bin/../lib/gcc-cross/arm-linux-gnueabi/15/../../../../arm-linux-gnueabi/lib/arm-linux-gnueabi/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain/usr/bin/../lib/gcc-cross/arm-linux-gnueabi/15/../../../../arm-linux-gnueabi/lib/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain/lib/arm-linux-gnueabi/15/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain/lib/arm-linux-gnueabi/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain/lib/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain/usr/lib/arm-linux-gnueabi/15/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain/usr/lib/arm-linux-gnueabi/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain/usr/lib/",
+          "stderr": ""
+        },
+        "-print-file-name=libgcc_s.so.1": {
+          "command": [
+            "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain/usr/bin/arm-linux-gnueabi-gcc-15",
+            "--sysroot=/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain",
+            "-print-file-name=libgcc_s.so.1"
+          ],
+          "returncode": 0,
+          "stdout": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain/usr/bin/../lib/gcc-cross/arm-linux-gnueabi/15/../../../../arm-linux-gnueabi/lib/libgcc_s.so.1",
+          "stderr": ""
+        },
+        "-print-file-name=crt1.o": {
+          "command": [
+            "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain/usr/bin/arm-linux-gnueabi-gcc-15",
+            "--sysroot=/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain",
+            "-print-file-name=crt1.o"
+          ],
+          "returncode": 0,
+          "stdout": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain/usr/bin/../lib/gcc-cross/arm-linux-gnueabi/15/../../../../arm-linux-gnueabi/lib/crt1.o",
+          "stderr": ""
+        },
+        "-print-prog-name=ld": {
+          "command": [
+            "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain/usr/bin/arm-linux-gnueabi-gcc-15",
+            "--sysroot=/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain",
+            "-print-prog-name=ld"
+          ],
+          "returncode": 0,
+          "stdout": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain/usr/bin/../lib/gcc-cross/arm-linux-gnueabi/15/../../../../arm-linux-gnueabi/bin/ld",
+          "stderr": ""
+        },
+        "specs": {
+          "returncode": 0,
+          "sha256": "6c2ed3d70fdadb106bfb6925def88e4f25204220569bd15dacb89658f98a91c1",
+          "link": "%{!r:--build-id} %{!static|static-pie:--eh-frame-hdr}  %{mcpu=arm8|mcpu=arm810|mcpu=strongarm*|march=armv4|mcpu=fa526|mcpu=fa626:--fix-v4bx}%{!r:%{!mbe32:%:be8_linkopt(%{mlittle-endian:little}\t\t\t       %{mbig-endian:big}\t\t\t       %{mbe8:be8}\t\t\t       %{march=*:arch %*})}}%{!mandroid|tno-android-ld:%{h*}    %{static:-Bstatic}    %{shared:-shared}    %{symbolic:-Bsymbolic}    %{!static:      %{rdynamic:-export-dynamic}      %{!shared:-dynamic-linker %{muclibc:/lib/ld-uClibc.so.0;:%{mbionic:/system/bin/linker;:%{mmusl:/lib/ld-musl-arm%{mbig-endian:eb}%{mfloat-abi=hard:hf}%{mfdpic:-fdpic}.so.1;:%{mfloat-abi=hard:/lib/ld-linux-armhf.so.3}     %{mfloat-abi=soft*:/lib/ld-linux.so.3}     %{!mfloat-abi=*:/lib/ld-linux.so.3}}}}}}    -X    --hash-style=gnu    %{!fsanitize=*:--as-needed}    %{mbig-endian:-EB} %{mlittle-endian:-EL} -m %{mfdpic: armelf_linux_fdpiceabi;:armelf_linux_eabi};:%{h*}    %{static:-Bstatic}    %{shared:-shared}    %{symbolic:-Bsymbolic}    %{!static:      %{rdynamic:-export-dynamic}      %{!shared:-dynamic-linker %{muclibc:/lib/ld-uClibc.so.0;:%{mbionic:/system/bin/linker;:%{mmusl:/lib/ld-musl-arm%{mbig-endian:eb}%{mfloat-abi=hard:hf}%{mfdpic:-fdpic}.so.1;:%{mfloat-abi=hard:/lib/ld-linux-armhf.so.3}     %{mfloat-abi=soft*:/lib/ld-linux.so.3}     %{!mfloat-abi=*:/lib/ld-linux.so.3}}}}}}    -X    --hash-style=gnu    %{!fsanitize=*:--as-needed}    %{mbig-endian:-EB} %{mlittle-endian:-EL} -m %{mfdpic: armelf_linux_fdpiceabi;:armelf_linux_eabi} %{shared: -Bsymbolic}}"
+        },
+        "b53_preprocessor": {
+          "flags": [
+            "-march=armv8-a+crc+crypto",
+            "-mtune=cortex-a53",
+            "-mfpu=crypto-neon-fp-armv8",
+            "-mfloat-abi=softfp"
+          ],
+          "returncode": 0,
+          "macros": {
+            "__ARM_NEON__": "1",
+            "__ARM_FEATURE_SAT": "1",
+            "__ARM_ARCH_ISA_ARM": "1",
+            "__ARM_NEON": "1",
+            "__ARM_ARCH_8A__": "1",
+            "__ARM_NEON_FP": "6",
+            "__ARM_FEATURE_FMA": "1",
+            "__ARM_FEATURE_IDIV": "1",
+            "__ARM_FEATURE_CRYPTO": "1",
+            "__ARM_FEATURE_LDREX": "15",
+            "__ARM_PCS": "1",
+            "__ARM_FEATURE_UNALIGNED": "1",
+            "__ARM_FEATURE_QBIT": "1",
+            "__ARM_ARCH_PROFILE": "65",
+            "__ARM_FEATURE_CLZ": "1",
+            "__ARM_ARCH_ISA_THUMB": "2",
+            "__ARM_ARCH": "8",
+            "__ARM_FEATURE_SHA2": "1",
+            "_TIME_BITS": "64",
+            "__ARM_FEATURE_SIMD32": "1",
+            "__ARM_FEATURE_CRC32": "1",
+            "_FILE_OFFSET_BITS": "64",
+            "__ARM_FEATURE_DSP": "1",
+            "__ARM_FEATURE_NUMERIC_MAXMIN": "1",
+            "__ARM_ARCH_EXT_IDIV__": "1",
+            "__ARM_FEATURE_AES": "1"
+          },
+          "stderr": ""
+        },
+        "legacy_time32_default_override": {
+          "returncode": 0,
+          "time_bits_macro_defined": false,
+          "file_offset_bits_macro_defined": false,
+          "stderr": ""
+        },
+        "ld_version": {
+          "command": [
+            "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain/usr/bin/../lib/gcc-cross/arm-linux-gnueabi/15/../../../../arm-linux-gnueabi/bin/ld",
+            "--version"
+          ],
+          "returncode": 0,
+          "stdout": "GNU ld (GNU Binutils for Ubuntu) 2.46\nCopyright (C) 2026 Free Software Foundation, Inc.\nThis program is free software; you may redistribute it under the terms of\nthe GNU General Public License version 3 or (at your option) a later version.\nThis program has absolutely no warranty.",
+          "stderr": ""
+        }
+      }
+    },
+    "armhf": {
+      "configuration": {
+        "source_commit": "2d5421ffca8893534d5e02ad38c28acd8e778fa3",
+        "glibc": "2.44",
+        "abi": "armhf",
+        "cpu_requested": "b53",
+        "cpu_resolved": "cortex-a53",
+        "flags": [
+          "-O2",
+          "-g",
+          "-mcpu=cortex-a53",
+          "-mfpu=crypto-neon-fp-armv8",
+          "-mfloat-abi=hard",
+          "-U_TIME_BITS",
+          "-U_FILE_OFFSET_BITS"
+        ],
+        "cc": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf/usr/bin/arm-linux-gnueabihf-gcc-15 --sysroot=/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf",
+        "cxx": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf/usr/bin/arm-linux-gnueabihf-g++-15 --sysroot=/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf",
+        "compiler_version": "15.2.0",
+        "headers": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/github-push-20260915/dependency-sdks/arm32/arm-buildroot-linux-gnueabi/sysroot/usr/include",
+        "kernel_header_version_sha256": "49aa7756dd75da60de5f0733cf0a4178a589a3a46120d7bae83d5d78f8188c92",
+        "configuration": {
+          "host": "arm-linux-gnueabihf",
+          "cpu_flags": [
+            "-mcpu=cortex-a53",
+            "-mfpu=crypto-neon-fp-armv8",
+            "-mfloat-abi=hard"
+          ],
+          "slibdir": "/lib/arm-linux-gnueabihf",
+          "rtlddir": "/lib",
+          "libdir": "/usr/lib/arm-linux-gnueabihf"
+        },
+        "minimum_kernel": "4.19",
+        "source_tree_sha256": "242f632e2eb82ac282a01b4d28085e11bb26651748346d010f6fc4e8e29ecab4",
+        "ubuntu_patch_sha256": "2c1da2d290b3720a1cd1e5b14a777e7c977b7fb6e8dc2116b8ff8d5db7d9ef74",
+        "host_library_dir": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf/usr/lib/aarch64-linux-gnu"
+      },
+      "executable_sha256": "5e228b21a63caf49085d53ebd1e998d1eecd753ba29a1377fe06e2c7b5eafe34",
+      "queries": {
+        "-dumpmachine": {
+          "command": [
+            "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf/usr/bin/arm-linux-gnueabihf-gcc-15",
+            "--sysroot=/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf",
+            "-dumpmachine"
+          ],
+          "returncode": 0,
+          "stdout": "arm-linux-gnueabihf",
+          "stderr": ""
+        },
+        "-dumpfullversion": {
+          "command": [
+            "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf/usr/bin/arm-linux-gnueabihf-gcc-15",
+            "--sysroot=/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf",
+            "-dumpfullversion"
+          ],
+          "returncode": 0,
+          "stdout": "15.2.0",
+          "stderr": ""
+        },
+        "-print-multiarch": {
+          "command": [
+            "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf/usr/bin/arm-linux-gnueabihf-gcc-15",
+            "--sysroot=/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf",
+            "-print-multiarch"
+          ],
+          "returncode": 0,
+          "stdout": "arm-linux-gnueabihf",
+          "stderr": ""
+        },
+        "-print-sysroot": {
+          "command": [
+            "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf/usr/bin/arm-linux-gnueabihf-gcc-15",
+            "--sysroot=/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf",
+            "-print-sysroot"
+          ],
+          "returncode": 0,
+          "stdout": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf",
+          "stderr": ""
+        },
+        "-print-search-dirs": {
+          "command": [
+            "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf/usr/bin/arm-linux-gnueabihf-gcc-15",
+            "--sysroot=/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf",
+            "-print-search-dirs"
+          ],
+          "returncode": 0,
+          "stdout": "install: /home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf/usr/bin/../lib/gcc-cross/arm-linux-gnueabihf/15/\nprograms: =/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf/usr/bin/../libexec/gcc-cross/arm-linux-gnueabihf/15/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf/usr/bin/../libexec/gcc-cross/arm-linux-gnueabihf/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf/usr/bin/../libexec/gcc-cross/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf/usr/bin/../lib/gcc-cross/arm-linux-gnueabihf/15/../../../../arm-linux-gnueabihf/bin/arm-linux-gnueabihf/15/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf/usr/bin/../lib/gcc-cross/arm-linux-gnueabihf/15/../../../../arm-linux-gnueabihf/bin/arm-linux-gnueabihf/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf/usr/bin/../lib/gcc-cross/arm-linux-gnueabihf/15/../../../../arm-linux-gnueabihf/bin/\nlibraries: =/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf/usr/bin/../lib/gcc-cross/arm-linux-gnueabihf/15/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf/usr/bin/../lib/gcc-cross/arm-linux-gnueabihf/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf/usr/bin/../lib/gcc-cross/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf/usr/bin/../lib/gcc-cross/arm-linux-gnueabihf/15/../../../../arm-linux-gnueabihf/lib/arm-linux-gnueabihf/15/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf/usr/bin/../lib/gcc-cross/arm-linux-gnueabihf/15/../../../../arm-linux-gnueabihf/lib/arm-linux-gnueabihf/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf/usr/bin/../lib/gcc-cross/arm-linux-gnueabihf/15/../../../../arm-linux-gnueabihf/lib/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf/lib/arm-linux-gnueabihf/15/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf/lib/arm-linux-gnueabihf/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf/lib/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf/usr/lib/arm-linux-gnueabihf/15/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf/usr/lib/arm-linux-gnueabihf/:/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf/usr/lib/",
+          "stderr": ""
+        },
+        "-print-file-name=libgcc_s.so.1": {
+          "command": [
+            "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf/usr/bin/arm-linux-gnueabihf-gcc-15",
+            "--sysroot=/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf",
+            "-print-file-name=libgcc_s.so.1"
+          ],
+          "returncode": 0,
+          "stdout": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf/usr/bin/../lib/gcc-cross/arm-linux-gnueabihf/15/../../../../arm-linux-gnueabihf/lib/libgcc_s.so.1",
+          "stderr": ""
+        },
+        "-print-file-name=crt1.o": {
+          "command": [
+            "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf/usr/bin/arm-linux-gnueabihf-gcc-15",
+            "--sysroot=/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf",
+            "-print-file-name=crt1.o"
+          ],
+          "returncode": 0,
+          "stdout": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf/usr/bin/../lib/gcc-cross/arm-linux-gnueabihf/15/../../../../arm-linux-gnueabihf/lib/crt1.o",
+          "stderr": ""
+        },
+        "-print-prog-name=ld": {
+          "command": [
+            "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf/usr/bin/arm-linux-gnueabihf-gcc-15",
+            "--sysroot=/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf",
+            "-print-prog-name=ld"
+          ],
+          "returncode": 0,
+          "stdout": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf/usr/bin/../lib/gcc-cross/arm-linux-gnueabihf/15/../../../../arm-linux-gnueabihf/bin/ld",
+          "stderr": ""
+        },
+        "specs": {
+          "returncode": 0,
+          "sha256": "dbe88b0411c2a4c6a2a6717e96b2fdc9a864f41d55c6d8cf44abdd6da3090edf",
+          "link": "%{!r:--build-id} %{!static|static-pie:--eh-frame-hdr}  %{mcpu=arm8|mcpu=arm810|mcpu=strongarm*|march=armv4|mcpu=fa526|mcpu=fa626:--fix-v4bx}%{!r:%{!mbe32:%:be8_linkopt(%{mlittle-endian:little}\t\t\t       %{mbig-endian:big}\t\t\t       %{mbe8:be8}\t\t\t       %{march=*:arch %*})}}%{!mandroid|tno-android-ld:%{h*}    %{static:-Bstatic}    %{shared:-shared}    %{symbolic:-Bsymbolic}    %{!static:      %{rdynamic:-export-dynamic}      %{!shared:-dynamic-linker %{muclibc:/lib/ld-uClibc.so.0;:%{mbionic:/system/bin/linker;:%{mmusl:/lib/ld-musl-arm%{mbig-endian:eb}%{mfloat-abi=hard:hf}%{mfdpic:-fdpic}.so.1;:%{mfloat-abi=hard:/lib/ld-linux-armhf.so.3}     %{mfloat-abi=soft*:/lib/ld-linux.so.3}     %{!mfloat-abi=*:/lib/ld-linux.so.3}}}}}}    -X    --hash-style=gnu    %{!fsanitize=*:--as-needed}    %{mbig-endian:-EB} %{mlittle-endian:-EL} -m %{mfdpic: armelf_linux_fdpiceabi;:armelf_linux_eabi};:%{h*}    %{static:-Bstatic}    %{shared:-shared}    %{symbolic:-Bsymbolic}    %{!static:      %{rdynamic:-export-dynamic}      %{!shared:-dynamic-linker %{muclibc:/lib/ld-uClibc.so.0;:%{mbionic:/system/bin/linker;:%{mmusl:/lib/ld-musl-arm%{mbig-endian:eb}%{mfloat-abi=hard:hf}%{mfdpic:-fdpic}.so.1;:%{mfloat-abi=hard:/lib/ld-linux-armhf.so.3}     %{mfloat-abi=soft*:/lib/ld-linux.so.3}     %{!mfloat-abi=*:/lib/ld-linux.so.3}}}}}}    -X    --hash-style=gnu    %{!fsanitize=*:--as-needed}    %{mbig-endian:-EB} %{mlittle-endian:-EL} -m %{mfdpic: armelf_linux_fdpiceabi;:armelf_linux_eabi} %{shared: -Bsymbolic}}"
+        },
+        "b53_preprocessor": {
+          "flags": [
+            "-march=armv8-a+crc+crypto",
+            "-mtune=cortex-a53",
+            "-mfpu=crypto-neon-fp-armv8",
+            "-mfloat-abi=hard"
+          ],
+          "returncode": 0,
+          "macros": {
+            "__ARM_NEON__": "1",
+            "__ARM_FEATURE_SAT": "1",
+            "__ARM_ARCH_ISA_ARM": "1",
+            "__ARM_NEON": "1",
+            "__ARM_ARCH_8A__": "1",
+            "__ARM_NEON_FP": "6",
+            "__ARM_PCS_VFP": "1",
+            "__ARM_FEATURE_FMA": "1",
+            "__ARM_FEATURE_IDIV": "1",
+            "__ARM_FEATURE_CRYPTO": "1",
+            "__ARM_FEATURE_LDREX": "15",
+            "__ARM_FEATURE_UNALIGNED": "1",
+            "__ARM_FEATURE_QBIT": "1",
+            "__ARM_ARCH_PROFILE": "65",
+            "__ARM_FEATURE_CLZ": "1",
+            "__ARM_ARCH_ISA_THUMB": "2",
+            "__ARM_ARCH": "8",
+            "__ARM_FEATURE_SHA2": "1",
+            "_TIME_BITS": "64",
+            "__ARM_FEATURE_SIMD32": "1",
+            "__ARM_FEATURE_CRC32": "1",
+            "_FILE_OFFSET_BITS": "64",
+            "__ARM_FEATURE_DSP": "1",
+            "__ARM_FEATURE_NUMERIC_MAXMIN": "1",
+            "__ARM_ARCH_EXT_IDIV__": "1",
+            "__ARM_FEATURE_AES": "1"
+          },
+          "stderr": ""
+        },
+        "legacy_time32_default_override": {
+          "returncode": 0,
+          "time_bits_macro_defined": false,
+          "file_offset_bits_macro_defined": false,
+          "stderr": ""
+        },
+        "ld_version": {
+          "command": [
+            "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/toolchain-armhf/usr/bin/../lib/gcc-cross/arm-linux-gnueabihf/15/../../../../arm-linux-gnueabihf/bin/ld",
+            "--version"
+          ],
+          "returncode": 0,
+          "stdout": "GNU ld (GNU Binutils for Ubuntu) 2.46\nCopyright (C) 2026 Free Software Foundation, Inc.\nThis program is free software; you may redistribute it under the terms of\nthe GNU General Public License version 3 or (at your option) a later version.\nThis program has absolutely no warranty.",
+          "stderr": ""
+        }
+      }
+    }
+  },
+  "reusable_glibc": {
+    "aarch64": {
+      "stage": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/builds/aarch64/stage",
+      "triplet": "aarch64-linux-gnu",
+      "loader_abi_entry": "/lib/ld-linux-aarch64.so.1",
+      "loader": {
+        "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/builds/aarch64/stage/lib/ld-linux-aarch64.so.1",
+        "sha256": "72e716da1d3f8fc1ff008e7d10d6f200d708e6869fea19868da2398ccbea4319",
+        "bytes": 1280736
+      },
+      "libc": {
+        "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/builds/aarch64/stage/lib/aarch64-linux-gnu/libc.so.6",
+        "sha256": "b9055aedd341ba7598cd393641714dcb90e3770bb3fcfdcc530a8c0effc5fa2d",
+        "bytes": 11247056
+      },
+      "configuration": {
+        "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/builds/aarch64/configuration.json",
+        "sha256": "1523fdff2e4b869926e6666f948e386e365c926fb7746fea5c7ff3de37465ced",
+        "bytes": 1959
+      },
+      "result": [
+        {
+          "step": "make",
+          "returncode": 0,
+          "elapsed_seconds": 2.39,
+          "log_sha256": "37e7ee411ec7015231ee1edb8de87f6ca03c2f27ecd4393bf3168d14869f3d27"
+        },
+        {
+          "step": "install",
+          "returncode": 0,
+          "elapsed_seconds": 16.66,
+          "log_sha256": "99567088cd6202b113cc62796ae3c0828b4fd66fbd73f026a68e6a1f3099f7b5"
+        }
+      ],
+      "deb_package": false,
+      "minimum_kernel": "4.19",
+      "default_arm32_time_t_bits": 64,
+      "loader_diagnostics": {
+        "command": [
+          "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/builds/aarch64/stage/lib/ld-linux-aarch64.so.1",
+          "--list-diagnostics"
+        ],
+        "returncode": 0,
+        "path_fields": [
+          "dl_dst_lib=\"lib/aarch64-linux-gnu\"",
+          "path.system_dirs[0x0]=\"/lib/aarch64-linux-gnu/\"",
+          "path.system_dirs[0x1]=\"/usr/lib/aarch64-linux-gnu/\"",
+          "path.system_dirs[0x2]=\"/lib/\"",
+          "path.system_dirs[0x3]=\"/usr/lib/\"",
+          "version.version=\"2.44\""
+        ],
+        "stderr": ""
+      }
+    },
+    "armel": {
+      "stage": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/builds/armel/stage",
+      "triplet": "arm-linux-gnueabi",
+      "loader_abi_entry": "/lib/ld-linux.so.3",
+      "loader": {
+        "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/builds/armel/stage/lib/ld-linux.so.3",
+        "sha256": "488ad208e586eb2e7d42ce67aab61d7c979a2132b1da55ee37848b406fe88368",
+        "bytes": 1265040
+      },
+      "libc": {
+        "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/builds/armel/stage/lib/arm-linux-gnueabi/libc.so.6",
+        "sha256": "dabe9ccbcec80e27a805b76846fc0bb206777103ea24e004b3397d36dd6b10d7",
+        "bytes": 11487172
+      },
+      "configuration": {
+        "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/builds/armel/configuration.json",
+        "sha256": "3a383a9d9d819307bef68fabcf588db0cdd8d8e5adc24f8c644b849973e1fad7",
+        "bytes": 1874
+      },
+      "result": [
+        {
+          "step": "configure",
+          "returncode": 0,
+          "elapsed_seconds": 3.0,
+          "log_sha256": "439377040ce9c4b5ba641ce6d12e40315d623f6a88d297e1f2e30b48497b25ee"
+        },
+        {
+          "step": "make",
+          "returncode": 0,
+          "elapsed_seconds": 120.75,
+          "log_sha256": "8d697bb7af495fa81585e2c5a1a9d9ff7dd82f2fdb6607fd0b181c8baa5cebf1"
+        },
+        {
+          "step": "install",
+          "returncode": 0,
+          "elapsed_seconds": 29.29,
+          "log_sha256": "0e4d8a21f4a3242c32b8d47e1ff226d98cc25b26827f15dc46e82757ee39a25c"
+        }
+      ],
+      "deb_package": false,
+      "minimum_kernel": "4.19",
+      "default_arm32_time_t_bits": 32,
+      "loader_diagnostics": {
+        "command": [
+          "/usr/bin/qemu-arm",
+          "-cpu",
+          "max",
+          "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/builds/armel/stage/lib/ld-linux.so.3",
+          "--list-diagnostics"
+        ],
+        "returncode": 0,
+        "path_fields": [
+          "dl_dst_lib=\"lib/arm-linux-gnueabi\"",
+          "path.system_dirs[0x0]=\"/lib/arm-linux-gnueabi/\"",
+          "path.system_dirs[0x1]=\"/usr/lib/arm-linux-gnueabi/\"",
+          "path.system_dirs[0x2]=\"/lib/\"",
+          "path.system_dirs[0x3]=\"/usr/lib/\"",
+          "version.version=\"2.44\""
+        ],
+        "stderr": ""
+      }
+    },
+    "armhf": {
+      "stage": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/builds/armhf/stage",
+      "triplet": "arm-linux-gnueabihf",
+      "loader_abi_entry": "/lib/ld-linux-armhf.so.3",
+      "loader": {
+        "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/builds/armhf/stage/lib/ld-linux-armhf.so.3",
+        "sha256": "f1b00818d33f1704209342584ccbbe57ccbd36fa65344d5484ddebc931b5c1eb",
+        "bytes": 1202912
+      },
+      "libc": {
+        "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/builds/armhf/stage/lib/arm-linux-gnueabihf/libc.so.6",
+        "sha256": "c6eaaffe80033bc312238dc5b05a41b2df4cd2ba3400e9c9dcbd2c8ca8f4bd67",
+        "bytes": 11157088
+      },
+      "configuration": {
+        "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/builds/armhf/configuration.json",
+        "sha256": "5feab7b1aa82a97ecc1ed534a34babfa99b18c30f1ed46915c82670dc0e94faf",
+        "bytes": 1915
+      },
+      "result": [
+        {
+          "step": "configure",
+          "returncode": 0,
+          "elapsed_seconds": 3.04,
+          "log_sha256": "76edc0a3729d258fa00164806312b0030e98bf153dfc0c5a48584ebfd81eaef2"
+        },
+        {
+          "step": "make",
+          "returncode": 0,
+          "elapsed_seconds": 120.86,
+          "log_sha256": "827f09ee371afa645ea25fa1f0c26ce3f0b6694d12df20167db09db10a660c6c"
+        },
+        {
+          "step": "install",
+          "returncode": 0,
+          "elapsed_seconds": 29.1,
+          "log_sha256": "ea13b0f33c4a35074450e5ab6b64acfc4cf13994783a7911c78c6072580346fc"
+        }
+      ],
+      "deb_package": false,
+      "minimum_kernel": "4.19",
+      "default_arm32_time_t_bits": 32,
+      "loader_diagnostics": {
+        "command": [
+          "/usr/bin/qemu-arm",
+          "-cpu",
+          "max",
+          "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/builds/armhf/stage/lib/ld-linux-armhf.so.3",
+          "--list-diagnostics"
+        ],
+        "returncode": 0,
+        "path_fields": [
+          "dl_dst_lib=\"lib/arm-linux-gnueabihf\"",
+          "path.system_dirs[0x0]=\"/lib/arm-linux-gnueabihf/\"",
+          "path.system_dirs[0x1]=\"/usr/lib/arm-linux-gnueabihf/\"",
+          "path.system_dirs[0x2]=\"/lib/\"",
+          "path.system_dirs[0x3]=\"/usr/lib/\"",
+          "version.version=\"2.44\""
+        ],
+        "stderr": ""
+      }
+    }
+  },
+  "reference_artifacts": [
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/usrmerge-20260915/README.md",
+      "sha256": "f93d0272e9fe3e906ddb9e1f71d5d2f746260a2f21349f391215953639acfcd2",
+      "bytes": 7517
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/usrmerge-20260915/scripts/merge-rootfs.py",
+      "sha256": "91f5a7881441c7066cd18da638d80c36737a79bd8d8c6dc63efb94471f559d6e",
+      "bytes": 7950
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/runtime-dirs-20260915/README.md",
+      "sha256": "78fe7f6b6f804df6ea54c295be63f4ddb600694417f29d83dfd41e2bbc76fc05",
+      "bytes": 6912
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/README.md",
+      "sha256": "7502c974f24bff04955b80b09e025fe4340dd32ae07241d79558d42624118da2",
+      "bytes": 9311
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/evidence/toolchain-verification.json",
+      "sha256": "b5ca3d80280c72275cbecfe17939c26a63078dc7994117c2317dc6120592c7dc",
+      "bytes": 123
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/README.md",
+      "sha256": "8133b96473d1a4b24cd9114f8b2f87ae84f466a8ad1025eda5939c5b0b40e208",
+      "bytes": 9960
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/configs/glibc-source.json",
+      "sha256": "0faf6458d7f6deb36d8c5cf642b206d7b76f0379f3a16e8a1b5ce4bc0e8c3296",
+      "bytes": 1226
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/patches/ubuntu-multiarch-glibc244.patch",
+      "sha256": "2c1da2d290b3720a1cd1e5b14a777e7c977b7fb6e8dc2116b8ff8d5db7d9ef74",
+      "bytes": 3489
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/scripts/build-glibc.py",
+      "sha256": "8eb583080ae280c633e775f12bf2a1db2e194c53a7bf3da71c9d8998a9532ad1",
+      "bytes": 6366
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/evidence/ubuntu-reference.json",
+      "sha256": "9ade2f848289bcf21d1dd423e5134e6efc3af7642bc6e2b0a43dd0fbc9dec3ae",
+      "bytes": 20699
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/evidence/qemu-final.json",
+      "sha256": "1b1536bf2370ab3a4e82e7f4da79e1e6a18bc9201d711966da8196ebf4d36c30",
+      "bytes": 6672
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/flash/evidence/live-summary.json",
+      "sha256": "421b1ca750b86a0450af3f6102a32018eb6bbc7330df3cfac727c519499cd66e",
+      "bytes": 3330
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/packages/runtime-manifest.json",
+      "sha256": "ab5b0c6b1a002351a5b3967a218186e086be2dc8bbe89b5413f4cd82198396ce",
+      "bytes": 24432
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/libgcc-runtime-20260916/README.md",
+      "sha256": "d92590d19e5f4e4710b89ea5652ea64a599f0189b0ee680d26a4367fedffeb51",
+      "bytes": 6799
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/libgcc-runtime-20260916/packages/runtime-manifest.json",
+      "sha256": "d9a85a5c22f976670e171f45fc12c5906ae200d7e05da1b0120ab1591fb57e00",
+      "bytes": 2715
+    }
+  ],
+  "cpu_policy": {
+    "armel": {
+      "target_flags": [
+        "-march=armv8-a+crc+crypto",
+        "-mtune=cortex-a53",
+        "-mfpu=crypto-neon-fp-armv8",
+        "-mfloat-abi=softfp"
+      ],
+      "role": "Current BCM SDK 32-bit ASUS userspace uses armel/softfp; retain this ABI for rebuilt components and links to its vendor objects",
+      "loader": "/lib/ld-linux.so.3"
+    },
+    "armhf": {
+      "target_flags": [
+        "-march=armv8-a+crc+crypto",
+        "-mtune=cortex-a53",
+        "-mfpu=crypto-neon-fp-armv8",
+        "-mfloat-abi=hard"
+      ],
+      "role": "Optional compatibility target for additional armhf components installed in the future; not a dependency of the current BCM SDK",
+      "loader": "/lib/ld-linux-armhf.so.3",
+      "activation": "Provide its loader and matching runtime libraries when an additional component requires armhf; do not migrate current SDK components to armhf"
+    },
+    "arm64": {
+      "target_flags": [
+        "-mcpu=cortex-a53+crypto+crc"
+      ],
+      "role": "Default for new and successfully ported userspace components without incompatible vendor dependencies",
+      "loader": "/lib/ld-linux-aarch64.so.1"
+    }
+  },
+  "gcc16_usb_packaging": {
+    "source_archive": {
+      "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/gcc-16.2.0.tar.xz",
+      "sha256": "e6738e29597f733270731aa90600f37ffdc045079dfc27ec7e8192cc81085c3e",
+      "bytes": 107200820
+    },
+    "base_version": "16.2.0",
+    "datestamp": "20260807",
+    "release_phase": "",
+    "build_script": {
+      "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/build.sh",
+      "sha256": "39dfd50dc6194b4e35ff22f60f1f866ebf1b12c42e5c5387be85dde0f032b6c6",
+      "bytes": 1108
+    },
+    "packaging_script": {
+      "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/package.py",
+      "sha256": "4c546eeeb4de88d90e4f48a6d2d24ade9e6887b459aa70ca26f9191f19492f8f",
+      "bytes": 1506
+    },
+    "installed_specs": {
+      "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/gcc162-usb/stage/tmp/mnt/JFFS/gcc-16.2.0-usb/lib/gcc/aarch64-unknown-linux-gnu/16.2.0/specs",
+      "sha256": "dd2ce76824c8cef1cca81e30a200c36d6aaac9d7d20429e9b1720f45b0a2091d",
+      "bytes": 9756
+    },
+    "installed_specs_excerpt": "%{!static|static-pie:--eh-frame-hdr} %{h*}\t\t   %{static:-Bstatic}\t\t\t\t   %{shared:-shared}\t\t\t\t   %{symbolic:-Bsymbolic}\t\t\t   %{!static:%{!static-pie:\t\t\t     %{rdynamic:-export-dynamic}\t\t     %{!shared:-dynamic-linker %{muclibc:/lib/ld-uClibc.so.0;:%{mbionic:/system/bin/linker;:%{mmusl:/lib/ld-musl-aarch64%{mbig-endian:_be}%{mabi=ilp32:_ilp32}.so.1;:/opt/lib/ld-linux-aarch64%{mbig-endian:_be}%{mabi=ilp32:_ilp32}.so.1}}}}}}    %{static-pie:-Bstatic -pie --no-dynamic-linker -z text}    -X\t\t\t\t\t\t   %{mbig-endian:-EB} %{mlittle-endian:-EL}        -maarch64linux%{mabi=ilp32:32}%{mbig-endian:b}    %{%:sanitize(memtag-stack):%{!fsanitize-memtag-mode:-z memtag-stack -z memtag-mode=sync}}    %{%:sanitize(memtag-stack):%{fsanitize-memtag-mode=*:-z memtag-stack -z memtag-mode=%}} %{mcpu=*:%{%:is_local_not_armv8_base(%{mcpu=*:%*}):; mfix-cortex-a53-835769:--fix-cortex-a53-835769}; march=*:%{%:is_local_not_armv8_base(%{march=*:%*}):;mfix-cortex-a53-835769:--fix-cortex-a53-835769}; mfix-cortex-a53-835769:--fix-cortex-a53-835769 } %{mcpu=*:%{%:is_local_not_armv8_base(%{mcpu=*:%*}):; mfix-cortex-a53-843419:--fix-cortex-a53-843419}; march=*:%{%:is_local_not_armv8_base(%{march=*:%*}):;mfix-cortex-a53-843419:--fix-cortex-a53-843419}; mfix-cortex-a53-843419:--fix-cortex-a53-843419 } -rpath /tmp/mnt/JFFS/gcc-16.2.0-usb/lib64 -rpath /opt/lib",
+    "not_ubuntu_ready": [
+      "prefix /tmp/mnt/JFFS/gcc-16.2.0-usb",
+      "target aarch64-unknown-linux-gnu; -print-multiarch is empty",
+      "sysroot /opt, native headers /include",
+      "package.py redirects interpreter to /opt/lib/ld-linux-aarch64.so.1 and embeds USB lib64 plus /opt/lib rpaths",
+      "no dpkg ownership, dependencies, triggers, or Ubuntu package split"
+    ],
+    "reuse": "Source archive, B53 flags, test programs, and build lessons are reusable; do a fresh distro-layout build rather than copying the staged USB compiler."
+  },
+  "glibc_source": {
+    "base_commit": "2d5421ffca8893534d5e02ad38c28acd8e778fa3",
+    "source_archive_sha256": "af06b544fb9f689b9b1d172854841b734f6e57f3b3b9283a0e2dc677f16d67ec",
+    "ubuntu_packaging": "2.43-2ubuntu2",
+    "adaptation": "Preserve glibc 2.44 ldconfig_parse_config callback API while using Ubuntu trusted-dir enumeration; other changes retain Ubuntu logic.",
+    "upstream_patches": {
+      "local-ld-multiarch.diff": "f7c72262826010174c8e432e93bee93254bf60beb96d0294f0418dfc9472b51a",
+      "local-ldconfig-multiarch.diff": "214e510b8ac7624f2dac8983f2abc7db0a0c72e18f8c2abd0af0bb63d633ee58",
+      "local-ldconfig-ignore-ld.so.diff": "d7f3513bf212a124f085bded16f012933c164fe3c500fc54b51b9d4a8787f613"
+    },
+    "patch": {
+      "file": "patches/ubuntu-multiarch-glibc244.patch",
+      "sha256": "2c1da2d290b3720a1cd1e5b14a777e7c977b7fb6e8dc2116b8ff8d5db7d9ef74"
+    },
+    "patched_files": {
+      "Makeconfig": "143a3c7145df2b5fb6a25d34fdecd8a65729052ec769471de29d36f8c6b4a123",
+      "elf/Makefile": "7ad737d2cad7a506c49aa4fa1a06e9742d8714cdf7d8273e9b22241419a40bc3",
+      "elf/ldconfig.c": "38aa9e790f401ae6b1defa6216e6405c26fb9699af67bf614f155024a4803255"
+    },
+    "source_tree_sha256": "242f632e2eb82ac282a01b4d28085e11bb26651748346d010f6fc4e8e29ecab4"
+  },
+  "binutils": {
+    "prior_build_inputs": "BE98 older ARM32 cross toolchains use Ubuntu 2.42; newer GCC15 cross trees carry Ubuntu binutils 2.46-3ubuntu2. See actual ld query output for executable versions.",
+    "target_release": "2.47",
+    "local_b53_247_build_found_in_audited_checkpoints": false,
+    "plan": "Rebuild official binutils 2.47 with Ubuntu/Debian packaging, AArch64 host flags -O2 -mcpu=cortex-a53+crypto+crc, and separate aarch64-linux-gnu/arm-linux-gnueabi/arm-linux-gnueabihf targets as needed. Enable and package linker plugin/LTO support, shared dependency metadata, zstd support where packaging provides it. Do not infer speedup from flags; benchmark representative links separately.",
+    "distinction": "B53 host CFLAGS tune the tools themselves; target ISA defaults and ABI are separate compiler settings. Never use -march=native on the GB10 build host for router binaries."
+  },
+  "ubuntu_layout_contract": {
+    "native_architecture": "arm64",
+    "optional_foreign_architecture": "armhf",
+    "vendor_abi": "armel softfp (not Ubuntu native armel archive support)",
+    "usrmerge": {
+      "/bin": "usr/bin",
+      "/sbin": "usr/sbin",
+      "/lib": "usr/lib"
+    },
+    "library_directories": [
+      "/usr/lib/aarch64-linux-gnu",
+      "/usr/lib/arm-linux-gnueabi",
+      "/usr/lib/arm-linux-gnueabihf"
+    ],
+    "loader_entries": [
+      "/lib/ld-linux-aarch64.so.1",
+      "/lib/ld-linux.so.3",
+      "/lib/ld-linux-armhf.so.3"
+    ],
+    "private_vendor_plugins": "Retain only audited hardcoded paths as compatibility links or configure/rebuild consumers; BE98 pins cannot be blindly applied to different BE19000AI bytes.",
+    "runtime_directories": "BE98 /run -> var/run was an ASUS compatibility shim, not a complete Ubuntu model. Essential Ubuntu needs persistent /etc and /var/lib/dpkg,/var/lib/apt with transient /run; do not inherit ASUS whole-/var tmpfs for package state.",
+    "package_ownership": "Every base/toolchain/runtime/vendor file is owned by a .deb or explicitly documented local configuration; never merely copy a libc/toolchain over dpkg-owned files and leave package metadata stale.",
+    "armel_repository": "Keep Ubuntu ports entries arch-filtered to supported arm64 and optional armhf. Supply local armel packages from a separately signed project repository; Ubuntu cross packages are SDK payloads, not native armel base packages."
+  },
+  "required_rebuilds": [
+    {
+      "component": "GCC16",
+      "required": true,
+      "recipe": "Fresh native arm64 Debian/Ubuntu package build using target aarch64-linux-gnu, prefix /usr, --enable-multiarch, major-version directories and gcc-16/g++-16 entry points. Rebase supported Ubuntu packaging patches onto 16.2.0. Use the real Ubuntu sysroot/header layout and default /lib ABI loader; remove all /opt/USB rpaths. Build separate armel and armhf cross compiler packages if required; AArch64 GCC -m32 does not provide the ARM32 compilers."
+    },
+    {
+      "component": "glibc2.44",
+      "required": "Deb packaging required; existing validated source/patches/stages reusable as reference, not an installed-package substitute.",
+      "recipe": "Rebase current Ubuntu packaging onto pinned release/2.44 source, retaining known multiarch patches and --enable-kernel=4.19. Build coherent libc6/libc-bin/libc6-dev/locales or minimal needed subset and per-ABI libgcc/libstdc++ packages, preserving maintainer scripts/triggers/shlibs/symbols and Multi-Arch semantics. Test dpkg install/upgrade/remove rules in the offline rootfs."
+    },
+    {
+      "component": "binutils2.47",
+      "required": true,
+      "recipe": "New signed-source build and .deb packaging; no completed B53 2.47 artifact was found in audited checkpoints."
+    }
+  ],
+  "abi_pitfalls": [
+    "Ubuntu GCC15 ARM32 defaults define _TIME_BITS=64 and _FILE_OFFSET_BITS=64. Earlier BE98 checkpoints cleared them broadly to preserve legacy ABI. Current user policy supersedes that default: new/rebuilt components prefer time64, source bugs are repaired first, and -U is allowed only for a proven individual legacy boundary documented in configs/ubuntu26/layout-profile.json.",
+    "armel softfp permits hardware FP/NEON while preserving the soft-float call ABI; do not change vendor calls to hard-float.",
+    "Existing kernel9 time64 tests validate the new ARM32 syscall surface, not every syscall required by Ubuntu systemd or every vendor process.",
+    "Latest glibc release and kernel minimum are distinct: keep 4.19 fallback assumptions even with backported time64; --enable-kernel=5.1 would assume unrelated newer APIs.",
+    "Use one ABI-matched loader/runtime set atomically. Validate cache-disabled and cached resolution, dlopen/plugins, TLS/pthreads, DNS/NSS, crypto and C++ unwinding. Systemd/PID1/vendor service coexistence requires separate QEMU and physical acceptance."
+  ],
+  "documentation": [
+    "https://gcc.gnu.org/install/configure.html",
+    "https://www.debian.org/doc/debian-policy/ch-opersys.html",
+    "https://packages.ubuntu.com/source/resolute/glibc"
+  ],
+  "required_acceptance": [
+    "gcc-16 -dumpmachine=aarch64-linux-gnu and -print-multiarch=aarch64-linux-gnu; both ARM32 compilers report their own tuples.",
+    "Compile/link C, C++, DSO, TLS/pthread, exception-unwind and LTO tests for every installed ABI; verify ELF interpreter, symbols, target ISA, actual dependencies and no /opt/USB absolute paths.",
+    "dpkg-shlibdeps and apt dependency solver accept package metadata; matching Multi-Arch:same package versions coinstall without conflicting files; package upgrade maintains loader symlinks/cache.",
+    "Existing ASUS binaries, private plugins, web UI, Wi-Fi/Runner/AiMesh and the separate AI-board link pass on the final BE19000AI candidate before deployment."
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "status": "new_BSP_license_and_stage_logging_checks_passed",
+  "qemu": {
+    "path": "build/qemu/bsp-license-projection-v1/result.json",
+    "sha256": "61eab15c443aedd6feed65783c39fb519eb0d122051ea1a7fed121e7d2b6f261"
+  },
+  "serial": {
+    "path": "build/qemu/bsp-license-projection-v1/serial.log",
+    "sha256": "efba1ad18d138491daa080ad5986e6d305f603718054679803dd1a73037ebb93"
+  },
+  "projection_fixture": {
+    "path": "build/ubuntu26-bsp-license/qemu-projection-v1/manifest.json",
+    "sha256": "46e23e1d5f6eb90d154fa9c53d63b624d4d387e5460a2d4ecbed1004c44c3fc8"
+  },
+  "direct_journal": {
+    "path": "build/ubuntu26-bsp-journal/hidden-stdio-v2/manifest.json",
+    "sha256": "0e6cc01c10040169fe47e97348ec5dda24317295fdb6974cfd52d0bcc25789de"
+  },
+  "source_peer_review": "asus_elf_closure read-only; no blocker",
+  "proven": [
+    "Same kernel10 production RO license function binds five exact original files to private /etc/licenses on a direct filesystem",
+    "Same directory/file inode+device and bytes; writes refused EROFS",
+    "Native /etc mount and inode unchanged outside child namespace",
+    "Stage records delivered despite null stdio; absent/full socket never changes stage result; timeout rc124 preserved"
+  ],
+  "hypothesis": "BP3 iterate callback opens child under exclusive overlay directory lock; physical stack not yet captured, no claim of dynamic deadlock reproduction",
+  "not_proven": [
+    "BP3 crypto or ASUS hardware initialization",
+    "Full new launcher startup (unchanged earlier namespace/storage/command evidence reused)"
+  ],
+  "unchanged_tests_repeated": false,
+  "device_operated": false,
+  "git_commit_or_push": false
+}

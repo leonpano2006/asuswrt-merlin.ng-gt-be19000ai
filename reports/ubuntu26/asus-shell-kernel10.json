@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "status": "private_shell_component_passed_kernel10",
+  "source_commit": "9b25e55ca5c56a6f01d6a56264c0f6c47459ada0",
+  "package": "build/asus-private-shell/packages/leon-asus-shell_0.2+asus3006.102.9_arm64.deb",
+  "package_sha256": "08028c6e09eac02276919866ebc4a1f8e4418f58eeea0e8007e0a952010b794a",
+  "kernel_sha256": "4a15601eada042576aed2a3680dcc48e9228eea70f70c478840767aaa89a9f8e",
+  "rootfs_sha256": "303cafac152c86df9ac78a7c677e718ec411074dd7c73f33a3f0db26df59fda5",
+  "matching_stock_applet_count": 162,
+  "checks": {
+    "apt_install_remove_reinstall": true,
+    "stock_external_shell_commands_in_private_path": [
+      "[",
+      "[[",
+      "test",
+      "echo",
+      "printf"
+    ],
+    "ash_quoting_arguments_comparisons_expansions_arithmetic_pipeline_exit_trap_wait": true,
+    "blocked_parent_signals_not_inherited_by_shell_or_rc_system_child": true,
+    "parent_signal_mask_restored_and_child_signal_delivered": true,
+    "time64_2040_timestamp_and_date": true,
+    "off64_five_GiB_sparse_file_metadata": true,
+    "safe_text_archive_checksum_applets": true,
+    "Ubuntu_dash_accounts_and_prior_package_versions_unchanged": true
+  },
+  "failed_attempts_preserved": [
+    {
+      "path": "build/qemu/ubuntu26-kernel10-asus-shell-v1/result.json",
+      "cause": "APT --no-download local-file install did not stage the local archive; normal offline local install used in later fixtures."
+    },
+    {
+      "path": "build/qemu/ubuntu26-kernel10-asus-shell-v2/result.json",
+      "cause": "Actual vendor configuration uses external [[ applet; package0.2 supplies the five private shell command aliases."
+    }
+  ],
+  "evidence": [
+    {
+      "path": "build/asus-private-shell/qemu/v3/manifest.json",
+      "sha256": "be9e939704259ba57787c9e64429702da1f31965cdb09e8b5aaebbf30050dfdf"
+    },
+    {
+      "path": "build/qemu/ubuntu26-kernel10-asus-shell-v3/result.json",
+      "sha256": "c42d0bdebf71d85ea4ed981a1cccd512558c426df616bcbaef6c834bb334fca7"
+    },
+    {
+      "path": "build/qemu/ubuntu26-kernel10-asus-shell-v3/serial.log",
+      "sha256": "00c85239dce0efee9f206e126ac1c4fd84b1df0dd877e34aad658b2d22a9cf62"
+    },
+    {
+      "path": "build/asus-private-shell/native-v4/result.json",
+      "sha256": "c72eb99f2f12aee67eebb2e240a26cb02bcf65d2d43fe56b0df8caf782666a09"
+    },
+    {
+      "path": "build/asus-native-helpers/v3/result.json",
+      "sha256": "5615d173dbfac8825507c20ceec9c647ad21871e9fe352e7cb725bd83fe10d46"
+    },
+    {
+      "path": "build/asus-private-shell/packages/manifest-0.2+asus3006.102.9.json",
+      "sha256": "511e34d7b9a936bada75d168983bdf2c8e07957e3eeb454cd006df3ff77e2fd4"
+    }
+  ],
+  "limits": [
+    "No actual ASUS daemon or hardware initializer was started.",
+    "No claim that all vendor scripts or all162 applets are functionally covered.",
+    "Private /etc namespace/storage has independent evidence; combined full ASUS boot remains required."
+  ],
+  "asus_functional_acceptance": false,
+  "flash_allowed": false
+}

@@ -1,0 +1,322 @@
+{
+  "block_devices_opened": 0,
+  "limits": [
+    "Mock SSH/block contents; no real Dropbear transport compatibility or physical fsync acceptance. Regular staging uses noclobber ash cat because the extracted stock image lacks SFTP.",
+    "Retained remote lock after unknown outcome requires separate human/parent review and verified writer quiescence before explicit recovery.",
+    "Recovery intentionally refuses any kernel p11, including after reboot when GPT scanning discovered p11; such a state needs a separate unmounted-consumer recovery review.",
+    "Advisory lock only serializes this tool, not ASUS firmware writers; exclusive maintenance is an external prerequisite.",
+    "No power-loss atomicity guarantee. Existing sparse-file fixture covers persisted-prefix cuts, not arbitrary hardware failures."
+  ],
+  "network_connections": 0,
+  "physical_gpt_writes": 0,
+  "plan_sha256": "60d2b71c6ed8560c311b4b3bd458a09868a025439a22776e08b3beef533c6a12",
+  "schema": 1,
+  "sources": [
+    {
+      "path": "scripts/provision-ubuntu26-gpt.py",
+      "sha256": "46bce6e395ce9ee918196b8aae62ba75fa5371961490ebb5fd87cc3823a69c0b"
+    },
+    {
+      "path": "scripts/test-provision-ubuntu26-gpt.py",
+      "sha256": "65daed99047311676083833fa9a03fe515a8849706ca905c73768f06cf484ef4"
+    }
+  ],
+  "status": "offline_mock_protocol_passed_not_hardware_accepted",
+  "test_count": 61,
+  "tests": [
+    {
+      "case": "reject_cid",
+      "passed": true
+    },
+    {
+      "case": "reject_capacity",
+      "passed": true
+    },
+    {
+      "case": "reject_logical4096",
+      "passed": true
+    },
+    {
+      "case": "reject_notroot",
+      "passed": true
+    },
+    {
+      "case": "reject_wrongdev",
+      "passed": true
+    },
+    {
+      "case": "reject_regularnode",
+      "passed": true
+    },
+    {
+      "case": "reject_scsi",
+      "passed": true
+    },
+    {
+      "case": "reject_asus_mmc",
+      "passed": true
+    },
+    {
+      "case": "reject_kernel9_root_p4",
+      "passed": true
+    },
+    {
+      "case": "reject_duplicate_rootarg",
+      "passed": true
+    },
+    {
+      "case": "reject_no_fsync",
+      "passed": true
+    },
+    {
+      "case": "reject_p7_extent",
+      "passed": true
+    },
+    {
+      "case": "reject_slot5_hash",
+      "passed": true
+    },
+    {
+      "case": "reject_slot6_hash",
+      "passed": true
+    },
+    {
+      "case": "reject_stockrc_hash",
+      "passed": true
+    },
+    {
+      "case": "reject_bb_hash",
+      "passed": true
+    },
+    {
+      "case": "reject_ext4_errorcount",
+      "passed": true
+    },
+    {
+      "case": "reject_wrong_boot",
+      "passed": true
+    },
+    {
+      "case": "reject_p11_exists",
+      "passed": true
+    },
+    {
+      "case": "reject_uuid_p7",
+      "passed": true
+    },
+    {
+      "case": "reject_uuid_p8",
+      "passed": true
+    },
+    {
+      "case": "reject_uuid_p9",
+      "passed": true
+    },
+    {
+      "case": "reject_uuid_p10",
+      "passed": true
+    },
+    {
+      "case": "reject_mount_missing",
+      "passed": true
+    },
+    {
+      "case": "reject_mount_readonly",
+      "passed": true
+    },
+    {
+      "case": "reject_root_wrong_major",
+      "passed": true
+    },
+    {
+      "case": "reject_metadata_crc",
+      "passed": true
+    },
+    {
+      "case": "reject_metadata_header_mismatch",
+      "passed": true
+    },
+    {
+      "case": "reject_metadata_header_overflow",
+      "passed": true
+    },
+    {
+      "case": "reject_metadata_header_short",
+      "passed": true
+    },
+    {
+      "case": "parse_existing_readonly_v4_metadata",
+      "passed": true
+    },
+    {
+      "case": "reject_foreign_gpt",
+      "passed": true
+    },
+    {
+      "case": "success_fixed_four_extents_durable_backup",
+      "passed": true
+    },
+    {
+      "case": "host_fsync_failure_zero_remote_mutations",
+      "passed": true
+    },
+    {
+      "case": "stop_without_retry_stage_hash",
+      "passed": true
+    },
+    {
+      "case": "stop_without_retry_lock_exists",
+      "passed": true
+    },
+    {
+      "case": "stop_without_retry_boot_after_backup",
+      "passed": true
+    },
+    {
+      "case": "stop_without_retry_foreign_after_write",
+      "passed": true
+    },
+    {
+      "case": "stop_without_retry_capture_after_write",
+      "passed": true
+    },
+    {
+      "case": "stop_without_retry_('torn', 1)",
+      "passed": true
+    },
+    {
+      "case": "stop_without_retry_('torn', 2)",
+      "passed": true
+    },
+    {
+      "case": "stop_without_retry_('torn', 3)",
+      "passed": true
+    },
+    {
+      "case": "stop_without_retry_('torn', 4)",
+      "passed": true
+    },
+    {
+      "case": "stop_without_retry_('unknown_after_fsync', 1)",
+      "passed": true
+    },
+    {
+      "case": "stop_without_retry_('unknown_after_fsync', 2)",
+      "passed": true
+    },
+    {
+      "case": "stop_without_retry_('unknown_after_fsync', 3)",
+      "passed": true
+    },
+    {
+      "case": "stop_without_retry_('unknown_after_fsync', 4)",
+      "passed": true
+    },
+    {
+      "case": "explicit_recovery_valid_copy_first_after_step1",
+      "passed": true
+    },
+    {
+      "case": "explicit_recovery_valid_copy_first_after_step2",
+      "passed": true
+    },
+    {
+      "case": "explicit_recovery_valid_copy_first_after_step3",
+      "passed": true
+    },
+    {
+      "case": "explicit_recovery_valid_copy_first_after_step4",
+      "passed": true
+    },
+    {
+      "case": "reviewed_same_boot_required",
+      "passed": true
+    },
+    {
+      "case": "fingerprint_changed_zero_mutations",
+      "passed": true
+    },
+    {
+      "case": "reviewed_file_hash_and_no_follow",
+      "passed": true
+    },
+    {
+      "case": "dd_exact_records_optional_speedline_and_errors",
+      "passed": true
+    },
+    {
+      "case": "dd_shortread_refused_despite_exit0",
+      "passed": true
+    },
+    {
+      "case": "staged_source_changed_prevents_dd_write",
+      "passed": true
+    },
+    {
+      "case": "pmbr_partition_payload_and_wrong_size_refused",
+      "passed": true
+    },
+    {
+      "case": "staging_regular_noclobber_pipe_never_targets_block",
+      "passed": true
+    },
+    {
+      "case": "mock_channel_stdin_eof_output_bound_and_capture_deadline",
+      "passed": true
+    },
+    {
+      "case": "exact_stock_armel_dd_large_offsets_fsync_regular_sparse_fixture",
+      "passed": true
+    }
+  ],
+  "scope": "Offline-validated host orchestration, fixed BE19000AI original/candidate GPT; no hardware execution",
+  "source": {
+    "path": "scripts/provision-ubuntu26-gpt.py",
+    "sha256": "46bce6e395ce9ee918196b8aae62ba75fa5371961490ebb5fd87cc3823a69c0b"
+  },
+  "test_source": {
+    "path": "scripts/test-provision-ubuntu26-gpt.py",
+    "sha256": "65daed99047311676083833fa9a03fe515a8849706ca905c73768f06cf484ef4"
+  },
+  "validation": {
+    "path": "build/ubuntu26-gpt-host/v7/result.json",
+    "sha256": "c940ff0820354af31288312309f4c8c827066426908be517728593ee7c8104c6"
+  },
+  "stock_busybox_dd": {
+    "path": "build/ubuntu26-gpt-host/v7/stock-dd-qemu-user.json",
+    "sha256": "3b8d3e0fb0ff66b88beeb92c4e1686953b3c0eaf327a77ce7192c422b7bb34c3"
+  },
+  "peer_review": {
+    "path": "reports/ubuntu26/gpt-host-source-review-v1.json",
+    "sha256": "0a85da0af0fc1444486674c557204421f175f373633ab774829851c895c9fcd9"
+  },
+  "production_execution_accepted": false,
+  "device_connections": false,
+  "mode": "default read-only capture; apply and recover-original explicit separate options",
+  "write_order": [
+    "backup entries 61226463 x 512, 16384 bytes",
+    "backup header 61226495 x 512, 512 bytes",
+    "primary entries 2 x 512, 16384 bytes",
+    "primary header 1 x 512, 512 bytes"
+  ],
+  "guards": [
+    "Host known_hosts snapshot required and RejectPolicy; optional password through getpass only in memory",
+    "Explicit reviewed capture SHA256 and fixed plan SHA256",
+    "Fresh same-boot stock root=/dev/mmcblk0p6 and read-only squashfs179:6",
+    "Fixed CID, capacity, sector size, node179:0, all kernel p1-10 extents and full original p5/p6 hashes",
+    "Matching boot metadata copies/header lengths/CRC/COMMITTED2/VALID1,2",
+    "Four ext4 UUIDs, exact mounted identities, rw flags and on-disk/sysfs zero errors",
+    "Exact stock program hashes and live dd fsync capability",
+    "Host files, receipt and parent directory fsync before remote writes",
+    "New root0700 staging with root0600 singly-linked files, ash noclobber stdin receive; exact stat/SHA before dd regular-file write",
+    "Every write fsync, exact byte readback, complete GPT state and valid-copy CRC check",
+    "Unknown outcome stops all subsequent writes, preserves lock/staging and attempts read-only capture"
+  ],
+  "usage": {
+    "prepare_secure_parent": "install -d -m 0700 build/gpt-private-captures",
+    "capture": "python3 scripts/provision-ubuntu26-gpt.py --known-hosts /absolute/previously-verified-known-hosts --output build/gpt-private-captures/capture-new",
+    "apply": "python3 scripts/provision-ubuntu26-gpt.py --known-hosts /absolute/previously-verified-known-hosts --apply --reviewed-capture /absolute/capture.json --capture-sha256 <reviewed-sha256> --plan-sha256 60d2b71c6ed8560c311b4b3bd458a09868a025439a22776e08b3beef533c6a12 --output build/gpt-private-captures/apply-new",
+    "recover": "After independent writer-quiescence/lock review, use --recover-original with a new full reviewed capture, its SHA, original capture+SHA, and exact plan SHA. Tool never takes over a retained lock."
+  },
+  "preserved_prior_evidence": "v1 test assertion failure was a harness expectation error; v2-v7 immutable paths retained. Source review cites earlier57-test run with the same production source SHA."
+}

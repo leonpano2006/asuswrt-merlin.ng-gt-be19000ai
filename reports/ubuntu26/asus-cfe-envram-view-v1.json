@@ -1,0 +1,65 @@
+{
+  "schema": 1,
+  "status": "three_new_source_bound_view_checks_passed",
+  "inputs": [
+    {
+      "path": "build/asus-cfe-readonly/cfe-envram-view-v1/manifest.json",
+      "sha256": "de7596a2b4331d9fa9695dff6509279b9e3a28240c774e52e580fac34ac67fd5"
+    },
+    {
+      "path": "scripts/asus-integration/acceptance/cfe-envram-view-v1.c",
+      "sha256": "456635b34a15a4215a7718976c0beed8d0fca8dfb58156889637410397281752"
+    },
+    {
+      "path": "build/asus-cfe-readonly-tests/cfe-readonly-v2/fixture-api.h",
+      "sha256": "934106128a44f00cdb42396c30615a70223b3f17e3c1bcc986ee9fc9bbbaa5b6"
+    },
+    {
+      "path": "scripts/test-asus-cfe-envram-view-v1.py",
+      "sha256": "91db83aae851442af5e28c4634e7ce25b823cbf36b1736905133a03636724fa8"
+    }
+  ],
+  "checks": [
+    "factory-view-failure-before-daemon-or-getter",
+    "factory-view-once-before-daemon-and-repeated-getter",
+    "factory-view-does-not-accept-ROM-default-MAC"
+  ],
+  "outputs": [
+    {
+      "path": "build/asus-cfe-readonly-tests/cfe-envram-view-v1/envrams-functions.c",
+      "sha256": "0da38643bd186acad7c7ddddc08be18093c89c03fe4bdb97e11062bcd9d097e0"
+    },
+    {
+      "path": "build/asus-cfe-readonly-tests/cfe-envram-view-v1/fixture",
+      "sha256": "25d91c7fed3de96d5ea240c1e2f5b1280244148ffe28e549b58020d546240c29"
+    },
+    {
+      "path": "build/asus-cfe-readonly-tests/cfe-envram-view-v1/fixture-api.h",
+      "sha256": "934106128a44f00cdb42396c30615a70223b3f17e3c1bcc986ee9fc9bbbaa5b6"
+    },
+    {
+      "path": "build/asus-cfe-readonly-tests/cfe-envram-view-v1/fixture.c",
+      "sha256": "456635b34a15a4215a7718976c0beed8d0fca8dfb58156889637410397281752"
+    },
+    {
+      "path": "build/asus-cfe-readonly-tests/cfe-envram-view-v1/managed-functions.i",
+      "sha256": "1ce9961bd9f213a2f9f527fa12fb97bac7f52e84dbb5d7419c6219ce013f2d43"
+    },
+    {
+      "path": "build/asus-cfe-readonly-tests/cfe-envram-view-v1/rc-cfe-readonly.h",
+      "sha256": "4a2b5c5b669c5bd60b96b74354f0fc7ff941549af241cb36fbee8f7dee825e8f"
+    },
+    {
+      "path": "build/asus-cfe-readonly-tests/cfe-envram-view-v1/test.log",
+      "sha256": "cdf794eea7f518b8668022f01a6ac09bdee23c25e271f1b5101bd13e9f0072e6"
+    },
+    {
+      "path": "build/asus-cfe-readonly-tests/cfe-envram-view-v1/test.stderr",
+      "sha256": "4757344621194331ef67044fe529ed26755c1cd9739db3173fb0693a9b45cde8"
+    }
+  ],
+  "static_source_delta": "Exact two-line reverse removal equals v5 ate.c; CFE header byte-identical.",
+  "old_CFE_23_checks_reused_not_run": true,
+  "other_baseline_suites_run": false,
+  "real_daemon_or_CFE_or_mount_or_device_executed": false
+}

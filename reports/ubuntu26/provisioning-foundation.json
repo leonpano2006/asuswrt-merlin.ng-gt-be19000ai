@@ -1,0 +1,59 @@
+{
+  "status": "passed_synthetic_archive_fixtures",
+  "cases": [
+    "positive activation preserves every regular file",
+    "existing output refused without overwrite",
+    "reject etc/leon/trial-slot-proof",
+    "reject etc/ssh/ssh_host_ecdsa_key",
+    "reject etc/ssh/ssh_host_ecdsa_key.pub",
+    "reject etc/ssh/ssh_host_ed25519_key",
+    "reject etc/ssh/ssh_host_ed25519_key.pub",
+    "reject etc/ssh/ssh_host_rsa_key",
+    "reject etc/ssh/ssh_host_rsa_key.pub",
+    "reject var/lib/leon-asus-ssh/account",
+    "reject var/lib/leon-asus-ssh/device-identity",
+    "reject wrong-generation",
+    "reject marker-permission",
+    "reject marker-owner",
+    "reject old-target",
+    "reject old-package",
+    "reject preexisting-account",
+    "reject preexisting-account-hash",
+    "reject non-directory-parent",
+    "reject duplicate",
+    "reject absolute",
+    "reject parent-traversal",
+    "reject fifo",
+    "reject device-outside-dev",
+    "reject hardlink-outside",
+    "reject active-asus",
+    "reject active-trial",
+    "reject missing etc/leon/root-generation",
+    "reject missing mnt/leon-vendor-root",
+    "reject missing usr/lib/systemd/system/leon-ubuntu-trial.target",
+    "reject missing var/lib/dpkg/status",
+    "reject symlink input",
+    "reject multiply linked input"
+  ],
+  "count": 33,
+  "real_rootfs_prepared": false,
+  "ext4_created": false,
+  "network_used": false,
+  "block_devices_opened": false,
+  "key_generation_executed": false,
+  "account_database_changed": false,
+  "slot_token_generated": false,
+  "source": {
+    "path": "scripts/prepare-ubuntu26-provisioning.py",
+    "sha256": "77711c96cf5788596bd2ebb0f59744751235d0c28fd48df59935d5ddafeb4303"
+  },
+  "test_source": {
+    "path": "scripts/test-prepare-ubuntu26-provisioning.py",
+    "sha256": "932356bf854019084ec47fcf568487df5ff9ba7c068f5e347500516fba220224"
+  },
+  "contract": {
+    "path": "build/ubuntu26-provisioning/fixture-v2/device-local-contract.json",
+    "sha256": "6ea98ac838a903c8d7cd7c3f3141d304048cbbbeb56655673acc320f84589f6c"
+  },
+  "production_ready": false
+}

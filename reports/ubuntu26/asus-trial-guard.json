@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "status": "offline policy, static process handoff and exact-kernel systemd survival validated; production gate closed",
+  "mock_policy_validation_passed": true,
+  "process_handoff_validation_passed": true,
+  "kernel10_systemd_survival_passed": true,
+  "hardware_watchdog_io_validated": false,
+  "physical_reset_and_fallback_proven": false,
+  "runtime_accepted": false,
+  "automatic_commit_allowed": false,
+  "policy": {
+    "path": "configs/ubuntu26/trial-watchdog-candidate.json",
+    "sha256": "1653d4f7ad7bdc63cf1db324359fdf0cca9646ffa6ad14e068f733b0815a919b"
+  },
+  "native_build": {
+    "path": "build/asus-trial-guard/native-v4/manifest.json",
+    "sha256": "6c898c5a28ba7fbd8de31d8e9ad103e0ae180de0ca8b2f12e290f14f1f2f24cb"
+  },
+  "fixture": {
+    "path": "build/asus-trial-guard/qemu-v3/manifest.json",
+    "sha256": "94206fb0bd4974201f6f5380942412f53eb12b00c578be087d8eafa52aaa4fa0"
+  },
+  "qemu_result": {
+    "path": "build/qemu/asus-trial-guard-kernel10-v2/result.json",
+    "sha256": "1625a2248794f331550ee63d953f27cb86aefccea6598398dc244dbdbc7b874b"
+  },
+  "qemu_log": {
+    "path": "build/qemu/asus-trial-guard-kernel10-v2/serial.log",
+    "sha256": "f04f8b49d4dc3bc61a066276f6ceabd03ace68b4c7576d0a7e68fdb3ce5d2174"
+  },
+  "kernel_sha256": "4a15601eada042576aed2a3680dcc48e9228eea70f70c478840767aaa89a9f8e",
+  "expected_markers": {
+    "LAB_TRIAL_POLICY_PREFLIGHT_12_REFUSALS_PASS": true,
+    "LAB_TRIAL_POLICY_NO_ASUS_NO_SSH_DEADLINE_LATCH_PASS": true,
+    "LAB_TRIAL_POLICY_ASUS_ONLY_INSUFFICIENT_PASS": true,
+    "LAB_TRIAL_POLICY_LOCAL_SSH_WITHOUT_LAN_INSUFFICIENT_PASS": true,
+    "LAB_TRIAL_POLICY_HEALTH_CONTINUES_AFTER_BOOT_DEADLINE_PASS": true,
+    "LAB_TRIAL_POLICY_POST_READY_FAILURE_LATCH_PASS": true,
+    "LAB_TRIAL_POLICY_REPLAY_CANNOT_REFRESH_LOCAL_PASS": true,
+    "LAB_TRIAL_POLICY_REPLAY_CANNOT_REFRESH_LAN_PASS": true,
+    "LAB_TRIAL_POLICY_OLD_BOOT_NONCE_REJECTED_PASS": true,
+    "LAB_TRIAL_POLICY_METADATA_LOST_EXPIRES_PASS": true,
+    "LAB_TRIAL_POLICY_CLOCK_REGRESSION_EXPIRES_PASS": true,
+    "LAB_TRIAL_POLICY_STOP_MEANS_EXPIRE_NOT_DISARM_PASS": true,
+    "LAB_TRIAL_POLICY_STABILITY_GAP_RESETS_QUALIFICATION_PASS": true,
+    "LAB_TRIAL_POLICY_BURST_DOES_NOT_PROVE_STABLE_HEALTH_PASS": true,
+    "LAB_TRIAL_HANDOFF_PREEXEC_ABORT_CONFIRMED_PASS": true,
+    "LAB_TRIAL_HANDOFF_FAILED_ABORT_EXPIRES_NO_VENDOR_FALLBACK_PASS": true,
+    "LAB_TRIAL_HANDOFF_BAD_PREEXEC_MESSAGE_EXPIRES_PASS": true,
+    "LAB_TRIAL_HANDOFF_PARENT_STUCK_BEFORE_EXEC_EXPIRES_PASS": true,
+    "LAB_TRIAL_HANDOFF_SYSTEMD_NO_HEALTH_EXPIRES_PASS": true,
+    "LAB_TRIAL_HANDOFF_HEALTHY_BEYOND_180_SECONDS_PASS": true,
+    "LAB_TRIAL_HANDOFF_SSH_FAILURE_AFTER_READY_EXPIRES_PASS": true,
+    "LAB_TRIAL_HANDOFF_METADATA_WRITE_PROTECTION_LOST_EXPIRES_PASS": true,
+    "LAB_TRIAL_HANDOFF_STOP_SIGNAL_DOES_NOT_DISARM_PASS": true,
+    "LAB_TRIAL_HANDOFF_ACTUAL_EXEC_CLOEXEC_SURVIVAL_PASS": true,
+    "LAB_TRIAL_PREEXEC_SYSTEMD_CHILD_SURVIVES_PASS": true,
+    "LAB_TRIAL_PREEXEC_SYSTEMD_HEALTH_OBSERVED_PASS": true,
+    "QEMU_UBUNTU26_SYSTEMD_FULL_COMPLETE": true
+  },
+  "guardian_cgroup_observed": "LAB_TRIAL_GUARD_CGROUP 0::/init.scope",
+  "compiler": "gcc-16 (Ubuntu 16.2.0-3ubuntu1+leonb53.1) 16.2.0",
+  "libc": "glibc 2.44",
+  "static_no_interpreter": true,
+  "source_audit": [
+    {
+      "original_path": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/configs/kernel10.config",
+      "snapshot": {
+        "path": "build/asus-trial-guard/source-audit/1c495c39d8031924-kernel10.config",
+        "sha256": "1c495c39d80319246f26a38192eb481b54860ea938d46bbc8156b4fa676a8216"
+      }
+    },
+    {
+      "original_path": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/patches/0003-trial-metadata-protection.patch",
+      "snapshot": {
+        "path": "build/asus-trial-guard/source-audit/0790bdade92bc167-0003-trial-metadata-protection.patch",
+        "sha256": "0790bdade92bc1672ba2ab930d03033770e60506c65f3ab3277dbd10d0bb8c61"
+      }
+    },
+    {
+      "original_path": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/drivers/watchdog/bcm96xxx_wdt.c",
+      "snapshot": {
+        "path": "build/asus-trial-guard/source-audit/8df916e5a26bd310-bcm96xxx_wdt.c",
+        "sha256": "8df916e5a26bd31080307f958dd1dffdb7bb47c26bd44b2a22465844fe112e71"
+      }
+    },
+    {
+      "original_path": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/drivers/watchdog/watchdog_dev.c",
+      "snapshot": {
+        "path": "build/asus-trial-guard/source-audit/73aa6987e7466017-watchdog_dev.c",
+        "sha256": "73aa6987e7466017f12aa1a5a315b6bca6f2faf7fc35284309288dcd473e0a70"
+      }
+    },
+    {
+      "original_path": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/source/release/src-rt-5.04behnd.4916/router-sysdep.gt-be98_pro/wdtctl/wdtctl.c",
+      "snapshot": {
+        "path": "build/asus-trial-guard/source-audit/74b48363d90ad84f-wdtctl.c",
+        "sha256": "74b48363d90ad84f24f4074147547132bbe665258133170afa673c5db821ac91"
+      }
+    },
+    {
+      "original_path": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-v1/compile-source/release/src/router/rc/init.c",
+      "snapshot": {
+        "path": "build/asus-trial-guard/source-audit/418ff357d32a3953-init.c",
+        "sha256": "418ff357d32a39534be4488531cf8c27212dd7ca12dc979838623ad77d6b721d"
+      }
+    },
+    {
+      "original_path": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-v1/compile-source/release/src/router/rc/services.c",
+      "snapshot": {
+        "path": "build/asus-trial-guard/source-audit/8176fe9a44cb37df-services.c",
+        "sha256": "8176fe9a44cb37dfb095d64eaf063535af34114e04029c5ad7b8fadd1b0badb2"
+      }
+    },
+    {
+      "original_path": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-v1/rc-build-context.json",
+      "snapshot": {
+        "path": "build/asus-trial-guard/source-audit/c8f4987c88c39fdf-rc-build-context.json",
+        "sha256": "c8f4987c88c39fdff29944c88862d36f49a7df6dd20a2466c8ab460a59a3eded"
+      }
+    },
+    {
+      "original_path": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/reports/fallback-observation.json",
+      "snapshot": {
+        "path": "build/asus-trial-guard/source-audit/e0b9aea32c3b4da8-fallback-observation.json",
+        "sha256": "e0b9aea32c3b4da878d828575011a404a9305a12ab32fe1fe3045299e2686372"
+      }
+    },
+    {
+      "original_path": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/reports/trial-guard2.json",
+      "snapshot": {
+        "path": "build/asus-trial-guard/source-audit/7f50db069b369176-trial-guard2.json",
+        "sha256": "7f50db069b3691760d527bc1db7a243f53687e90c19e9798bbfccdaf57414bd4"
+      }
+    },
+    {
+      "original_path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/leon-next-20260915/flash/scripts/bootguard.c",
+      "snapshot": {
+        "path": "build/asus-trial-guard/source-audit/f54cc3a088a716f4-bootguard.c",
+        "sha256": "f54cc3a088a716f4234231308701128a1d1286e0f4ec8fc2db805f868c1502c3"
+      }
+    }
+  ],
+  "findings": [
+    "BE98 preload guard only denies boot metadata mutators; it contains no service health/reset deadline.",
+    "BE19000AI kernel metadata1/2 RO protection prevents normal partition writes and auto-commit, not whole-disk writes or privileged unlock, and does not trigger reset.",
+    "Current exact GT-BE19000AI rc flags select HND BE4916 start_hw_wdt; RTCONFIG_HW_DOG is absent. start_hw_wdt launches wdtctl -d. Software watchdog is a separate service and should remain.",
+    "Same-SDK GT-BE98 Pro wdtctl source and exact AI firmware wdtctl strings both describe unconditional timeout/4 feeding and disable-on-stop. Exact AI wdtctl source was not recovered; no source identity claim is made.",
+    "Kernel driver supports magic-close. Unexpected close without V gives one final ping and leaves active; max_hw_heartbeat_ms is unset, so the core has no continuous long-timeout worker for this active driver.",
+    "Driver shutdown explicitly stops WDT. Expiry must retain fd and stop pings rather than invoking normal shutdown. Kernel dying-gasp/reset paths can independently override hardware.",
+    "BCM nominal maximum is 85 seconds, IRQ continuation threshold 42. Candidate requests 40 seconds and pretimeout0, with exact ioctl readback; quirks and physical reset remain untested.",
+    "A unit launched after systemd startup cannot cover exec(systemd)-before-unit hang. Actual QEMU PID1 now starts a separate static mock guardian before exec, then the same child survives native systemd and its service test.",
+    "Initial QEMU observer read /proc/PID/cgroup before cgroup2 mount and correctly failed its assertion. Fixed fixture inspects cgroup after systemd boot; no kernel or production policy weakening.",
+    "Stability requires actual healthy samples spanning10seconds; three immediate responses plus elapsed wall time are insufficient."
+  ],
+  "current_device_read_only_metadata_evidence": {
+    "path": "evidence/ubuntu26/boot-metadata/20261004-v1/manifest.json",
+    "sha256": "d69a439871d1988dce9ac23a29caf3ee13c8d6c062ebb6553c4bf48d14b0faef"
+  },
+  "current_device_scope": "Parent captured identical CRC-valid metadata copies COMMITTED2, VALID1,2, SEQ5,4 and passive watchdog state. This is not proof of WDT-triggered reset or this Ubuntu candidate fallback.",
+  "exact_vendor_wdtctl": {
+    "path": "build/kernel9-ui1-rootfs/bin/wdtctl",
+    "sha256": "016c2d3406055077cde2a9f5f6a9f7773da8ec171e98a72a39f3048159ffcb2e"
+  },
+  "fixture_scope": "No NIC, host forwarding, hardware passthrough, host block device, real watchdog I/O, ASUS hardware execution or real SSH-health assertion. Fast process tests use100x virtual time; pre-systemd child uses1x real time and synthetic health supplied only after native base boot.",
+  "production_binary": "guardian-candidate always refuses before opening /dev/watchdog; watchdog-adapter is compiled source only. Mock-only guardian binaries cannot be deployed as protection.",
+  "remaining_before_activation": [
+    "Implement board-specific fresh metadata/CRC/boot-selection and exact candidate identity preflight; source evidence is not a live acceptance token",
+    "Connect actual hardware adapter to guardian only after reviewed deployment policy; current executable refuses before device access",
+    "Implement real ASUS/native SSH health collector and constrained external LAN acknowledgement path; current fixture deliberately injects synthetic results",
+    "Implement authenticated ARMED query and LEON-only vendor wdtd suppression, while retaining software ASUS watchdog",
+    "Integrate PID1 handoff and confirmed abort into root-init, then test combined pivot/systemd/exec-failure paths",
+    "Validate sole-owner behavior, timeout readback, intentional failure reset and bootloader fallback on exact board candidate before trusting unattended recovery"
+  ],
+  "historical_evidence": [
+    {
+      "path": "build/qemu/asus-trial-guard-kernel10-v1/result.json",
+      "status": "pre-systemd observer cgroup timing assertion failed; general process/state scenarios passed but whole fixture not accepted"
+    }
+  ],
+  "router_access_by_this_task": false,
+  "host_watchdog_opened": false,
+  "checker_sha256": "d63eb2246c059778d14ca3b1fe7f25b5021097548d82e103aad048d77607a28b"
+}

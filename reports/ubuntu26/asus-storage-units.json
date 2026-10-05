@@ -1,0 +1,43 @@
+{
+  "status": "offline native mount-unit candidates; not installed or enabled",
+  "inputs": [
+    {
+      "path": "configs/ubuntu26/asus-storage-ownership.be19000ai-verified.conf",
+      "sha256": "8b36f4b8bbe5c9418a14e396173c539877f59dca4ca64d3a4eaed317e8e9ba2b"
+    },
+    {
+      "path": "configs/ubuntu26/asus-bsp-storage-ownership.be19000ai-verified.conf",
+      "sha256": "920ac40dd0e68d30b0d6591943399bcf06f4c0fc01a19a0872bc36be33a60a7c"
+    }
+  ],
+  "units": [
+    {
+      "path": "configs/ubuntu26/asus-storage-units/ai.mount",
+      "sha256": "b530bc425b3c51ef1f2450423ba38cc4ca4e13f7d34503b51ac470061f654982"
+    },
+    {
+      "path": "configs/ubuntu26/asus-storage-units/data.mount",
+      "sha256": "d42de6cdfc779cf16232dd76c99a5f247c06d991ab1aba9f1acf752bc4030678"
+    },
+    {
+      "path": "configs/ubuntu26/asus-storage-units/jffs.mount",
+      "sha256": "fb78646bb171cf05a201a824376063977a8dc36d07a990766459f9db548e30b2"
+    },
+    {
+      "path": "configs/ubuntu26/asus-storage-units/leon-asus-storage.target",
+      "sha256": "0e599b7b41730f18ca9fc2bf34c4f1fb0c46f09ccf55d91be31b8eb90bf8c646"
+    },
+    {
+      "path": "configs/ubuntu26/asus-storage-units/mnt-defaults.mount",
+      "sha256": "0ccd9d21c9e2f38305fd718b86d7c89e6fb7751d7d923f0040325739428a7bc4"
+    }
+  ],
+  "integration": [
+    "Native broker must Require/After/BindsTo leon-asus-storage.target and run storage-owner --prepare in the PID1 mount namespace before launching ASUS",
+    "No PrivateMounts on native mounts/storage-owner; child launcher creates its own namespace only afterwards",
+    "Do not auto-enable units or deploy these UUIDs on another router; no format/fsck/repartition or fallback device-name path exists",
+    "Native package provides real /mnt/nvram plus /rom and /www mountpoint directories"
+  ],
+  "actual_mounts_performed": false,
+  "flash_allowed": false
+}

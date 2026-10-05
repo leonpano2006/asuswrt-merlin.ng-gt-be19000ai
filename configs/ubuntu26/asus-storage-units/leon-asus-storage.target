@@ -1,0 +1,5 @@
+[Unit]
+Description=Verified native mounts required by the ASUS subtree
+Requires=data.mount jffs.mount ai.mount mnt-defaults.mount
+After=data.mount jffs.mount ai.mount mnt-defaults.mount
+BindsTo=data.mount jffs.mount ai.mount mnt-defaults.mount

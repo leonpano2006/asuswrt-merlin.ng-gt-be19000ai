@@ -1,0 +1,6 @@
+# TEMPLATE ONLY: obtain both actual filesystem UUIDs by read-only inspection.
+# Never substitute /dev/mmcblk0p7 or /dev/mmcblk0p9 for UUIDs.
+# Native helper accepts exactly these three lines after replacing placeholders:
+ASUS_STORAGE_V1
+data REPLACE_WITH_VERIFIED_DATA_UUID
+jffs REPLACE_WITH_VERIFIED_JFFS_UUID

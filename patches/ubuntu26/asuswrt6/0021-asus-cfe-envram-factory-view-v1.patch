@@ -1,0 +1,12 @@
+diff --git a/release/src/router/rc/ate.c b/release/src/router/rc/ate.c
+--- a/release/src/router/rc/ate.c
++++ b/release/src/router/rc/ate.c
+@@ -5878,6 +5878,8 @@
+ #if defined(LEON_SYSTEMD_RC) && LEON_SYSTEMD_RC == 1
+ 	leon_cfe_defaults_require();
+ 	if (!pids("envrams")) {
++		if (eval("/usr/libexec/asus/bsp-ownership", "--nvram-defaults"))
++			leon_cfe_readonly_refuse("envrams-factory-view");
+ 		/* Keep the native RO /mnt/defaults mounted throughout the daemon's
+ 		 * lifetime. No /dev/defaults mount or compatibility-path unmount. */
+ 		if (system("/usr/sbin/envrams >/dev/null"))

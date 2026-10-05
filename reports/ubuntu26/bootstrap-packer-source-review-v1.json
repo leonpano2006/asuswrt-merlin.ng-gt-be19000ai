@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "status": "reviewed_optimized_mode_guard_fixed_no_remaining_actionable_issue",
+  "scope": "Read-only review of local firmware pack/sign gate; no signing, networking, flash or hardware operation by reviewer",
+  "sources": [
+    {
+      "path": "scripts/pack-ubuntu26-bootstrap.py",
+      "sha256": "cf5402b1164b6802beedd3999f5255523b72010eedca19504411c4e9e0ada288"
+    },
+    {
+      "path": "scripts/pack-kernel9-ui1.py",
+      "sha256": "d55284cd6ac2a2d6dd1c4f14e21c1cf2e40b91d8a4f0afed9e942edc7ea3e005"
+    }
+  ],
+  "reviewed": [
+    "Exact stock outer FIT/model/config image set, stock inner signature verification and pinned public key identity",
+    "BSP LZO decoder source pinned and exact new/stock kernel round trips",
+    "Only kernel+rootfs payload replacement; nonkernel boot payloads compared byte for byte; no loader update",
+    "Rootfs and kernel hashes bound to staged inventory and exact QEMU cpio rootfs bytes plus userspace SHA list",
+    "QEMU hash/log/required marker/container/module evidence; no network or host block devices",
+    "Candidate guardian receipt identity/source/evidence/deployment gate checks and immutable stage inventory match",
+    "Explicit if-not-__debug__ rejects Python optimized mode before assert-dependent checks"
+  ],
+  "findings": [
+    {
+      "id": "python-optimized-mode",
+      "status": "fixed",
+      "detail": "Explicit RuntimeError on optimized mode prevents -O/PYTHONOPTIMIZE from bypassing assertion-based gates."
+    }
+  ],
+  "limitations": [
+    "Review does not prove BCM bootloader acceptance, physical watchdog/reset, or ASUS hardware functionality.",
+    "No gate-enabled guardian or final stage QEMU was accepted by this review; actual matching evidence is required at invocation."
+  ],
+  "device_accessed": false,
+  "signing_executed": false
+}

@@ -1,0 +1,50 @@
+{
+  "status": "signed_archive_and_real_apt_solver_passed",
+  "scope": "Immutable runtime06 clone; final runtime07 archive must repeat this test",
+  "snapshot_and_release_both_rejected": true,
+  "armel_gcc15_runtime_reinstallation_passed": true,
+  "signed_archive_package_count": 57,
+  "protected_arm32_abis": [
+    "armel",
+    "armhf"
+  ],
+  "tested_installed_arm32_abi": "armel",
+  "armhf_provider_installed": false,
+  "policy": "Direct distribution libgcc-s1/libstdc++6 packages are denied for ARM32; the independently verified custom GCC15 provider remains explicit. ARMHF requires its own verified provider before use.",
+  "native_arm64_gcc16_unchanged": true,
+  "device_modified": false,
+  "evidence": [
+    {
+      "path": "build/ubuntu26-local-repository/tests/integration06-policy-v1/result.json",
+      "sha256": "bd82c248cf3d11f55fce170bf8be767ca7907aa5087e2fb2582d47e4a5fac17a"
+    },
+    {
+      "path": "build/ubuntu26-local-repository/tests/integration06-policy-v1/test.log",
+      "sha256": "7081b3a56675804e7e80563e721e6b28cac8007cf0e334329b55346a0ee41894"
+    },
+    {
+      "path": "build/ubuntu26-local-repository/integration06-policy-v1/manifest.json",
+      "sha256": "c8c6846ce3a46296efaaf12a3939dacd34ec9e15999af097bde6b0aab9855514"
+    },
+    {
+      "path": "build/ubuntu26-local-repository/integration06-policy-v1/leon-bcm-release.pref",
+      "sha256": "1cf6a0800df80ca48a6aa2a4c7b4ae30a30186fc66a940d455983f9e87cef02d"
+    },
+    {
+      "path": "build/ubuntu26-local-repository/tests/integration06-policy-v1/future-libgcc-s1:armel-protected.txt",
+      "sha256": "9943e3fb238506b1fd28ccf813d8059c0fc8e28d9777a8e57c3432b1de9a9800"
+    },
+    {
+      "path": "build/ubuntu26-local-repository/tests/integration06-policy-v1/future-libgcc-s1:armel-unprotected.txt",
+      "sha256": "ad78d7f891d421497fbb3d004c83f734dec52738817c162f35e3c8ffc5f808c4"
+    },
+    {
+      "path": "build/ubuntu26-local-repository/tests/integration06-policy-v1/future-libstdc++6:armel-protected.txt",
+      "sha256": "32858bbe090a8f4ee09c597aca32782ed57d4e638f31218fd8c8e26bb7930d06"
+    },
+    {
+      "path": "build/ubuntu26-local-repository/tests/integration06-policy-v1/future-libstdc++6:armel-unprotected.txt",
+      "sha256": "bf92b64bcd39325d6749a5c277653abfcbedf20e1611fcf2f6af87c104235243"
+    }
+  ]
+}

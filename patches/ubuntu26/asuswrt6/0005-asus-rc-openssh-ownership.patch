@@ -1,0 +1,47 @@
+diff --git a/release/src/router/rc/ssh.c b/release/src/router/rc/ssh.c
+--- a/release/src/router/rc/ssh.c
++++ b/release/src/router/rc/ssh.c
+@@ -10,6 +10,7 @@
+ #include <sys/stat.h>
+ #include <sys/types.h>
+ #include "rc.h"
++#include <errno.h>
+ 
+ static void check_host_keys()
+ {
+@@ -41,6 +42,12 @@
+ 
+ int start_sshd(void)
+ {
++#ifdef LEON_SYSTEMD_RC
++	/* Do not touch OpenSSH keys/config or start a second SSH server. */
++	logmessage("sshd", "OpenSSH is owned by Ubuntu ssh.service; ASUS SSH policy translation is not installed");
++	errno = ENOTSUP;
++	return -1;
++#else
+ 	char buf[3500], *port;
+ 	char *dropbear_argv[] = { "dropbear",
+ 		"-p", buf,	/* -p [address:]port */
+@@ -94,10 +101,16 @@
+ 	}
+ 
+ 	return _eval(dropbear_argv, NULL, 0, NULL);
++#endif
+ }
+ 
+ void stop_sshd(void)
+ {
++#ifdef LEON_SYSTEMD_RC
++	/* SSH remains available across ASUS subsystem stop/restart. */
++	logmessage("sshd", "OpenSSH lifetime is owned by Ubuntu ssh.service; ASUS stop ignored");
++	return;
++#else
+ 	if (!leon_rc_is_manager()) {
+ 		notify_rc("stop_sshd");
+ 		return;
+@@ -105,4 +118,5 @@
+ 
+ 	if (pids("dropbear"))
+ 		killall_tk("dropbear");
++#endif
+ }

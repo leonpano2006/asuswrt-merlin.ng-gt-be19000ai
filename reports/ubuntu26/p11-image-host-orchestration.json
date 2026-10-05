@@ -1,0 +1,184 @@
+{
+  "activation": false,
+  "block_devices_opened": 0,
+  "device_writes": 0,
+  "fsck_manifest_sha256": "8af51e610ccf5d2baec0a78e5ad288a191506647ca60fc1eb8e30415513feb92",
+  "image_manifest_sha256": "d1f8e3e395e399b3f2b63e436d6492cac70620d8e03ef0a1153bdaad4b03e7e3",
+  "limits": [
+    "Actual SSH transport, physical eMMC write speed/durability, and live namespace races not tested.",
+    "Root-only advisory lock does not exclude unrelated ASUS writers; caller must provide exclusive maintenance.",
+    "Success is image bytes/fsck only, not device-local identity, boot token, pivot, guardian or ASUS service acceptance.",
+    "Staging and lock remain for review even on success; no automatic restart/retry/activation/cleanup."
+  ],
+  "network_connections": 0,
+  "schema": 1,
+  "shared_gpt_source_sha256": "71b14c1964f34bb7d7edb2a1a49e7bb566b43d35475ea291df0c4053ee0931bd",
+  "source_sha256": "efdfe902a18cc2ba9812f9bd839049346ba2c0925e6d86e22418616944d1e03b",
+  "status": "offline_only_not_physical_execution_accepted",
+  "test_count": 25,
+  "test_source_sha256": "6eb96d681d5f096064bbeaf850305613fdf4b143d63b11057b9e93dee9ade7c9",
+  "tests": [
+    {
+      "case": "reject_extent",
+      "passed": true
+    },
+    {
+      "case": "reject_size",
+      "passed": true
+    },
+    {
+      "case": "reject_node",
+      "passed": true
+    },
+    {
+      "case": "reject_namespace_mount",
+      "passed": true
+    },
+    {
+      "case": "reject_holders",
+      "passed": true
+    },
+    {
+      "case": "reject_swap",
+      "passed": true
+    },
+    {
+      "case": "reject_lowram",
+      "passed": true
+    },
+    {
+      "case": "reject_lowtmp",
+      "passed": true
+    },
+    {
+      "case": "reject_rootp4",
+      "passed": true
+    },
+    {
+      "case": "reject_wrongcid",
+      "passed": true
+    },
+    {
+      "case": "only_exact_candidate_gpt",
+      "passed": true
+    },
+    {
+      "case": "tmp_mnt_alias_accepted_noexec_refused",
+      "passed": true
+    },
+    {
+      "case": "complete_requires_full_readback_and_readonly_fsck_never_activates",
+      "passed": true
+    },
+    {
+      "case": "stop_without_retry_lock",
+      "passed": true
+    },
+    {
+      "case": "stop_without_retry_upload",
+      "passed": true
+    },
+    {
+      "case": "stop_without_retry_gzip_test",
+      "passed": true
+    },
+    {
+      "case": "stop_without_retry_boot_changed",
+      "passed": true
+    },
+    {
+      "case": "stop_without_retry_mounted_after_upload",
+      "passed": true
+    },
+    {
+      "case": "stop_without_retry_write_unknown",
+      "passed": true
+    },
+    {
+      "case": "stop_without_retry_wrong_readback",
+      "passed": true
+    },
+    {
+      "case": "stop_without_retry_fsck_nonzero",
+      "passed": true
+    },
+    {
+      "case": "exact_compressed_manifest_hash_and_9_file_fsck_closure",
+      "passed": true
+    },
+    {
+      "case": "fixed_p11_pipeline_both_statuses_no_shortread_count",
+      "passed": true
+    },
+    {
+      "case": "exact_stock_gzip_to_dd_regular_file_and_corrupt_gzip_refusal",
+      "passed": true
+    },
+    {
+      "case": "exact_native_fsck_closure_fn_preserves_regular_ext4_bytes",
+      "passed": true
+    }
+  ],
+  "validation": {
+    "path": "build/ubuntu26-p11-image-host/v1/result.json",
+    "sha256": "1a712b446cbf663e56a439bdbc2a4f940d79234fb802fa3f067abbe4d7cceed9"
+  },
+  "source": {
+    "path": "scripts/provision-ubuntu26-p11-image.py",
+    "sha256": "efdfe902a18cc2ba9812f9bd839049346ba2c0925e6d86e22418616944d1e03b"
+  },
+  "test_source": {
+    "path": "scripts/test-provision-ubuntu26-p11-image.py",
+    "sha256": "6eb96d681d5f096064bbeaf850305613fdf4b143d63b11057b9e93dee9ade7c9"
+  },
+  "shared_gpt_source": {
+    "path": "scripts/provision-ubuntu26-gpt.py",
+    "sha256": "71b14c1964f34bb7d7edb2a1a49e7bb566b43d35475ea291df0c4053ee0931bd"
+  },
+  "compressed_image_manifest": {
+    "path": "build/ubuntu26-root-transfer/runtime07-archive-v1/manifest.json",
+    "sha256": "d1f8e3e395e399b3f2b63e436d6492cac70620d8e03ef0a1153bdaad4b03e7e3"
+  },
+  "private_fsck_manifest": {
+    "path": "build/ubuntu26-boot-fsck/device-v1/manifest.json",
+    "sha256": "8af51e610ccf5d2baec0a78e5ad288a191506647ca60fc1eb8e30415513feb92"
+  },
+  "compressed_bytes": 492865190,
+  "uncompressed_bytes": 12884901888,
+  "device": "/dev/mmcblk0p11",
+  "extent": {
+    "start_sector": 26849280,
+    "sectors": 25165824,
+    "major": 179,
+    "minor": 11
+  },
+  "physical_execution_accepted": false,
+  "guards": [
+    "Read-only default, explicit --apply plus reviewed capture/plan/image-manifest hashes",
+    "Same-boot original stock2 root p6, exact original p5/p6 full hashes, CID/sector geometry and mandatory four ext4 UUID/mount/error gates reused",
+    "Both complete GPT candidate blobs exact; p1-p10 unchanged and p11 exact extent",
+    "p11 must have no current or observed process-namespace mount, block holder or active swap",
+    "RAM MemAvailable >= compressed bytes +8MiB helpers +256MiB reserve; tmpfs free >= payload+128MiB reserve, then minimum reserves after upload",
+    "Stock BusyBox numeric ls parser, no stat/id/SFTP requirements; /tmp/mnt df alias allowed",
+    "New root-only lock/stage, stream only into new regular file under noclobber, source+remote hashes and exact metadata",
+    "Upload exact known private native fsck closure 8 ELF +fixed config; invoke explicit private loader and -fn only",
+    "gzip -t before write; fixed p11 gzip/dd pipeline preserves separate exit codes and does not use unsafe count with short pipe reads",
+    "Full12GiB readback SHA, e2fsck -fn must return0, full12GiB SHA again, final same-boot/full-stock-slot and GPT checks",
+    "No activation, account/key/token or boot metadata writes; any failure retains explicit partial/unknown result and no retry"
+  ],
+  "actual_program_fixtures": [
+    {
+      "path": "build/ubuntu26-p11-image-host/v1/stock-gzip-dd.json",
+      "sha256": "508e806c068f08bd7cac76600e1c7cd50e5d2ecacc6f8c9631d308921c9b2cc6"
+    },
+    {
+      "path": "build/ubuntu26-p11-image-host/v1/native-fsck-readonly.json",
+      "sha256": "3598bd26f4f12fb1b85797186980e100c97f5a82b32e73507c595ebe36aaf8ed"
+    }
+  ],
+  "usage": {
+    "capture": "python3 scripts/provision-ubuntu26-p11-image.py --known-hosts /absolute/verified-known-hosts --output /absolute/secure-parent/new-capture",
+    "write": "python3 scripts/provision-ubuntu26-p11-image.py --known-hosts /absolute/verified-known-hosts --apply --reviewed-capture /absolute/capture.json --capture-sha256 <reviewed-sha256> --image-manifest-sha256 d1f8e3e395e399b3f2b63e436d6492cac70620d8e03ef0a1153bdaad4b03e7e3 --plan-sha256 60d2b71c6ed8560c311b4b3bd458a09868a025439a22776e08b3beef533c6a12 --output /absolute/secure-parent/new-write",
+    "postcondition": "Staging and lock intentionally remain. Parent must review image receipt, then separately device-local provision identity and fresh boot token; no automatic boot/pivot."
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "status": "read_only_delta_review_no_new_actionable_findings",
+  "source": {
+    "path": "scripts/pack-ubuntu26-bootstrap.py",
+    "sha256": "d79fa6a29f9d9141e99c5ac7315005209d4dca6eb2954b07c9b02b575868a5fa"
+  },
+  "producer": {
+    "path": "scripts/prepare-qemu-docker.py",
+    "sha256": "d11881b94d010801f2fb880ea05fcf5c6455c7652968b129797348fdaf2abc80"
+  },
+  "previous_review": {
+    "path": "reports/ubuntu26/bootstrap-packer-source-review-v1.json",
+    "sha256": "ad800e830f92e445554726061ef1bc58666bbf74ed7d9bc7e744c55c75eafa94"
+  },
+  "delta": [
+    "Expected userspace manifest is now sorted by pathlib.Path keys to reproduce producer sorted(root.rglob(...)) component ordering, including libnl/ versus libnl-3 names.",
+    "Exact serialized manifest byte equality, all payload SHA validation and prior signing/gating checks remain; no weakening to set equality."
+  ],
+  "limitations": [
+    "Reviewer did not sign, flash or execute device firmware.",
+    "Source review only; parent owns positive full firmware packaging receipt."
+  ]
+}

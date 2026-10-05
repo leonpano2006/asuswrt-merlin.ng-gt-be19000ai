@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "status": "review_findings_fixed_no_remaining_actionable_issue",
+  "scope": "Independent read-only source review; no network, device I/O or provision execution",
+  "source": {
+    "path": "scripts/provision-ubuntu26-gpt.py",
+    "sha256": "46bce6e395ce9ee918196b8aae62ba75fa5371961490ebb5fd87cc3823a69c0b"
+  },
+  "owner_offline_test_evidence": {
+    "path": "build/ubuntu26-gpt-host/v5/result.json",
+    "sha256": "ed9966d4630fbcac1114015687bd57d9dbce9cd03baaa84a890ecfd678171950"
+  },
+  "findings": [
+    {
+      "id": "metadata-length-header",
+      "status": "fixed",
+      "detail": "Require matching first/second length words in 8..65535 before CRC/token parsing."
+    },
+    {
+      "id": "unknown-lock-report",
+      "status": "fixed",
+      "detail": "Persist stage token before mkdir; uncertain begin failures retain explicit remote_lock_may_remain rather than falsely report no lock."
+    }
+  ],
+  "reviewed_contracts": [
+    "Fixed exact four write extents; original stock slot2/code/device identity and mandatory mounted filesystems checked before mutation",
+    "Backup entries/header then primary entries/header; full source staging hash, dd fsync and exact readback; other GPT copy valid before each write",
+    "Unknown write outcome never retried or automatically recovered; durable host backup and explicit subsequent reviewed recovery",
+    "Stock SSH uses bounded <=16KiB stdin only to fresh private staging files, not directly to block device; noclobber, source metadata/hash then separate dd regular file",
+    "Explicit recovery retains recognized valid GPT copy first"
+  ],
+  "limitations": [
+    "No physical eMMC/power-loss or SSH execution acceptance from this source review.",
+    "Recovery intentionally refuses if kernel already enumerated p11 after reboot; requires separate read-only consumer/mount assessment before any broader recovery procedure.",
+    "Remote lock is a cooperative exclusion marker, not proof unrelated root firmware writers are absent."
+  ],
+  "hardware_accessed": false
+}

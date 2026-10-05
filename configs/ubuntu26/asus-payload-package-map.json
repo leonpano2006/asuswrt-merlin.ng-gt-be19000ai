@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "release": "kernel9-ui1-reference-2",
+  "version": "0.2+kernel9ui1",
+  "status": "inactive private firmware reference, not filesystem integration or runtime acceptance",
+  "source_date_epoch": 1791072000,
+  "source_rootfs": "build/kernel9-ui1-rootfs",
+  "source_squashfs": "build/rootfs-kernel9-ui1.zstd.squashfs",
+  "source_squashfs_sha256": "beac450ebc9d71192a421cf6c2cb8e06ef6997b6e11b2ea854c3ef49e20dc766",
+  "source_stage_evidence": "evidence/kernel9-ui1/rootfs-changes.json",
+  "source_stage_evidence_sha256": "9dcbf5ad1e0d49deca0877d52a166ce95724014551d2cf81933133110a945e7b",
+  "stock_rootfs": "build/stock-rootfs",
+  "private_prefix": "usr/lib/asus/be19000ai/kernel9-ui1-reference-2",
+  "packages": {
+    "armel": "asus-be19000ai-armel-payload",
+    "arm64": "asus-be19000ai-arm64-payload",
+    "all": "asus-be19000ai-resources-payload"
+  },
+  "allowed_top_level": [".init_enable_core", "bin", "sbin", "lib", "lib64", "usr", "rom", "www", "webs", "ftpclient"],
+  "excluded_prefixes": ["lib/modules", "rom/modules"],
+  "excluded_x86_expat_sha256": "9996bcfca5c94d7d4ea942f6ec31e5e1b3808d25841fe9d2582706e319bde737",
+  "forbidden_live_filenames": ["curl.conf", ".curlrc", "authorized_keys", "id_rsa", "id_ed25519", "nvram.bin", "nvram.cfg", "nvram.json"],
+  "vendor_factory_default_paths": [
+    "rom/cakey.pem", "rom/etc/passwd.static", "rom/etc/ppp/pap-secrets", "rom/etc/ppp/chap-secrets",
+    "usr/etc/ipsec.secrets", "usr/bwdpi/key.enc", "usr/bwdpi/shn.pem"
+  ],
+  "required_reviewed_prefixes": [
+    "www", "usr/libexec/be19000ai-candidate", "usr/libexec/ledg-node", "usr/libexec/node-history",
+    "usr/libexec/ccr-status", "usr/sbin/httpd", "sbin/rc", "usr/sbin/cfg_client", "usr/lib/libcodb.so"
+  ],
+  "readme": "Inactive ASUS firmware reference payload for the BE19000AI BCM side. These packages preserve exact file contents from the pinned, previously reviewed kernel9-ui1 SquashFS. They do not run under Ubuntu, supply compatible shared-library closures, install services, activate scripts, manage hardware, or provide a flashable image. Every stored content file has mode 0644. Original file modes, root ownership, directories and symlink targets are recorded in manifests; original symlinks are never created, so absolute/runtime aliases cannot escape the private versioned namespace. No /sbin/init, /etc, /www, loader, Ubuntu package file or live path is replaced. Kernel modules and runtime state are excluded and fully accounted. The known x86-64 libexpat.so anomaly is excluded. Existing compiler/library binaries stay their original ELF architecture; scripts/resources and metadata belong to Architecture: all. Manufacturer factory/default cryptographic material embedded in the original offline firmware is retained byte-identically for private reference and recorded by path/hash only; no live device keys, NVRAM or credentials were read. Do not activate factory TLS material as unique device credentials. Original component licenses remain in force; this local reference packaging does not grant redistribution rights, and no package is published. Architecture-specific vendor libraries, especially old GLIBC_PRIVATE consumers, still require tested adaptation before Ubuntu use.",
+  "limitations": [
+    "Inactive payload only: no ASUS service has been started or accepted under Ubuntu by this packaging step.",
+    "Source metadata roundtrip does not mean a runnable rootfs; symlinks and executable modes remain serialized metadata.",
+    "Future integration must assign real multiarch paths and libraries, reconcile usrmerge collisions, and adapt ASUS rc/PID1 ownership through explicit packages.",
+    "Old armel glibc/libcrypt/private symbol compatibility, time64 boundaries and native tool roles require independent loader/runtime validation.",
+    "Every dynamic executable/plugin dependency, broker/control action and hardware feature must pass acceptance before flashing.",
+    "No host installation, device access, publishing, flash, partition change or boot state update is performed."
+  ]
+}

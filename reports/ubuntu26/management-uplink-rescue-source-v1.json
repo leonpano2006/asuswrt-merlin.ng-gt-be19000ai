@@ -1,0 +1,120 @@
+{
+  "schema": 1,
+  "status": "read_only_source_design_audit",
+  "feasible_with_conditions": true,
+  "implemented": false,
+  "production_ready": false,
+  "conclusion": "A labelled IPv4 /32 and one peer host route can support an independent native key-only SSH endpoint while eth0 is outside br0. Move only these owned objects to br0 after ASUS enslaves eth0; do not change bridge membership. This requires runtime identity, master, address, ARP/routing and filtering checks and a later focused test. It is not physical availability evidence.",
+  "inventory": [
+    {
+      "path": "evidence/ubuntu26/management-uplink-rescue-design-v1/host51-inventory-v2.stdout",
+      "sha256": "14c6b39a4b25cae458e784f25e111329e33970988e058c09b9555349945129b9",
+      "meaning": "Parent captured .51 route to 192.168.100.15 on br-lan, source .51, only existing loopback and normal LAN IPv4, standard local/main/default rules. This agent did not access the device."
+    },
+    {
+      "path": "evidence/ubuntu26/management-uplink-rescue-design-v1/stock15-filter-and-uplink.stdout",
+      "sha256": "a30b01de4cba81adfaed76ac7f420be7dfb0113e9ff89516d4265a508ee6ac68",
+      "meaning": "Parent-captured stock boot 00000000-0000-4000-8000-000000000024: eth0 MAC 02:00:00:f0:00:01, current ifindex20/master br0; br0 same MAC/current ifindex32. Both UP/carrier1; all/eth0/br0 rp_filter, arp_ignore, arp_filter, arp_announce are 0. INPUT ACCEPT, only shown TCP5152 non-lo DROP. Does not prove future candidate filter or ebtables absence."
+    },
+    {
+      "path": "evidence/ubuntu26/management-uplink-rescue-design-v1/host51-filter-and-uplink.stdout",
+      "sha256": "588bb50a61d8aad6887102ab398b9810ef347b3d9f7b8d48e7a3128326aa09f4",
+      "meaning": "Parent-captured br-lan MAC 02:00:00:f0:00:02/current ifindex10, UP/carrier1. br-lan rp_filter0/arp_ignore1/arp_filter0/arp_announce0. nft fw4 accepts input/output on br-lan. No mutation by this agent."
+    }
+  ],
+  "source_evidence": [
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/net/ipv4/devinet.c",
+      "sha256": "28432e3ce0929b6f66d7deed7fa29b66a16563ebb32d2e0334b715d298647989",
+      "lines": [468, 474, 479, 489, 511, 849, 1053, 1066, 1640],
+      "finding": "IFA_F_SECONDARY is recalculated; a different-subnet /32 is not secondary. Scope ordering can place it before the normal global address. Waiting for an existing normal address does not prevent this. Explicit IFA_LABEL is retained, exported in netlink dumps and used by SIOCGIFADDR label matching."
+    },
+    {
+      "path": "build/ubuntu26-glibc/b53-source/sysdeps/unix/sysv/linux/ifaddrs.c",
+      "sha256": "86d39d404b4f2def1b27635b8348f02a0c769bfbe867a9ff2e2d55a1c7a37132",
+      "lines": [714, 717, 738, 744],
+      "finding": "Actual native glibc2.44 source assigns IFA_LABEL to ifa_name, using link name only when no label was supplied."
+    },
+    {
+      "path": "build/asus-rc-recovery/source/release/src/router/shared/misc.c",
+      "sha256": "fb99266d107d33221f7fd0196faa121088a39f1e86e0c3ccb13cb7adeb15626c",
+      "lines": [2341, 2353, 2358, 2362, 2393, 2424],
+      "finding": "Pinned asuswrt6 9b25e55ca5c56a6f01d6a56264c0f6c47459ada0 getifaddr returns the first matching getifaddrs address; exact ifa_name comparison excludes br0:lr from getifaddr(br0). This source relationship is not an execution test of every vendor consumer."
+    },
+    {
+      "path": "scripts/asus-integration/openssh/native-control.c",
+      "sha256": "03d944fba5d92cb53f2fd08876ee67390591ddfd041a109be44529643075b5e3",
+      "lines": [128, 133, 147],
+      "finding": "Normal port22 config generation requires exact normal LAN ifa_name and requested IPv4; labelled rescue addresses are excluded."
+    },
+    {
+      "path": "scripts/asus-integration/trial-guard/runtime/process-auth.c",
+      "sha256": "2215d497686449df385f16d79bfef0037bab3f720c20001db606b7846bab9d76",
+      "lines": [79, 80, 82, 99, 111],
+      "finding": "LAN acceptance requires exact br0, enrolled normal IPv4 and LAN_PORT; rescue labels/2223 do not satisfy the health or SSH ACK gate."
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/net/bridge/br_input.c",
+      "sha256": "b6f72cd830c0b0c3165b822269d1cdc32ce4e1b73ac953da80db16cb56439598",
+      "lines": [72, 73, 97, 103, 127, 178, 336],
+      "finding": "Local delivery through a bridge changes skb->dev to br0; VLAN, bridge-state and netfilter gates remain. A labelled address on eth0 alone is not an independent receive path once enslaved."
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/net/bridge/br_if.c",
+      "sha256": "87be63103d3b5530245b17cde3b94e2f7e6ec5460a77ee67fa7911dc0e3cc6d5",
+      "lines": [605, 642],
+      "finding": "Bridge uses the lower-device RX handler. Do not create macvlan on eth0 or otherwise compete for that handler."
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/net/ipv4/fib_frontend.c",
+      "sha256": "aa9755f5404e2eb25ebc5864ef5625bd70f3e6487bc1733739c957a96fce03e0",
+      "lines": [360, 371, 382, 385, 391, 418],
+      "finding": "Strict reverse-path filtering requires a reverse route through the receiving device. Move the peer host route with the rescue address; never solve this by changing rp_filter."
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/net/ipv4/route.c",
+      "sha256": "f57f02c4b1f3059ea4c114437799a9c36028db6dda50e1246fbea2638dbc593d",
+      "lines": [2081, 2082],
+      "finding": "A local-destination route does not alone bypass source validation. Do not rely on weak-host delivery to avoid interface migration."
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/net/ipv4/arp.c",
+      "sha256": "3378fec4e75f373e91873b99f1436041d32fa62554af3e7472899c18bac9cc62",
+      "lines": [397, 402, 409, 411, 424, 433, 441, 823],
+      "finding": "arp_ignore1 is compatible when the address lives on the incoming interface. arp_ignore2 requires same-subnet sender and conflicts with distinct /32 peers; ignore8 suppresses replies. arp_filter checks the reply route's device. Future helper must inspect, not modify these policies."
+    },
+    {
+      "path": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-emmc-wdt-cfe-v6/compile-source/release/src/router/rc/firewall.c",
+      "sha256": "4cd01c2309415775cf6ff0a1c00be7fe6fa14bec51c032b9d2af200e6ea1b2af",
+      "lines": [3081, 3088, 3334, 9159, 9230],
+      "finding": "Normal routed firewall startup skips non-routing modes; routed defaults otherwise drop INPUT. This is not a proof that candidate INPUT/bridge filtering permits rescue."
+    },
+    {
+      "path": "build/asus-rc-recovery/source/release/src/router/shared/rtstate.h",
+      "sha256": "a4cdd8f2e491b9ab7e5b30d267afeddf0ec62bb989402462f6a7be759a685dc7",
+      "lines": [513],
+      "finding": "is_routing_enabled means ROUTER or HOTSPOT, not current AP mode3."
+    }
+  ],
+  "design": {
+    "router": "169.254.190.15/32",
+    "controller": "169.254.190.51/32",
+    "labels": ["eth0:lr", "br0:lr", "br-lan:lr"],
+    "normal_port22_and_recovery2222_unchanged": true,
+    "rescue_port": 2223,
+    "rescue_socket": "fixed rescue IPv4, no BindToDevice, key-only native existing host key/account/PAM, AllowUsers MastermixStudios@169.254.190.51",
+    "normal_lan_address_gate": "Require normal br0 IPv4 before installing br0:lr; labels remain mandatory regardless of ordering.",
+    "router_link_identity": "eth0 exact MAC02:00:00:f0:00:01; ifindex discovered and revalidated each operation, not permanently pinned to stock20; target master only none or exact br0.",
+    "controller_link_identity": "br-lan exact MAC02:00:00:f0:00:02; current ifindex10 is observation only.",
+    "preserve": "All existing addresses/routes including ASUS169.254.0.2 deveth.ai-10, DHCP, NVRAM, bridge/VLAN, sysctls, firewall and default routes.",
+    "helper_recommendation": "Small bounded native netlink helper after contract review. One-shot ip commands are simpler for manual provisioning but a shell monitor complicates exact multipart-message identity, foreign state rejection and cleanup. No helper built or implemented here."
+  },
+  "limits": [
+    "No network, device mutation, compilation, syntax check, namespace fixture or runtime test performed by this audit.",
+    "Read-only inventories are stock/controller snapshots, not proof of the next native candidate's state or end-to-end L2 reachability.",
+    "No route/address multi-object atomicity: interface transition may interrupt existing SSH and must allow a new connection.",
+    "Link state, ASUS bridge STP/learning/disabled state, VLAN/filter rules, offload behavior and controller route policy may still prevent access.",
+    "No Ethernet MAC authentication claim; key authentication remains required. Address/MAC source pins are enrolment checks only.",
+    "Rescue requires native systemd/OpenSSH/account/PAM and existing keys; it cannot repair a dead kernel or satisfy trial acceptance."
+  ]
+}

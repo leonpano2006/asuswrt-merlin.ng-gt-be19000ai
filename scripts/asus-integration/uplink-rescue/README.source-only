@@ -1,0 +1,72 @@
+Status: SOURCE ONLY. No compiler, syntax checker, fixture or device invocation
+has been performed for these sources. No binary or installable package exists.
+
+Files
+  rescue-link.c: fixed native router helper; --monitor / --cleanup-owned only.
+  controller-transient.sh: fixed .51 shell source; --setup / --cleanup-owned.
+  *.in: inert unit/config/enrolment drafts, no [Install] or enable actions.
+  plan-v1.json: the reviewed initial design, kept as the original contract.
+  implementation-v1.json: preserved first implementation contract.
+  implementation-v2.json: reviewed router fixes and separate controller blocker.
+
+The C helper polls read-only netlink snapshots rather than subscribing to
+multicast events. This reduces sequence ambiguity and needs no link/rule writes.
+Each complete snapshot is bounded by a single five-second deadline; each
+mutation ACK is bounded by two seconds. Stop gates prevent starting another
+install after old-object cleanup, or another READY snapshot after installation.
+The unit starts within300s and allows60s stop: initial wait250s plus at most
+24s install/READY and19s cleanup; signal handling allows current transaction
+to finish and then only exact cleanup, at most43s conservatively. It preserves other ASUS/DHCP changes:
+it does not compare all normal addresses against a frozen before-image or write
+them back. Only the fixed labelled address and exact peer /32 route are changed.
+
+Initial missing/wrong-MAC/not-UP/not-carrier interfaces wait with no mutation.
+Once the expected identity has been observed, a changed MAC or unknown master
+is an error. Dynamic ifindex is checked together with name and enrolled MAC.
+Detached eth0 does not depend on br0. On br0, normal labelled br0 IPv4 and
+forwarding-state eth0 are required. No bridge state is changed by this helper.
+
+Ownership records in a root-owned0700 /run directory precede each mutation.
+Only stable ADDR/ACTIVE receipts permit automatic exact cleanup. An ambiguous
+ACK, crash or readback failure leaves an intent; cleanup refuses automatic retry.
+A definite address EEXIST never becomes ownership. RuntimeDirectoryPreserve=yes
+preserves the evidence; no Restart loop is configured. A partial receipt may
+require a later reviewed cleanup. There is no claim of a multi-message atomic
+network transaction or immunity to a malicious/conflicting privileged actor.
+
+The shell controller uses a root-only mkdir lock and atomic tmpfs receipt rename.
+It does not claim filesystem fsync durability. All ip output is timeout-bounded,
+stored at most65537 bytes and rejected over65536. It uses pipefail and rejects
+unsupported commands, unexpected output or named protocol output rather than
+guessing. Official BusyBox1.37 supports setting noprefixroute, but iproute.c omits route
+protocol output. The captured .51 lacks stat as well. Consequently this original
+controller shell is NOT usable as-is. It remains preserved pending a separate
+private official ip-full adaptation and numeric ls metadata checks; no setup may
+be attempted to discover missing capabilities. If a process
+dies before releasing its mkdir lock or while an intent is pending, it refuses
+automatic adoption. Cleanup only deletes the exact known peer route/address.
+
+Additional own-object safety checks do not prove global IPv4LL uniqueness.
+Before the first physical login, the controller must verify the neighbour's
+Ethernet MAC02:00:00:f0:00:01 and the already enrolled native SSH host key.
+No neighbour modification, ARP daemon, DAD manager, sysctl or firewall write is
+introduced. Existing169.254.0.2 deveth.ai-10 remains unrelated and untouched.
+
+Host-key public enrolment is a SEPARATE future transaction, not part of network
+setup or cleanup. The .51 Dropbear client lacks UserKnownHostsFile support.
+Its current native-key entry has aliases leon-ubuntu26-be19000ai and
+[leon-ubuntu26-be19000ai]:2222. Port2223 requires the separate public endpoint
+[leon-ubuntu26-be19000ai]:2223 with exactly the already enrolled ed25519 key from
+evidence/ubuntu26/device-identity-live/ubuntu-known_hosts (fingerprint
+SHA256:RfC1T1zKLkLwvjJG2t4UD3b0+z2+St0MhAumhVCrCMI). Before any later append,
+require the actual global known_hosts path/parent to be trusted, root-owned,
+non-symlink, the file regular with nlink1, and preserve all existing bytes.
+Verify the existing comma-separated native alias against that public key; reject
+conflicting2223 entries. Never read/export a private key, generate a new identity,
+change warning policy, or use accept-new/TOFU. This source set does not append it.
+
+The new listener is fixed169.254.190.15:2223 and not bound to a netdev. A topology
+transition may interrupt SSH and requires reconnecting; no seamless guarantee.
+Authentication remains existing native account/PAM and public key only. Ordinary
+22, recovery2222, sudo policy, shadow, boot selector, guardian and ACK gates stay
+unchanged. Rescue does not prove that normal LAN or ASUS is healthy.

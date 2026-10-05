@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "status": "read_only_source_review_no_new_actionable_findings",
+  "source": {
+    "path": "scripts/provision-ubuntu26-p11-image.py",
+    "sha256": "efdfe902a18cc2ba9812f9bd839049346ba2c0925e6d86e22418616944d1e03b"
+  },
+  "shared_gpt_source": {
+    "path": "scripts/provision-ubuntu26-gpt.py",
+    "sha256": "71b14c1964f34bb7d7edb2a1a49e7bb566b43d35475ea291df0c4053ee0931bd"
+  },
+  "owner_tests": {
+    "path": "build/ubuntu26-p11-image-host/v1/result.json",
+    "sha256": "1a712b446cbf663e56a439bdbc2a4f940d79234fb802fa3f067abbe4d7cceed9"
+  },
+  "reviewed": [
+    "Exact reviewed 12GiB gzip payload and nine-file private fsck closure pinned by manifest and payload SHA",
+    "Exact p11 extent and block identity, candidate GPT, existing p1-p10, stock-slot hashes, boot metadata and existing ext4 mounts validated",
+    "All-process mountinfo, block holders and swap observations; RAM/tmp capacity gates before staging and write",
+    "Fresh private staging and noclobber regular-file upload with remote hash; gzip test before fixed p11 write",
+    "Separate gzip/dd statuses, no count on pipe short reads, complete block readback hash, private native e2fsck -fn and unchanged post-fsck hash",
+    "Unknown write outcomes retain staging/lock, no automatic retry/activation/reboot or identity provisioning"
+  ],
+  "limitations": [
+    "No device or SSH connection made by reviewer.",
+    "Mount namespace observations cannot atomically exclude a new unrelated mount; caller must provide exclusive maintenance.",
+    "Advisory lock cannot exclude unrelated ASUS writers, and SSH closure does not prove a remote dd process has terminated.",
+    "Physical write throughput/durability and actual runtime behavior remain untested."
+  ]
+}

@@ -1,0 +1,148 @@
+{
+  "schema": 1,
+  "status": "compiled_linked_source_and_ELF_inspection_passed",
+  "production_ready": false,
+  "scope": "One local ARMEL build; no RC/device execution or deployment",
+  "finalizer": {
+    "path": "scripts/asus-integration/finalize-rc-cfe-envram-view-v6-v1.py",
+    "sha256": "fa2cf53cbd4b3c5f48aa2f5ecf709e7541d73078c9cd4dd2f93aab97534a5bfe"
+  },
+  "source_manifest": {
+    "path": "build/asus-cfe-readonly/cfe-envram-view-v1/manifest.json",
+    "sha256": "de7596a2b4331d9fa9695dff6509279b9e3a28240c774e52e580fac34ac67fd5"
+  },
+  "focused_fixture": {
+    "path": "reports/ubuntu26/asus-cfe-envram-view-v1.json",
+    "sha256": "4fc0f007b557a72219b3860e1c06a99288f5b4171ba5ef1d7fc9cf919cb80774"
+  },
+  "builder": {
+    "path": "scripts/asus-integration/build-rc-port-revision-ccache-v1.py",
+    "sha256": "7a836a811e1c0303b9774c049472410daa7c6ccbac5a775f711ee952ac0b6adb"
+  },
+  "compiler_wrapper": {
+    "path": "scripts/asus-integration/build-asuswrt6-rc-candidate-ccache-v1.py",
+    "sha256": "f5cc08c20517217656389631e19e5e62e7b3aee19c268ddd1a804219ccd964a1"
+  },
+  "compile": {
+    "path": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-emmc-wdt-cfe-v6/compile-result.json",
+    "sha256": "09f18e359e19fe4d78e2f47094dcd0fde073acbf2f4a84a2d12dc06259045493"
+  },
+  "link": {
+    "path": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-emmc-wdt-cfe-v6/link-result.json",
+    "sha256": "df295115cfeee1aee44930422a3f799ebb722129d25174ded764fa6c61fdd4a1"
+  },
+  "rgb": {
+    "path": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-emmc-wdt-cfe-v6/ledg-linked-proof.json",
+    "sha256": "d48fb71155fd887086567940490639a55a861c9fad423b6e53583133b59301cd"
+  },
+  "ELF": {
+    "path": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-emmc-wdt-cfe-v6/elf-inspection-v1/rc-readelf.txt",
+    "sha256": "059135399b4278053fa17f2d8c1aad16a9ccee0f945728172f1e41ff54dbf69a"
+  },
+  "source_delta": {
+    "source_files": 188,
+    "changed": [
+      "release/src/router/rc/ate.c"
+    ],
+    "inserted_lines": 2,
+    "CFE_header_MAC_parser_legacy_paths_byte_identical": true
+  },
+  "compile_status": {
+    "compiled": 67,
+    "failed": 0,
+    "retained_model_objects": 56,
+    "underlying_compiler": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain/usr/bin/arm-linux-gnueabi-gcc-15",
+    "compiler_sha256": "e365a6b1721565fe88f9d11a9d28b144d9c12b0279c82fece55ac5c660ab2c59",
+    "flags_and_object_selection_equal_v5": true,
+    "ccache": {
+      "version": "ccache version 4.12.3",
+      "prefix": [
+        "/tmp/be19000ai-asus-native-build-v2/lib/ld-linux-aarch64.so.1",
+        "--library-path",
+        "/tmp/be19000ai-asus-native-build-v2/usr/lib/aarch64-linux-gnu",
+        "/tmp/be19000ai-asus-native-build-v2/usr/bin/ccache"
+      ],
+      "remote_storage_disabled": true,
+      "configuration_sha256": "5e9608c4904d2dcb0739d592b0dbdc73e68eece9836af4875ed829f3089bdf60",
+      "before_sha256": "65fa2ac602bc9728af32537b81215ec65c09dcbdb7802f6d778ec1a547d697bf",
+      "after_sha256": "fdc0e98d7c7d487dc6804ebd521f3bebe97c34a8387830a5117b24fd289fe5d4"
+    },
+    "remote_cache_disabled": true
+  },
+  "ABI": {
+    "policy": "Frozen ARMEL time32/off32 with Cortex-A53 softfp; command prefix removed for comparison",
+    "frozen_v5_proof": {
+      "path": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-emmc-wdt-cfe-v5/abi-role-proof.json",
+      "sha256": "a41b8bf86add3989286aab4aeda32f7cd34246bb8c2465fb88bc52291f3d49b7"
+    },
+    "ELF32_ARM_EABI5_softfloat": true,
+    "needed_equal_v5": true,
+    "further_role_probe_or_QEMU_run": false
+  },
+  "initial_invocation": {
+    "returncode": 1,
+    "log": {
+      "path": "build/asus-rc-recovery/device-ssh-bsp-rgb-stop-emmc-wdt-cfe-v6-build.log",
+      "sha256": "5241f871b9c3345441b2943573c074974b6357246dd322ae963cbf4478341837"
+    },
+    "checker_error": {
+      "path": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-emmc-wdt-cfe-v6/abi-proof/init-final-cc1.log",
+      "sha256": "d3f39185172bb5930b91d97fbb35777b4ef6f385e0db1dde106db5a329184876"
+    },
+    "cause": "Inherited ABI checker used command[0] (ccache loader) as GCC for -###",
+    "inherited_native_and_ARMEL_role_probe_auto_ran_before_receipt_failure": true,
+    "recompilation_or_repeated_probe_after_failure": false
+  },
+  "old_CFE_23_cases_and_storage_BSP_kernel_receipts_reused": true,
+  "hardware_operation_performed": false,
+  "ship_only": {
+    "path": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-emmc-wdt-cfe-v6/linked/rc",
+    "sha256": "7e00ff39b48ff4b5efcba7829b1d4849343c88232af3090038bd53b1e9791355"
+  },
+  "incidental_new_libovpn_do_not_ship": {
+    "path": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-emmc-wdt-cfe-v6/linked/libovpn.so",
+    "sha256": "c524b4b1944b49ac21227e5d37f86decb0b7f7aeea3bb0609b3f6f5d8fee7915"
+  },
+  "frozen_old_artifacts": [
+    {
+      "path": "build/asus-cfe-readonly/cfe-envram-view-v1/manifest.json",
+      "sha256": "de7596a2b4331d9fa9695dff6509279b9e3a28240c774e52e580fac34ac67fd5"
+    },
+    {
+      "path": "reports/ubuntu26/asus-cfe-envram-view-v1.json",
+      "sha256": "4fc0f007b557a72219b3860e1c06a99288f5b4171ba5ef1d7fc9cf919cb80774"
+    },
+    {
+      "path": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-emmc-wdt-cfe-v5/revision-result.json",
+      "sha256": "5d4dd575a33371f8565cbd33971d11c08c6128193a824b4ebbbeb062ffe8d940"
+    },
+    {
+      "path": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-emmc-wdt-cfe-v5/linked/rc",
+      "sha256": "394ac07c81aa4da019cd62087923e83b673f842c7552bc519b22981041a4fd20"
+    },
+    {
+      "path": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-emmc-wdt-cfe-v5/linked/libovpn.so",
+      "sha256": "403a08d0c65b8365f411e43e14c1cc3fc64e99b8bedba09dd6844cb03ce49771"
+    },
+    {
+      "path": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-emmc-wdt-v4/linked/rc",
+      "sha256": "af9b497f7791d75031772c894d17f886ba99dbac687262d9933133aa65a752fe"
+    },
+    {
+      "path": "scripts/asus-integration/build-asuswrt6-rc-candidate.py",
+      "sha256": "213aad861fc8d799481747008d1b2d6a29825ffb299cccffa129453fcdb0af32"
+    },
+    {
+      "path": "scripts/asus-integration/build-rc-port-revision.py",
+      "sha256": "1fd2434c93569ab8ec4cdbe2eda171f2cfe6383b04eb4bdd3276a0325af4bc82"
+    },
+    {
+      "path": "scripts/asus-integration/link-asuswrt6-rc-candidate.py",
+      "sha256": "2e7b1dbcee996b5084d9684931d8e9016d4e274f971dee26964d256a7664c5a2"
+    }
+  ],
+  "revision_result": {
+    "path": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-emmc-wdt-cfe-v6/revision-result.json",
+    "sha256": "31614a9bb891fa259713a457ebcaf5c38fe30cb930f42cf750ac4fd36d1f6252"
+  }
+}

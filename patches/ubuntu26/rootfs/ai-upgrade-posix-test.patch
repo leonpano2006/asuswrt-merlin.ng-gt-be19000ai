@@ -1,0 +1,43 @@
+diff --git a/usr/sbin/ai_upgrade b/usr/sbin/ai_upgrade
+--- a/usr/sbin/ai_upgrade
++++ b/usr/sbin/ai_upgrade
+@@ -44,7 +44,7 @@
+     UPGRADE_STAGE=$(nvram get webs_state_ai_upgrade)
+     # Wait for stage 1 → 2
+     START_TIME=$(date +%s)
+-    while [ "$UPGRADE_STAGE" == "1" ]; do
++    while [ "$UPGRADE_STAGE" = "1" ]; do
+         CURRENT_TIME=$(date +%s)
+         if [ $((CURRENT_TIME - START_TIME)) -ge $AI_TX_TIMEOUT ]; then
+     	    nvram set ai_prog_status="failed"
+@@ -57,14 +57,14 @@
+     done
+ 
+     ERROR_STATE=$(nvram get ai_prog_status)
+-    if [ "$ERROR_STATE" == "failed" ]; then
++    if [ "$ERROR_STATE" = "failed" ]; then
+         error "Transmit FW timeout [$ERROR_STATE] [$FILENAME]"
+         exit 0
+     fi
+ 
+     # Wait for stage 2 → 3
+     START_TIME=$(date +%s)
+-    while [ "$UPGRADE_STAGE" == "2" ]; do
++    while [ "$UPGRADE_STAGE" = "2" ]; do
+         CURRENT_TIME=$(date +%s)
+         if [ $((CURRENT_TIME - START_TIME)) -ge $AI_UPG_TIMEOUT ]; then
+     	    nvram set ai_prog_status="failed"
+@@ -77,11 +77,11 @@
+     done
+ 
+     ERROR_STATE=$(nvram get ai_prog_status)
+-    if [ "$ERROR_STATE" == "failed" ]; then
++    if [ "$ERROR_STATE" = "failed" ]; then
+         error "Upgrade FW timeout [$ERROR_STATE] [$FILENAME]"
+         exit 0
+     fi
+-    if [ "$ERROR_STATE" != "failed" ] && [ "$UPGRADE_STAGE" == "3" ]; then
++    if [ "$ERROR_STATE" != "failed" ] && [ "$UPGRADE_STAGE" = "3" ]; then
+         info "Succeed in Upgrading FW [$FILENAME]"
+     fi
+ fi

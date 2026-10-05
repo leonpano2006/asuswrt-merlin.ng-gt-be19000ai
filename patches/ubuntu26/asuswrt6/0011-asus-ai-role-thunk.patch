@@ -1,0 +1,30 @@
+diff --git a/release/src/router/rc/Makefile b/release/src/router/rc/Makefile
+--- a/release/src/router/rc/Makefile
++++ b/release/src/router/rc/Makefile
+@@ -1392,7 +1392,7 @@
+ # Ubuntu-only managed ASUS rc integration.
+ ifeq ($(LEON_SYSTEMD_RC),y)
+ CFLAGS += -DLEON_SYSTEMD_RC=1
+-OBJS += rc-client.o rc-manager.o rc-legacy.o rc-shell-boundary.o
++OBJS += rc-client.o rc-manager.o rc-legacy.o rc-shell-boundary.o rc-vendor-role.o
+ LDFLAGS2 += -Wl,--wrap=kill,--wrap=reboot,--wrap=system,--export-dynamic-symbol=leon_rc_is_manager -ldl
+ endif
+ 
+diff --git a/release/src/router/rc/rc-vendor-role.c b/release/src/router/rc/rc-vendor-role.c
+--- /dev/null
++++ b/release/src/router/rc/rc-vendor-role.c
+@@ -0,0 +1,14 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++#include "rc-bridge.h"
++#include <unistd.h>
++
++/* Only two authenticated legacy "getpid() == 1" relocations call this thunk.
++ * Ordinary getpid and PID-bearing logs/protocols remain entirely unchanged. */
++pid_t leon_rc_vendor_role_pid(void)
++{
++    pid_t actual = getpid();
++    if (leon_rc_is_manager()) return 1;
++    /* A fork child has lost manager role and receives its real PID. Refuse
++     * accidental PID1 role when the managed marker/handshake is absent. */
++    return actual == 1 ? 0 : actual;
++}

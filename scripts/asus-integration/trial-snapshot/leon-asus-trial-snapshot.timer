@@ -1,0 +1,13 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+[Unit]
+Description=Capture native trial state once after initial ASUS startup
+
+[Timer]
+# Deliberately independent of broker readiness: stalled ASUS startup must not
+# prevent the one diagnostic capture. This timer never starts the broker.
+OnBootSec=90s
+AccuracySec=1s
+Unit=leon-asus-trial-snapshot.service
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,432 @@
+{
+  "status": "kernel10 QEMU regression passed; physical hardware test not performed",
+  "scope": "Linux v5.4 pidfd process APIs, ABI-preserving adaptation to BCM4.19",
+  "patch": "patches/0008-pidfd-process-handles-abi.patch",
+  "patch_sha256": "1154d1c602d54dd98936962a38b60989fa7f666c1b553d9bf9fdcc7b33d841be",
+  "upstream_tag": "v5.4",
+  "upstream_files": {
+    "kernel/exit.c": {
+      "url": "https://raw.githubusercontent.com/torvalds/linux/v5.4/kernel/exit.c",
+      "sha256": "b8453d9f2b71e0a02476bf203996cbe7210862a78bbf2d311afc9eeeba59dc69"
+    },
+    "kernel/pid.c": {
+      "url": "https://raw.githubusercontent.com/torvalds/linux/v5.4/kernel/pid.c",
+      "sha256": "77d8ca15f20e24861adac2f6f6a4eaec445dbacad7e621fc4b25c43d461c8745"
+    },
+    "kernel/fork.c": {
+      "url": "https://raw.githubusercontent.com/torvalds/linux/v5.4/kernel/fork.c",
+      "sha256": "137186e000092134c4300eb0f246a3c045b4e8af3e34e2b263dd040d95ff8aa9"
+    },
+    "kernel/signal.c": {
+      "url": "https://raw.githubusercontent.com/torvalds/linux/v5.4/kernel/signal.c",
+      "sha256": "6bb1a2628bb112b687cfa5d9b735659998f72a21da631630cf3680f4532e247a"
+    },
+    "include/linux/pid.h": {
+      "url": "https://raw.githubusercontent.com/torvalds/linux/v5.4/include/linux/pid.h",
+      "sha256": "e7f6c259da5f4d9375a9a5e86d4d8dd121a4c415f149b4f3f529a19bf30c74db"
+    },
+    "include/linux/syscalls.h": {
+      "url": "https://raw.githubusercontent.com/torvalds/linux/v5.4/include/linux/syscalls.h",
+      "sha256": "2cc35de083f3392077c6e81e621257e1e55c73eb37770f42a1426e03b1551191"
+    },
+    "include/uapi/linux/sched.h": {
+      "url": "https://raw.githubusercontent.com/torvalds/linux/v5.4/include/uapi/linux/sched.h",
+      "sha256": "a5c2526fec271086793b27474cb024d42a4c2e76b054b9a2a66baf01b812c203"
+    },
+    "include/uapi/linux/wait.h": {
+      "url": "https://raw.githubusercontent.com/torvalds/linux/v5.4/include/uapi/linux/wait.h",
+      "sha256": "5aef6849976f461a6a202d92c4f37de8d0550b66699efc398ada9e906047fdc3"
+    },
+    "include/uapi/asm-generic/unistd.h": {
+      "url": "https://raw.githubusercontent.com/torvalds/linux/v5.4/include/uapi/asm-generic/unistd.h",
+      "sha256": "9294dca09437de9fa86f7445cd8fdd30a88440c2332d93777ab812c6c5222f10"
+    },
+    "arch/arm64/include/asm/unistd32.h": {
+      "url": "https://raw.githubusercontent.com/torvalds/linux/v5.4/arch/arm64/include/asm/unistd32.h",
+      "sha256": "12f7001373ba80521f5d5ea33051e6ea60f6a5794592f0e8305fbaf0963c34a2"
+    },
+    "fs/proc/base.c": {
+      "url": "https://raw.githubusercontent.com/torvalds/linux/v5.4/fs/proc/base.c",
+      "sha256": "beda1448aea79f05e2cbdf768f42eacb5dd32b3fcf03e3b29b40fb40822e5571"
+    }
+  },
+  "api": {
+    "pidfd_open": 434,
+    "pidfd_send_signal": 424,
+    "P_PIDFD": 3,
+    "CLONE_PIDFD": "0x00001000",
+    "architectures": [
+      "aarch64",
+      "aarch32-softfp",
+      "aarch32-hardfloat"
+    ],
+    "unsupported": [
+      "clone3",
+      "CLONE_INTO_CGROUP",
+      "PIDFD_NONBLOCK",
+      "pidfd_getfd",
+      "pidfs ioctls"
+    ]
+  },
+  "abi_design": [
+    "No task_struct, signal_struct, struct pid or other vendor-layout fields added/removed/reordered",
+    "256 static hashed poll wait queues preserve struct pid numbers[] offset and size; readiness still checks referenced pid under RCU",
+    "Exported fork/do_fork signatures unchanged; private copy_process adds pidfd return pointer",
+    "Kernel thread and idle callers never request CLONE_PIDFD",
+    "pidfd files retain struct pid; numeric PID reuse cannot retarget handles",
+    "Upstream process-signal permissions and pid namespace boundary validation retained; AArch32 siginfo explicitly converted"
+  ],
+  "fdinfo_extension": "Pid=-1 when task has been reaped; NSpid namespace hierarchy",
+  "cleanup_review": [
+    "get_unused_fd_flags happens after copy_files to avoid leaking fd into private child descriptor table",
+    "fd_install occurs after last failure point",
+    "EFAULT after parent fd copy attempt drops file reference and reserved fd before freeing pid",
+    "cgroup_can_fork failure passes threadgroup unlock and file cleanup",
+    "early allocation failures bypass cgroup unlock because begin has not run"
+  ],
+  "object_compile": [
+    {
+      "source": "kernel/pid.c",
+      "returncode": 0,
+      "diagnostics": ""
+    },
+    {
+      "source": "kernel/fork.c",
+      "returncode": 0,
+      "diagnostics": ""
+    },
+    {
+      "source": "kernel/exit.c",
+      "returncode": 0,
+      "diagnostics": ""
+    },
+    {
+      "source": "kernel/signal.c",
+      "returncode": 0,
+      "diagnostics": ""
+    },
+    {
+      "source": "fs/proc/base.c",
+      "returncode": 0,
+      "diagnostics": ""
+    },
+    {
+      "source": "arch/arm64/kernel/sys.c",
+      "returncode": 0,
+      "diagnostics": ""
+    },
+    {
+      "source": "arch/arm64/kernel/sys32.c",
+      "returncode": 0,
+      "diagnostics": ""
+    }
+  ],
+  "guest_test_inputs": {
+    "source_sha256": "ce76aee26e546f108182624b2ae6d379d7aeefac00186df9d5e3c50e059c0368",
+    "builds": [
+      {
+        "abi": "arm64",
+        "command": [
+          "clang",
+          "--target=aarch64-linux-gnu",
+          "-mcpu=cortex-a53+crc+crypto",
+          "-fuse-ld=lld",
+          "-static",
+          "-nostdlib",
+          "-ffreestanding",
+          "-fno-builtin",
+          "-fno-stack-protector",
+          "-fomit-frame-pointer",
+          "-fno-pie",
+          "-O2",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-Wl,-e,_start",
+          "-Wl,--build-id=none",
+          "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/scripts/pidfd-regression-probe.c",
+          "-o",
+          "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/pidfd-backport/test/pidfd-arm64"
+        ],
+        "sha256": "2ddf515577c9d071aaf98846d4db0fb108c569821d9cced2680ed38f410ebc2c",
+        "bytes": 14064
+      },
+      {
+        "abi": "armel",
+        "command": [
+          "clang",
+          "--target=arm-linux-gnueabi",
+          "-mcpu=cortex-a53+crc+crypto",
+          "-fuse-ld=lld",
+          "-static",
+          "-nostdlib",
+          "-ffreestanding",
+          "-fno-builtin",
+          "-fno-stack-protector",
+          "-fomit-frame-pointer",
+          "-fno-pie",
+          "-O2",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-Wl,-e,_start",
+          "-Wl,--build-id=none",
+          "-marm",
+          "-mfloat-abi=soft",
+          "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/scripts/pidfd-regression-probe.c",
+          "-o",
+          "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/pidfd-backport/test/pidfd-armel"
+        ],
+        "sha256": "a50a9bdd49f62131715b40940d3b1ac415148a799db53328b4763f686ad370c0",
+        "bytes": 11984
+      },
+      {
+        "abi": "armhf",
+        "command": [
+          "clang",
+          "--target=arm-linux-gnueabihf",
+          "-mcpu=cortex-a53+crc+crypto",
+          "-fuse-ld=lld",
+          "-static",
+          "-nostdlib",
+          "-ffreestanding",
+          "-fno-builtin",
+          "-fno-stack-protector",
+          "-fomit-frame-pointer",
+          "-fno-pie",
+          "-O2",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-Wl,-e,_start",
+          "-Wl,--build-id=none",
+          "-marm",
+          "-mfloat-abi=hard",
+          "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/scripts/pidfd-regression-probe.c",
+          "-o",
+          "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/pidfd-backport/test/pidfd-armhf"
+        ],
+        "sha256": "ffe2973c97199fcb056cd3b6908692123f55d888af0120d277ffdf1422386808",
+        "bytes": 12724
+      },
+      {
+        "abi": "arm64-pthreads",
+        "command": [
+          "/home/leonpano/br-sdk/br-aarch64/output/host/bin/aarch64-buildroot-linux-gnu-gcc",
+          "-O2",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-static",
+          "-pthread",
+          "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/scripts/pidfd-thread-probe.c",
+          "-o",
+          "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/pidfd-backport/test/pidfd-threads"
+        ],
+        "source_sha256": "96d2d61468876e0d6bfa7bfa4039e408b6c20161d999e6b2c36c984696457cc4",
+        "sha256": "df56346d9e0cd19c60420eab3bfdb5b17bf85525021834ab16790520a4aff218",
+        "bytes": 815912
+      }
+    ],
+    "initramfs": "build/pidfd-backport/test/pidfd-regression.cpio.gz",
+    "initramfs_sha256": "c4682b0323030e2493424fccf1052752617febaeb0f0955b98929de7d6aaba3d",
+    "hardware_executed": false
+  },
+  "negative_control": {
+    "label": "kernel9-pidfd-final-negative",
+    "command": [
+      "qemu-system-aarch64",
+      "-machine",
+      "virt-8.2,gic-version=2",
+      "-accel",
+      "tcg,thread=multi",
+      "-cpu",
+      "cortex-a53",
+      "-smp",
+      "2",
+      "-m",
+      "1024",
+      "-nodefaults",
+      "-nic",
+      "none",
+      "-display",
+      "none",
+      "-monitor",
+      "none",
+      "-serial",
+      "stdio",
+      "-no-reboot",
+      "-sandbox",
+      "on,obsolete=deny,elevateprivileges=deny,spawn=deny,resourcecontrol=deny",
+      "-kernel",
+      "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/Image-v9",
+      "-initrd",
+      "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/pidfd-backport/test/pidfd-regression.cpio.gz",
+      "-append",
+      "console=ttyAMA0 earlycon=pl011,mmio32,0x09000000 rdinit=/init panic=0 oops=panic nokaslr loglevel=8 initcall_debug initcall_blacklist=bcm_pmc_drv_reg,bcm_ubus_drv_init,pmc_xrdp_init,pmc_wan_initcall,bcmbca_vreg_sync_drv_reg "
+    ],
+    "stop_reason": "qemu_exit",
+    "exit_code": 0,
+    "elapsed_seconds": 1.0,
+    "kernel_sha256": "cf4f036d1ff03cb4d13e6f41aedb1b31665d6921a0dd93ff0b8fc951ae18e073",
+    "initramfs_sha256": "c4682b0323030e2493424fccf1052752617febaeb0f0955b98929de7d6aaba3d",
+    "log_sha256": "1a301b81fab5e37c1d6924b0221667d5ec90a5e98b9e1e6a2b6c1da92aa49c3b",
+    "init_reached": true,
+    "guest_complete": true,
+    "panic": false,
+    "lab_lines": []
+  },
+  "hardware_modified": false,
+  "guest_regression": {
+    "all_pass": true,
+    "results": [
+      {
+        "label": "kernel10-pidfd-full-v4",
+        "negative_control": false,
+        "pass": true,
+        "errors": [],
+        "checks": {
+          "arm64": 71,
+          "armel": 71,
+          "armhf": 71,
+          "arm64-pthreads": 83
+        },
+        "probe_exits": {
+          "arm64": 0,
+          "armel": 0,
+          "armhf": 0,
+          "arm64-pthreads": 0
+        },
+        "qemu": {
+          "label": "kernel10-pidfd-full-v4",
+          "command": [
+            "qemu-system-aarch64",
+            "-machine",
+            "virt-8.2,gic-version=2",
+            "-accel",
+            "tcg,thread=multi",
+            "-cpu",
+            "cortex-a53",
+            "-smp",
+            "2",
+            "-m",
+            "1024",
+            "-nodefaults",
+            "-nic",
+            "none",
+            "-display",
+            "none",
+            "-monitor",
+            "none",
+            "-serial",
+            "stdio",
+            "-no-reboot",
+            "-sandbox",
+            "on,obsolete=deny,elevateprivileges=deny,spawn=deny,resourcecontrol=deny",
+            "-kernel",
+            "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/Image-v10",
+            "-initrd",
+            "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/pidfd-backport/test/pidfd-regression.cpio.gz",
+            "-append",
+            "console=ttyAMA0 earlycon=pl011,mmio32,0x09000000 rdinit=/init panic=0 oops=panic nokaslr loglevel=8 initcall_debug initcall_blacklist=bcm_pmc_drv_reg,bcm_ubus_drv_init,pmc_xrdp_init,pmc_wan_initcall,bcmbca_vreg_sync_drv_reg "
+          ],
+          "stop_reason": "qemu_exit",
+          "exit_code": 0,
+          "elapsed_seconds": 2.2,
+          "kernel_sha256": "4a15601eada042576aed2a3680dcc48e9228eea70f70c478840767aaa89a9f8e",
+          "initramfs_sha256": "c4682b0323030e2493424fccf1052752617febaeb0f0955b98929de7d6aaba3d",
+          "log_sha256": "afdd35923facec815652e45707bb0dbfc4ece6ed5e6c5674d7f1bbcbf6027add",
+          "init_reached": true,
+          "guest_complete": true,
+          "panic": false,
+          "lab_lines": []
+        }
+      },
+      {
+        "label": "kernel9-pidfd-final-negative",
+        "negative_control": true,
+        "pass": true,
+        "errors": [],
+        "checks": {},
+        "probe_exits": {
+          "arm64": 77,
+          "armel": 77,
+          "armhf": 77,
+          "arm64-pthreads": 77
+        },
+        "qemu": {
+          "label": "kernel9-pidfd-final-negative",
+          "command": [
+            "qemu-system-aarch64",
+            "-machine",
+            "virt-8.2,gic-version=2",
+            "-accel",
+            "tcg,thread=multi",
+            "-cpu",
+            "cortex-a53",
+            "-smp",
+            "2",
+            "-m",
+            "1024",
+            "-nodefaults",
+            "-nic",
+            "none",
+            "-display",
+            "none",
+            "-monitor",
+            "none",
+            "-serial",
+            "stdio",
+            "-no-reboot",
+            "-sandbox",
+            "on,obsolete=deny,elevateprivileges=deny,spawn=deny,resourcecontrol=deny",
+            "-kernel",
+            "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/Image-v9",
+            "-initrd",
+            "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/pidfd-backport/test/pidfd-regression.cpio.gz",
+            "-append",
+            "console=ttyAMA0 earlycon=pl011,mmio32,0x09000000 rdinit=/init panic=0 oops=panic nokaslr loglevel=8 initcall_debug initcall_blacklist=bcm_pmc_drv_reg,bcm_ubus_drv_init,pmc_xrdp_init,pmc_wan_initcall,bcmbca_vreg_sync_drv_reg "
+          ],
+          "stop_reason": "qemu_exit",
+          "exit_code": 0,
+          "elapsed_seconds": 1.0,
+          "kernel_sha256": "cf4f036d1ff03cb4d13e6f41aedb1b31665d6921a0dd93ff0b8fc951ae18e073",
+          "initramfs_sha256": "c4682b0323030e2493424fccf1052752617febaeb0f0955b98929de7d6aaba3d",
+          "log_sha256": "1a301b81fab5e37c1d6924b0221667d5ec90a5e98b9e1e6a2b6c1da92aa49c3b",
+          "init_reached": true,
+          "guest_complete": true,
+          "panic": false,
+          "lab_lines": []
+        }
+      }
+    ],
+    "physical_hardware_tested": false
+  },
+  "fdinfo_source": {
+    "url": "https://raw.githubusercontent.com/torvalds/linux/v5.10/kernel/fork.c",
+    "sha256": "85d17525a617d275d8bcad16e6df25c6f47a1e80ff2b7ee4f8a906aae003ea62",
+    "adaptation": "RCU-protected pid_task replaces later pid_has_task helper; existing proc_pid_ns inode signature retained"
+  },
+  "coverage": [
+    "Three ARM ABIs: 71 assertions each, direct syscalls without libc emulation",
+    "Native pthread/process integration: 83 assertions; total 296 final guest assertions",
+    "Delayed final-thread exit after group leader is observed in /proc as zombie",
+    "SIGCHLD=SIG_IGN autoreap still wakes epoll and waitid reports ECHILD",
+    "Close original pidfd with dup retained; epoll still wakes; 64 exit-versus-epoll-detach races",
+    "Real numerical PID reuse after 723 allocator iterations: old pidfd cannot signal replacement task",
+    "Nested PID namespace cannot signal ancestor pidfd; non-child pidfd cannot reap parent",
+    "pids.max=0 denies 32 CLONE_PIDFD calls with EAGAIN and stable open-fd count; restoring limit permits fork and reap",
+    "32 bad parent_tidptr clones clean up descriptors; EMFILE, incompatible flags and user signal permission/compat siginfo checks",
+    "Same final fixture on kernel9 reports P_PIDFD EINVAL and all four probes exit77 unsupported"
+  ],
+  "test_fixture_repairs": [
+    "Initial fdinfo test joined path at wrong slash offset; fixed 17 to18. Kernel implementation was unchanged.",
+    "CONFIG_CHECKPOINT_RESTORE=n means ns_last_pid is absent; force actual PID reuse via temporary guest pid_max=1024, restored after test.",
+    "Mount pids controller at writable /tmp/pidfd-pids in the disposable guest instead of assuming an existing /sys/fs/cgroup tree."
+  ],
+  "test_limitations": [
+    "QEMU boot and guest behavior only; no new kernel flashed to physical BCM",
+    "No new pidfs, nonblocking pidfds, clone3, CLONE_INTO_CGROUP or pidfd_getfd capability claimed",
+    "Hash-collision wakeups are harmless by readiness predicate; no throughput/stress benchmark claim"
+  ]
+}

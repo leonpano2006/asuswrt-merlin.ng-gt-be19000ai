@@ -1,0 +1,266 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-10-04T16:27:19.702048+00:00",
+  "status": "source_port_and_bounded_tests_complete; actual ASUS rc/libovpn builds and hardware execution remain pending",
+  "production_ready": false,
+  "flash_ready": false,
+  "actual_rc_compiled": false,
+  "full_libovpn_compiled": false,
+  "scope": "Local exact-commit source transforms, read-only historical/profile audit, helper object compilation and inert boundary tests. No real ASUS daemon, router, hardware, flash, running units, existing rootfs or Git commit changed.",
+  "recommended_phase1": {
+    "ownership": "systemd PID1 -> authenticated native ARM64 broker -> rebuilt BE19000AI ARMEL rc manager; retain original board hardware ordering initially, then split services only with tested dependencies.",
+    "boot_path": "BE98 achieved takeover using early-init plus default router target and Type=notify broker service; this is historical evidence. BE19000AI still requires its own writable-root/bootguard path and real manager acceptance.",
+    "not_copied": [
+      "BE98 retained objects/binaries",
+      "BE98 global preload configuration",
+      "BE98 cgroup-v1/hybrid settings",
+      "BE98 FailureAction=reboot trial policy",
+      "Dropbear ownership into OpenSSH",
+      "BE98 time32 shared-memory layout constants without producer measurement"
+    ]
+  },
+  "be98_checkpoints": [
+    {
+      "checkpoint": "systemd-rc-compat-20260916",
+      "readme": {
+        "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/systemd-rc-compat-20260916/README.md",
+        "sha256": "15508a078b6b1d9a524265cde58c16af44bb39e1a8947ad76d51537317ebf4f2"
+      },
+      "historical_hardware_evidence": false,
+      "finding": "systemd255.22 native broker/ARMEL manager design; 23 new RC objects plus88 retained BE98 objects, not standalone complete SDK.",
+      "limits": "QEMU at this checkpoint did not execute real ASUS hardware rc."
+    },
+    {
+      "checkpoint": "systemd-trial3-20260916",
+      "readme": {
+        "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/systemd-trial3-20260916/README.md",
+        "sha256": "4b13c581d7a92011569c1e52d3acf3a9c7002255dd2697412e816831b6ca78f8"
+      },
+      "historical_hardware_evidence": true,
+      "finding": "Physical systemd255.22 PID1, early SIGALRM masking, spawned shell signal-mask reset and exported libovpn role were required. Four radios, web, OpenVPN and bounded Docker checks passed.",
+      "limits": "RAM-accepted, firmware uncommitted; normal reboot returned fallback. Not current live state."
+    },
+    {
+      "checkpoint": "systemd-upgrade-20260917",
+      "readme": {
+        "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/systemd-upgrade-20260917/README.md",
+        "sha256": "13ed47429c9959dc1dffd39911cae7f868200b84e4684bd159225699ec5ac37d"
+      },
+      "historical_hardware_evidence": false,
+      "finding": "systemd257.13 plus cron/infosvr split; one owner and no duplicate legacy fallback.",
+      "limits": "Later checkpoint hardware evidence is separate; hybrid cgroup profile is not blindly copied to current unified-v2 kernel10."
+    },
+    {
+      "checkpoint": "systemd-features-20260917",
+      "readme": {
+        "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/systemd-features-20260917/README.md",
+        "sha256": "3178f7cd9c68b90810f83805a42ec1518fb7508aa48b927b142d88ce19db55eb"
+      },
+      "historical_hardware_evidence": true,
+      "finding": "leon7 physical systemd257.13 PID1 with zstd journal/TLS/credentials/sysctl reader, four radios, OpenVPN, Docker and web; zero failed units.",
+      "limits": "Bounded hardware trial, RAM acceptance only, not permanent commit or long-term stability."
+    },
+    {
+      "checkpoint": "systemd-rc-ssh-20260917",
+      "readme": {
+        "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/systemd-rc-ssh-20260917/README.md",
+        "sha256": "2352fee9ad55bd6ee5b88d82c957c7a40a1e4c78a2095bf6cbb20d2610e56dcf"
+      },
+      "historical_hardware_evidence": true,
+      "finding": "leon8 physically verified systemd-owned foreground Dropbear, preserved ASUS SSH policy writer, atomic bounded argv and no external-PID adoption.",
+      "limits": "Reference design only: this Ubuntu port uses OpenSSH and must not reuse Dropbear key/config ownership. Docker RAM unit was not packaged."
+    },
+    {
+      "checkpoint": "systemd-rc-platform-20260917",
+      "readme": {
+        "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/systemd-rc-platform-20260917/README.md",
+        "sha256": "5410a964b24d3e3c65ab9c538e8f2785a459877652f8b46e26c38886f44a66f0"
+      },
+      "historical_hardware_evidence": false,
+      "finding": "Platform units split hardware-adjacent services; avoid child-unit After=rc cycles before READY; descendant ownership via subreaper/proc PPid rather than CONFIG_CHECKPOINT_RESTORE children file.",
+      "limits": "Its known AiMesh/web issues require the next fixes; source-only compatibility does not establish board functionality."
+    },
+    {
+      "checkpoint": "httpd-dashboard-fix-20260917",
+      "readme": {
+        "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/httpd-dashboard-fix-20260917/README.md",
+        "sha256": "808549996cef2e8a3786a1fdfab5b6cbaacd8e2ab69c6d79cda6271fb4f3de66"
+      },
+      "historical_hardware_evidence": true,
+      "finding": "Null interface-name split and invalid snprintf bound could crash rebuilt FORTIFY httpd; parser/bound fixes required.",
+      "limits": "Must rebase onto matching BE19000AI httpd, not reuse BE98 binary."
+    },
+    {
+      "checkpoint": "aimesh-ui-fix-20260917",
+      "readme": {
+        "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/aimesh-ui-fix-20260917/README.md",
+        "sha256": "9d70f15e7593a23ba5122651b7dbe9176a1b0a10ee069fba09a57cb848ba92f3"
+      },
+      "historical_hardware_evidence": true,
+      "finding": "ARM32 vendor shared-memory time32 layout retained with explicit fixed-width wire fields while applications use time64; topology formatting and localization fixes.",
+      "limits": "BE98 producer layout must not be assumed for BE19000AI; new pairing/roaming not established by dashboard tests."
+    },
+    {
+      "checkpoint": "busybox-aarch64-20260923",
+      "readme": {
+        "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/busybox-aarch64-20260923/README.md",
+        "sha256": "e864cb66a67605ea6f7e1b2a414b7c7d0e8aa4a91d00e0dc98383d4302b2c208"
+      },
+      "historical_hardware_evidence": true,
+      "finding": "AArch64 BusyBox candidate ran on physical BE98 with glibc2.44/GCC16.2:157 applets, >2038 date, cross-ABI exec, DNS/ping, HTTPS200 and zero failed systemd units.",
+      "limits": "Not installed over system BusyBox. README explicitly leaves logging/DHCP daemon/login/USB hotplug/mount regression, IPv6 and reboot behavior untested."
+    }
+  ],
+  "be98_combined_release": {
+    "result": {
+      "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/platform-web-release-20260917/result.json",
+      "sha256": "640b680725ae82d879b309b7bbe12612c0d90854d5b08767dc6009f10defa08e"
+    },
+    "handoff": {
+      "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/platform-web-release-20260917/handoff.json",
+      "sha256": "51d2741f6394485c80a2ac3ecde1f3dea1571a6f3d965d1026773f9fb2e9104b"
+    },
+    "finding": "leon10 was physically flashed and RAM accepted, firmware_committed=false;20 platform services,335 loader closures, four radios, authenticated HTTP/AiMesh BE98+AXE16000 views, USB Btrfs and Docker bounded checks passed. One initial acsd2 restart had unknown cause; no new node pairing, roaming, line-rate or SMB authenticated transfer acceptance."
+  },
+  "pinned_source": {
+    "commit": "69838e4a60564e5550e97f11d8a8cf2c6260c4f0",
+    "manifest": {
+      "path": "scripts/asus-integration/rc-source-pin.json",
+      "sha256": "8d519baf443030a1c88d8d12cfe8d86d3f5a3be86378896034a2368f000518f8"
+    },
+    "verified_rc_C_and_Makefile_inputs": 116,
+    "changed_C_files": 26,
+    "lexical_edits": {
+      "role_ne": 119,
+      "role_eq": 0,
+      "role_ne_reversed": 0,
+      "role_eq_reversed": 0,
+      "pid1_signal": 21,
+      "reboot": 17
+    },
+    "count_scope": "All tracked source branches, including inactive models. Counts are not a selected-model object build.",
+    "libovpn_manifest": {
+      "path": "scripts/asus-integration/libovpn-source-pin.json",
+      "sha256": "6e0047bc882435b25dc6abb5adc4eba216aa4aad8f0c8390c2ce01d475b88246"
+    },
+    "libovpn_role_predicates": 4
+  },
+  "patches": [
+    {
+      "path": "patches/ubuntu26/0003-asus-rc-systemd-manager.patch",
+      "sha256": "466074a96ce4e24f92f2055bc25d03230381ba19f650243cc75c7d2d94b6cb0f"
+    },
+    {
+      "path": "patches/ubuntu26/0004-asus-rc-persistent-layout.patch",
+      "sha256": "ce649ba8cfa84c0fec86fdd3ac87a85a765f863ed65a47a2babf7f65f5c6746a"
+    },
+    {
+      "path": "patches/ubuntu26/0005-asus-rc-openssh-ownership.patch",
+      "sha256": "ffa29ff0875cd23402608aad901745d1dabf1b88e7e4bc29fbc07acd544478be"
+    },
+    {
+      "path": "patches/ubuntu26/0006-asus-libovpn-systemd-manager.patch",
+      "sha256": "ea37ab0969bc36b1fe7bdbe7684b6d05bac256b2a1faa42c550edff2420c48f6"
+    }
+  ],
+  "source_changes": [
+    "LEON_SYSTEMD_RC=y explicitly selects Ubuntu helpers and LEON_SYSTEMD_RC=1 C profile. Original standalone role/signal semantics exist only in the separate compile-time profile; missing marker never selects them in the Ubuntu binary.",
+    "Manager HELLO/shim/authentication occurs before original /data/NVRAM/module effects. Stored process identity does not transfer to fork children. READY is emitted from the main dispatch loop.",
+    "Early SIGALRM joins blocked manager signals before sysinit handle_reap can raise it. Private /usr/libexec/asus/ash spawn clears child signal mask and restores parent mask.",
+    "rc-only linker wrappers cover kill/reboot/system from its own/retained static objects. Ordinary getpid and unrelated kill calls retain real semantics; no global syscall override or preload configuration.",
+    "Orderly gate before stop_services and shutdn. Ubuntu build excludes global kill(-1), raw final reboot loop and entire reboothalt delayed SysRq fallback. Broker/systemd owns power action.",
+    "AI service role checks ported; explicit AI-board reboot/upgrade GPIO/request actions remain separate and unchanged.",
+    "Separate0005 stops rc from starting/stopping Dropbear or touching its host keys/authorized_keys. start returns ENOTSUP and stop logs ignored ownership; OpenSSH ASUS policy translation remains a gate, not silently claimed implemented.",
+    "Separate0006 libovpn weak manager export returns client when missing; no runtime PID1 fallback in Ubuntu mode. UI callers and children cannot acquire manager authority."
+  ],
+  "model_build_feasibility": {
+    "profile_manifest": {
+      "path": "build/asus-integration/profile-audit/manifest.json",
+      "sha256": "874e2df14a79d8f34942b3ef34b9717bf1b02bb640ce365a22e74e5ec6b16ef7"
+    },
+    "git_tree_inventory": {
+      "path": "build/asus-integration/profile-audit/inventory.json",
+      "sha256": "1b67211753ba5f52bebdf1ac455001676b6badeab865c0bcb24fabd7bc12fe8f"
+    },
+    "sparse_vs_missing": "Local missing makefiles/headers are fetchable sparse-checkout gaps, not proof of missing upstream support. Resolved pinned4916 Makefile/platform/target symlink blobs to shared src-rt makefiles; no upstream checkout was expanded or built.",
+    "model_supported_parts": {
+      "chip_profile": 6813,
+      "target": "96813GW.GT-BE19000AI",
+      "PROFILE_ARCH": "armsfp",
+      "PROFILE_KARCH": "aarch64",
+      "BCM_WLIMPL": 103,
+      "SDK": "WIFI7_SDK_20231126",
+      "storage": "eMMC with ext4/squashfs image options",
+      "files": "Board profile, both DTS/NVRAM variants and partition config are present at the pin."
+    },
+    "missing_from_pinned_build_inputs": [
+      "src-rt/target.mak has no GT-BE19000AI router feature definition; a chip profile alone does not generate complete ASUS userspace options.",
+      "rc/prebuild has19 model directories and885 objects, none for GT-BE19000AI. rc recipe selects $(BUILD_NAME) literally; no BE98 object alias was found.",
+      "rc/private.c is absent and rc/Makefile unconditionally selects prebuild/private.o when absent. Generic prebuild/private.o is not tracked; the model-specific AI private.o is absent.",
+      "Selected WIFI7_SDK_20231126 hostapd_config_be.c source is absent, requiring matching selected prebuilt object under appropriate generated model config.",
+      "4916 router-sysdep.gt-be19000ai absent; generic router-sysdep has only.dummy. Other model directories are not substitutes.",
+      "No tracked buildtools/target.mak.3004 override; Makefile supports an external override but none was supplied or assumed."
+    ],
+    "rc_prebuild_models": [
+      "GT-AX11000",
+      "GT-AX11000_PRO",
+      "GT-AX6000",
+      "GT-AXE11000",
+      "GT-AXE16000",
+      "GT-BE98_PRO",
+      "RT-AX56U",
+      "RT-AX58U",
+      "RT-AX68U",
+      "RT-AX86U",
+      "RT-AX86U_PRO",
+      "RT-AX88U",
+      "RT-AX88U_PRO",
+      "RT-BE58_GO",
+      "RT-BE86U",
+      "RT-BE88U",
+      "RT-BE92U",
+      "RT-BE96U",
+      "XT12"
+    ],
+    "build_scope_remaining": "Recover exact BE19000AI ASUS feature definitions and matching object/library dependencies from the appropriate source drop/build inputs; capture generated flags/OBJS for this board, verify all vendor ABI object hashes, then rebuild affected source+shims/libovpn and link. Full make/rc was not run; no BE98 retained-object substitution."
+  },
+  "tests": {
+    "offline13": {
+      "path": "build/asus-integration/offline-test.json",
+      "sha256": "28c365b4af4d9a47caf9ffd1f6a7a3f9fdceaa93e20c9cf63756c5ae3987163a"
+    },
+    "bounded_source_checks": {
+      "path": "build/asus-integration/source-boundary-tests/result.json",
+      "sha256": "53a8d611ab51d25aae6b3eed10cc393ec1882115fdb53e92c33a1e2b7658453c"
+    },
+    "armel_helper_objects": {
+      "path": "build/asus-integration/armel-foundation-compile/result.json",
+      "sha256": "94bdcab8194d150efb18910c2b60dedd605041c4defa82403e0b20ac54b1b42b"
+    },
+    "kernel10_systemd_mock_lifecycle": {
+      "path": "reports/ubuntu26/asus-systemd-lifecycle.json",
+      "sha256": "99e5d481f2584631f54953c677f4fe3087d1e6083ff5938184b2f748e8629b32"
+    },
+    "limitations": "Actual rc and full libovpn were not compiled/run. ARMEL helper objects use GCC15.2 reference SDK, not final Ubuntu ARMEL packages; native kernel10 mock uses accepted GCC16.2/glibc2.44. Firmware hardware functionality is not inferred from mocks.",
+    "armel_ISA": "GCC15 ARM32 rejects literal -mcpu=cortex-a53+crypto+crc; correct -mcpu=cortex-a53 -mfpu=crypto-neon-fp-armv8 -mfloat-abi=softfp emits __ARM_FEATURE_CRYPTO=1 and __ARM_FEATURE_CRC32=1. Rejected exploratory command is preserved.",
+    "openssh_note": "Separate parent report openssh-kernel10.json covers actual OpenSSH daemon functionality; it does not implement ASUS web/NVRAM policy translation in0005."
+  },
+  "coordination": {
+    "filesystem_owner_report": {
+      "path": "reports/ubuntu26/asus-persistent-layout-port.json",
+      "sha256": "51b5b51f8ed6948d71edb4e840c41fbc5f627f88d6cb329e742ad6a6afd8c6ab"
+    },
+    "combined_order": "0003 ->0004 ->0005 ->0006 independently passed patch --fuzz=0 with118 pinned inputs verified; build/asus-persistent-layout/combined-k1bl4jtj. No actual rc or VPN execution.",
+    "parent_owns": "systemd lifecycle fixture/unit/deb; no edits made to parent scripts or active units"
+  },
+  "remaining_deployment_gates": [
+    "Full exact-model rc/libovpn and ARMEL shims compiled and loader checked",
+    "Persistent account/NSS create_passwd writer remains unresolved and real rc must remain disabled",
+    "Remove or explicitly order original init_main shell mount of /data; authenticated entry precedes it but filesystem source patch does not yet make that shell mount systemd-owned",
+    "ASUS private ash packaging plus explicit shebang/exec/popen and shared-library doSystem callsite audit; --wrap=system does not intercept calls inside DSOs",
+    "USB consumers and shutdown ordering with actual hardware; board-specific boot guard and rollback",
+    "ASUS OpenSSH settings translation",
+    "Time64 vendor shared-memory layout and httpd/AiMesh fixes rebased for actual BE19000AI producer",
+    "ASUS radios/switch/HTTP/AiMesh/USB/AI control functional acceptance on the exact candidate"
+  ]
+}

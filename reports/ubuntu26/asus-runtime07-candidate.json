@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "status": "passed_offline_composition_and_kernel10_loader_preflight",
+  "production_ready": false,
+  "flash_allowed": false,
+  "runtime_version": "0.7",
+  "rootfs": {
+    "path": "build/ubuntu26-rootfs/ubuntu26-bcm-gnu-systemd-openssh-asus-runtime07-integration-sealed-b53-v1.tar",
+    "sha256": "f7f76e8409240df0eb07a7b3bd88e3627269e5335c8a3266704dda3119f20f03",
+    "bytes": 1011906560
+  },
+  "checks": {
+    "installed_entries": 4666,
+    "installed_packages": 181,
+    "installed_tar_entries": 20052,
+    "loader_scopes": 643,
+    "loader_seconds": 18.32,
+    "qemu_seconds": 122.17,
+    "canary_no_vendor_main_or_constructors": true,
+    "negative_undefined_symbol_control": true,
+    "protected_native_files_unchanged": true,
+    "existing_versions_preserved_except_approved_metadata": true,
+    "no_global_preload": true,
+    "no_service_activation": true,
+    "critical_writable_or_unowned": 0,
+    "writable_executables": 0,
+    "custom_setuid": 0,
+    "mode_migrations": [
+      {
+        "path": "/usr/lib/aarch64-linux-gnu/leon-asus",
+        "before": "0775",
+        "after": "0755",
+        "owner_package": "leon-asus-notify:arm64"
+      },
+      {
+        "path": "/usr/share/doc/leon-asus-notify",
+        "before": "0775",
+        "after": "0755",
+        "owner_package": "leon-asus-notify:armel"
+      },
+      {
+        "path": "/usr/lib/arm-linux-gnueabi/leon-asus",
+        "before": "0775",
+        "after": "0755",
+        "owner_package": "leon-asus-notify:armel"
+      },
+      {
+        "path": "/usr/share/doc/leon-gcc15-runtime",
+        "before": "0775",
+        "after": "0755",
+        "owner_package": "leon-gcc15-runtime:armel"
+      },
+      {
+        "path": "/usr/share/doc/leon-gcc15-runtime/build",
+        "before": "0775",
+        "after": "0755",
+        "owner_package": "leon-gcc15-runtime:armel"
+      },
+      {
+        "path": "/usr/share/doc/leon-bcm-rootfs-config",
+        "before": "0775",
+        "after": "0755",
+        "owner_package": "leon-bcm-rootfs-config"
+      },
+      {
+        "path": "/usr/share/leon-bcm-rootfs",
+        "before": "0775",
+        "after": "0755",
+        "owner_package": "leon-bcm-rootfs-config"
+      }
+    ]
+  },
+  "evidence": {
+    "composition": {
+      "path": "build/asus-runtime-projection/gnu-systemd-openssh-asus-runtime07-integration-b53-v1/build.json",
+      "sha256": "924cbf3d260fa3851578e68f54294a34f53b44432a20186ba8aebd6d5a229df6"
+    },
+    "hostkey_seal": {
+      "path": "build/ubuntu26-rootfs/ubuntu26-bcm-gnu-systemd-openssh-asus-runtime07-integration-sealed-b53-v1.hostkey-seal.json",
+      "sha256": "58d773878f5cc104420f06d95ef9da3948e8affc66195f95ec2221ce8c4b16a0"
+    },
+    "fixture": {
+      "path": "build/asus-runtime-projection/v7/qemu-asus-runtime07-kernel10-v1/manifest.json",
+      "sha256": "3d9a493761e8e2419bdf73f56059a5b8ce6cab1a9310515afaeaf01af95fd4bf"
+    },
+    "qemu": {
+      "path": "build/qemu/asus-runtime07-kernel10-v2/result.json",
+      "sha256": "23df8f51939b2da76dc47c825f99ee428ad41959356e83d4135df03afdb8e90b"
+    },
+    "serial": {
+      "path": "build/qemu/asus-runtime07-kernel10-v2/serial.log",
+      "sha256": "cdd64ea9ab6e6709849395389478c8a663744e3e1719f8d02551389d9c882938"
+    },
+    "source_preflight": {
+      "path": "reports/ubuntu26/asus-runtime07-preflight.json",
+      "sha256": "50101113343763d63af837a9538b26f140523fcfd3dbdb3ecd140622d08eacc9"
+    },
+    "projection": {
+      "path": "build/asus-runtime-projection/v7/projection.json",
+      "sha256": "0d54bdb5c6f6356a186090ef6a41117a005698f54b921ca262e4ea8d0d5f16b5"
+    },
+    "independent_installed_modes": {
+      "path": "reports/ubuntu26/installed-modes-integration07-sealed-v1.json",
+      "sha256": "018e9f3e3ad6f3d9dea7dfc314d6204f8bf0ee4c733d725fcd004a54fe8eeccc"
+    },
+    "openssh_component": {
+      "path": "reports/ubuntu26/asus-openssh-applied-state-v1.json",
+      "sha256": "b47f95f24bb069a64937bf81958123e558eaf7b73d153c6b2e902e0553135d4f"
+    }
+  },
+  "scope": "Exact same 16 package hashes installed on the immutable base in an isolated namespace and under kernel10/systemd PID1. ARMEL/native loader traces, owner/plugin scopes and synthetic canaries only; no actual ASUS main, constructors, hardware initialization or watchdog arm. Sealed tar differs from composed tar only by six hash-identified prototype SSH key files. Separate SSH component evidence covers real guest loopback login and policy management with synthetic identity.",
+  "pending": [
+    "Independent immutable guardian critical-file table check against the final archive-composed root.",
+    "Final signed local archive package overlay and activated trial root composition by the parent task.",
+    "Device-local account and unique host-key provisioning, fresh postflash slot proof and observer trust.",
+    "Guarded physical storage/kernel trial and actual Broadcom Wi-Fi/AiMesh/AI/peripheral acceptance."
+  ],
+  "manifest": {
+    "path": "build/asus-runtime-projection/v7/validated-manifest.json",
+    "sha256": "521bf5a7f498e957970b6f74174ac0a24c96e2f8a88d31b54d954f99aea2522b"
+  }
+}

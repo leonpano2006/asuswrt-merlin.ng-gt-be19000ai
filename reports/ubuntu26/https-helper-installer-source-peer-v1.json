@@ -1,0 +1,27 @@
+{
+  "builder": {
+    "bytes": 13578,
+    "path": "scripts/build-asus-https-p11-installer-v1.py",
+    "sha256": "f689c99016bf738f91d16df0fcdd5d25ab4f9fcbd5f2c367dde15037c765c65c"
+  },
+  "execution_performed": false,
+  "installer_source": {
+    "bytes": 31580,
+    "path": "scripts/asus-integration/https-staging/install-v1.c",
+    "sha256": "2cab747ea8227c929a169abe397737b0591f19f29b0a7fe7f46b97ceced6ef99"
+  },
+  "schema": 1,
+  "scope_findings": [
+    "All frozen physical/storage/identity/check/link preflights complete before publication.",
+    "Only fixed scripts parent may be created, with nofollow/root/mode/same-device/inode/race checks and fsync readback.",
+    "Two fixed additive regular leaves, no replacement; only gencert alias may be absent.",
+    "Current rescue/startup/RC/telemetry marker and existing rescue alias/private-shell inode are check-only and preserved.",
+    "Missing parent proves its helper leaf absent; new parent is pinned before the frozen additive file primitive rejects foreign/raced names."
+  ],
+  "source_delta": {
+    "bytes": 4390,
+    "path": "reports/ubuntu26/https-helper-installer-source-v1.json",
+    "sha256": "3f16e3a486e0daf3cae7138303659dc489a1fe26a79d9c2330b4be8bcc13c55c"
+  },
+  "status": "source_go"
+}

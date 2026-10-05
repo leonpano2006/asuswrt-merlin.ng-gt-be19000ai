@@ -1,0 +1,111 @@
+{
+  "schema": 1,
+  "reviewed_at_utc": "2026-10-04T14:27:41.837976+00:00",
+  "reviewer": "kernel10_peer_review",
+  "scope": "Independent source review of pidfd backport and PCAN USB FD MCU endpoint backport. No kernel source edits or device operations.",
+  "inputs": [
+    {
+      "path": "patches/0008-pidfd-process-handles-abi.patch",
+      "sha256": "1154d1c602d54dd98936962a38b60989fa7f666c1b553d9bf9fdcc7b33d841be"
+    },
+    {
+      "path": "patches/0009-pcan-usb-fd-new-mcu.patch",
+      "sha256": "1da59191b96abecb123d452c4201a9fc73526df35c33377f4936e8ac796c8cd1"
+    }
+  ],
+  "verdict": "No high-confidence actionable backport defects found in reviewed scope; source review is not a proof of complete concurrency or hardware behavior.",
+  "actionable_findings": [],
+  "checks": [
+    {
+      "area": "pidfd lifetime",
+      "result": "pass_source_review",
+      "evidence": [
+        "kernel/pid.c:478-572",
+        "kernel/fork.c:1962-1980",
+        "kernel/fork.c:2160-2169"
+      ],
+      "detail": "Each successful anon-inode handle owns a struct pid reference; close releases it; fd allocation and anon_inode creation failures release reserved descriptors and do not leak pid references. Free_pid runs separately for a failed child allocation."
+    },
+    {
+      "area": "fork/cgroup cleanup",
+      "result": "pass_source_review",
+      "evidence": [
+        "kernel/fork.c:2024-2033",
+        "kernel/fork.c:2153-2169"
+      ],
+      "detail": "Pre-cgroup failures bypass cgroup_threadgroup_change_end; cgroup_can_fork failures balance begin/end and put pidfd; post-can-fork failures call cgroup_cancel_fork before balancing and release. fd_install is after the last failure point, at the same relative location as Linux v5.4."
+    },
+    {
+      "area": "hashed permanent waitqueues",
+      "result": "pass_source_review",
+      "evidence": [
+        "kernel/pid.c:458-540",
+        "kernel/pid.c:617-622"
+      ],
+      "detail": "All 256 queues are initialized before normal process lifecycle, never freed, and selected from stable struct pid identity. Hash collisions produce wakeups but readiness is rechecked on the referenced pid under RCU. The queue lifetime avoids epoll removal referencing freed queues; wakeup locking order is equivalent to the upstream per-pid queue."
+    },
+    {
+      "area": "exit-group and autoreap",
+      "result": "pass_source_review",
+      "evidence": [
+        "kernel/signal.c:1830-1831",
+        "kernel/exit.c:247-268",
+        "kernel/pid.c:528-539"
+      ],
+      "detail": "The do_notify_parent hook covers normal exit, SIGCHLD-ignore autoreap, and release_task notifying the zombie group leader after the last nonleader is removed. Poll checks exit_state plus thread_group_empty, matching v5.4."
+    },
+    {
+      "area": "signal permissions/namespace/compat",
+      "result": "pass_source_review",
+      "evidence": [
+        "kernel/signal.c:3330-3445",
+        "kernel/signal.c:3065-3140",
+        "kernel/signal.c:1377-1427"
+      ],
+      "detail": "Namespace ancestor check, si_signo equality and si_code spoof restrictions match upstream. Signals pass through existing kill_pid_info/group_send_sig_info/check_kill_permission. AArch32 entry performs explicit copy_siginfo_from_user32, which clears and translates the 32-bit union; native 4.19 siginfo is full sized and copied from userspace."
+    },
+    {
+      "area": "waitid(P_PIDFD)",
+      "result": "pass_source_review",
+      "evidence": [
+        "kernel/exit.c:1613-1682"
+      ],
+      "detail": "fdget plus get_pid before fdput prevents concurrent-close lifetime races; only real pidfd fops are accepted. Selection passes the stable pid identity through existing child eligibility, stopped/continued, WNOWAIT, WNOHANG and reap semantics. pid ref dropped after do_wait. Unsupported PIDFD_NONBLOCK deliberately remains EINVAL at pidfd_open."
+    },
+    {
+      "area": "fdinfo",
+      "result": "pass_source_review",
+      "evidence": [
+        "kernel/pid.c:496-514"
+      ],
+      "detail": "The open file keeps pid and namespace array alive; pid_nr_ns filters incompatible procfs namespaces. Live but invisible processes emit 0; reaped processes emit -1; nested namespace numbers are emitted only when visible."
+    },
+    {
+      "area": "PCAN USB FD",
+      "result": "pass_source_review",
+      "evidence": [
+        "patches/0009-pcan-usb-fd-new-mcu.patch"
+      ],
+      "detail": "Changes match upstream new-MCU commit plus the 2025 type>=2 fix. Defaults remain for firmware response type<2; command/restart/data endpoints switch to firmware-provided numbers for newer types. Restricting intf_probe change to the PCAN-USB FD adapter matches upstream; PRO/Chip adapters retain their existing probe."
+    }
+  ],
+  "suggested_regression": {
+    "test": "Exercise cgroup pids.max fork rejection with CLONE_PIDFD in QEMU, in addition to existing EFAULT and EMFILE cases.",
+    "expected": "EAGAIN, unchanged fd count, no surviving child, and a successful clone/wait after raising limit.",
+    "reason": "This reaches the adapted cgroup cleanup label not reached by pointer/fd-limit failures."
+  },
+  "limitations": [
+    "No physical PCAN adapter tested by this reviewer.",
+    "No runtime tests run by this reviewer; main task and semantic-probe agent own QEMU validation.",
+    "Review scoped to declared v5.4 pidfd feature set, not a complete modern pidfd API or generic kernel security audit."
+  ],
+  "upstream_sources": [
+    "https://raw.githubusercontent.com/torvalds/linux/v5.4/kernel/pid.c",
+    "https://raw.githubusercontent.com/torvalds/linux/v5.4/kernel/fork.c",
+    "https://raw.githubusercontent.com/torvalds/linux/v5.4/kernel/signal.c",
+    "https://raw.githubusercontent.com/torvalds/linux/v5.4/kernel/exit.c",
+    "https://github.com/torvalds/linux/commit/4f232482467a354a74e08633faa1ed93fe00ee5e",
+    "https://github.com/torvalds/linux/commit/788199b73b6efe4ee2ade4d7457b50bb45493488"
+  ],
+  "archived_upstream_directory": "build/kernel10-peer-review"
+}

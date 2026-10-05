@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "status": "implemented_and_passed_38_no_network_tests",
+  "production_ready": false,
+  "router_connections": false,
+  "source": {
+    "path": "scripts/observe-ubuntu26-trial.py",
+    "sha256": "abaf531c5b91822401097cdf1128f56ea9e8d9f05429acbad9d2609d07035ee0"
+  },
+  "offline_tests": {
+    "path": "build/asus-trial-observer/offline-v3.json",
+    "sha256": "4b161ef27b8146dac04787c99f429d7fac03bf3646eb0f490e889d5f90ea3944"
+  },
+  "test_source": {
+    "path": "scripts/test-observe-ubuntu26-trial.py",
+    "sha256": "7365b30bb74a75e949c98a678273024016d540ac43db94fdbc0cf18e252bb687"
+  },
+  "protocol": {
+    "remote_helper": "/usr/libexec/leon-asus/trial-ack",
+    "challenge_command": "/usr/libexec/leon-asus/trial-ack --challenge",
+    "challenge_stdin": "empty",
+    "ack_command": "/usr/libexec/leon-asus/trial-ack --ack",
+    "ack_key_order": [
+      "schema",
+      "boot_id",
+      "challenge",
+      "sequence"
+    ],
+    "ack_encoding": "compact ASCII JSON plus one newline; no expires_in_ms",
+    "fresh_tcp_per_helper": true,
+    "expiry_max_ms": 20000,
+    "expiry_basis": "Conservative monotonic timestamp before challenge TCP connection, bounded again by run and LAN lease deadlines",
+    "sequence": "Unsigned 64-bit positive integer; strictly greater than last acknowledged sequence",
+    "first_accepted_ack": "Pins the new boot ID and exact SHA256 SSH server key fingerprint; all later boot/key changes fail closed",
+    "rejected_old_boot": "No ACK is sent when challenge boot ID equals required previous boot ID",
+    "remote_rejections": "Exit125 with empty stdout is retryable within deadlines; unexpected status/fields/output fail closed"
+  },
+  "trust_and_authentication": {
+    "required_trust_file": "Explicit --known-hosts, preverified device-local key via trusted stock SSH; no TOFU, no automatic enrollment",
+    "trust_file_rules": "Regular file, root/current-user owner, no group/world write, O_NOFOLLOW|O_NONBLOCK, 1MiB cap; target entry required",
+    "ssh_policy": "Paramiko RejectPolicy; no system key discovery or implicit agent/key use",
+    "auth_choices": [
+      "Default one-time getpass password in memory",
+      "--key explicit private key (regular root/user-owned, no group/world access); optional --key-passphrase getpass",
+      "--agent explicitly selects SSH agent"
+    ],
+    "host": "Numeric IP only to avoid an unbounded DNS lookup"
+  },
+  "bounds": {
+    "default_duration_seconds": 600,
+    "max_duration_seconds": 3600,
+    "default_interval_seconds": 15,
+    "max_interval_seconds": 30,
+    "tcp_ssh_auth_deadline_seconds": 5,
+    "helper_command_deadline_seconds": 5,
+    "max_stdout_plus_stderr_bytes": 4096,
+    "lan_lease_safety_deadline_seconds": 55,
+    "sleep_bound": "Every sleep ends no later than the current LAN lease safety deadline. A duration endpoint coincident with a stale55s lease is failure, not success."
+  },
+  "logs": {
+    "format": "JSONL to stdout and optional newly-created0600 file; existing paths/symlinks refused",
+    "secrets": "No password, passphrase, private-key bytes, raw challenge or raw SSH error/peer output logged",
+    "challenge": "Only SHA256 of ASCII challenge",
+    "exit": "Explicit observer_stopped with trial_lan_lease_may_expire=true and permanent_acceptance=false, including SIGINT/SIGTERM"
+  },
+  "default_target": {
+    "host": "192.168.100.15",
+    "source": "192.168.100.36",
+    "port": 22,
+    "username": "MastermixStudios"
+  },
+  "usage": {
+    "password": "python3 scripts/observe-ubuntu26-trial.py --known-hosts /path/to/preverified-device-known_hosts --previous-boot-id PREVIOUS_BOOT_UUID --log /path/to/new-trial-observer.jsonl",
+    "key": "python3 scripts/observe-ubuntu26-trial.py --known-hosts /path/to/preverified-device-known_hosts --previous-boot-id PREVIOUS_BOOT_UUID --key /path/to/private-key --duration 600",
+    "loopback_fixture": "python3 scripts/observe-ubuntu26-trial.py --host 127.0.0.1 --source 127.0.0.1 --port FIXTURE_PORT --known-hosts /path/to/preverified-fixture-known_hosts --previous-boot-id PREVIOUS_BOOT_UUID --key /path/to/fixture-key --duration 30",
+    "offline_tests": "python3 scripts/test-observe-ubuntu26-trial.py --report NEW_REPORT_PATH"
+  },
+  "peer_review": {
+    "finding": "Sleep previously could exceed55s lease safety cutoff after failed RPCs; duration equality also needed a stale-lease check.",
+    "resolution": "Both corrected, with dedicated tests proving ACK0 then5s failures at15/30/45 stops exactly55, and duration55 returns failure.",
+    "additional_hardening": "Known-hosts FIFO cannot block before fstat due O_NONBLOCK; tested."
+  },
+  "limitations": [
+    "No actual SSH server or native trial-ack target process was used in these tests; sockets and Paramiko sessions are mocked and any unmocked socket creation raises.",
+    "The native helper/guardian integration must receive separate target SSH fixture acceptance before live observer use.",
+    "This tool only renews a temporary LAN health lease; it has no command that writes metadata, commits a boot, resets a device or enrolls trust.",
+    "OS scheduling suspension, SIGKILL or host power loss cannot guarantee a final log record; the native guard remains responsible for lease expiration and rollback."
+  ],
+  "historical_test_evidence": [
+    "build/asus-trial-observer/offline-v1.json",
+    "build/asus-trial-observer/offline-v2.json"
+  ]
+}

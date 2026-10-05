@@ -1,0 +1,44 @@
+{
+  "baseline_vmlinux_sha256": "b319c7880df88a4f0ab879201ba054655b1770b7d5d7a8dc3b58f6209008aa05",
+  "candidate_vmlinux_sha256": "54b285dea80df67f17f1a6b173226cc84f5bdf332fbaef1ecde7f0029ac88f2a",
+  "baseline_vmlinux_named_types": 543,
+  "vmlinux_layout_changes": [],
+  "baseline_probe_named_types": 376,
+  "pid_task_file_signal_probe_layout_changes": [],
+  "old_export_changes": [],
+  "old_dispatch_changes": [],
+  "new_dispatch": [
+    {
+      "table": "sys_call_table",
+      "number": 424,
+      "handler": "__arm64_sys_pidfd_send_signal",
+      "pass": true
+    },
+    {
+      "table": "sys_call_table",
+      "number": 434,
+      "handler": "__arm64_sys_pidfd_open",
+      "pass": true
+    },
+    {
+      "table": "compat_sys_call_table",
+      "number": 424,
+      "handler": "__arm64_sys_pidfd_send_signal",
+      "pass": true
+    },
+    {
+      "table": "compat_sys_call_table",
+      "number": 434,
+      "handler": "__arm64_sys_pidfd_open",
+      "pass": true
+    }
+  ],
+  "unimplemented_gap_changes": [],
+  "config_changes": [],
+  "limits": [
+    "Only recorded complete named DWARF types and exports are checked; this is not proof of all proprietary ABI usage.",
+    "Dispatch checks do not establish syscall semantics; use separate guest probes and full service tests.",
+    "CONFIG_MODVERSIONS remains disabled; compare actual ELF exports rather than claiming CRC validation."
+  ],
+  "pass": true
+}

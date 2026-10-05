@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "status": "fixed_helpers_compiled_loop_variant_validated_on_kernel10",
+  "production_ready": false,
+  "device_execution_authorized_by_this_report": false,
+  "evidence": {
+    "native": {
+      "path": "build/ubuntu26-blkpg-helper/v1/manifest.json",
+      "sha256": "84ff804aa301df2427d5ae8832400b3c8253b920a49d64cf07895d770d6ec910"
+    },
+    "fixture": {
+      "path": "build/ubuntu26-blkpg-qemu/v3/manifest.json",
+      "sha256": "8fcb8b2d21f2515504e5a8d851f570e1838e37d90f25fbc3d3d171b60a2a2b0d"
+    },
+    "qemu": {
+      "path": "build/qemu/ubuntu26-blkpg-p11-v2/result.json",
+      "sha256": "a338c4af0adce4ad9104d63ef706009e2cb1a26bd231ad9baee33775f4981f38"
+    },
+    "serial": {
+      "path": "build/qemu/ubuntu26-blkpg-p11-v2/serial.log",
+      "sha256": "70d0fd67c80a7d540a97d06284c9bc978a20ad1fe49b600fa76d6d1dfd635bbe"
+    },
+    "source_review": {
+      "path": "reports/ubuntu26/blkpg-source-review.json",
+      "sha256": "8ff1604c94a4206a79357bd09c8da7112aca30bbe95124774bba50240498b383"
+    }
+  },
+  "variants": {
+    "add-p11-device": {
+      "path": "build/ubuntu26-blkpg-helper/v1/add-p11-device",
+      "sha256": "dc1ca69668558e79d91ec85e9b1f41c9fbd3e2184a8712184365636b17ef6003"
+    },
+    "add-p11-loop-fixture": {
+      "path": "build/ubuntu26-blkpg-helper/v1/add-p11-loop-fixture",
+      "sha256": "09cbe6c6aacfd2ec3746a58d635f19ef7602bf890ec6da9661552fe3e304c32e"
+    }
+  },
+  "expected_device": {
+    "path": "/dev/mmcblk0",
+    "major": 179,
+    "minor": 0,
+    "cid": "00000000000000000000000000000001",
+    "bytes": 31347965952,
+    "logical_sector": 512,
+    "p11_start_sector": 26849280,
+    "p11_sectors": 25165824
+  },
+  "native_api": "64-bit native struct blkpg_partition / struct blkpg_ioctl_arg; fixed production and fixture identities selected at compile time, no runtime arbitrary-device parameter.",
+  "file_descriptor": "O_RDONLY|O_CLOEXEC|O_NOFOLLOW|O_NONBLOCK; exclusive advisory flock before inspection.",
+  "mutation": "Only BLKPG_ADD_PARTITION pno11. No write/pwrite/GPT/PMBR/payload/slot writes, BLKRRPART, delete or resize operation in helper source.",
+  "checks": [
+    "Exact full reviewed candidate primary and backup GPT bytes, including unchanged PMBR and all original entries.",
+    "Exact disk CID, major/minor, capacity, logical block size and sysfs whole-disk identity.",
+    "Exact p1\u201310 kernel start/size/number/dev, no unknown p12+; repeat immediately before ioctl.",
+    "Existing exact p11 returns no-op; wrong existing p11 extent fails closed.",
+    "After ADD, verify p11 exact boundary/minor, p1\u201310 unchanged, and both GPT copies unchanged."
+  ],
+  "qemu": {
+    "seconds": 45.89,
+    "markers": [
+      "LAB_BLKPG_OLD_GPT_REFUSED_PASS",
+      "LAB_BLKPG_P7_INITIAL_SEED_EXACT_PASS",
+      "LAB_BLKPG_CID_GPT_SYMLINK_ARGUMENT_REFUSALS_PASS",
+      "LAB_BLKPG_ADD_WITH_EXISTING_MOUNT_GPT_PAYLOAD_UNCHANGED_PASS",
+      "LAB_BLKPG_EXISTING_EXACT_NOOP_PASS",
+      "LAB_BLKPG_WRONG_EXISTING_EXTENT_UNCHANGED_PASS",
+      "LAB_BLKPG_UNEXPECTED_PARTITION_REFUSED_PASS",
+      "LAB_BLKPG_WRONG_CAPACITY_REFUSED_PASS",
+      "LAB_BLKPG_KERNEL10_COMPLETE"
+    ],
+    "disk": "Only /dev/loop0 backed by a sparse file in guest RAM; no NIC or host block device.",
+    "kernel_arguments": "loop.max_part=15",
+    "busy_partition": "p7 ext4 remained mounted read-only throughout successful ADD and no-op.",
+    "payload_proof": "Initial 64MiB p7 seed matched. Mount itself changed two bytes before helper execution; the complete 64MiB post-mount/pre-ADD snapshot equaled the post-ADD snapshot.",
+    "mount_phase_difference_offsets_one_based": [
+      45100,
+      45137
+    ],
+    "negative_cases": [
+      "old GPT",
+      "wrong CID",
+      "corrupt backup GPT",
+      "symlink fixed device path",
+      "extra CLI device argument",
+      "wrong existing p11 start",
+      "unexpected p12",
+      "wrong whole-disk capacity"
+    ]
+  },
+  "limits": [
+    "Production eMMC helper binary was compiled but never executed; physical hardware remains unvalidated.",
+    "BLKPG add_partition receives info=NULL: no GPT PARTNAME/PARTUUID is generated until a full later GPT scan. Immediate success uses sysfs start/size/dev only.",
+    "An external transaction must serialize unrelated firmware disk writers; advisory flock alone cannot guarantee that.",
+    "A failure after successful ADD may leave the correct p11 present; caller must inspect and may re-run for exact no-op, never blindly delete/recreate.",
+    "Fixture GPT writes are setup operations on the guest RAM loop only and are not helper behavior.",
+    "Original stock slot2 boot, durable backups and all separate GPT provisioning gates remain required before a physical change."
+  ],
+  "first_fixture_failure": {
+    "path": "build/qemu/ubuntu26-blkpg-p11-v1/result.json",
+    "reason": "Compared post-mount payload to pre-mount seed. New v2 fixture locates the two changed bytes before helper execution, then verifies complete payload equality across ADD without changing helper bytes."
+  },
+  "checker": {
+    "path": "scripts/check-ubuntu26-blkpg-helper.py",
+    "sha256": "9112fabbbee0c11d0bdc402187f3c8676803c4ec06dcddc12823e9bef67e2a18"
+  },
+  "manifest": {
+    "path": "build/ubuntu26-blkpg-helper/v1/validated-manifest.json",
+    "sha256": "80f6dfe844729613d5922fb9ba08a113f16e81b5cbc279a108332a930ea21240"
+  }
+}

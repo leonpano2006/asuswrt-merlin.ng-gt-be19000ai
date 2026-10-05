@@ -1,0 +1,84 @@
+{
+  "schema": 1,
+  "status": "one_focused_native_fixture_compile_and_run_passed",
+  "manifest": {
+    "path": "build/asus-trial-candidate-v15/focused-fixture-source-v1/run-v1/manifest.json",
+    "sha256": "fd6a2fac0594131a74cd0cde882c77940315a75d1a6a152416a0489167c1122b",
+    "bytes": 5408
+  },
+  "fixture": {
+    "path": "build/asus-trial-candidate-v15/focused-fixture-source-v1/run-v1/focused-fixture",
+    "sha256": "b0454f06b33e9db54585bed60ee215a5b55ab79e21636ebf0e0c26399645337c",
+    "bytes": 8848840
+  },
+  "result": {
+    "path": "build/asus-trial-candidate-v15/focused-fixture-source-v1/run-v1/fixture-result.jsonl",
+    "sha256": "e264a3354fa5f4659e53436fbd90604aa6db53ca06ce8e409c826e5fbe009d88",
+    "bytes": 715
+  },
+  "synthetic_preservation": {
+    "path": "build/asus-trial-candidate-v15/focused-fixture-source-v1/run-v1/synthetic-preservation-v1.json",
+    "sha256": "e77e126b8a627ee4759b4b56d02d5a49e3d56cdfde1daa60666b6e1c613033c3",
+    "bytes": 7620
+  },
+  "variants": [
+    {
+      "case": "last-link-preflight-refusal",
+      "pass": true,
+      "publications": 0,
+      "hardware_guard_entered": false,
+      "additions": 0,
+      "replacements": 0,
+      "links": 0,
+      "temporaries": 0
+    },
+    {
+      "case": "old-rc-hash-preflight-refusal",
+      "pass": true,
+      "publications": 0,
+      "hardware_guard_entered": false,
+      "additions": 0,
+      "replacements": 0,
+      "links": 0,
+      "temporaries": 0
+    },
+    {
+      "case": "two-replace-eight-add-two-link-success",
+      "pass": true,
+      "verified_new_noop_preserves_inodes": true,
+      "identity16_and_check7_inodes_unchanged": true,
+      "hardware_guard_entered": false,
+      "additions": 8,
+      "replacements": 2,
+      "links": 2,
+      "temporaries": 10,
+      "verified_new_noop_publications": 0
+    },
+    {
+      "case": "short-write-eio-retains-temp-and-partial",
+      "pass": true,
+      "temporary_retained": true,
+      "automatic_retry": false,
+      "hardware_guard_entered": false,
+      "additions": 2,
+      "replacements": 0,
+      "links": 0,
+      "temporaries": 3,
+      "retained_temp_bytes": 492,
+      "retained_temp_mode": "0600"
+    }
+  ],
+  "compile_count": 1,
+  "fixture_run_count": 1,
+  "native_returncode": 0,
+  "production_main_executed": false,
+  "physical_hardware_guards_entered": false,
+  "device_accessed": false,
+  "automatic_retry": false,
+  "armed": false,
+  "old_tests_QEMU_rerun": false,
+  "limits": [
+    "Synthetic private regular-filesystem fixture only; physical device guards/mount/ext4/WDT/guardian not exercised.",
+    "Success exact-new no-op is deliberate after success, never automatic retry after failure."
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "status": "source_plan_only_not_enrolled",
+  "device_mutations": false,
+  "path": "/root/.ssh/known_hosts",
+  "new_endpoint": "[leon-ubuntu26-be19000ai]:2223",
+  "key_type": "ssh-ed25519",
+  "public_key": "AAAAC3NzaC1lZDI1NTE5AAAAIHmlNoSkQZrtS2uhr5dG1+qzMXLyYghF6NJjVcfniuNY",
+  "fingerprint": "SHA256:RfC1T1zKLkLwvjJG2t4UD3b0+z2+St0MhAumhVCrCMI",
+  "existing_aliases_required": [
+    "leon-ubuntu26-be19000ai",
+    "[leon-ubuntu26-be19000ai]:2222"
+  ],
+  "append_line": "[leon-ubuntu26-be19000ai]:2223 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHmlNoSkQZrtS2uhr5dG1+qzMXLyYghF6NJjVcfniuNY\n",
+  "evidence": [
+    {
+      "path": "evidence/ubuntu26/device-identity-live/ubuntu-known_hosts",
+      "sha256": "4238c5cc4ce2c7363eb491894192d7a926eaf1165a03b135b9621ea47ee922a7"
+    },
+    {
+      "path": "evidence/ubuntu26/management-uplink-rescue-design-v1/host51-client-host-alias-v2.stdout",
+      "sha256": "d4b42de0c9585968cc90d93357ca57e912e72ece8da7a0eb8803885b48492f85"
+    },
+    {
+      "path": "evidence/ubuntu26/management-uplink-rescue-design-v1/host51-openwrt-tool-source-v1/result.json",
+      "sha256": "0f0c0e35083e3f17e7319d7da0b6cae02e4e5e568a330c6b5cd265ad5dd41de1"
+    }
+  ],
+  "transaction": [
+    "Fixed path only; verify /root and /root/.ssh are real root-owned trusted directories; known_hosts regular root:root non-group/world-writable nlink1, bounded <=1MiB. Use fixed-C-locale numeric BusyBox ls -ldni, not missing stat applet; reject unexpected output before opening files. Exact original mode/inode/size/hash recorded without printing content.",
+    "Take a new exclusive root0700 lock directory inside /root/.ssh; no stale-lock takeover. Recheck parent/file identity after locking.",
+    "Parse only public known_hosts bytes with exact comma-separated aliases. Require both existing aliases to have exactly the frozen native ed25519 key and no conflicting definitions. New2223 must be absent or already exactly the same key. Idempotent matching endpoint returns no change; conflict rejects.",
+    "Require final original newline. Create exclusive root0600 temporary and backup regular files in the trusted lock directory; preserve original bytes exactly. Candidate=original bytes+one fixed public line. No private key, credentials, warning option, other known_hosts line or network setup is touched.",
+    "Fsync candidate+backup and directory using a proven available primitive before rename. Recheck exact old inode/type/owner/mode/nlink/size/hash immediately before publication; ambiguous concurrent change stops. Apply original file mode to candidate.",
+    "Atomic rename candidate over known_hosts, fsync containing directory, readback exact candidate hash and root metadata. Preserve backup+receipt for explicitly reviewed rollback; never automatically roll back unknown outcome.",
+    "Network transient cleanup does not remove enrolled public trust. No automatic connection or host-key warning bypass."
+  ],
+  "remaining": [
+    "The single environment query stopped because stat is absent; actual known_hosts mode/inode/nlink were NOT captured, and no second query was issued. Runtime preflight is still mandatory.",
+    "Shell fsync/directory durability primitive and numeric ls shape need focused offline source review before an executable enrollment script is approved.",
+    "No source test, device write or enrollment was performed."
+  ]
+}

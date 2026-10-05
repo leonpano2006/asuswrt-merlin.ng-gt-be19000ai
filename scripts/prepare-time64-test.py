@@ -20,7 +20,7 @@ import subprocess
 ROOT = Path(__file__).resolve().parents[1]
 BASE = Path('/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/glibc244-b53-20260915')
 p = argparse.ArgumentParser(description=__doc__,formatter_class=argparse.RawDescriptionHelpFormatter)
-p.add_argument('--expected-build',type=int,choices=[9],required=True)
+p.add_argument('--expected-build',type=int,choices=[9,10],required=True)
 p.add_argument('--output-dir',type=Path,default=ROOT/'build/time64-kernel9')
 a = p.parse_args()
 work=a.output_dir.resolve();work.mkdir(parents=True,exist_ok=True)
@@ -45,7 +45,7 @@ for abi in ['armel','armhf']:
     loader='ld-linux.so.3' if abi=='armel' else 'ld-linux-armhf.so.3'
     dest=work/abi;dest.mkdir(exist_ok=True)
     cc=[x for x in shlex.split(cfg['cc']) if not x.startswith('--sysroot=')]
-    cmd=cc+['--sysroot='+str(stage),'-B'+str(crt)+'/', '-std=c11','-O2','-Wall','-Wextra','-Werror','-march=armv8-a+crc+crypto','-mtune=cortex-a53','-mfpu=crypto-neon-fp-armv8','-mfloat-abi='+('softfp' if abi=='armel' else 'hard'),'-Wl,--build-id=sha1','-L'+str(crt),'-L'+str(libdir),str(glibc),'-o',str(dest/'probe')]
+    cmd=cc+['--sysroot='+str(stage),'-B'+str(crt)+'/', '-std=c11','-O2','-Wall','-Wextra','-Werror','-march=armv8-a+crc+crypto','-mtune=cortex-a53','-mfpu=crypto-neon-fp-armv8','-mfloat-abi='+('softfp' if abi=='armel' else 'hard'),'-Wl,--build-id=sha1','-DEXPECTED_KERNEL_BUILD='+str(a.expected_build),'-L'+str(crt),'-L'+str(libdir),str(glibc),'-o',str(dest/'probe')]
     env=os.environ.copy();env['LD_LIBRARY_PATH']=cfg['host_library_dir'];run(cmd,env)
     triple='arm-linux-gnueabi' if abi=='armel' else 'arm-linux-gnueabihf';strip=BASE/'toolchains/arm32-ubuntu/usr/bin'/(triple+'-strip')
     origin={}

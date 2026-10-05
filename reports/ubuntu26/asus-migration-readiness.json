@@ -1,0 +1,201 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-10-04T16:31:45.632782+00:00",
+  "status": "ASUS_packaging_and_compatibility_preparation_only_not_flash_ready",
+  "scope": "BCM userspace migration; original router and separate AI-board OS untouched.",
+  "asus_functional_acceptance": false,
+  "flash_allowed": false,
+  "partition_or_router_changed": false,
+  "permanent_boot_commit_allowed": false,
+  "policy": "configs/ubuntu26/asus-acceptance-gates.json",
+  "source_reference": {
+    "rootfs": "build/kernel9-ui1-rootfs",
+    "squashfs_sha256": "beac450ebc9d71192a421cf6c2cb8e06ef6997b6e11b2ea854c3ef49e20dc766"
+  },
+  "ubuntu_base_sha256": "057c52f70d8974691179235c4e273a6be0d474edde11d6c1cb85b09b11b250a4",
+  "packages": [
+    {
+      "package": "asus-be19000ai-armel-payload",
+      "version": "0.2+kernel9ui1",
+      "architecture": "armel",
+      "path": "build/ubuntu26-asus-packages/asus-be19000ai-armel-payload_0.2+kernel9ui1_armel.deb",
+      "sha256": "9ef8171ec516aa68df63f7782364daa12c77036707d4f43ed268a5e0cf5bb5e8"
+    },
+    {
+      "package": "asus-be19000ai-arm64-payload",
+      "version": "0.2+kernel9ui1",
+      "architecture": "arm64",
+      "path": "build/ubuntu26-asus-packages/asus-be19000ai-arm64-payload_0.2+kernel9ui1_arm64.deb",
+      "sha256": "0d9ef274998463fb7a569494cf083c07a7221149561be51f61146c41217c1126"
+    },
+    {
+      "package": "asus-be19000ai-resources-payload",
+      "version": "0.2+kernel9ui1",
+      "architecture": "all",
+      "path": "build/ubuntu26-asus-packages/asus-be19000ai-resources-payload_0.2+kernel9ui1_all.deb",
+      "sha256": "fa821b1858cd3b1889ba3c482237f76c66ea6239f1168eb3ff878a6e6ba7971f"
+    }
+  ],
+  "completed": {
+    "inactive_payload_packaging": "Three architecture-separated, private, non-executable payloads; full source inventory and deterministic archive checks.",
+    "apt_lifecycle": "Install/remove/reinstall passed in isolated Ubuntu clone; native Ubuntu files and original tar unchanged.",
+    "loader_preflight": {
+      "vendor": {
+        "total": 11,
+        "passed": 11
+      },
+      "glibc244": {
+        "total": 11,
+        "passed": 8
+      },
+      "glibc244_crypt": {
+        "total": 11,
+        "passed": 11
+      }
+    },
+    "crypt_runtime_probes": [
+      {
+        "probe": "crypt-probe",
+        "returncode": 0,
+        "output": "LAB_ASUS_LIBCRYPT_NEW_HEADER_SIZE=32768 TIME_T=8 OFF_T=8\nLAB_ASUS_LIBCRYPT_DES_MD5_TIME64_PASS",
+        "expected_markers": [
+          "LAB_ASUS_LIBCRYPT_DES_MD5_TIME64_PASS"
+        ],
+        "marker_counts": {
+          "LAB_ASUS_LIBCRYPT_DES_MD5_TIME64_PASS": 1
+        },
+        "passed": true
+      },
+      {
+        "probe": "crypt-legacy-probe-v2",
+        "returncode": 0,
+        "output": "LAB_ASUS_LIBCRYPT_POISON_INITIALIZED_ONLY_PASS\nLAB_ASUS_LIBCRYPT_LEGACY_HEADER_SIZE=131228 INITIALIZED_OFFSET=131224 TIME_T=8 OFF_T=8\nLAB_ASUS_LIBCRYPT_GLIBC24_OBSOLETE_ABI_PASS",
+        "expected_markers": [
+          "LAB_ASUS_LIBCRYPT_POISON_INITIALIZED_ONLY_PASS",
+          "LAB_ASUS_LIBCRYPT_GLIBC24_OBSOLETE_ABI_PASS"
+        ],
+        "marker_counts": {
+          "LAB_ASUS_LIBCRYPT_POISON_INITIALIZED_ONLY_PASS": 1,
+          "LAB_ASUS_LIBCRYPT_GLIBC24_OBSOLETE_ABI_PASS": 1
+        },
+        "passed": true
+      }
+    ],
+    "shell_patch": "Five AI upgrade comparison fixes in each separately hash-guarded source/rootfs patch; 15 harmless cases pass.",
+    "broker_foundation": {
+      "mock_tests": [
+        "missing_shim_refuses_backend",
+        "pre_ready_wrong_child_unknown_op_reserved_value_malformed_rejected",
+        "nonroot_peer_rejected_even_with_accessible_socket",
+        "early_sigalrm_blocked_child_spawn_mask_empty_parent_mask_preserved",
+        "direct_child_ready_role_not_inherited_subreaper_reaps",
+        "normal_logic_missing_marker_client_manager_shim_wrappers_fail_closed",
+        "running_broker_and_manager_reject_lost_marker_no_power",
+        "unlisted_signal_rejected",
+        "allowed_signals_only_reach_owned_backend",
+        "seven_notify_call_shapes_and_ordinary_self_signal",
+        "power_request_recorded_only_ordered_shutdown_no_real_power",
+        "missing_broker_notify_fails_closed",
+        "backend_crash_fails_broker_no_restart_stale_socket_removed"
+      ],
+      "scope": "Native mock protocol/signal tests; actual ARMEL rc, libshared and board startup have not run."
+    },
+    "systemd_first_stage": {
+      "BE98_reference": "Reviewed nine historical checkpoints, including hardware trial evidence; not a current live-state claim.",
+      "source_port": "Four patches apply in order with fuzz=0 on 118 hash-verified pinned inputs; no full rc/libovpn build.",
+      "offline_foundation_cases": 13,
+      "target_systemd_mock_cases": {
+        "native": [
+          "ALARM_AND_CHILD_MASK",
+          "SYSTEMD_READY_CGROUP",
+          "NOTIFICATION",
+          "ORDERED_STOP",
+          "RESTART",
+          "CRASH_RECOVERY",
+          "SYSTEMD_LIFECYCLE"
+        ],
+        "armel": [
+          "ALARM_AND_CHILD_MASK",
+          "SYSTEMD_READY_CGROUP",
+          "NOTIFICATION",
+          "ORDERED_STOP",
+          "RESTART",
+          "CRASH_RECOVERY",
+          "SYSTEMD_LIFECYCLE"
+        ]
+      },
+      "openssh_version": "OpenSSH_10.2p1 Ubuntu-2ubuntu3.6, OpenSSL 3.5.5 27 Jan 2026",
+      "openssh_runtime_checks": {
+        "sshd_syntax_and_effective_config": true,
+        "native_official_ssh_service_started_by_systemd": true,
+        "only_tcp_listener_guest_127_0_0_1_2222": true,
+        "nonroot_ed25519_key_auth_real_session_uid_1000": true,
+        "strict_pinned_host_key_verification": true,
+        "unauthorized_key_rejected": true,
+        "sftp_upload_download_hash_equivalence_via_cmp": true,
+        "systemd_service_restart_changed_main_pid_and_relogin": true,
+        "systemd_service_stop_inactive_and_no_tcp_listeners": true,
+        "no_dropbear_installed_or_running": true,
+        "dpkg_audit_empty": true,
+        "base_multiuser_journald_udevd_dbus_and_apt_service_lifecycle": true
+      },
+      "custom_GNU_systemd_package_versions_preserved": 41
+    },
+    "systemd_validation_boundary": "Broker native/ARMEL mocks ran on the GNU/systemd base. Real OpenSSH ran on a separate derived candidate. No combined actual ASUS/OpenSSH runtime has booted."
+  },
+  "remaining_before_flash": [
+    "Build and package the actual board-specific rc manager, persistent-file ownership and shutdown integration.",
+    "Install a coherent, tested armel libc/libcrypt/toolchain package family alongside native Ubuntu; the diagnostic reference is not that package family.",
+    "Validate the ASUS-private shell contract and legacy applet behavior across scripts and system()/popen() call sites.",
+    "Validate time64 shared-memory/message ABI with actual ASUS producers and consumers and all required dynamic plugins.",
+    "Boot and exercise actual ASUS services under the exact integrated candidate; no such rootfs exists yet.",
+    "Complete signed custom package updates, upgrade protection and recoverable physical storage/boot integration.",
+    "Record the physical functional profile and rollback result during a controlled board trial; QEMU cannot establish radio/Runner/USB behavior."
+  ],
+  "evidence": [
+    {
+      "path": "configs/ubuntu26/asus-acceptance-gates.json",
+      "sha256": "f3f1b2f14c6dc1e4ddb0717655e8cda6a6b6c4e5fc4b5ee76d3b0c75399d7ea2"
+    },
+    {
+      "path": "reports/ubuntu26/asus-payload-packages.json",
+      "sha256": "7e27f83c29b0c25c3aa646a9611ef24ca3501db9470728f927a5208994b6e001"
+    },
+    {
+      "path": "reports/ubuntu26/asus-payload-install.json",
+      "sha256": "9ec3acaa75b06c18b819b35ee3693159a77ac19a58efa0c9d0b541862208d560"
+    },
+    {
+      "path": "reports/ubuntu26/asus-elf-closure.json",
+      "sha256": "b85b44daf62b106e72a834b3ab22dcba08dc253a66112137fb0078d66ca0389b"
+    },
+    {
+      "path": "reports/ubuntu26/asus-loader-diagnostic.json",
+      "sha256": "a9cb1a1660870486ee62954495697bbe5107aac9d5fc719076a09e343e744da2"
+    },
+    {
+      "path": "reports/ubuntu26/asus-libcrypt-compat.json",
+      "sha256": "39b6600da4da74f9ddfa7f6f9e642f432f1670db1e4dd891e97170c155ef870f"
+    },
+    {
+      "path": "reports/ubuntu26/asus-shell-portability.json",
+      "sha256": "f71a8cbf846568018e5ed62cf5cc9f8c55a467dd5e1dc015451426302d19bc9e"
+    },
+    {
+      "path": "reports/ubuntu26/asus-startup-integration.json",
+      "sha256": "46f5d61cc346a2dea0cd6fea1b5485344a9768197dfbe2e2406c15526276b6af"
+    },
+    {
+      "path": "reports/ubuntu26/systemd-first-stage.json",
+      "sha256": "28cfafd411d02971f07ac7efe7c7f6553c4d40a538c7acf30be9a992b2d619b8"
+    },
+    {
+      "path": "build/asus-loader-qemu/checker-validation.json",
+      "sha256": "5babda7d8af85144d78aa08994ec6ceeae6eb23be674944a1bcfa9dfeab8e67b"
+    },
+    {
+      "path": "reports/ubuntu26/update-readiness.json",
+      "sha256": "34bbd633776aeecaaed5479a4857a7eff13010388d439409595efd9f6137b5d1"
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "status": "offline_full_production_loop_validated_explicit_gate_enabled_artifact_built",
+  "full_production_loop_validation_passed": true,
+  "deployment_gate_enabled_in_artifact": true,
+  "device_deployment_performed": false,
+  "hardware_watchdog_opened": false,
+  "physical_reset_and_stock_fallback_proven": false,
+  "ASUS_hardware_services_validated": false,
+  "automatic_commit_allowed": false,
+  "runtime_accepted": false,
+  "guardian_receipt": {
+    "path": "build/asus-trial-runtime/native-v17-enabled/guardian-receipt.json",
+    "sha256": "cf8a91cc2de7be670fa6dfeb57a782c12a14938ad134a0a14f4f3734fcfa9723"
+  },
+  "loop_validation": {
+    "path": "reports/ubuntu26/asus-trial-loop-production-loop-v6.json",
+    "sha256": "b6bdbf444413d2018b487171d0337e76c280257f5387639fb31f3c35c2a39e25"
+  },
+  "peer_review": {
+    "path": "reports/ubuntu26/asus-trial-production-peer-review-v3.json",
+    "sha256": "a50ad1930ebf9f5c1a9d10121941c64ab112dc6d2737e5090a7038799a727c92"
+  },
+  "composed_critical_identity_map": {
+    "path": "reports/ubuntu26/asus-trial-identity-map-archive-sealed-runtime07-v4-enabled.json",
+    "sha256": "2323c62707afb24928219afcafc90f3708550f21031b4998a7f695be7e369308"
+  },
+  "implemented_policy": {
+    "path": "configs/ubuntu26/trial-watchdog-implemented.json",
+    "sha256": "2ea3aad2366d3199dd4c0c74c169597316da3fd31435fb717d6380949df41a57"
+  },
+  "build_gate_negative_tests": {
+    "path": "build/asus-trial-runtime/gate-rejection-v2/result.json",
+    "sha256": "75756c4003b26c5eb6809213a1566288f926b4c5bedc99143a2095a9ee183269"
+  },
+  "native_tests": {
+    "fixture-test.log": {
+      "path": "build/asus-trial-runtime/native-v17-enabled/fixture-test.log",
+      "sha256": "70aa47912da28263c5451b507c8b351b408f5ea8edb3b534ad3562fe15b3ad88"
+    },
+    "worker-test.log": {
+      "path": "build/asus-trial-runtime/native-v17-enabled/worker-test.log",
+      "sha256": "35ee53abe81608e2eac671d2a520ba228d3a21d1d7f376090b78b263b40779b1"
+    },
+    "capture-test.log": {
+      "path": "build/asus-trial-runtime/native-v17-enabled/capture-test.log",
+      "sha256": "19c5db4e109f2a7f86419c0fddebdf6e2e354b9558f3e16bbb27c373e6cc0d5e"
+    },
+    "adapter-test.log": {
+      "path": "build/asus-trial-runtime/native-v17-enabled/adapter-test.log",
+      "sha256": "a3c1e2ee568fa8e0553b76434e58daedc355649a116166569053284a5fdc34d7"
+    }
+  },
+  "remaining": [
+    "Device-local account and unique SSH host key provisioning on verified stock slot2; no secret/key copied into released archives.",
+    "Postflash fresh metadata token and one-shot boot selection/readback; no automated acceptance commit.",
+    "Actual watchdog timeout/sole-owner/reset/fallback proof on the board. Before user-space open the kernel may feed a bootloader-active watchdog, so arbitrary pre-ARM hangs have no claimed40-second recovery guarantee.",
+    "Functional Wi-Fi/AiMesh/switch/AI acceptance during guarded physical trial; broker READY is structural health only."
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "source_pin": "9b25e55ca5c56a6f01d6a56264c0f6c47459ada0",
+  "verified_input_files": 168,
+  "input_receipts": [
+    {
+      "path": "build/asus-rc-recovery/ported/source-port.json",
+      "sha256": "65b77def96bd7b7fea9ff69694981fd116d17cb2caac2d52ffff980094f1fea1"
+    },
+    {
+      "path": "build/asus-rc-recovery/sysdeps-port.json",
+      "sha256": "41c8c99bfe91880fcfcf5f8d69ad5ad92410d4935b31e833bbf1036c7f2d97da"
+    }
+  ],
+  "source": "build/asus-private-etc/combined-v1/source",
+  "patch_order": [
+    {
+      "path": "patches/ubuntu26/asuswrt6/0003-asus-rc-systemd-manager.patch",
+      "sha256": "a28637ff79cb7a9a1f4f4dcb04e7790d076ac2768f6fb3a7347613176cd3f754",
+      "returncode": 0,
+      "stdout": "patching file release/src/router/rc/Makefile\npatching file release/src/router/rc/alt_watchdog.c\npatching file release/src/router/rc/btnsetup.c\npatching file release/src/router/rc/firewall.c\npatching file release/src/router/rc/fwupg_flashing.c\npatching file release/src/router/rc/init.c\npatching file release/src/router/rc/jffs2.c\npatching file release/src/router/rc/mtd.c\npatching file release/src/router/rc/multi_wan.c\npatching file release/src/router/rc/natnl_api.c\npatching file release/src/router/rc/ntpd.c\npatching file release/src/router/rc/qmacc.c\npatching file release/src/router/rc/rc-bridge.h\npatching file release/src/router/rc/rc-client.c\npatching file release/src/router/rc/rc-legacy.c\npatching file release/src/router/rc/rc-manager.c\npatching file release/src/router/rc/rc-shell-boundary.c\npatching file release/src/router/rc/rc-systemd-select.h\npatching file release/src/router/rc/rc.c\npatching file release/src/router/rc/sched_daemon.c\npatching file release/src/router/rc/sdn.c\npatching file release/src/router/rc/services.c\npatching file release/src/router/rc/snmpd.c\npatching file release/src/router/rc/ssh.c\npatching file release/src/router/rc/timemachine.c\npatching file release/src/router/rc/udhcpc.c\npatching file release/src/router/rc/usb.c\npatching file release/src/router/rc/vpn.c\npatching file release/src/router/rc/wanduck.c\npatching file release/src/router/rc/watchdog.c\npatching file release/src/router/rc/wtfast.c\n"
+    },
+    {
+      "path": "patches/ubuntu26/asuswrt6/0004-asus-rc-persistent-layout.patch",
+      "sha256": "5169a9a06827b545dc832809d53b4304fb48f0bbfe65e803a75e4548c6b3478b",
+      "returncode": 0,
+      "stdout": "patching file release/src/router/rc/init.c\nHunk #1 succeeded at 13 (offset 1 line).\nHunk #2 succeeded at 25963 (offset 16 lines).\nHunk #3 succeeded at 25988 (offset 16 lines).\nHunk #4 succeeded at 26018 (offset 16 lines).\nHunk #5 succeeded at 26067 (offset 16 lines).\nHunk #6 succeeded at 26131 (offset 16 lines).\nHunk #7 succeeded at 26191 (offset 16 lines).\nHunk #8 succeeded at 26222 (offset 16 lines).\nHunk #9 succeeded at 26244 (offset 16 lines).\nHunk #10 succeeded at 26865 (offset 16 lines).\nHunk #11 succeeded at 26877 (offset 16 lines).\nHunk #12 succeeded at 27281 (offset 23 lines).\nHunk #13 succeeded at 27995 (offset 30 lines).\npatching file release/src/router/rc/services.c\nHunk #1 succeeded at 20 (offset 1 line).\nHunk #2 succeeded at 1443 (offset 1 line).\nHunk #3 succeeded at 1545 (offset 1 line).\nHunk #4 succeeded at 1858 (offset 1 line).\npatching file release/src/router/rc/rc-persistent.h\n"
+    },
+    {
+      "path": "patches/ubuntu26/asuswrt6/0005-asus-rc-openssh-ownership.patch",
+      "sha256": "ffa29ff0875cd23402608aad901745d1dabf1b88e7e4bc29fbc07acd544478be",
+      "returncode": 0,
+      "stdout": "patching file release/src/router/rc/ssh.c\n"
+    },
+    {
+      "path": "patches/ubuntu26/asuswrt6/0006-asus-libovpn-systemd-manager.patch",
+      "sha256": "ea37ab0969bc36b1fe7bdbe7684b6d05bac256b2a1faa42c550edff2420c48f6",
+      "returncode": 0,
+      "stdout": "patching file release/src/router/libovpn/Makefile\npatching file release/src/router/libovpn/openvpn_control.c\npatching file release/src/router/libovpn/ovpn-manager.h\n"
+    },
+    {
+      "path": "patches/ubuntu26/asuswrt6/0007-asus-private-etc-account-ownership.patch",
+      "sha256": "40d95ecb536afd5426106224006f0e9c3f9c3afab18b4e6dbdb599773c729725",
+      "returncode": 0,
+      "stdout": "patching file release/src/router/rc/rc.c\npatching file release/src/router/rc/init.c\npatching file release/src/router/rc/services.c\npatching file release/src/router/rc/usb.c\npatching file release/src/router/rc/ovpn.c\npatching file release/src/router/rc/rc-private-etc.h\n"
+    },
+    {
+      "path": "patches/ubuntu26/asuswrt6/0008-asus-rc-broadcom-manager.patch",
+      "sha256": "a70ebc7ced016c7837261c68e4c35435475e285c761c707a5964f69ddbf87e20",
+      "returncode": 0,
+      "stdout": "patching file release/src/router/rc/sysdeps/init-broadcom.c\npatching file release/src/router/rc/sysdeps/wps-broadcom.c\n"
+    },
+    {
+      "path": "patches/ubuntu26/asuswrt6/0009-asus-native-storage-ownership.patch",
+      "sha256": "25f3a329dc4bfddad760cc142657a2c4c363bc41768b1b74897cb747c11f7010",
+      "returncode": 0,
+      "stdout": "patching file release/src/router/rc/Makefile\npatching file release/src/router/rc/init.c\npatching file release/src/router/rc/rc-storage.c\npatching file release/src/router/rc/rc-storage.h\n"
+    },
+    {
+      "path": "patches/ubuntu26/asuswrt6/0010-asus-rc-diagnostic-file-mode.patch",
+      "sha256": "f4af7d461ff6b7c7f51904038e6ff2998246ccd9206201acdc498947eb59fbd3",
+      "returncode": 0,
+      "stdout": "patching file release/src/router/rc/conn_diag_log.c\n"
+    },
+    {
+      "path": "patches/ubuntu26/asuswrt6/0011-asus-ai-role-thunk.patch",
+      "sha256": "9162a065990a2c551942234a6150aa69f4bc0cfbf65239053f4b43fe285f6f16",
+      "returncode": 0,
+      "stdout": "patching file release/src/router/rc/Makefile\npatching file release/src/router/rc/rc-vendor-role.c\n"
+    }
+  ],
+  "fuzz": 0,
+  "rejects": false,
+  "early_private_and_storage_guards": true,
+  "native_storage_excludes_closed_ext4fs_object": true,
+  "scope": "Independent source application only; actual compile/link and runtime are separate evidence.",
+  "actual_asus_services_executed": false,
+  "flash_allowed": false,
+  "checker_sha256": "253610cd87fa1d1d9002422c0e59d9f23a4a13f59754b2756f926029f8187c47"
+}

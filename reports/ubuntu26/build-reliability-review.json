@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-04",
+  "scope": "Local review only; no router access, package installation, compiler rebuild or QEMU execution.",
+  "inputs": [
+    {
+      "path": "scripts/build-ubuntu26-rootfs.py",
+      "sha256": "12b4d5ec02cd39893d78049bb59429aee2cc67816ba65d456145a06829b73bc1"
+    },
+    {
+      "path": "scripts/prepare-ubuntu26-qemu.py",
+      "sha256": "67f009121f8998b50dc5268b2859dfaec3a505d4eddcb8043cbebbe89cac5464"
+    },
+    {
+      "path": "configs/ubuntu26/layout-profile.json",
+      "sha256": "3e74a7e31f8c67b9d842ab8bef68b46934ec7a831135cfb484a2e747944d906e"
+    },
+    {
+      "path": "build/ubuntu26-rootfs/ubuntu26-bcm-candidate.tar",
+      "sha256": "b29e45106d9aa00437295bf1aaf1cb4db20396fbedd23ee1ab2abd65c2ad7262"
+    }
+  ],
+  "actual_installed_packages": {
+    "apt": {
+      "version": "3.2.0",
+      "architecture": "arm64"
+    },
+    "dpkg": {
+      "version": "1.23.7ubuntu1",
+      "architecture": "arm64"
+    },
+    "leon-bcm-rootfs-config": {
+      "version": "0.1",
+      "architecture": "all"
+    },
+    "libc6:arm64": {
+      "version": "2.43-2ubuntu2.4",
+      "architecture": "arm64"
+    },
+    "libgcc-s1:arm64": {
+      "version": "16-20260322-1ubuntu1",
+      "architecture": "arm64"
+    },
+    "gcc-16-base:arm64": {
+      "version": "16-20260322-1ubuntu1",
+      "architecture": "arm64"
+    },
+    "systemd": {
+      "version": "259.5-0ubuntu3.4",
+      "architecture": "arm64"
+    }
+  },
+  "package_status": {
+    "gcc16_compiler_installed": false,
+    "binutils247_installed": false,
+    "glibc244_debian_replacement_installed": false,
+    "foreign_libc_installed": false,
+    "gcc16_base_note": "gcc-16-base is runtime package metadata and common files; its presence is not an installed GCC16 compiler.",
+    "foreign_architecture_registration_is_not_runtime_installation": true,
+    "isolated_glibc": "/opt/leon-glibc244 appears only in the generated QEMU fixture. The rootfs tar retains official libc6 2.43-2ubuntu2.4 and its truthful dpkg ownership."
+  },
+  "time64_evidence": {
+    "date2100": "date --date=2100-01-01 +%s proves userspace parsing/representation only, not a kernel timestamp API.",
+    "current_clock": "clock_gettime may use vDSO; current-date success is not proof of a post2038 syscall.",
+    "future_timer": "The armel/hf probes pass2147483664 (>INT32_MAX) to __timerfd_settime64@GLIBC_2.34. glibc2.44 timerfd_settime.c uses INLINE_SYSCALL_CALL(timerfd_settime64) for this range; there is no vDSO implementation. ENOSYS becomes EOVERFLOW, never synthetic success. An accepted future timer therefore tests the actual ARM32 kernel syscall411.",
+    "wall_clock_change": false,
+    "limit": "Bounded future timer-setting test only; do not extrapolate to every time64/IPC/timestamp interface. Current clock may use vDSO, while the future timer cannot.",
+    "references": [
+      {
+        "path": "scripts/prepare-time64-hardware9.py",
+        "sha256": "1123c7c3ec70bcb004bf00d9b5203aca480f15017905a46b1f33e17ee4a9becd"
+      },
+      {
+        "path": "build/time64-hardware9/time64-hardware-glibc-probe.c",
+        "sha256": "93b774ae1722ffc6b3826c839423acf5f7eb3245ec6828ff58d5a06a3a9f91a7"
+      },
+      {
+        "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/multiarch-loader-20260916/source/glibc/sysdeps/unix/sysv/linux/timerfd_settime.c",
+        "sha256": "28c5dcaeaea4bd4bb95afe078446b8823b592b40ce97353703e57b56d0dedbfe"
+      }
+    ],
+    "probe_elf": {
+      "armel": {
+        "artifact": {
+          "path": "build/time64-hardware9/transfer/rt/armel/probe",
+          "sha256": "1e9d92bd0074ac377c9ae6566d5c086fb480a1d7d857e94d8759c25affb881b5"
+        },
+        "time64_import": true,
+        "needed": [
+          "0x00000001 (NEEDED)                     Shared library: [libc.so.6]",
+          "0x00000001 (NEEDED)                     Shared library: [ld-linux.so.3]"
+        ],
+        "rpath_or_runpath": false
+      },
+      "armhf": {
+        "artifact": {
+          "path": "build/time64-hardware9/transfer/rt/armhf/probe",
+          "sha256": "2b1505c6784442c7f1912f99c8eb11da8aa8a864d03044d50d0f1206ee6a6314"
+        },
+        "time64_import": true,
+        "needed": [
+          "0x00000001 (NEEDED)                     Shared library: [libc.so.6]",
+          "0x00000001 (NEEDED)                     Shared library: [ld-linux-armhf.so.3]"
+        ],
+        "rpath_or_runpath": false
+      }
+    }
+  },
+  "rootfs_builder_fix": {
+    "file": "scripts/build-ubuntu26-rootfs.py",
+    "changes": [
+      "apt-get update now uses APT::Update::Error-Mode=any.",
+      "Clarify archive-signature trust is not a signature on the rootfs tar.",
+      "Record script/hook SHA256 and note live archive contents are not a byte-reproducible pinned snapshot."
+    ],
+    "validation": "Python AST parse passed. Existing successful candidate build log contains all3suite InRelease hits and armhf indices, with no W:/E:/Err: fetch failures. This review did not rebuild or replace the candidate tar."
+  },
+  "fixture_review": [
+    {
+      "finding": "116 hardlinks retained using shared newc inode groups, eliminating duplicated multicall coreutils payloads.",
+      "future_hardening": "Reject nonregular/incompatible hardlink targets for generic inputs; normalize probe.deb timestamps before claiming bit-identical repeated fixture generation."
+    },
+    {
+      "finding": "BusyBox ash selected its dpkg applet and rejected --audit.",
+      "status": "Parent fixed init to Ubuntu /bin/sh; fixture issue, not kernel/dpkg ABI failure."
+    },
+    {
+      "finding": "apt --no-download did not handle the local .deb archive path in this fixture.",
+      "status": "Parent removed the flag; QEMU has noNIC, so the fixture remains offline."
+    },
+    {
+      "finding": "systemd timer completion does not prove service execution.",
+      "acceptance": "Require exact serial line LAB_SYSTEMD_SERVICE_STARTED. About to execute debug text contains the same phrase without having spawned anything. Current recorded systemd run fails executor spawn ENOSYS."
+    },
+    {
+      "finding": "glibc244 explicit-loader checks are isolated tests, not package upgrades.",
+      "interpretation": "apt --version with explicit glibc2.44 is a startup check only. apt install/remove uses official Ubuntu libc; do not call it apt package integration with glibc2.44."
+    }
+  ],
+  "policy_consistency": "Profile labels offline preparation and custom package builds pending, defaults rebuilt armel/hf to time64/LFS64, and limits legacy exceptions to proven individual boundaries. Earlier broad -U settings are historical evidence, not new defaults.",
+  "not_claimed": [
+    "ASUS services integrated or accepted",
+    "permanent writable router rootfs deployed",
+    "systemd service execution accepted",
+    "GCC16.2/binutils2.47/glibc2.44 custom Debian packages installed",
+    "AI-board OS changes"
+  ]
+}

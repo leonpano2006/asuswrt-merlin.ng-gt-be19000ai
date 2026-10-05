@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "status": "production_candidate_built_and_offline_handoff_proven",
+  "production_manifest": {
+    "path": "build/ubuntu26-root-init/device-guarded-v2/manifest.json",
+    "sha256": "ef1a574a0853f28ba47e20d80843d8333bd43ff8a652c6faf4542e4db594a44c"
+  },
+  "production_executable": {
+    "path": "build/ubuntu26-root-init/device-guarded-v2/ubuntu-root-init",
+    "sha256": "8c47b50a54e0d29a2125703f7a4a52b7d7088248228e31dd0d324025a5d5c397"
+  },
+  "production_policy": {
+    "path": "configs/ubuntu26/root-init-device-policy.json",
+    "sha256": "30712a94da46e44b6012ec8888e7e7a52ae27269c0533a77e7258916dc51e552"
+  },
+  "root_source": {
+    "path": "scripts/asus-integration/ubuntu-root-init.c",
+    "sha256": "0f2cc4827ca05d0e36a286668c548dc9ed90c8a3677d56201469ba7c0018e7ab"
+  },
+  "builder": {
+    "path": "scripts/build-ubuntu26-root-init.py",
+    "sha256": "281daecfd68cd2c1643ddb389021d3c0bc882644a1fa4f0a5ea95bba59ebad5f"
+  },
+  "wire_header": {
+    "path": "scripts/asus-integration/trial-guard/trial-handoff.h",
+    "sha256": "4de3b81e120df030daf6bf939ec42977588afeea70dfc0d7bca35151d2f93089"
+  },
+  "protocol": {
+    "private_seqpacket_fd": 3,
+    "credential_validation": "Exact spawned PID, root UID and GID; exact 56-byte packet, no truncation",
+    "production_preflight_ms": 15000,
+    "arm_timeout_ms": 3000,
+    "watchdog_expected_seconds": 40,
+    "safe_fallback": "Before ARM_REQUEST only after bounded child reap; after ARM_REQUEST only exact nonce ABORTED plus direct child exit0",
+    "parent_fd_cloexec": true,
+    "guardian_static_execveat": "Opened immutable SquashFS ELF with no PT_INTERP; all unrelated descriptors closed"
+  },
+  "historical_protocol_cases": {
+    "count": 11,
+    "reports": [
+      {
+        "path": "reports/ubuntu26/squashfs-pivot-guardian-v2.json",
+        "sha256": "e98e33fb258da668ca6156f257c354dfe9022560e7b566b1ec2f2b5b5ac96b9a"
+      },
+      {
+        "path": "reports/ubuntu26/squashfs-pivot-guardian-gate-v1.json",
+        "sha256": "f5a0c6d520f4e890193b1d8a8bf9f93ed37ee5a9f1c6ea727181be7d4e587d42"
+      },
+      {
+        "path": "reports/ubuntu26/squashfs-pivot-guardian-execfail-v1.json",
+        "sha256": "20cb07765c9d7e5a708d16901fd8c2b7c7857c4e4f224dc8b0b12e5d23af41df"
+      }
+    ],
+    "note": "These 11 scenarios used the prior frozen source. The successor changes only emergency route selection, with focused new proof below; historical files are unchanged."
+  },
+  "successor_focused_proof": {
+    "report": {
+      "path": "reports/ubuntu26/squashfs-pivot-guardian-emergency-v1.json",
+      "sha256": "9a2c569e3ec4c57153ca18262a2bdd7e3df9629bf9825a803645eb8081637101"
+    },
+    "actual_guardian_failure_cases": 1,
+    "proc_route_cases": 7,
+    "accepted": [
+      "/proc",
+      "/mnt/leon-vendor-root/proc",
+      "/leon-newroot/proc"
+    ],
+    "rejected": [
+      "regular fake sysrq file on tmpfs",
+      "symlinked /proc",
+      "symlinked ancestor /mnt",
+      "no proc filesystem"
+    ],
+    "sysrq_written": false
+  },
+  "historical_policy_rejections": {
+    "path": "build/ubuntu26-root-init/policy-test-v1/result.json",
+    "sha256": "c225eca03e734eccfc81ce70eb3cc29aae1523602b368f78aaaf2a7076a8077f"
+  },
+  "emergency_kernel_evidence": {
+    "kernel_image": {
+      "path": "build/kernel10/attempt1/Image",
+      "sha256": "4a15601eada042576aed2a3680dcc48e9228eea70f70c478840767aaa89a9f8e"
+    },
+    "kernel_config": {
+      "path": "build/kernel10/attempt1/config",
+      "sha256": "1c495c39d80319246f26a38192eb481b54860ea938d46bbc8156b4fa676a8216"
+    },
+    "CONFIG_MAGIC_SYSRQ": "y",
+    "sources": [
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/drivers/watchdog/bcm96xxx_wdt.c",
+        "sha256": "8df916e5a26bd31080307f958dd1dffdb7bb47c26bd44b2a22465844fe112e71"
+      },
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/drivers/tty/sysrq.c",
+        "sha256": "2aceba4747890650cd8329788fb04155fd4e86b43a20f38ca8cafcb6f864bd5c"
+      },
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/kernel/reboot.c",
+        "sha256": "c311e98c309ad4bebf51e6ff4c70d92319fea776e663e3c4dd159d2b81d25d4d"
+      },
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/arch/arm64/kernel/process.c",
+        "sha256": "7f81af352009541536f4a9931e2db2550a36214ade947319295a3ba9316c80e5"
+      },
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/asm-generic/emergency-restart.h",
+        "sha256": "fb674e46cca0962b550437e590a4a2ef1b8980c80f28de0f4cd5f0863f737842"
+      }
+    ],
+    "preferred_call_chain": "verified procfs sysrq-trigger b -> sysrq_handle_reboot -> emergency_restart -> machine_emergency_restart -> machine_restart; bypasses kernel_restart_prepare/device_shutdown",
+    "why_not_only_reboot_syscall": "RB_AUTOBOOT enters kernel_restart_prepare/device_shutdown; bcm96xxx_wdt_shutdown calls bcm96xxx_wdt_stop and can remove watchdog backup before platform restart",
+    "fallback": "If no verified proc path exists, or sysrq write returns, RB_AUTOBOOT last resort explicitly provides no watchdog backup guarantee",
+    "no_descriptor_preopened": true
+  },
+  "limits": [
+    "No real ASUS rc, hardware watchdog ioctl, physical reset, partition write or boot metadata commit executed.",
+    "ARM64/Broadcom platform restart and real watchdog expiry still require controlled physical verification.",
+    "The gate-closed production guardian test validates unarmed refusal, not device health acceptance.",
+    "QEMU successful systemd/apt startup is not Wi-Fi, switch, AiMesh, AI-board or vendor-service health."
+  ],
+  "flash_accepted": false,
+  "physical_reset_proven": false,
+  "actual_asus_services_executed": false
+}

@@ -1,0 +1,97 @@
+{
+  "schema": 1,
+  "status": "source_only_rescue_preflight_diagnoser_C_builder_and_native_schema_peer_pass",
+  "prior_pending_wrapper_peer": {
+    "path": "reports/ubuntu26/uplink-rescue-preflight-diagnoser-source-peer-v1.json",
+    "sha256": "f1044aaf8c69d83bba2d6655c57777b6f1d4ac2fd0b0f279e37bbec10d965a80",
+    "bytes": 2726
+  },
+  "C": {
+    "path": "scripts/asus-integration/uplink-rescue/preflight-diagnoser-v1.c",
+    "sha256": "3c7259612c521bc8b37251ed3cf61ae80a0587ccec7d2a32ff95f8f8844c42a5",
+    "bytes": 9728
+  },
+  "builder": {
+    "path": "scripts/build-uplink-rescue-preflight-diagnoser-v1.py",
+    "sha256": "5c6eb22aaf700d965d06291eb64a6c355ebb38a173cf50227871361ff3100e18",
+    "bytes": 10804
+  },
+  "clean_predicate": {
+    "path": "scripts/asus-integration/root-forensics/clean-only-v7/clean-superblock.h",
+    "sha256": "651f5f73f1346c5dcb3f9da4b926b8984cede0da3c5de8afc1cdff174c67d527",
+    "bytes": 392
+  },
+  "native_manifest": {
+    "path": "build/asus-uplink-rescue/preflight-diagnoser-v1/manifest.json",
+    "sha256": "7055fcb33b5a742864b3d9ba44faafeb8db96bc1b2373dd845b060aeda279aee",
+    "bytes": 9092
+  },
+  "native_binary": {
+    "path": "build/asus-uplink-rescue/preflight-diagnoser-v1/preflight-diagnoser",
+    "sha256": "5578b1d51a951206836c9a47d65583709fd351d267da91039536d91041847b83",
+    "bytes": 1234552
+  },
+  "saved_elf": {
+    "path": "build/asus-uplink-rescue/preflight-diagnoser-v1/elf.txt",
+    "sha256": "26d15f6954761ad3501eb66fd516aed69e79f0f22c91e99a26e6b342a5cfc486",
+    "bytes": 4139
+  },
+  "baseline": {
+    "path": "build/asus-uplink-rescue/install-v2/manifest.json",
+    "sha256": "96d7ee155a4b6070d893aa47570dd2b971907c72fb9a60773b8bb3eded852406",
+    "bytes": 18244
+  },
+  "native_environment": {
+    "path": "build/asus-native-build/v2/result.json",
+    "sha256": "5f3c8caec115db67522790e7e4e1dfa705df0e26a2c59c5da7763045c5cf67bc",
+    "bytes": 3746
+  },
+  "compiled_source_members": 23,
+  "frozen_members": 21,
+  "changed_frozen_members": [
+    "slot-device.c"
+  ],
+  "only_frozen_transform": "One exact own-p11 inspect_mounts clause: per-mount flags rw->ro and super flags rw->ro; inverse equals frozen source.",
+  "other20_frozen_members_byte_identical": true,
+  "install_c_and_seven_payload_header_byte_identical": true,
+  "worker_only_changes": [
+    "Three fixed work-label literals",
+    "Compile TU/output install.c/install-additions -> preflight-diagnoser.c/preflight-diagnoser",
+    "readelf output binary name"
+  ],
+  "unchanged_flags_ccache_environment_and_no_version_probes": true,
+  "default_readonly_exact_execution_sha_before_output_or_compile": true,
+  "reachable_fixed_preflights": {
+    "target_preflight": 7,
+    "candidate_link_check": 1,
+    "recovery_parent_create": 0,
+    "safe_dir_create": 0
+  },
+  "RO_leon_diag_directory_allowed_RW_leon_diag_parent_at_unreachable": true,
+  "included_old_entrypoints_preserve_identity_provision_publication_never_called": true,
+  "full_clean_byte_equal_reads": [
+    "First under shared lock before namespace",
+    "Second immediately before RO mount",
+    "Before unmount",
+    "After unmount"
+  ],
+  "readonly_noload_private_p11_mount_with_full_rechecks": true,
+  "metadata_nofollow_prefix_leaf_temp_only_no_directory_list_or_contents_exported": true,
+  "native_final_schema_matches_wrapper": true,
+  "native_binary_ref_has_path_sha256_bytes": true,
+  "return0_requires_guard_inspection_and_unmount_success_with_failed_preflights0_to8": true,
+  "actual_completed_build_receipt_inspected": {
+    "compile_count": 1,
+    "native_returncode": 0,
+    "actual_inventory_matches": true,
+    "actual_ELF_AArch64_staticPIE_no_PT_INTERP_or_DT_NEEDED": true
+  },
+  "peer_plan_import_compile_test_fixture_VM_or_device_invocations": 0,
+  "limits": [
+    "Metadata diagnosis is not installer acceptance; skipped identity/prerequisite preservation routines are not claimed to have run.",
+    "exists:false on nonzero stat errno means not observed; only ENOENT establishes absence. Predicate errno may be inherited and is labelled.",
+    "Shared flock excludes cooperating writers only; observed process mount views and clean reads are not an atomic unrelated-writer barrier.",
+    "Private stock/tmp lock/mountpoint creation and remote tmp binary transfer are permitted diagnostic bookkeeping; no p11 write/provision/publication/recovery/flash/selection/reboot path is invoked.",
+    "Alarm/failed calls retain evidence and do not claim completed final clean equality; wrapper final literal bindings still require review before physical invocation."
+  ]
+}

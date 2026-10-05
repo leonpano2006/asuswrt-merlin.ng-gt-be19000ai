@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "status": "draft package ownership contract, not built packages",
+  "base": "Ubuntu26.04 arm64 essential with dpkg and apt",
+  "scope": "BCM6813/B53 only",
+  "reference_audit": "reports/ubuntu26/asus-integration-audit.json",
+  "architecture_roles": {
+    "arm64": "native Ubuntu base, systemd/broker/new applications, all kernel modules",
+    "armel": "current proprietary ASUS ABI plus source rebuilt for softfp",
+    "armhf": "optional independently requested packages; enabled only with corresponding loader/runtime/repository availability"
+  },
+  "merged_usr": {
+    "/bin": "usr/bin",
+    "/sbin": "usr/sbin",
+    "/lib": "usr/lib",
+    "rule": "Use exact base-files shape from inspected Ubuntu packages; do not infer /usr/sbin -> bin. Complete collision-checked merge before dpkg payload installation."
+  },
+  "library_dirs": {
+    "arm64": "/usr/lib/aarch64-linux-gnu",
+    "armel": "/usr/lib/arm-linux-gnueabi",
+    "armhf": "/usr/lib/arm-linux-gnueabihf"
+  },
+  "interpreter_entries": {
+    "arm64": "/lib/ld-linux-aarch64.so.1",
+    "armel": "/lib/ld-linux.so.3",
+    "armhf": "/lib/ld-linux-armhf.so.3"
+  },
+  "core_runtime_packages": {
+    "custom_glibc": "Rebuild distribution packaging for libc6/libc6-dev/libc-bin and required companions; keep cross-architecture libc6 versions exactly matched for Multi-Arch:same. Do not install a second package that force-overwrites official libc6 ownership.",
+    "libcrypt": "Provide armel libcrypt.so.1 with audited old symbol versions through rebuilt libcrypt1/libxcrypt packaging; stock GLIBC_PRIVATE-dependent libcrypt cannot accompany new glibc unchanged.",
+    "tools": "Ubuntu-native package paths and GCC specs/sysroot/multiarch search semantics. Target flags apply to rebuilt target code. New/rebuilt code defaults time64; only proven vendor protocol/API boundaries retain explicit old-width compatibility.",
+    "package_updates": "Signed custom repository for board packages and custom runtimes, with scoped version pinning. Do not disable official security repositories or use trusted=yes. Repository availability for armel must be established independently of Ubuntu arm64/armhf."
+  },
+  "proposed_packages": [
+    {
+      "name": "asus-be19000ai-vendor-libs",
+      "architecture": "armel",
+      "multi_arch": "same only if common files are byte-identical and all payload libraries are architecture-qualified",
+      "owns": [
+        "/usr/lib/arm-linux-gnueabi/asus/*"
+      ],
+      "excludes": [
+        "libc6-owned files",
+        "kernel modules"
+      ],
+      "notes": "Vendor private libraries and plugins retained by exact hashes; reviewed flat compatibility aliases tracked by this package or a separate compatibility package."
+    },
+    {
+      "name": "asus-be19000ai-apps",
+      "architecture": "armel",
+      "multi_arch": "no",
+      "owns": [
+        "ASUS rc/httpd/cfg_client and board-specific armel tools at collision-audited legacy paths"
+      ],
+      "excludes": [
+        "/sbin/init",
+        "Ubuntu coreutils/util-linux/shell binaries",
+        "/etc/apt/*",
+        "/var/lib/dpkg/*"
+      ],
+      "notes": "Keep original executable identity paths until ASUS process-validation source is ported and tested; no generic rc or binary replacement by untracked tar overlay."
+    },
+    {
+      "name": "asus-be19000ai-native-tools",
+      "architecture": "arm64",
+      "multi_arch": "no",
+      "owns": [
+        "audited native vendor helper executables",
+        "/usr/lib/aarch64-linux-gnu/asus/*"
+      ],
+      "notes": "Preserve original14 native vendor ELF files only after individual role/ownership audit; never relabel them armel."
+    },
+    {
+      "name": "asus-be19000ai-webui",
+      "architecture": "all",
+      "multi_arch": "foreign only if dependencies and content actually architecture-independent",
+      "owns": [
+        "/www/*",
+        "reviewed static UI assets"
+      ],
+      "notes": "Architecture-dependent CGI executables stay with apps package; device credentials/data are never packaged."
+    },
+    {
+      "name": "asus-be19000ai-system-integration",
+      "architecture": "arm64",
+      "multi_arch": "no",
+      "owns": [
+        "/usr/libexec/asus/* broker/supervisors",
+        "/usr/lib/systemd/system/asus-*.service",
+        "/usr/lib/tmpfiles.d/asus-*.conf"
+      ],
+      "notes": "Owns orchestration only; bounded named actions, no implicit reboot in maintainer scripts, no installation-time hardware initialization in a build chroot."
+    },
+    {
+      "name": "linux-image-be19000ai-leon",
+      "architecture": "arm64",
+      "multi_arch": "no",
+      "owns": [
+        "versioned kernel/module payload and reproducible metadata"
+      ],
+      "notes": "Vendor4.19 compatible modules stay separate from Ubuntu generic linux-image packages. Installing a .deb stages a candidate; firmware-slot writing remains explicit verified deployment."
+    },
+    {
+      "name": "asus-be19000ai-platform",
+      "architecture": "arm64",
+      "multi_arch": "no",
+      "owns": [
+        "board release metadata"
+      ],
+      "notes": "Metapackage pins a tested coherent kernel/userspace/integration release; exact dependencies determined from built packages."
+    }
+  ],
+  "durable_paths": {
+    "/etc": "real persistent directory with dpkg conffiles; no tmp/etc symlink",
+    "/var/lib/dpkg": "persistent",
+    "/var/lib/apt": "persistent",
+    "/var/cache/apt": "persistent or explicitly managed cache",
+    "/run": "tmpfs",
+    "/var/run": "/run compatibility symlink",
+    "/jffs": "preserved vendor persistent data with separately audited mount",
+    "/rom/etc": "legacy read-only defaults, never wholesale copied over Ubuntu /etc"
+  },
+  "ownership_rules": [
+    "No two packages own divergent content at the same normalized merged-/usr path. Inventory aliases before install; do not use --force-overwrite.",
+    "Library-only packages may declare Multi-Arch:same only when coinstallation is structurally valid; executable packages cannot be made coinstallable merely by setting that field.",
+    "Use package relationships Breaks/Replaces only for a planned package transition, not to seize Ubuntu base files. Preserve modified conffiles through normal dpkg handling.",
+    "ASUS generated runtime configs get explicit path ownership/atomic writes; no stock sysinit truncation of Ubuntu fstab, hosts, resolv.conf, machine-id, apt or dpkg state.",
+    "Do not install vendor /bin,/sbin BusyBox links over Ubuntu binaries. Retain private vendor applets where their behavior differs and patch selected callsites only with regression proof.",
+    "No package maintainer script writes boot metadata, reformats a partition, restarts radios during offline assembly or commits the active boot slot."
+  ],
+  "service_ownership": "ASUS owns hardware/NVRAM policy initially; systemd owns managed process lifetime. DNS, DHCP and network interfaces must have one manager, not parallel Ubuntu and ASUS daemons.",
+  "acceptance": "See six acceptance_gates in the audit. This policy is not an assurance of ASUS compatibility or a flashable image.",
+  "time64_policy": {
+    "default": "time64 for every new/rebuildable component; ARM32 _TIME_BITS=64,_FILE_OFFSET_BITS=64; arm64 native64",
+    "legacy": "narrow measured retained-blob ABI boundary with fixed-width protocol/API and checked conversions; no global armel downgrade",
+    "audit": "reports/ubuntu26/time64-migration-audit.json"
+  },
+  "userspace_patch_stack": "configs/ubuntu26/userspace-patches.json"
+}

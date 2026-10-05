@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "scope": "offline-qemu-fixture",
+  "flash_accepted": false,
+  "device": "/dev/loop1p11",
+  "start_sysfs": "/sys/dev/block/7:27/start",
+  "major": 7,
+  "minor": 27,
+  "start_sector": 32768,
+  "sectors": 2097152,
+  "uuid": "9696653d-5dc0-495c-be42-dc65a74e465d",
+  "generation": "squashfs-pivot-qemu-v1\n",
+  "fsck": "/usr/libexec/leon-lab/fsck",
+  "fsck_timeout": 5,
+  "ubuntu_init": "/usr/libexec/leon-lab/ubuntu-init",
+  "vendor_init": "/sbin/rc"
+}

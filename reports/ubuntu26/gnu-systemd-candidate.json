@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "checked_at_utc": "2026-10-04T15:23:36.004471+00:00",
+  "status": "native_ubuntu_base_QEMU_and_ext4_passed_not_deployed",
+  "rootfs": {
+    "rootfs_tar": "build/ubuntu26-rootfs/ubuntu26-bcm-gnu-systemd-b53-v3.tar",
+    "sha256": "057c52f70d8974691179235c4e273a6be0d474edde11d6c1cb85b09b11b250a4",
+    "bytes": 512396800,
+    "hostname": "be19000ai-bcm"
+  },
+  "build_report": "build/ubuntu26-rootfs/gnu-systemd-b53-v3-build.json",
+  "kernel_sha256": "4a15601eada042576aed2a3680dcc48e9228eea70f70c478840767aaa89a9f8e",
+  "native_versions": {
+    "glibc": "2.44-1ubuntu1+leonb53.1",
+    "gcc": "16.2.0-3ubuntu1+leonb53.1",
+    "binutils": "2.47-6ubuntu1+leonb53.1",
+    "systemd": "259.5-0ubuntu3.4+leonb53.2"
+  },
+  "local_debs_installed": 41,
+  "configuration_package": {
+    "version": "0.2",
+    "sha256": "3d0a0edb8256b285ec62396b70c835cb30fbc9468854ef9feb6418872158ef58"
+  },
+  "official_runtime_additions": [
+    "dbus",
+    "kmod",
+    "e2fsprogs",
+    "iproute2"
+  ],
+  "package_audit": "reports/ubuntu26/deb-control-audit.json",
+  "update_readiness": {
+    "report": "reports/ubuntu26/update-readiness.json",
+    "deployment_gate": "not_ready",
+    "reason": "Signed custom package publication and scoped upgrade protection are still required; official security updates do not automatically maintain the rebuilt GNU versions."
+  },
+  "gnu_runtime": {
+    "report": "reports/ubuntu26/gnu-native-candidate.json",
+    "same_35_GNU_package_hashes": true,
+    "scope": "GNU compile/execute/time64 tests ran on v1; the final candidate uses the identical packages."
+  },
+  "full_base_boot": {
+    "passed": true,
+    "result": "build/qemu/ubuntu26-kernel10-gnu-systemd-b53-v3-full2/result.json",
+    "log_sha256": "a4b22276f0d40343b486aab7d18906d46bea00bd39514ba83e5ab9b1268e40de",
+    "initramfs_sha256": "eb17d271b92dec28dc2bfc414b80cb9a745cf10277d2a1249f9e34e6b7ce40b9",
+    "required_markers": [
+      "LAB_FULL_BOOT_BASE_TOOLS_PASS",
+      "LAB_FULL_BOOT_NO_FAILED_UNITS",
+      "LAB_FULL_BOOT_TRANSIENT_SERVICE_PASS",
+      "LAB_FULL_BOOT_APT_SERVICE_INSTALL_PASS",
+      "LAB_FULL_BOOT_APT_SERVICE_REMOVE_PASS",
+      "LAB_SYSTEMD_CREDENTIALS_KERNEL_SMOKE_PASS",
+      "LAB_CREDENTIALS_RAMFS_FLAGS_ACCESS_WRITE_REJECT_PASS",
+      "LAB_CREDENTIALS_FAILED_EXEC_CLEANUP_PASS",
+      "LAB_CREDENTIALS_STOP_REMOVE_CLEANUP_PASS",
+      "LAB_FULL_BOOT_FINAL_HEALTH_PASS",
+      "QEMU_UBUNTU26_SYSTEMD_FULL_COMPLETE",
+      "LAB_CREDENTIALS_ROUND_1_PASS",
+      "LAB_CREDENTIALS_ROUND_2_PASS",
+      "LAB_CREDENTIALS_ROUND_3_PASS",
+      "LAB_CREDENTIALS_ROUND_4_PASS",
+      "LAB_CREDENTIALS_ROUND_5_PASS",
+      "LAB_CREDENTIALS_ROUND_6_PASS"
+    ]
+  },
+  "writable_ext4": {
+    "passed": true,
+    "report": "reports/ubuntu26/writable-root-test-gnu-systemd-b53-v3.json",
+    "scope": "Actual ext4 apt transactions, full unmount/remount, switch_root and a systemd service; full base boot is the separate RAM-root QEMU run."
+  },
+  "preserved_failures": [
+    "reports/ubuntu26/systemd259-kernel10-full-boot.json",
+    "reports/ubuntu26/gnu-systemd-compose-v1-rejected.json",
+    "build/qemu/ubuntu26-kernel10-gnu-systemd-b53-v2-full/result.json",
+    "build/qemu/ubuntu26-kernel10-gnu-systemd-b53-v3-full/result.json",
+    "reports/ubuntu26/credentials-smoke-harness.json"
+  ],
+  "deployment": {
+    "partition_created": false,
+    "flashed": false,
+    "device_root_switched": false,
+    "ai_board_modified": false,
+    "permanent_boot_commit": false
+  },
+  "limitations": [
+    "ASUS services and proprietary userspace are not integrated into this Ubuntu root yet.",
+    "Only native arm64 GNU packages are installed; matching armel/armhf runtime packages and the signed project repository remain unfinished.",
+    "Full upstream compiler/libc/systemd test suites were not run; this is bounded target-kernel regression evidence.",
+    "The ext4 image is RAM-backed inside QEMU; physical eMMC, power-loss and complete stock fallback boot are untested.",
+    "Old-kernel and optional BPF capability warnings remain; success does not imply every modern systemd facility is supported.",
+    "The production boot integration and matching kernel module deployment remain separate work."
+  ]
+}

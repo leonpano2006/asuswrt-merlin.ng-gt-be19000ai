@@ -1,0 +1,335 @@
+{
+  "schema_version": 1,
+  "audited_at_utc": "2026-10-04T13:58:20.573035+00:00",
+  "scope": "Read-only design review. No GPT edit, formatting, mount change, boot setting, partition write or device operation was performed. This document deliberately contains no executable destructive commands.",
+  "decision": "A dedicated ext4 Ubuntu partition in the verified unused BCM eMMC tail is the preferred eventual writable root. Preserve every existing partition and both firmware boot slots. First finish disposable rootfs, exact kernel9 filesystem/package tests and ASUS service integration; only then plan a guarded on-device partition addition.",
+  "observed_storage": {
+    "layout_report": "reports/ubuntu26/storage-layout.json",
+    "primary_and_backup_header_crcs_valid": true,
+    "partition_array_crc_valid": true,
+    "primary_backup_entries_identical": true,
+    "logical_sector_bytes": 512,
+    "existing_partitions": [
+      {
+        "partition": 1,
+        "name": "metadata1",
+        "start": 512,
+        "end": 1023,
+        "size_bytes": 262144,
+        "attributes": 0
+      },
+      {
+        "partition": 2,
+        "name": "metadata2",
+        "start": 1024,
+        "end": 1535,
+        "size_bytes": 262144,
+        "attributes": 0
+      },
+      {
+        "partition": 3,
+        "name": "bootfs1",
+        "start": 2048,
+        "end": 104447,
+        "size_bytes": 52428800,
+        "attributes": 0
+      },
+      {
+        "partition": 4,
+        "name": "rootfs1",
+        "start": 106496,
+        "end": 516095,
+        "size_bytes": 209715200,
+        "attributes": 0
+      },
+      {
+        "partition": 5,
+        "name": "bootfs2",
+        "start": 516096,
+        "end": 618495,
+        "size_bytes": 52428800,
+        "attributes": 0
+      },
+      {
+        "partition": 6,
+        "name": "rootfs2",
+        "start": 618496,
+        "end": 1028095,
+        "size_bytes": 209715200,
+        "attributes": 0
+      },
+      {
+        "partition": 7,
+        "name": "data",
+        "start": 1028096,
+        "end": 1232895,
+        "size_bytes": 104857600,
+        "attributes": 0
+      },
+      {
+        "partition": 8,
+        "name": "defaults",
+        "start": 1232896,
+        "end": 1273855,
+        "size_bytes": 20971520,
+        "attributes": 0
+      },
+      {
+        "partition": 9,
+        "name": "jffs",
+        "start": 1273856,
+        "end": 1683455,
+        "size_bytes": 209715200,
+        "attributes": 0
+      },
+      {
+        "partition": 10,
+        "name": "aiboard",
+        "start": 1683456,
+        "end": 26849279,
+        "size_bytes": 12884901888,
+        "attributes": 0
+      }
+    ],
+    "free_tail_first_sector": 26849280,
+    "free_tail_last_sector": 61226462,
+    "free_tail_bytes": 17601117696,
+    "free_tail_GiB": 16.39231824874878,
+    "tail_limit_excludes_backup_gpt": true,
+    "qualification": "Unused means unallocated by the current GPT, not guaranteed unused by every undocumented firmware recovery or future updater path."
+  },
+  "proposed_layout": {
+    "status": "Proposal only; no disk modification",
+    "preserve": "Keep p1-p10 start/end sectors, unique partition GUIDs, names and contents unchanged. Do not resize or repurpose p10 aiboard, /ai data, or the separate SL board storage.",
+    "new_partition": {
+      "number": 11,
+      "name": "ubuntu-root",
+      "type": "Linux filesystem data",
+      "attributes": 0,
+      "start_sector": 26849280,
+      "end_sector": 52015103,
+      "sector_count": 25165824,
+      "size_bytes": 12884901888,
+      "size_GiB": 12,
+      "start_alignment_bytes": 1048576,
+      "filesystem": "ext4",
+      "purpose": "Writable Ubuntu /, including coherent /usr, /etc and /var state",
+      "identifier": "Assign a new unique filesystem UUID and partition GUID; identify the root by filesystem UUID plus explicit expected bounds, not only /dev/mmcblk0p11."
+    },
+    "remaining_unallocated_tail": {
+      "first_sector": 52015104,
+      "last_sector": 61226462,
+      "size_GiB": 4.392318248748779,
+      "purpose": "Leave approximately4.39GiB unallocated initially for future root enlargement, recovery staging or separately planned storage; this is not a boot fallback slot."
+    },
+    "why_12_GiB": "Enough headroom for essential Ubuntu, all ABI runtimes, APT cache and development packages without consuming the full tail immediately. Large compiler builds should remain on the build host. Measure actual desired BCM Docker data before allocating more.",
+    "fallback": "Stock bootfs2/rootfs2 and metadata rollback remain independent. A stock fallback restores network firmware, not a snapshot of mutated Ubuntu packages/data. Treat Ubuntu rollback and boot-slot rollback as separate mechanisms."
+  },
+  "bootloader_evidence": [
+    {
+      "file": "source/release/src-rt-5.04behnd.4916/bootloaders/u-boot-2019.07/board/broadcom/bcmbca/sdk_test_commands.c",
+      "lines": [
+        951,
+        997,
+        2291
+      ],
+      "finding": "emmc_do_gpt_fixup scans environment variables ending _vol_size. emmc_add_gpt_part reads the CURRENT GPT, returns if the name is already present, or appends a new partition to the serialized current list before rewriting/verifying. load_linux_img invokes this fixup after loading the eMMC bootfs. Existing additional named partitions are normally included in this path.",
+      "limit": "This is source evidence, not a captured execution of the installed loader. Its name-existence check uses substring matching and it does not prove safe behavior for every malformed table or future environment update."
+    },
+    {
+      "file": "source/release/src-rt-5.04behnd.4916/bootloaders/u-boot-2019.07/cmd/gpt.c",
+      "lines": [
+        265,
+        319
+      ],
+      "finding": "The gpt read serializer keeps partition name, start, size and unique GUID; it scans up to MAX_SEARCH_PARTITIONS=64. p11 is within the supported scan range. It does not serialize arbitrary attributes or partition type GUID. Noncontiguous partition entry numbering is compacted.",
+      "implication": "Keep p1-p11 contiguous and avoid relying on GPT type or custom attributes for selecting Ubuntu. Read/write fixup is not byte-for-byte GPT preservation; filesystem UUID is a stronger root selector."
+    },
+    {
+      "file": "source/release/src-rt-5.04behnd.4916/bootloaders/u-boot-2019.07/disk/part_efi.c",
+      "lines": [
+        499,
+        533
+      ],
+      "finding": "Without a serialized type GUID, GPT reconstruction uses its default basic-data type; attributes are reset except a parsed legacy bootable bit.",
+      "implication": "A Linux-filesystem GPT type may be normalized by this loader even though ext4 data survives. Explicit UUID-based mounting must remain valid."
+    },
+    {
+      "file": "source/release/src-rt-5.04behnd.4916/bootloaders/u-boot-2019.07/board/broadcom/bcmbca/sdk_test_commands.c",
+      "lines": [
+        3994
+      ],
+      "finding": "rawimg_fixup reads and rewrites the current partition list, then verifies it. It does not itself restore the default partition string."
+    },
+    {
+      "file": "source/release/src-rt-5.04behnd.4916/bootloaders/build/configs/env_EMMC_2M_GT-BE19000AI.conf",
+      "lines": [
+        17,
+        18
+      ],
+      "finding": "The model source default_partitions lists only metadata1/2, bootfs1/rootfs1, bootfs2/rootfs2, data and defaults. Its initial once action invokes rawimg_fixup. This file is a source default, not proof of current live environment values."
+    },
+    {
+      "file": "source/release/src-rt-5.04behnd.4916/bootloaders/u-boot-2019.07/board/broadcom/bcmbca/sdk_test_commands.c",
+      "lines": [
+        2562,
+        2575,
+        2589,
+        2670,
+        2685
+      ],
+      "finding": "Upgrade code can import IMAGE and default_partitions from a loader image and call board_init_flash_parts(1) when IMAGE is missing. reformatOnUpgrade also calls board_init_flash_parts(1).",
+      "implication": "There are real forced-repartition upgrade paths; future Ubuntu partitions cannot be promised to survive every stock update or recovery."
+    },
+    {
+      "file": "source/release/src-rt-5.04behnd.4916/bootloaders/build/work/gen_emmc_linux_raw_img.sh",
+      "lines": [
+        69
+      ],
+      "finding": "The raw manufacturing image generator constructs a fresh p1-p8 table and writes metadata/bootfs/rootfs at fixed offsets. A full raw image restore can replace partition metadata rather than preserve p11."
+    },
+    {
+      "file": "source/release/src-rt-5.04behnd.4916/bootloaders/u-boot-2019.07/board/broadcom/bcmbca/sdk_test_commands.c",
+      "lines": [
+        805,
+        838,
+        852,
+        1056,
+        1097,
+        2218
+      ],
+      "finding": "Normal bootfs/rootfs writes resolve the named partition, check the write length against its size, and write only that range. Image choice prefers the inactive slot. emmc_load_bootfs sets the kernel root to the fixed vendor rootfs partition number.",
+      "implication": "Keep bootfs/rootfs partition numbering and sizes intact. Perform root transition from a tested early Linux bootstrap rather than assuming a new GPT partition changes the vendor bootloader root selection."
+    },
+    {
+      "file": "source/release/src-rt-5.04behnd.4916/bootloaders/u-boot-2019.07/arch/arm/mach-bcmbca/bcmbca-dtsetup.c",
+      "lines": [
+        448
+      ],
+      "finding": "On a fallback after a Linux-start failure, bad GPT verification adds the gpt kernel argument for alternate-header parsing. This recovery behavior does not make GPT editing failure-proof."
+    }
+  ],
+  "updater_uncertainties": {
+    "linux_flasher": "The available bcm_flasher.c is a wrapper over imgif_open/write/close; the relevant libbcm_flashutil implementation is prebuilt. Its complete GPT behavior is not proven from wrapper code.",
+    "missing_implementation": "board_init_flash_parts implementation is not present among the available U-Boot C sources; only declarations and calls were found. Forced repartition consequences must be treated as a real uncertainty.",
+    "required_controls": [
+      "Record and verify exact live model, disk capacity, p1-p10 identity, both GPT CRCs and off-device backups immediately before any later partition change.",
+      "Keep a custom updater policy that accepts only reviewed packages targeting existing inactive bootfs/rootfs ranges; explicitly reject raw disk/loader/repartition workflows unless the full layout and backup plan are handled.",
+      "Before and after future firmware update or first reboot, compare GPT entries and Ubuntu filesystem UUID; refuse writes through a mismatched partition boundary.",
+      "Document stock recovery as potentially destructive to custom partition metadata and retain an off-device Ubuntu backup. Do not advertise automatic preservation across arbitrary ASUS upgrades."
+    ]
+  },
+  "ext4_profile": {
+    "kernel_config": {
+      "CONFIG_EFI_PARTITION": "y",
+      "CONFIG_EXT4_FS": "y",
+      "CONFIG_EXT4_FS_POSIX_ACL": "y",
+      "CONFIG_EXT4_FS_SECURITY": "y",
+      "CONFIG_JBD2": "y",
+      "CONFIG_FS_MBCACHE": "y",
+      "CONFIG_CRYPTO_CRC32C": "y",
+      "CONFIG_EXT4_ENCRYPTION": "n"
+    },
+    "built_in_mount_support": true,
+    "preferred_geometry": {
+      "block_size": 4096,
+      "inode_size": 256,
+      "journal": "enabled",
+      "reserved_blocks": "approximately1percent; keep some root-only emergency free space",
+      "mount_policy": [
+        "rw",
+        "relatime",
+        "data=ordered",
+        "errors=remount-ro"
+      ],
+      "discard": "Avoid continuous discard by default; assess periodic trim only after confirming this eMMC/driver behavior."
+    },
+    "explicit_feature_profile": [
+      "has_journal",
+      "ext_attr",
+      "resize_inode",
+      "dir_index",
+      "filetype",
+      "extent",
+      "flex_bg",
+      "sparse_super",
+      "large_file",
+      "huge_file",
+      "dir_nlink",
+      "extra_isize",
+      "metadata_csum"
+    ],
+    "supported_but_not_needed_initially": [
+      "64bit",
+      "metadata_csum_seed",
+      "inline_data",
+      "bigalloc",
+      "project",
+      "quota"
+    ],
+    "metadata_csum_seed_detail": "The exact4.19 source defines EXT4_FEATURE_INCOMPAT_CSUM_SEED and includes it in EXT4_FEATURE_INCOMPAT_SUPP. Therefore it is not categorically unsupported. Leave it off initially to minimize old bootloader/recovery-tool dependencies; enabling it requires the same image test and recovery-tool check as other optional features.",
+    "must_disable_newer_defaults": [
+      "orphan_file and orphan_present",
+      "fast_commit",
+      "stable_inodes",
+      "casefold",
+      "verity",
+      "encrypt"
+    ],
+    "why_no_unqualified_modern_mkfs_defaults": "The exact kernel source lacks orphan_file/orphan_present and other later features. An unknown compatible bit can appear harmless on a clean mount yet fail on recovery when associated state is set. Use an explicit profile and inspect the resulting superblock rather than relying on mkfs host defaults.",
+    "acceptance": [
+      "Create only a workspace-backed ext4 image with the exact proposed feature profile.",
+      "Boot exact Image-v9 under QEMU and mount it read-write, create/rename/fsync files and run a real dpkg install/remove transaction.",
+      "Exercise remount plus controlled interrupted-boot recovery in QEMU, then verify clean filesystem with the intended recovery e2fsck version.",
+      "Verify ownership, hardlinks, symlinks, capabilities/xattrs and ACLs survive rootfs population.",
+      "If kernel mount rejects features or reports errors, do not format or populate the device."
+    ]
+  },
+  "boot_transition": {
+    "phase_1": "Keep current ASUS PID1 and original rootfs. Build and test the new Ubuntu root in a disposable environment; a temporary chroot later can validate packages without claiming the device has switched OS.",
+    "phase_2": "Once storage-preservation gates are met, populate the dedicated root through verified package/archive content. No late services-start switch_root: vendor processes already have old mount references and cannot be transparently moved.",
+    "phase_3": "Use a small early bootstrap before ASUS services start. A real initramfs can validate/mount the Ubuntu root and switch_root; an early program on the mounted vendor SquashFS root instead needs a correctly tested pivot_root strategy and retained oldroot. Do not conflate these mechanisms.",
+    "bootstrap_validation": [
+      "Verify filesystem UUID, partition geometry, compatible feature set, installed rootfs manifest and supported kernel release before selecting it.",
+      "Mount and check the Ubuntu root before starting services; on failure continue the known vendor root or trigger the existing one-time slot fallback without modifying boot metadata.",
+      "Move API filesystem mounts into the new root and ensure /run, /dev, /proc, /sys, cgroup setup and console are correct.",
+      "Load only kernel-matched proprietary modules. Do not let a generic Ubuntu kernel package overwrite the vendor kernel/modules or install its own bootloader.",
+      "Native systemd units must preserve vendor start ordering, watchdog behavior and network ownership. systemd259 is not yet proven compatible with kernel9."
+    ],
+    "fallback_safety": "Test missing UUID, corrupt root manifest, failed fsck/mount, unsuccessful service health and unexpected reboot in QEMU before hardware. Success must be explicit; merely reaching the bootstrap or starting SSH must not permanently commit a new root."
+  },
+  "persistent_state": {
+    "same_transaction_domain": [
+      "Keep /usr, /etc, /var/lib/dpkg and the associated installed package files on the same Ubuntu filesystem and backup generation.",
+      "Keep /var/lib/apt, /var/cache/apt, custom repository keys/pins, /etc/apt and package conffiles writable and persistent.",
+      "Do not put /var/lib/dpkg or /etc in tmpfs, and do not share one dpkg database across two independently rolled back root images."
+    ],
+    "volatile": [
+      "/run and /tmp should be runtime filesystems; /var/run -> /run and /var/lock -> /run/lock.",
+      "Set explicit journal/log quotas suitable for eMMC; avoid unbounded persistent logs."
+    ],
+    "asus_state": [
+      "Retain NVRAM, /jffs, defaults, data and /ai as distinct vendor-managed resources; bind or mount only the required paths through documented integration.",
+      "Do not overlay the whole ASUS root into Ubuntu with unrestricted path collisions. Package vendor armel files under deliberate paths and provide tested compatibility paths for hardcoded firmware components.",
+      "The existing BCM p10 aiboard filesystem and the separate SL-board storage remain untouched. Their current image archives are not free space for Ubuntu."
+    ],
+    "containers": "If BCM Docker is later enabled, give its data-root an explicit path and capacity policy within new storage; never point it at SL Docker storage. Delay separate /var partitioning until a coherent backup/rollback policy exists."
+  },
+  "next_action": "Finish image-backed ext4 plus APT tests and exact systemd/ASUS compatibility work. Prepare a separately reviewed, guarded partition addition only after the source uncertainties and live environment are recorded. This report authorizes no implicit formatting.",
+  "source_sha256": {
+    "source/release/src-rt-5.04behnd.4916/bootloaders/u-boot-2019.07/board/broadcom/bcmbca/sdk_test_commands.c": "4fe081fd0147b330ee5930c4231833f0ed21d0cf59a6d12571c3dddc86ec37b1",
+    "source/release/src-rt-5.04behnd.4916/bootloaders/u-boot-2019.07/cmd/gpt.c": "494e863aea24c665cb7ab1fcb5e58e328b19e0f882b2e4538d2b153b6f71a6ca",
+    "source/release/src-rt-5.04behnd.4916/bootloaders/u-boot-2019.07/disk/part_efi.c": "4d6ee35f99cbc79ceeffa713268bfa4cc114d7747bd5e46e10c5c6077b790108",
+    "source/release/src-rt-5.04behnd.4916/bootloaders/u-boot-2019.07/include/part.h": "5ae8702cfa098520307fd82b0bc2bba2b0545a4a6e05989d6969508f613281aa",
+    "source/release/src-rt-5.04behnd.4916/bootloaders/u-boot-2019.07/arch/arm/mach-bcmbca/bcmbca-dtsetup.c": "5d301afcb73cb3de6cd2fba3b3c5c38eb4141fb3e0343136e64d35ecc0bd9281",
+    "source/release/src-rt-5.04behnd.4916/bootloaders/build/configs/env_EMMC_2M_GT-BE19000AI.conf": "434482aa8bc0e4c37952671559a4b65d6bd5f3b982b36f44e89cfb559e39b9e5",
+    "source/release/src-rt-5.04behnd.4916/bootloaders/build/work/gen_emmc_linux_raw_img.sh": "70d56e32d9ad26f0cf53d8ab7f49d802501fd6d6c104d26bce5a06fa2d277d8b",
+    "source/release/src-rt-5.04behnd.4916/router-sysdep.gt-be98_pro/bcm_flasher/bcm_flasher.c": "7d422b6bc4efefe5a03c5c9c3a2c2a26b3a69fdeba948b85340264bd87930107",
+    "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/fs/ext4/ext4.h": "30a6c2e687802a07dc6409efc43831d91da4a0b7ed9679d511429fc23c5452e8",
+    "configs/kernel9.config": "1c495c39d80319246f26a38192eb481b54860ea938d46bbc8156b4fa676a8216"
+  },
+  "evidence_sha256": {
+    "evidence/ubuntu26/emmc-primary-gpt.bin": "c45aca529ec345fccafc8b267fba53cf8666703f9896cfc2cf8b059b044a7664",
+    "evidence/ubuntu26/emmc-backup-gpt.bin": "e6480bb8cc9b3cc0bed6d5c8db0d04695783c65e751ac632b9b7b6af0cd37b9b"
+  }
+}

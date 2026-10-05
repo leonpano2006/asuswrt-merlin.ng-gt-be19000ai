@@ -1,0 +1,58 @@
+{
+  "passed": true,
+  "errors": [],
+  "scenarios": [
+    {
+      "scenario": "guardian-postarm-hang",
+      "checks": {
+        "complete_without_panic": true,
+        "exact_initramfs": true,
+        "exact_serial": true,
+        "real_squashfs_pid1": true,
+        "no_restore_failure": true,
+        "no_vendor_exec_failure": true,
+        "seven_proc_routes_and_rejections": true,
+        "private_fd3_no_extra_descriptors": true,
+        "selected_emergency": true,
+        "compile_time_sink_only": true,
+        "remained_on_ext4_without_vendor": true,
+        "no_vendor_exec": true,
+        "no_systemd_exec_success": true,
+        "no_confirmed_abort": true,
+        "verified_proc_route_selected_without_write": true,
+        "did_not_attempt_ubuntu_exec": true
+      },
+      "elapsed_seconds": 16.03,
+      "serial_sha256": "948b9b435a4ae8cfe82cbda48c94ca1e4e41f5dda994aff5d5bb43a800f5b073",
+      "result": {
+        "path": "build/qemu/ubuntu26-pivot-guardian-emergency-v1-guardian-postarm-hang/result.json",
+        "sha256": "81f9181c7ff65efeb26f425bdbce00a73da1ff52639e662bcf45180b7421c5b9"
+      }
+    }
+  ],
+  "fixture_manifest": {
+    "path": "build/ubuntu26-pivot-qemu/guardian-emergency-v1/manifest.json",
+    "sha256": "147a0cd242085278609143dc9ee0d46dad37bd793e624712c807d1778794c7b8"
+  },
+  "helper_source_sha256": "0f2cc4827ca05d0e36a286668c548dc9ed90c8a3677d56201469ba7c0018e7ab",
+  "helper_sha256": "2fb84913ef07bfcc46db2fb053f5dbabea53af401d3cc698d3c2c174a8636d6f",
+  "guardian_input": {
+    "role": "protocol_mock_without_hardware",
+    "path": "build/ubuntu26-root-init/guardian-emergency-v1/root-guardian-mock",
+    "sha256": "2a20040eb24d6816d87949e1e62be4727b77c33bdb80de365310a732eebd3052"
+  },
+  "input_images_unchanged": true,
+  "limits": [
+    "Real kernel10 PID1 and readonly SquashFS to ext4 pivot, with RAM loop images only; no physical block device or NIC.",
+    "The mock guardian exercises the exact two-phase wire contract; it never opens a watchdog or claims hardware arming.",
+    "Emergency cases use an explicit compile-time parent fault sink; verified proc SysRq b is selected without writing it. Neither board reset nor the last-resort RB_AUTOBOOT is hardware-validated here.",
+    "Successful preexec abort requires exact nonce, ABORTED, and direct-child exit0 before reverse pivot.",
+    "A real gate-closed guardian case proves only refusal before watchdog open, not its unfinished production health collector.",
+    "Vendor rc is a test double; actual ASUS services, board reset, flash and metadata commit never execute."
+  ],
+  "hardware_watchdog_armed": false,
+  "actual_asus_services_executed": false,
+  "hardware_reset_proven": false,
+  "flash_accepted": false,
+  "checker_sha256": "09694148ce2aeaf5d55bde77e0ef7f4f756a1e8972d921d9135a2731ffe2e292"
+}

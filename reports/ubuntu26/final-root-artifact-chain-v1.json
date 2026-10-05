@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "status": "passed_final_local_artifact_chain_not_device_accepted",
+  "rootfs": {
+    "path": "build/ubuntu26-rootfs/ubuntu26-bcm-asus-runtime07-archive-sealed-v1.tar",
+    "sha256": "2f0eafc638180019bb44b230e71877e200886e9c6afc9895bb299b0d6e4ca688",
+    "bytes": 934307840
+  },
+  "ext4": {
+    "path": "build/ubuntu26-device-root/runtime07-archive-v2/ubuntu-root.ext4",
+    "sha256": "aed3ad1dc3e381506af4416228bcd99482fd0eebd4e3f55c2a8ec36969b8991a",
+    "bytes": 12884901888
+  },
+  "checks": {
+    "loader_scopes": 643,
+    "signed_apt_kernel10_seconds": 54.09,
+    "APT_clock_and_signature_checks_enabled": true,
+    "regular_files_readback": 15405,
+    "metadata_entries": 20103,
+    "symlink_targets": 3084,
+    "device_identity_absent": true
+  },
+  "evidence": {
+    "runtime": {
+      "path": "reports/ubuntu26/asus-runtime07-candidate.json",
+      "sha256": "2b3051e9b2cc4531aba95fef918f34e53ecda42479c02d4d3cf950ab1f7d03da"
+    },
+    "archive": {
+      "path": "build/ubuntu26-local-repository/candidates/asus-runtime07-archive-sealed-v1/result.json",
+      "sha256": "a5f8d240aaaf3da0b861beb31101cb1cac8289b9ba398bcaf75e6cc81e6db0c3"
+    },
+    "repo": {
+      "path": "build/ubuntu26-local-repository/integration07-v2/manifest.json",
+      "sha256": "12abdbaba562f00d3b56c2a4dd76f1dd4022421d806d8029c37fc8a7dd1b4afc"
+    },
+    "solver": {
+      "path": "build/ubuntu26-local-repository/tests/integration07-armel-v1/result.json",
+      "sha256": "c5e30558b1802c25b94270129f87bd6f7668eff4263338b223fe60cce255953c"
+    },
+    "fixture": {
+      "path": "build/ubuntu26-local-repository/qemu/runtime07-v2/manifest.json",
+      "sha256": "2bc1d994ccd447865657fc02cbced2eb36354d94def511cc9c677e61b98cd222"
+    },
+    "qemu": {
+      "path": "build/qemu/ubuntu26-final-apt-kernel10-v2/result.json",
+      "sha256": "c1e36e15feef3dd8f79ff1ac33e089eafbfabc64965bb8d89dd7d5f7e786c8ab"
+    },
+    "activation": {
+      "path": "build/ubuntu26-provisioning/runtime07-archive-v1/manifest.json",
+      "sha256": "a2fa5cfe4eab0567ba9ed721d1d3142b7eff7de8a6ff4de9f17aa78774cfc876"
+    },
+    "image": {
+      "path": "build/ubuntu26-device-root/runtime07-archive-v2/manifest.json",
+      "sha256": "80f9fb3cfc588536a829ff02731e79b137c75e538f188ea1f88864332279438e"
+    }
+  },
+  "checker_sha256": "cd66b81e442afa555893c35146e44766c08f842db192f99ac7ea10fa6f359917",
+  "scope": "Native systemd and signed APT run under kernel10 in QEMU; ASUS loader scopes only. The exact 12 GiB ext4 is verified offline, not yet physically booted.",
+  "device_modified": false,
+  "physical_ASUS_services_accepted": false,
+  "flash_accepted": false
+}

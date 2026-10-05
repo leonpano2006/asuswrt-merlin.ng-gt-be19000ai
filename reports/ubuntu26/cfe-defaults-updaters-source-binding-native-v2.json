@@ -1,0 +1,128 @@
+{
+  "schema": 1,
+  "status": "independent_frozen_source_and_compiled_artifact_binding_passed",
+  "verifier": {
+    "path": "scripts/verify-cfe-defaults-updaters-v2.py",
+    "sha256": "77920e74e322c53c7ff8fb279bb12c084b5d325670725c8ebc10745661e72f01"
+  },
+  "build_manifest": {
+    "path": "build/ubuntu26-cfe-defaults-update/native-v2/manifest.json",
+    "sha256": "b80b1958d8e6b415a633034d92239cf2540d189704970b22aa63b9a109e326b3"
+  },
+  "baseline": {
+    "path": "build/ubuntu26-bsp-update/native-v2/manifest.json",
+    "sha256": "3f993744f1586f29d255ca190eb1d2e06b1205ac959a9a266a41521b85a4322a"
+  },
+  "variants": [
+    {
+      "name": "rc",
+      "fixed_target": "/usr/libexec/asus/rc",
+      "old_binary": {
+        "path": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-emmc-wdt-v4/linked/rc",
+        "sha256": "af9b497f7791d75031772c894d17f886ba99dbac687262d9933133aa65a752fe"
+      },
+      "new_binary": {
+        "path": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-emmc-wdt-cfe-v5/linked/rc",
+        "sha256": "394ac07c81aa4da019cd62087923e83b673f842c7552bc519b22981041a4fd20"
+      },
+      "source_snapshot_files": {
+        "boot-diagnostics.h": "6db67153c5e05327afb92d42bb20765a98e96667fad1b5af66157931bdadb1af",
+        "bsp-payload.h": "d86fd742fca2550387f98582dad05d2d5bb0a63231d3d7f3482c16573e4ef994",
+        "fixture.c": "4f86ddbdb8f88c7170eadb5101e555bb01b85effb568742bd41d2561b7dbc12e",
+        "hardware-payload.h": "5bbc8cf507ebdc9f1d29c166ddbd26c2e50f5d322c077eb5a8cc29a6ae60f17d",
+        "hardware-provision.c": "366b607ade08c03a4610b4476336ea95d2660cfb4c1890a5cc510a8e8bd4d0d0",
+        "p11-clear-view.h": "988d0b81d28e09f16aab6303721b9425ac66dbd0d6f2b74ecd3609483c29bdf3",
+        "provision.c": "2be7b8c56352c6f1d95674f99d7cf7b07a74adb722a9b6a310cb58cdde5057e0",
+        "resolver-payload.h": "75c6117bb611ba48162400bd61d9dc287bbcb669ffbdebdb37125ae3a7faf0e8",
+        "resources/hndmfg.sh": "39845e29972a2e31efa987c6faa52d20cec51507323483052980f64b843eadf5",
+        "resources/hndnvram.sh": "6c7328049f2fe8362e8a279617c5bedf1d8433f2125636af3e96b39f21aaa1c7",
+        "resources/mount-data.inc": "d7439bbb478c72891c534ab4f3bbb415d73f4156759ed138e5941e99ca12ed58",
+        "resources/mount-fs.sh": "b08d58dfe34bba39dd4b63dc432ae82de6a3971bc9c68838d4dd95bec20598a2",
+        "sha256-compat.h": "18079008e1a791b72abf5d6513011c5e606a29d3ed0476927f0ed48d6fa1a9a8",
+        "sha256.c": "a58c66b50180e58fcc96dcb9dda460a1faef23a3bfefe79d2f691353248c091b",
+        "slot-device-policy.h": "92560f2af1a1e0be2a88b2d486d23c039cf557b4b5afc2e86b8a0852a6462976",
+        "slot-device.c": "b618cabe4984858bf9f73c40c5f9f139b87cb999cfecc645052702401978ee21",
+        "slot-proof.c": "e6e5ed929d78ed6f42bd1935f5c84d9e937ebb2fa0bca64821318b963214c77e",
+        "slot-proof.h": "eb611bdaaea8caf69ca2e8047877c019f9c01e827d15cd4aad358b4d418205de"
+      },
+      "unchanged_functions_sha256": {
+        "update_preserve": "9f4d0023b6087527d0a1a683fcf45b578bffb3fc32438a0f0d028067262abab9",
+        "update_preserved_equal": "154f23e1a5c4e74795325e1b594a3c146d29a071026fed68eb59393902fd2427",
+        "bsp_parent": "74899dace93c319a1c7e2fd74fb481dfac6eeef7cf75c4bcbb45e3851f430447",
+        "bsp_file": "a5837a6b2fa25d9f8b52e48961cdd355415c137a2dd5195af40682f214fe1e64",
+        "bsp_resources": "9e77c29aa6ef815fe239b1964c4e42821be51c9af82e5cda7d02ddf3761ed0a3",
+        "bsp_update": "5d6c2301b99b2e24aeffe1994eff7ac581b5a57b58cf6cc767364d0853acac91"
+      },
+      "updater": {
+        "path": "build/ubuntu26-cfe-defaults-update/native-v2/rc/updater",
+        "sha256": "5060c0c910d262f30a1f587361c8aa158115cb5dc4a8707ea03382545a333c35"
+      },
+      "only_five_literal_substitutions_and_payload": true,
+      "whole_source_reverse_delta_proved": true,
+      "embedded_payload_bytes_match_reviewed_binary": true,
+      "compiler_working_sources_match_saved_snapshot": true,
+      "compiled_and_exported_updater_match": true,
+      "static_elf_and_recorded_refusal_outputs_rechecked": true
+    },
+    {
+      "name": "etc-launch",
+      "fixed_target": "/usr/libexec/asus/etc-launch",
+      "old_binary": {
+        "path": "build/ubuntu26-bsp-license/native-v1/etc-launch",
+        "sha256": "7a529c7314c33742c9d1128193809079eb6f6f6e13f45774195c44627ead9de3"
+      },
+      "new_binary": {
+        "path": "build/asus-bsp-resources/native-defaults-alias-v1/resource-launch",
+        "sha256": "bce91e4c8f65e4b1358d573251f0a80339e509b8e617d2b52b86c6b5c1ceb4b2"
+      },
+      "source_snapshot_files": {
+        "boot-diagnostics.h": "6db67153c5e05327afb92d42bb20765a98e96667fad1b5af66157931bdadb1af",
+        "bsp-payload.h": "1263e21f8193e00944684df863aac6f6a73e4ac3bdac290799fbc406ea5fd61c",
+        "fixture.c": "4f86ddbdb8f88c7170eadb5101e555bb01b85effb568742bd41d2561b7dbc12e",
+        "hardware-payload.h": "5bbc8cf507ebdc9f1d29c166ddbd26c2e50f5d322c077eb5a8cc29a6ae60f17d",
+        "hardware-provision.c": "366b607ade08c03a4610b4476336ea95d2660cfb4c1890a5cc510a8e8bd4d0d0",
+        "p11-clear-view.h": "988d0b81d28e09f16aab6303721b9425ac66dbd0d6f2b74ecd3609483c29bdf3",
+        "provision.c": "aec27224582d03b702bd0476006e360a7e233e893b76684d325705115aabc82b",
+        "resolver-payload.h": "75c6117bb611ba48162400bd61d9dc287bbcb669ffbdebdb37125ae3a7faf0e8",
+        "resources/hndmfg.sh": "39845e29972a2e31efa987c6faa52d20cec51507323483052980f64b843eadf5",
+        "resources/hndnvram.sh": "6c7328049f2fe8362e8a279617c5bedf1d8433f2125636af3e96b39f21aaa1c7",
+        "resources/mount-data.inc": "d7439bbb478c72891c534ab4f3bbb415d73f4156759ed138e5941e99ca12ed58",
+        "resources/mount-fs.sh": "b08d58dfe34bba39dd4b63dc432ae82de6a3971bc9c68838d4dd95bec20598a2",
+        "sha256-compat.h": "18079008e1a791b72abf5d6513011c5e606a29d3ed0476927f0ed48d6fa1a9a8",
+        "sha256.c": "a58c66b50180e58fcc96dcb9dda460a1faef23a3bfefe79d2f691353248c091b",
+        "slot-device-policy.h": "92560f2af1a1e0be2a88b2d486d23c039cf557b4b5afc2e86b8a0852a6462976",
+        "slot-device.c": "b618cabe4984858bf9f73c40c5f9f139b87cb999cfecc645052702401978ee21",
+        "slot-proof.c": "e6e5ed929d78ed6f42bd1935f5c84d9e937ebb2fa0bca64821318b963214c77e",
+        "slot-proof.h": "eb611bdaaea8caf69ca2e8047877c019f9c01e827d15cd4aad358b4d418205de"
+      },
+      "unchanged_functions_sha256": {
+        "update_preserve": "9f4d0023b6087527d0a1a683fcf45b578bffb3fc32438a0f0d028067262abab9",
+        "update_preserved_equal": "154f23e1a5c4e74795325e1b594a3c146d29a071026fed68eb59393902fd2427",
+        "bsp_parent": "74899dace93c319a1c7e2fd74fb481dfac6eeef7cf75c4bcbb45e3851f430447",
+        "bsp_file": "a5837a6b2fa25d9f8b52e48961cdd355415c137a2dd5195af40682f214fe1e64",
+        "bsp_resources": "9e77c29aa6ef815fe239b1964c4e42821be51c9af82e5cda7d02ddf3761ed0a3",
+        "bsp_update": "5d6c2301b99b2e24aeffe1994eff7ac581b5a57b58cf6cc767364d0853acac91"
+      },
+      "updater": {
+        "path": "build/ubuntu26-cfe-defaults-update/native-v2/etc-launch/updater",
+        "sha256": "255139340d39ff2a885ad524d6399e9f37cb143ee847abd25d25a1a9cb9fcb46"
+      },
+      "only_five_literal_substitutions_and_payload": true,
+      "whole_source_reverse_delta_proved": true,
+      "embedded_payload_bytes_match_reviewed_binary": true,
+      "compiler_working_sources_match_saved_snapshot": true,
+      "compiled_and_exported_updater_match": true,
+      "static_elf_and_recorded_refusal_outputs_rechecked": true
+    }
+  ],
+  "all_base_source_file_bytes_pinned": true,
+  "all_previous_output_trees_and_inputs_unchanged": true,
+  "guard_and_preservation_source_files_unchanged": true,
+  "bounded_parent_and_transaction_bodies_unchanged": true,
+  "old_transaction_and_resource_cases_not_rerun": true,
+  "new_target_execution": false,
+  "network_used": false,
+  "device_operated": false,
+  "git_operation": false,
+  "scope": "Read-only independent source, embedded bytes, compiler working snapshot and exported artifact comparisons. No compilation or executable invocation; build refusal records verified as retained evidence."
+}

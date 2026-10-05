@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "status": "source and packages frozen; combined namespace/kernel acceptance pending",
+  "production_ready": false,
+  "flash_allowed": false,
+  "runtime_version": "0.6",
+  "source_revision": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-emmc-v3",
+  "inputs": [
+    {
+      "path": "build/asus-runtime-projection/v6/projection.json",
+      "sha256": "5851f21ca75de0ec86d75424914e588567414caa649314c536100e23a80a1ec6"
+    },
+    {
+      "path": "build/asus-runtime-projection/v6/packages.json",
+      "sha256": "1972edce88f085d00dc0b91433c59c7159d160866079d0bf643a5506daf8e12c"
+    },
+    {
+      "path": "build/asus-command-projection/v5/package/manifest.json",
+      "sha256": "22f19f60fc4cc0c250ed2e1d29236fe405cb1ed45504d32c15440446261886d8"
+    },
+    {
+      "path": "build/asus-command-projection/v5/static-check.json",
+      "sha256": "051a5c82af9a0ce448f97baef6397991c99b2d429176dc4fdcea0f82515c9d38"
+    },
+    {
+      "path": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-emmc-v3/revision-result.json",
+      "sha256": "e1e74ddb4bf0c10fd0fbecd2cf014b87b6888041d4772bb2815386e8db8b2dda"
+    },
+    {
+      "path": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-emmc-v3/abi-role-proof.json",
+      "sha256": "111759ea38a9b38c10f7a204b2c800109e38363469e45fad8b759b77a82167c3"
+    },
+    {
+      "path": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-emmc-v3/ledg-linked-proof.json",
+      "sha256": "2d2127d695c11b4797e7a69128deb339c96465181e03d89350c58bfafbfd6068"
+    }
+  ],
+  "counts": {
+    "aliases": 555,
+    "excluded": 27,
+    "files": 637,
+    "missing_library_roots": 0,
+    "rpath_sanitized": 81,
+    "unresolved_symbol_roots": 90,
+    "vendor_glibc_private_imports": 0
+  },
+  "rc_sha256": "0e7d292380862a8bab36f77c228edf09be54fb1b58c86990264ba55ae69d1590",
+  "libovpn_sha256": "1d1bf2aed0664886de667b70e1d3217ae2ba3b87e31ee0719c02d1ec74924b04",
+  "new_changes": [
+    "0017 managed stop ownership avoids native SSH stop and legacy storage/reboot tail.",
+    "0018 rejects internal mmcblk0, children and aliases from generic hotplug/mount/umount/swap/format/scan/eject.",
+    "Actual Dropbear multicall ELF excluded in addition to stock aliases; OpenSSH native owner remains.",
+    "Runtime exact dependencies updated to notify0.2 and GCC15 runtime metadata revision.2.",
+    "Command-map all package contains1051 private aliases;998 resolved to base/runtime files and53 explicitly require native refusal helper; no global aliases."
+  ],
+  "pending": [
+    "Final native integration package and private namespace proof for commands.",
+    "Full apt candidate with metadata-only notify0.2/GCC15.2 revision2/rootconfig0.3 and exact kernel181module package.",
+    "Repeat loader trace against actual runtime0.6 under kernel10 with positive/negative controls.",
+    "Native sole-owner hardware watchdog policy requested separately; runtime0.6 is not a final physical candidate."
+  ],
+  "validation_reuse_limits": "Prior runtime0.4 kernel10 proof is historical and does not establish current rc0.6 execution or loader compatibility. Source ABI/role/RGB checks were re-run for this exact revision. No real vendor main or hardware initialization was run."
+}

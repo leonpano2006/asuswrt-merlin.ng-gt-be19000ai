@@ -17,14 +17,16 @@ p.add_argument('--timeout',type=int,default=60)
 p.add_argument('--complete-marker',default='QEMU_LAB_COMPLETE')
 p.add_argument('--target')
 p.add_argument('--extra-append',default='')
+p.add_argument('--memory-mib',type=int,default=1024,help='Guest RAM; large userspace fixtures may need more than a firmware probe')
 args=p.parse_args()
 assert re.fullmatch(r'[a-zA-Z0-9_-]+',args.label)
 assert 1<=args.timeout<=180
+assert 1024<=args.memory_mib<=16384
 skips=['bcm_pmc_drv_reg','bcm_ubus_drv_init','pmc_xrdp_init','pmc_wan_initcall','bcmbca_vreg_sync_drv_reg']
 out=ROOT/'build/qemu'/args.label
 out.mkdir(parents=True,exist_ok=True)
 cmd=['qemu-system-aarch64','-machine','virt-8.2,gic-version=2','-accel','tcg,thread=multi',
-     '-cpu','cortex-a53','-smp','2','-m','1024','-nodefaults','-nic','none','-display','none',
+     '-cpu','cortex-a53','-smp','2','-m',str(args.memory_mib),'-nodefaults','-nic','none','-display','none',
      '-monitor','none','-serial','stdio','-no-reboot',
      '-sandbox','on,obsolete=deny,elevateprivileges=deny,spawn=deny,resourcecontrol=deny',
      '-kernel',str(args.kernel.resolve()),'-initrd',str(args.initrd.resolve()),'-append',

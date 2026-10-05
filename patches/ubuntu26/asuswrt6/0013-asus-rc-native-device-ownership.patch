@@ -1,0 +1,60 @@
+diff --git a/release/src/router/rc/init.c b/release/src/router/rc/init.c
+--- a/release/src/router/rc/init.c
++++ b/release/src/router/rc/init.c
+@@ -25966,7 +25966,7 @@
+ 	struct rlimit limit;
+ #endif
+ 	static int noconsole = 0;
+-	int i, r, retry = 0;
++	int i;
+ 	char s[256];
+ 	int ratio = 30;
+ 	int min_free_kbytes_check= 0;
+@@ -25996,6 +25996,9 @@
+ 		perror("ASUS persistent layout preflight");
+ 		_exit(1);
+ 	}
++	/* Refuse before any BCM boot script or hardware initialization. */
++	if (eval("/usr/libexec/asus/bsp-ownership", "--require"))
++		_exit(125);
+ 
+ #ifdef HND_ROUTER
+ 	_dprintf("\nLaunch boot...\n");
+@@ -26236,11 +26239,8 @@
+ #endif
+ 
+ #ifdef LINUX26
+-	do {
+-		r = eval("mdev", "-s");
+-		if (r || retry)
+-			_dprintf("mdev coldplug terminated. (ret %d retry %d)\n", r, retry);
+-	} while (r && retry++ < 10);
++	/* Native devtmpfs/udev already performed coldplug. ASUS callbacks
++	 * continue through the event-only hotplug2 rules below. */
+ #ifdef RTCONFIG_LANTIQ
+ 	init_devs_defer(); // for system dependent part
+ #endif
+@@ -26252,7 +26252,7 @@
+ 	chmod("/dev/gpio", 0660);
+ #endif
+ #if defined(RTCONFIG_HND_ROUTER_AX_6756) || defined(RTCONFIG_HND_ROUTER_BE_4916)
+-        eval("/etc/make_static_devnodes.sh");
++        /* Native tmpfiles created and bsp-ownership verified these nodes. */
+ #endif
+ #endif
+ 
+diff --git a/release/src/router/rc/services.c b/release/src/router/rc/services.c
+--- a/release/src/router/rc/services.c
++++ b/release/src/router/rc/services.c
+@@ -4754,7 +4754,10 @@
+ {
+ 	stop_hotplug2();
+ 
+-	xstart("hotplug2", "--persistent", "--no-coldplug");
++	if (eval("/usr/libexec/asus/bsp-ownership", "--require"))
++		_exit(125);
++	xstart("/usr/libexec/asus/vendor/sbin/hotplug2", "--persistent", "--no-coldplug",
++	       "--set-rules-file", "/etc/hotplug2.rules");
+ 	// FIXME: Don't remember exactly why I put "sleep" here -
+ 	// but it was not for a race with check_services()... - TB
+ 	sleep(1);

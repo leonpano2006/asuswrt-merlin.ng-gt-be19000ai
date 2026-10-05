@@ -1,0 +1,21 @@
+diff --git a/release/src/router/rc/init.c b/release/src/router/rc/init.c
+--- a/release/src/router/rc/init.c
++++ b/release/src/router/rc/init.c
+@@ -25731,6 +25731,17 @@
+ #define WATCHDOG_MIN_LX4x 4000
+ static void start_hw_wdt(void)
+ {
++#ifdef LEON_SYSTEMD_RC
++	/* Sole hardware owner was armed by immutable PID1 before systemd exec.
++	 * Query authenticated native IPC: a marker file is not ownership proof.
++	 * Never start a second wdtctl/wdtd, and fail the broker child if no owner.
++	 * The independent ASUS software watchdog remains managed normally. */
++	if (eval("/usr/libexec/leon-asus/trial-health", "--assert-armed") != 0) {
++		fprintf(stderr, "LEON_ASUS_NATIVE_WATCHDOG_NOT_ARMED\n");
++		_exit(125);
++	}
++	return;
++#endif
+ #if defined(RTCONFIG_HND_ROUTER_AX_675X) || defined(RTCONFIG_HND_ROUTER_AX_6756) || defined(RTCONFIG_HND_ROUTER_BE_4916)
+ 	int wdt = nvram_get("watchdog_new") ? atoi(nvram_safe_get("watchdog_new")) : atoi(nvram_default_get("watchdog_new"));
+ #else

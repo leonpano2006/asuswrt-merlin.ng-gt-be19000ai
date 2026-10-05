@@ -1,0 +1,6 @@
+[Match]
+OriginalName=wl0 wl1 wl2
+
+[Link]
+NamePolicy=
+MACAddressPolicy=none

@@ -1,0 +1,147 @@
+{
+  "schema": 2,
+  "status": "existing_sole_pack_outputs_verified_after_failed_finish_sidecar",
+  "review_scope": "Local file/hash/JSON bindings and accurate execution provenance only; no packer, sidecar, verifier, fixture, build, tests or device action by peer.",
+  "sidecar": {
+    "path": "scripts/finish-ubuntu26-guardian29-pack-v1.py",
+    "sha256": "b9c7424f52cc7590db8d4cff262b4e469b339fd0a3c07353b8c65dfeff8c046f",
+    "bytes": 14956
+  },
+  "immutable_packer": {
+    "path": "scripts/pack-ubuntu26-guardian29-successor-v1.py",
+    "sha256": "c941c29fa7f7edf39607f0cd13fbcb6c5b0e9123fc3473e25c8fff60bbfd7e6d",
+    "bytes": 30556
+  },
+  "source_plan": {
+    "path": "build/ubuntu26-bootstrap/guardian29-successor-source-plan-v1/plan.json",
+    "sha256": "ba8d9f2144db1db112d4ae45be1c25c507042b4c1c182dc657364e27df531201",
+    "bytes": 10537
+  },
+  "finish_source_manifest": {
+    "path": "build/ubuntu26-bootstrap/guardian29-finish-source-plan-v1/manifest.json",
+    "sha256": "ec44440e7f94bf6bb451565fc3e0dfd4f17ee1fcdc2afb20d25ca0e67b811ade",
+    "bytes": 2177
+  },
+  "original_execution_plan_sha256": "909a190b4b67c82958c2d64d01a69a85c3eaf6b6e5d06796f9dcc8898baf5b75",
+  "approved_finish_plan_sha256": "fb631814602e58d84e20aaa61243f6112fdb317b5d999f49121defdc1b089c26",
+  "original_sole_pack": {
+    "session": 45991,
+    "completion_chunk": "e18187",
+    "exit_code": 1,
+    "archive_pack_count": 1,
+    "listing_count": 1,
+    "extraction_count": 1,
+    "failure": "Private extracted readback had 155 mode-only 0664-to-0644 differences; packed inode listing and content hashes already matched.",
+    "provenance": "Root execution report and reports/ubuntu26/ACTIVE-STATE.json trusted_guardian_pack."
+  },
+  "finish_sidecar_execution": {
+    "session": 39566,
+    "completion_chunk": "ad7673",
+    "exit_code": 1,
+    "failure_type": "NameError",
+    "failure": "verified is not defined in the copied finalization-tail function at validate_outputs(verified).",
+    "completed_before_failure": [
+      "155 private extracted readback modes normalized",
+      "normalization audit written",
+      "FIT image and stage/firmware manifests created"
+    ],
+    "source_unchanged_after_failure": true,
+    "rerun_performed": false,
+    "provenance": "Root execution report; ACTIVE-STATE.json records sidecar exit1. No separate raw sidecar traceback file was supplied."
+  },
+  "normalization_audit": {
+    "path": "reports/ubuntu26/guardian29-packed-readback-mode-normalization-v1.json",
+    "sha256": "60c933a16ce9fd682f5598f7daa9c8177d6aaff3ed58e8bbcf2bd127e2f2b55a",
+    "bytes": 95844
+  },
+  "normalization_scope": {
+    "file_count": 155,
+    "change": "Private extracted readback regular files only: 0644 to 0664; unchanged content hashes.",
+    "packed_bytes_changed": false,
+    "new_archive_pack_extraction_count": 0
+  },
+  "first_complete_readonly_verification": {
+    "session": 95171,
+    "completion_chunk": "7a57a4",
+    "exit_code": 0,
+    "stdout": {
+      "path": "evidence/ubuntu26/guardian29-finish-local-v1/first-complete-output-verification.stdout",
+      "sha256": "8d608b4ee53b31e9bb4aa16129d40537db4c33d2ec02bb3d65e22f9257e6b224",
+      "bytes": 529
+    },
+    "stderr": {
+      "path": "evidence/ubuntu26/guardian29-finish-local-v1/first-complete-output-verification.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "reported_status": "fixed_successor_file_verification_passed",
+    "executed_by": "root",
+    "peer_executed": false
+  },
+  "outputs": {
+    "image": {
+      "path": "build/GT-BE19000AI_3006_102.9_leon-kernel10-ubuntu26-trial-v15-lan-ssh-policy_TRIAL.pkgtb",
+      "sha256": "0ca0e99f11c5c6711a3d0cbf8ffcee18eed3bdc1d5d5b35c49a0d63b364b9916",
+      "bytes": 89065172
+    },
+    "firmware_manifest": {
+      "path": "build/ubuntu26-firmware/kernel10-ubuntu26-trial-v15-lan-ssh-policy/manifest.json",
+      "sha256": "cb2f3ae9657ae92e563be14187fcddf7ec6456f0a0edcf48b94f9b4291ec5295",
+      "bytes": 5207
+    },
+    "stage_manifest": {
+      "path": "build/ubuntu26-bootstrap/device-lan-ssh-policy-v1/manifest.json",
+      "sha256": "6fa6b283d8322e021cabc3ddd0d2c90d3423aea3db30a06df7ac691a66d13b2c",
+      "bytes": 694010
+    },
+    "packed_root": {
+      "path": "build/ubuntu26-bootstrap/device-lan-ssh-policy-v1/bootstrap.zstd.squashfs",
+      "sha256": "9982c9ee897658e347adcf293593cbffe954fb7224281de23e3743c7edb585e4",
+      "bytes": 76570624
+    }
+  },
+  "current_binding_checks": {
+    "verification_stdout_image_and_manifest_match_actual_files": true,
+    "firmware_stage_manifest_matches_actual_file": true,
+    "packed_root_matches_stage_manifest": true,
+    "stage_inventory_count": 4372,
+    "normalization_audit_matches_unchanged_sidecar_and_packer": true
+  },
+  "execution_history_snapshot": {
+    "session": 45991,
+    "completion_chunk": "e18187",
+    "exit_code": 1,
+    "mksquashfs_count": 1,
+    "listing_and_extract_count": 1,
+    "failure": "readback155mode-onlydifferences, investigating no repack",
+    "image_created": true,
+    "device_access": false,
+    "corrected_packer_sha256": "c941c29fa7f7edf39607f0cd13fbcb6c5b0e9123fc3473e25c8fff60bbfd7e6d",
+    "execution_plan_sha256": "909a190b4b67c82958c2d64d01a69a85c3eaf6b6e5d06796f9dcc8898baf5b75",
+    "mode_difference_audit": "build/ubuntu26-bootstrap/guardian29-finish-source-plan-v1/observed-partial-pack.json",
+    "mode_difference_sha256": "bb371bc044b729bfec52b3f897ba6cc346311b0ff693aba70d03e1c4121a98f8",
+    "status": "packed_once_completed_normalization_thenfirstcomplete_readonlyvalidatorPASS",
+    "image_sha256": "0ca0e99f11c5c6711a3d0cbf8ffcee18eed3bdc1d5d5b35c49a0d63b364b9916",
+    "firmware_manifest_sha256": "cb2f3ae9657ae92e563be14187fcddf7ec6456f0a0edcf48b94f9b4291ec5295",
+    "normalization_sidecar_session": 39566,
+    "normalization_sidecar_exit_code": 1,
+    "normalization_sidecar_failure": "verified variable missing at final validator; image+bothmanifestsalreadycreated; do not reruncreator",
+    "first_complete_validator_session": 95171,
+    "first_complete_validator_chunk": "7a57a4",
+    "first_complete_validator_exit_code": 0,
+    "validator_stdout": "evidence/ubuntu26/guardian29-finish-local-v1/first-complete-output-verification.stdout",
+    "validator_stdout_sha256": "8d608b4ee53b31e9bb4aa16129d40537db4c33d2ec02bb3d65e22f9257e6b224",
+    "archive_pack_count": 1,
+    "readback_normalization_count": 155
+  },
+  "limits": {
+    "new_exact_image_QEMU": false,
+    "new_signing_operation": false,
+    "private_signing_key_read": false,
+    "device_access": false,
+    "flash_accepted": false,
+    "automatic_boot_commit": false,
+    "firmware_or_source_recreated_by_peer": false,
+    "this_receipt_does_not_change_the_failed_sidecar_exit_code": true
+  }
+}

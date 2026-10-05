@@ -1,0 +1,583 @@
+{
+  "schema_version": 1,
+  "status": "packages_built_and_targeted_tests_passed",
+  "scope": "Only isolated /tmp build namespace modified. Original candidate rootfs and router untouched. Host-kernel namespace tests are not kernel10 hardware acceptance.",
+  "source_profile": "configs/ubuntu26/binutils-build.json",
+  "packages": [
+    {
+      "path": "build/ubuntu26-binutils/packages/binutils-aarch64-linux-gnu-dbg_2.47-6ubuntu1+leonb53.1_arm64.deb",
+      "sha256": "7dd71550402b305f92bab7ae3be90662c29634aa0597bf6437f3cfbac5a2e17b",
+      "bytes": 3820442,
+      "control": {
+        "Package": "binutils-aarch64-linux-gnu-dbg",
+        "Source": "binutils",
+        "Version": "2.47-6ubuntu1+leonb53.1",
+        "Architecture": "arm64",
+        "Maintainer": "Matthias Klose <doko@debian.org>",
+        "Installed-Size": "9049",
+        "Depends": "binutils-aarch64-linux-gnu (= 2.47-6ubuntu1+leonb53.1)",
+        "Section": "debug",
+        "Priority": "optional",
+        "Multi-Arch": "foreign",
+        "Homepage": "https://www.gnu.org/software/binutils/",
+        "Description": "GNU binary utilities, for aarch64-linux-gnu target (debug symbols)\n This package provides debug symbols for binutils-aarch64-linux-gnu."
+      },
+      "triggers": null
+    },
+    {
+      "path": "build/ubuntu26-binutils/packages/binutils-aarch64-linux-gnu_2.47-6ubuntu1+leonb53.1_arm64.deb",
+      "sha256": "73f20077d6a11d02083dc1e1c7ef3747171c21be2761bd69adcbabc6eb1e1b73",
+      "bytes": 997914,
+      "control": {
+        "Package": "binutils-aarch64-linux-gnu",
+        "Source": "binutils",
+        "Version": "2.47-6ubuntu1+leonb53.1",
+        "Architecture": "arm64",
+        "Maintainer": "Matthias Klose <doko@debian.org>",
+        "Installed-Size": "9583",
+        "Depends": "binutils-common (= 2.47-6ubuntu1+leonb53.1), libbinutils (= 2.47-6ubuntu1+leonb53.1), libc6 (>= 2.38), libctf-nobfd0 (>= 2.36), libctf0 (>= 2.36), libjansson4 (>= 2.14), libsframe3 (>= 2.45.50), libzstd1 (>= 1.5.5), zlib1g (>= 1:1.1.4)",
+        "Suggests": "binutils-doc (= 2.47-6ubuntu1+leonb53.1)",
+        "Breaks": "binutils (<< 2.29-6), binutils-dev (<< 2.38.50.20220609-2)",
+        "Replaces": "binutils (<< 2.29-6), binutils-dev (<< 2.38.50.20220609-2)",
+        "Section": "devel",
+        "Priority": "optional",
+        "Multi-Arch": "allowed",
+        "Homepage": "https://www.gnu.org/software/binutils/",
+        "Description": "GNU binary utilities, for aarch64-linux-gnu target\n This package provides GNU assembler, linker and binary utilities\n for the aarch64-linux-gnu target.\n .\n You don't need this package unless you plan to cross-compile programs\n for aarch64-linux-gnu and aarch64-linux-gnu is not your native\n platform."
+      },
+      "triggers": null
+    },
+    {
+      "path": "build/ubuntu26-binutils/packages/binutils-arm-linux-gnueabi-dbg_2.47-6ubuntu1+leonb53.1_arm64.deb",
+      "sha256": "48d1ec5363994a10477d31985e1b5873ef0bbf7a292088fb3aadb1e574ef0984",
+      "bytes": 5760000,
+      "control": {
+        "Package": "binutils-arm-linux-gnueabi-dbg",
+        "Source": "binutils",
+        "Version": "2.47-6ubuntu1+leonb53.1",
+        "Architecture": "arm64",
+        "Maintainer": "Matthias Klose <doko@debian.org>",
+        "Installed-Size": "11621",
+        "Depends": "binutils-arm-linux-gnueabi (= 2.47-6ubuntu1+leonb53.1)",
+        "Section": "debug",
+        "Priority": "optional",
+        "Multi-Arch": "foreign",
+        "Homepage": "https://www.gnu.org/software/binutils/",
+        "Description": "GNU binary utilities, for arm-linux-gnueabi target (debug symbols)\n This package provides debug symbols for binutils-arm-linux-gnueabi."
+      },
+      "triggers": null
+    },
+    {
+      "path": "build/ubuntu26-binutils/packages/binutils-arm-linux-gnueabi_2.47-6ubuntu1+leonb53.1_arm64.deb",
+      "sha256": "af7b7ccb4cb10bc761bae1a270bfc4c1b81da44acb4206742d951a2f2b328911",
+      "bytes": 1637994,
+      "control": {
+        "Package": "binutils-arm-linux-gnueabi",
+        "Source": "binutils",
+        "Version": "2.47-6ubuntu1+leonb53.1",
+        "Architecture": "arm64",
+        "Maintainer": "Matthias Klose <doko@debian.org>",
+        "Installed-Size": "7332",
+        "Depends": "binutils-common (= 2.47-6ubuntu1+leonb53.1), libc6 (>= 2.38), libjansson4 (>= 2.14), libsframe3 (>= 2.45.50), libzstd1 (>= 1.5.5), zlib1g (>= 1:1.1.4)",
+        "Suggests": "binutils-doc (= 2.47-6ubuntu1+leonb53.1)",
+        "Breaks": "binutils (<< 2.29-6), binutils-dev (<< 2.38.50.20220609-2)",
+        "Replaces": "binutils (<< 2.29-6), binutils-dev (<< 2.38.50.20220609-2)",
+        "Section": "devel",
+        "Priority": "optional",
+        "Multi-Arch": "allowed",
+        "Homepage": "https://www.gnu.org/software/binutils/",
+        "Description": "GNU binary utilities, for arm-linux-gnueabi target\n This package provides GNU assembler, linker and binary utilities\n for the arm-linux-gnueabi target.\n .\n You don't need this package unless you plan to cross-compile programs\n for arm-linux-gnueabi and arm-linux-gnueabi is not your native\n platform."
+      },
+      "triggers": "activate-noawait ldconfig\n"
+    },
+    {
+      "path": "build/ubuntu26-binutils/packages/binutils-arm-linux-gnueabihf-dbg_2.47-6ubuntu1+leonb53.1_arm64.deb",
+      "sha256": "770a23ff05ba1dc9bec24167fa2bbd96360d2ae30ef8539e0d9766b6fc313144",
+      "bytes": 5761242,
+      "control": {
+        "Package": "binutils-arm-linux-gnueabihf-dbg",
+        "Source": "binutils",
+        "Version": "2.47-6ubuntu1+leonb53.1",
+        "Architecture": "arm64",
+        "Maintainer": "Matthias Klose <doko@debian.org>",
+        "Installed-Size": "11623",
+        "Depends": "binutils-arm-linux-gnueabihf (= 2.47-6ubuntu1+leonb53.1)",
+        "Section": "debug",
+        "Priority": "optional",
+        "Multi-Arch": "foreign",
+        "Homepage": "https://www.gnu.org/software/binutils/",
+        "Description": "GNU binary utilities, for arm-linux-gnueabihf target (debug symbols)\n This package provides debug symbols for binutils-arm-linux-gnueabihf."
+      },
+      "triggers": null
+    },
+    {
+      "path": "build/ubuntu26-binutils/packages/binutils-arm-linux-gnueabihf_2.47-6ubuntu1+leonb53.1_arm64.deb",
+      "sha256": "e33d07999535a1e1c163b83856c5f3e399a609f4cf23f60eba1867bb94adc822",
+      "bytes": 1637786,
+      "control": {
+        "Package": "binutils-arm-linux-gnueabihf",
+        "Source": "binutils",
+        "Version": "2.47-6ubuntu1+leonb53.1",
+        "Architecture": "arm64",
+        "Maintainer": "Matthias Klose <doko@debian.org>",
+        "Installed-Size": "7332",
+        "Depends": "binutils-common (= 2.47-6ubuntu1+leonb53.1), libc6 (>= 2.38), libjansson4 (>= 2.14), libsframe3 (>= 2.45.50), libzstd1 (>= 1.5.5), zlib1g (>= 1:1.1.4)",
+        "Suggests": "binutils-doc (= 2.47-6ubuntu1+leonb53.1)",
+        "Breaks": "binutils (<< 2.29-6), binutils-dev (<< 2.38.50.20220609-2)",
+        "Replaces": "binutils (<< 2.29-6), binutils-dev (<< 2.38.50.20220609-2)",
+        "Section": "devel",
+        "Priority": "optional",
+        "Multi-Arch": "allowed",
+        "Homepage": "https://www.gnu.org/software/binutils/",
+        "Description": "GNU binary utilities, for arm-linux-gnueabihf target\n This package provides GNU assembler, linker and binary utilities\n for the arm-linux-gnueabihf target.\n .\n You don't need this package unless you plan to cross-compile programs\n for arm-linux-gnueabihf and arm-linux-gnueabihf is not your native\n platform."
+      },
+      "triggers": "activate-noawait ldconfig\n"
+    },
+    {
+      "path": "build/ubuntu26-binutils/packages/binutils-common_2.47-6ubuntu1+leonb53.1_arm64.deb",
+      "sha256": "d4435632a9888d025a93fb1182508de3285e33f52568ffdfebce8e871e740913",
+      "bytes": 2936854,
+      "control": {
+        "Package": "binutils-common",
+        "Source": "binutils",
+        "Version": "2.47-6ubuntu1+leonb53.1",
+        "Architecture": "arm64",
+        "Maintainer": "Matthias Klose <doko@debian.org>",
+        "Installed-Size": "17692",
+        "Breaks": "binutils (<< 2.38.50.20220527-2), binutils-multiarch (<< 2.38.50.20220527-2)",
+        "Replaces": "binutils (<< 2.38.50.20220527-2), binutils-multiarch (<< 2.38.50.20220527-2)",
+        "Section": "devel",
+        "Priority": "optional",
+        "Multi-Arch": "same",
+        "Homepage": "https://www.gnu.org/software/binutils/",
+        "Description": "Common files for the GNU assembler, linker and binary utilities\n This package contains the localization files used by binutils packages for\n various target architectures and parts of the binutils documentation. It is\n not useful on its own."
+      },
+      "triggers": null
+    },
+    {
+      "path": "build/ubuntu26-binutils/packages/binutils-dbg_2.47-6ubuntu1+leonb53.1_arm64.deb",
+      "sha256": "9fca33783426b00848f6b80fc1ffa2247d11bade496aa7d6526d8025f70262f5",
+      "bytes": 502296,
+      "control": {
+        "Package": "binutils-dbg",
+        "Source": "binutils",
+        "Version": "2.47-6ubuntu1+leonb53.1",
+        "Architecture": "arm64",
+        "Maintainer": "Matthias Klose <doko@debian.org>",
+        "Installed-Size": "881",
+        "Depends": "binutils (= 2.47-6ubuntu1+leonb53.1), binutils-aarch64-linux-gnu-dbg (= 2.47-6ubuntu1+leonb53.1)",
+        "Section": "debug",
+        "Priority": "optional",
+        "Homepage": "https://www.gnu.org/software/binutils/",
+        "Description": "GNU assembler, linker and binary utilities(debug symbols)\n This package provides debug symbols for binutils."
+      },
+      "triggers": null
+    },
+    {
+      "path": "build/ubuntu26-binutils/packages/binutils-dev_2.47-6ubuntu1+leonb53.1_arm64.deb",
+      "sha256": "773ed79de5fb172761f9f035e85cac7f0c17edc5a7b2a321b0898859c8b183c5",
+      "bytes": 8335828,
+      "control": {
+        "Package": "binutils-dev",
+        "Source": "binutils",
+        "Version": "2.47-6ubuntu1+leonb53.1",
+        "Architecture": "arm64",
+        "Maintainer": "Matthias Klose <doko@debian.org>",
+        "Installed-Size": "63767",
+        "Depends": "binutils (= 2.47-6ubuntu1+leonb53.1), libbinutils (= 2.47-6ubuntu1+leonb53.1), libctf0 (= 2.47-6ubuntu1+leonb53.1), libctf-nobfd0 (= 2.47-6ubuntu1+leonb53.1)",
+        "Conflicts": "binutils (<< 2.43.50.20240819), libbfd-dev",
+        "Replaces": "binutils (<< 2.43.50.20240819), libbfd-dev, libc5-dev",
+        "Provides": "libbfd-dev",
+        "Section": "devel",
+        "Priority": "optional",
+        "Homepage": "https://www.gnu.org/software/binutils/",
+        "Description": "GNU binary utilities (BFD development files)\n This package includes header files and static libraries necessary to build\n programs which use the GNU BFD library, which is part of binutils.  Note\n that building Debian packages which depend on the shared libbfd is Not\n Allowed."
+      },
+      "triggers": null
+    },
+    {
+      "path": "build/ubuntu26-binutils/packages/binutils-for-host_2.47-6ubuntu1+leonb53.1_arm64.deb",
+      "sha256": "66bca784d6b380fed0783cd46f05a65488a45d3171a96bd1b6607b25b7069d0c",
+      "bytes": 912,
+      "control": {
+        "Package": "binutils-for-host",
+        "Source": "binutils",
+        "Version": "2.47-6ubuntu1+leonb53.1",
+        "Architecture": "arm64",
+        "Maintainer": "Matthias Klose <doko@debian.org>",
+        "Installed-Size": "6",
+        "Depends": "binutils-aarch64-linux-gnu:any (>= 2.30-2), binutils-common (= 2.47-6ubuntu1+leonb53.1)",
+        "Section": "devel",
+        "Priority": "optional",
+        "Multi-Arch": "same",
+        "Homepage": "https://www.gnu.org/software/binutils/",
+        "Description": "GNU assembler, linker and binary utilities for the host architecture\n The programs in this package are used to assemble, link and manipulate\n binary and object files for the architecture of this package.  They may be\n used in conjunction with a matching compiler and various libraries to build\n programs. When using binutils through this metapackage, all tools must be\n used with an architecture prefix."
+      },
+      "triggers": null
+    },
+    {
+      "path": "build/ubuntu26-binutils/packages/binutils_2.47-6ubuntu1+leonb53.1_arm64.deb",
+      "sha256": "bca769a762db141626ef4a3f1bcde594fa2ae8e46244f4263529f0e478d9def3",
+      "bytes": 298070,
+      "control": {
+        "Package": "binutils",
+        "Version": "2.47-6ubuntu1+leonb53.1",
+        "Architecture": "arm64",
+        "Maintainer": "Matthias Klose <doko@debian.org>",
+        "Installed-Size": "1319",
+        "Depends": "libbinutils (= 2.47-6ubuntu1+leonb53.1), libc6 (>= 2.38), libgcc-s1 (>= 3.0), libgprofng0 (>= 2.45.50), libstdc++6 (>= 13.1), binutils-common (= 2.47-6ubuntu1+leonb53.1), binutils-aarch64-linux-gnu (= 2.47-6ubuntu1+leonb53.1)",
+        "Suggests": "binutils-doc (>= 2.47-6ubuntu1+leonb53.1), gprofng-gui, binutils-gold",
+        "Conflicts": "binutils-multiarch (<< 2.27-8), modutils (<< 2.4.19-1)",
+        "Breaks": "binutils-aarch64-linux-gnu (<< 2.43.90), binutils-i686-linux-gnu (<< 2.43.90), binutils-riscv64-linux-gnu (<< 2.43.90), binutils-x86-64-linux-gnu (<< 2.43.90), libc6-dev (<< 2.42-2ubuntu4)",
+        "Replaces": "binutils-aarch64-linux-gnu (<< 2.43.90), binutils-common (<< 2.43.90), binutils-i686-linux-gnu (<< 2.43.90), binutils-riscv64-linux-gnu (<< 2.43.90), binutils-x86-64-linux-gnu (<< 2.43.90)",
+        "Provides": "elf-binutils",
+        "Section": "devel",
+        "Priority": "optional",
+        "Homepage": "https://www.gnu.org/software/binutils/",
+        "Description": "GNU assembler, linker and binary utilities\n The programs in this package are used to assemble, link and manipulate\n binary and object files.  They may be used in conjunction with a compiler\n and various libraries to build programs."
+      },
+      "triggers": null
+    },
+    {
+      "path": "build/ubuntu26-binutils/packages/libbinutils-dbg_2.47-6ubuntu1+leonb53.1_arm64.deb",
+      "sha256": "f196e92da33accfdaa4076d3a50939493356b581e069be8b958d7b1244c683eb",
+      "bytes": 2136302,
+      "control": {
+        "Package": "libbinutils-dbg",
+        "Source": "binutils",
+        "Version": "2.47-6ubuntu1+leonb53.1",
+        "Architecture": "arm64",
+        "Maintainer": "Matthias Klose <doko@debian.org>",
+        "Installed-Size": "4275",
+        "Depends": "libbinutils (= 2.47-6ubuntu1+leonb53.1)",
+        "Section": "debug",
+        "Priority": "optional",
+        "Multi-Arch": "same",
+        "Homepage": "https://www.gnu.org/software/binutils/",
+        "Description": "GNU binary utilities (private shared library, debug symbols)\n This package provides debug symbols for libbinutils."
+      },
+      "triggers": null
+    },
+    {
+      "path": "build/ubuntu26-binutils/packages/libbinutils_2.47-6ubuntu1+leonb53.1_arm64.deb",
+      "sha256": "d86d7386707573cebcc486ec0ccfcde00006839fb2e7c82f66aed99d4598a437",
+      "bytes": 726680,
+      "control": {
+        "Package": "libbinutils",
+        "Source": "binutils",
+        "Version": "2.47-6ubuntu1+leonb53.1",
+        "Architecture": "arm64",
+        "Maintainer": "Matthias Klose <doko@debian.org>",
+        "Installed-Size": "2969",
+        "Depends": "libc6 (>= 2.38), libsframe3, libzstd1 (>= 1.5.5), zlib1g (>= 1:1.2.11), binutils-common (= 2.47-6ubuntu1+leonb53.1)",
+        "Breaks": "binutils (<< 2.29-6)",
+        "Replaces": "binutils (<< 2.29-6)",
+        "Section": "devel",
+        "Priority": "optional",
+        "Multi-Arch": "same",
+        "Homepage": "https://www.gnu.org/software/binutils/",
+        "Description": "GNU binary utilities (private shared library)\n This package includes the private shared libraries libbfd and libopcodes."
+      },
+      "triggers": "activate-noawait ldconfig\n"
+    },
+    {
+      "path": "build/ubuntu26-binutils/packages/libctf-nobfd0-dbg_2.47-6ubuntu1+leonb53.1_arm64.deb",
+      "sha256": "5af1bc28726d435d483685f4e62aaa3acb0cd630b40c21298fe7e8311a5121e5",
+      "bytes": 304908,
+      "control": {
+        "Package": "libctf-nobfd0-dbg",
+        "Source": "binutils",
+        "Version": "2.47-6ubuntu1+leonb53.1",
+        "Architecture": "arm64",
+        "Maintainer": "Matthias Klose <doko@debian.org>",
+        "Installed-Size": "510",
+        "Depends": "libctf-nobfd0 (= 2.47-6ubuntu1+leonb53.1)",
+        "Section": "debug",
+        "Priority": "optional",
+        "Multi-Arch": "same",
+        "Homepage": "https://www.gnu.org/software/binutils/",
+        "Description": "Compact C Type Format library (debug symbols, no BFD dependency)\n This package includes the libctf-nobfd shared library.  The Compact C Type\n Format (CTF) is a way of representing information about a binary program"
+      },
+      "triggers": null
+    },
+    {
+      "path": "build/ubuntu26-binutils/packages/libctf-nobfd0_2.47-6ubuntu1+leonb53.1_arm64.deb",
+      "sha256": "a6d30e1d9200fb4729a5ce9a5279e1e8af7a81d97633ee2f180ab9fcf14dbda8",
+      "bytes": 167986,
+      "control": {
+        "Package": "libctf-nobfd0",
+        "Source": "binutils",
+        "Version": "2.47-6ubuntu1+leonb53.1",
+        "Architecture": "arm64",
+        "Maintainer": "Matthias Klose <doko@debian.org>",
+        "Installed-Size": "296",
+        "Depends": "libc6 (>= 2.33), zlib1g (>= 1:1.2.0)",
+        "Breaks": "libbinutils (<< 2.33.50.20191128-1~)",
+        "Replaces": "libbinutils (<< 2.33.50.20191128-1~)",
+        "Section": "devel",
+        "Priority": "optional",
+        "Multi-Arch": "same",
+        "Homepage": "https://www.gnu.org/software/binutils/",
+        "Description": "Compact C Type Format library (runtime, no BFD dependency)\n This package includes the libctf-nobfd shared library.  The Compact C Type\n Format (CTF) is a way of representing information about a binary program"
+      },
+      "triggers": "activate-noawait ldconfig\n"
+    },
+    {
+      "path": "build/ubuntu26-binutils/packages/libctf0-dbg_2.47-6ubuntu1+leonb53.1_arm64.deb",
+      "sha256": "54011d6199e7a2e2139e0138814dd0a7030c708172f8b95fc443d0ea4f5d6896",
+      "bytes": 313980,
+      "control": {
+        "Package": "libctf0-dbg",
+        "Source": "binutils",
+        "Version": "2.47-6ubuntu1+leonb53.1",
+        "Architecture": "arm64",
+        "Maintainer": "Matthias Klose <doko@debian.org>",
+        "Installed-Size": "517",
+        "Depends": "libctf0 (= 2.47-6ubuntu1+leonb53.1)",
+        "Section": "debug",
+        "Priority": "optional",
+        "Multi-Arch": "same",
+        "Homepage": "https://www.gnu.org/software/binutils/",
+        "Description": "Compact C Type Format library (debug symbols, BFD dependency)\n This package includes the libctf shared library.  The Compact C Type\n Format (CTF) is a way of representing information about a binary program"
+      },
+      "triggers": null
+    },
+    {
+      "path": "build/ubuntu26-binutils/packages/libctf0_2.47-6ubuntu1+leonb53.1_arm64.deb",
+      "sha256": "fc0cdbbfdda0757faa3a94a818f24359c7366920d1d4bcc0c01b0154a49ab6ae",
+      "bytes": 82212,
+      "control": {
+        "Package": "libctf0",
+        "Source": "binutils",
+        "Version": "2.47-6ubuntu1+leonb53.1",
+        "Architecture": "arm64",
+        "Maintainer": "Matthias Klose <doko@debian.org>",
+        "Installed-Size": "212",
+        "Depends": "libbinutils (= 2.47-6ubuntu1+leonb53.1), libc6 (>= 2.33), zlib1g (>= 1:1.2.0)",
+        "Section": "devel",
+        "Priority": "optional",
+        "Multi-Arch": "same",
+        "Homepage": "https://www.gnu.org/software/binutils/",
+        "Description": "Compact C Type Format library (runtime, BFD dependency)\n This package includes the libctf shared library.  The Compact C Type\n Format (CTF) is a way of representing information about a binary program"
+      },
+      "triggers": "activate-noawait ldconfig\n"
+    },
+    {
+      "path": "build/ubuntu26-binutils/packages/libgprofng-dev_2.47-6ubuntu1+leonb53.1_arm64.deb",
+      "sha256": "de66a7ff83543c8ccad742457c5301f64607a78b01c2ef0e7cee5ec245ce4478",
+      "bytes": 4349022,
+      "control": {
+        "Package": "libgprofng-dev",
+        "Source": "binutils",
+        "Version": "2.47-6ubuntu1+leonb53.1",
+        "Architecture": "arm64",
+        "Maintainer": "Matthias Klose <doko@debian.org>",
+        "Installed-Size": "23333",
+        "Depends": "binutils-dev (= 2.47-6ubuntu1+leonb53.1), libgprofng0 (= 2.47-6ubuntu1+leonb53.1)",
+        "Conflicts": "binutils-dev (<< 2.45.50.20251023-1~)",
+        "Replaces": "binutils-dev (<< 2.45.50.20251023-1~)",
+        "Section": "libdevel",
+        "Priority": "optional",
+        "Multi-Arch": "same",
+        "Homepage": "https://www.gnu.org/software/binutils/",
+        "Description": "Library for the GNU Next Generation profiler (development files)\n Gprofng is the GNU Next Generation profiler for analyzing the performance\n of Linux applications.\n .\n This package includes the libgprofng header files and static library."
+      },
+      "triggers": null
+    },
+    {
+      "path": "build/ubuntu26-binutils/packages/libgprofng0-dbg_2.47-6ubuntu1+leonb53.1_arm64.deb",
+      "sha256": "ea4fe7544bb458bdb981fabcf40037fcd2d23b8c42e8576c167cabd59da953a5",
+      "bytes": 2955816,
+      "control": {
+        "Package": "libgprofng0-dbg",
+        "Source": "binutils",
+        "Version": "2.47-6ubuntu1+leonb53.1",
+        "Architecture": "arm64",
+        "Maintainer": "Matthias Klose <doko@debian.org>",
+        "Installed-Size": "5363",
+        "Depends": "libgprofng0 (= 2.47-6ubuntu1+leonb53.1)",
+        "Section": "debug",
+        "Priority": "optional",
+        "Multi-Arch": "same",
+        "Homepage": "https://www.gnu.org/software/binutils/",
+        "Description": "GNU Next Generation profiler (debug symbols)\n Gprofng is the GNU Next Generation profiler for analyzing the performance\n of Linux applications.\n .\n This package includes the debug symbols for the libgprofng shared library."
+      },
+      "triggers": null
+    },
+    {
+      "path": "build/ubuntu26-binutils/packages/libgprofng0_2.47-6ubuntu1+leonb53.1_arm64.deb",
+      "sha256": "4b635803a531e885ab20708496b38325fdb0a7a01708973545b9ac0c67574bae",
+      "bytes": 730608,
+      "control": {
+        "Package": "libgprofng0",
+        "Source": "binutils",
+        "Version": "2.47-6ubuntu1+leonb53.1",
+        "Architecture": "arm64",
+        "Maintainer": "Matthias Klose <doko@debian.org>",
+        "Installed-Size": "2717",
+        "Depends": "libbinutils (= 2.47-6ubuntu1+leonb53.1), libc6 (>= 2.38), libgcc-s1 (>= 3.0), libstdc++6 (>= 14), zlib1g (>= 1:1.1.4)",
+        "Section": "devel",
+        "Priority": "optional",
+        "Multi-Arch": "same",
+        "Homepage": "https://www.gnu.org/software/binutils/",
+        "Description": "GNU Next Generation profiler (runtime library)\n Gprofng is the GNU Next Generation profiler for analyzing the performance\n of Linux applications.  Gprofng allows you to:\n .\n  - Profile C / C++ / Java / Scala applications without needing to recompile\n  - Profile multi-threaded applications\n  - Analyze and compare multiple experiments\n  - Use time-based sampling and / or hardware event counters\n .\n This package includes the libgprofng shared library."
+      },
+      "triggers": "activate-noawait ldconfig\n"
+    },
+    {
+      "path": "build/ubuntu26-binutils/packages/libsframe-dev_2.47-6ubuntu1+leonb53.1_arm64.deb",
+      "sha256": "e36ea03718039581227fe030ffca80205b2e06e6f6d2d171f7f59cfc4e0b38d7",
+      "bytes": 80394,
+      "control": {
+        "Package": "libsframe-dev",
+        "Source": "binutils",
+        "Version": "2.47-6ubuntu1+leonb53.1",
+        "Architecture": "arm64",
+        "Maintainer": "Matthias Klose <doko@debian.org>",
+        "Installed-Size": "337",
+        "Depends": "libsframe3 (= 2.47-6ubuntu1+leonb53.1)",
+        "Conflicts": "binutils (<< 2.45-1~), binutils-dev (<< 2.45-1~)",
+        "Replaces": "binutils (<< 2.45-1~), binutils-dev (<< 2.45-1~)",
+        "Section": "libdevel",
+        "Priority": "optional",
+        "Multi-Arch": "same",
+        "Homepage": "https://www.gnu.org/software/binutils/",
+        "Description": "Library to handle the SFrame format (development files)\n SFrame stands for Simple Frame format.  SFrame format keeps track\n of the minimal necessary information needed for generating stack traces.\n .\n This package includes the libsframe header files and static library."
+      },
+      "triggers": null
+    },
+    {
+      "path": "build/ubuntu26-binutils/packages/libsframe3-dbg_2.47-6ubuntu1+leonb53.1_arm64.deb",
+      "sha256": "3925bdd22197c6c4e437cbbdd57770f27c141df0d57f726f97b98b2d9a8d6a65",
+      "bytes": 51562,
+      "control": {
+        "Package": "libsframe3-dbg",
+        "Source": "binutils",
+        "Version": "2.47-6ubuntu1+leonb53.1",
+        "Architecture": "arm64",
+        "Maintainer": "Matthias Klose <doko@debian.org>",
+        "Installed-Size": "98",
+        "Depends": "libsframe3 (= 2.47-6ubuntu1+leonb53.1)",
+        "Section": "debug",
+        "Priority": "optional",
+        "Multi-Arch": "same",
+        "Homepage": "https://www.gnu.org/software/binutils/",
+        "Description": "Library to handle the SFrame format (debug symbols)\n SFrame stands for Simple Frame format.  SFrame format keeps track\n of the minimal necessary information needed for generating stack traces.\n .\n This package includes the debug symbols for the libsframe shared library."
+      },
+      "triggers": null
+    },
+    {
+      "path": "build/ubuntu26-binutils/packages/libsframe3_2.47-6ubuntu1+leonb53.1_arm64.deb",
+      "sha256": "d7e0d8412f0da615328ad5c30c2a76762726e4e7223887106a974bc8e84573ea",
+      "bytes": 100726,
+      "control": {
+        "Package": "libsframe3",
+        "Source": "binutils",
+        "Version": "2.47-6ubuntu1+leonb53.1",
+        "Architecture": "arm64",
+        "Maintainer": "Matthias Klose <doko@debian.org>",
+        "Installed-Size": "165",
+        "Depends": "libc6 (>= 2.17)",
+        "Section": "devel",
+        "Priority": "optional",
+        "Multi-Arch": "same",
+        "Homepage": "https://www.gnu.org/software/binutils/",
+        "Description": "Library to handle the SFrame format (runtime library)\n SFrame stands for Simple Frame format.  SFrame format keeps track\n of the minimal necessary information needed for generating stack traces.\n .\n This package includes the libsframe shared library."
+      },
+      "triggers": "activate-noawait ldconfig\n"
+    }
+  ],
+  "minimal_runtime_packages": [
+    "build/ubuntu26-binutils/packages/binutils-aarch64-linux-gnu_2.47-6ubuntu1+leonb53.1_arm64.deb",
+    "build/ubuntu26-binutils/packages/binutils-arm-linux-gnueabi_2.47-6ubuntu1+leonb53.1_arm64.deb",
+    "build/ubuntu26-binutils/packages/binutils-arm-linux-gnueabihf_2.47-6ubuntu1+leonb53.1_arm64.deb",
+    "build/ubuntu26-binutils/packages/binutils-common_2.47-6ubuntu1+leonb53.1_arm64.deb",
+    "build/ubuntu26-binutils/packages/binutils_2.47-6ubuntu1+leonb53.1_arm64.deb",
+    "build/ubuntu26-binutils/packages/libbinutils_2.47-6ubuntu1+leonb53.1_arm64.deb",
+    "build/ubuntu26-binutils/packages/libctf-nobfd0_2.47-6ubuntu1+leonb53.1_arm64.deb",
+    "build/ubuntu26-binutils/packages/libctf0_2.47-6ubuntu1+leonb53.1_arm64.deb",
+    "build/ubuntu26-binutils/packages/libgprofng0_2.47-6ubuntu1+leonb53.1_arm64.deb",
+    "build/ubuntu26-binutils/packages/libsframe3_2.47-6ubuntu1+leonb53.1_arm64.deb"
+  ],
+  "build_log_sha256": "382460ddfd42999381c7ab91bf03b1d9e4bd4418ea8ae85a71f19415fd0e6b62",
+  "full_upstream_dejagnu_suite_run": false,
+  "performance_speedup_claimed": false,
+  "gcc_used_for_functional_tests": "Ubuntu resolute default compiler; GCC16 acceptance belongs to combined candidate tests",
+  "tests": [
+    {
+      "name": "functional-and-apt",
+      "command": [
+        "mmdebstrap",
+        "--unshare-helper",
+        "/bin/bash",
+        "-c",
+        "set -euo pipefail\nroot=\"$1\"; shift\nmount --make-rprivate /\nfor name in null zero full random urandom tty; do\n target=\"$root/dev/$name\"\n test ! -L \"$target\"\n if test ! -e \"$target\"; then touch \"$target\"; fi\n mount --bind \"/dev/$name\" \"$target\"\ndone\nmount -t proc proc \"$root/proc\"\nchroot \"$root\" /bin/sh -ec 'test -c /dev/null; test -c /dev/zero; test -c /dev/urandom; mountpoint -q /proc'\nexec chroot \"$root\" \"$@\"\n",
+        "binutils-check-root",
+        "/tmp/be19000ai-ubuntu26-binutils-env",
+        "/bin/bash",
+        "-s"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 5.79,
+      "log": "build/ubuntu26-binutils/functional-and-apt.log",
+      "log_sha256": "886ddaabe1080f86e449f4cf8d658c9fccb86d070f962d78fcb6b9213d6a8855"
+    },
+    {
+      "name": "copy-qemu-aarch64",
+      "command": [
+        "mmdebstrap",
+        "--unshare-helper",
+        "cp",
+        "/usr/bin/qemu-aarch64-static",
+        "/tmp/be19000ai-ubuntu26-binutils-env/work/qemu-aarch64"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.15,
+      "log": "build/ubuntu26-binutils/copy-qemu-aarch64.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "copy-qemu-arm",
+      "command": [
+        "mmdebstrap",
+        "--unshare-helper",
+        "cp",
+        "/usr/bin/qemu-arm-static",
+        "/tmp/be19000ai-ubuntu26-binutils-env/work/qemu-arm"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.15,
+      "log": "build/ubuntu26-binutils/copy-qemu-arm.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "cortex-a53-isa",
+      "command": [
+        "mmdebstrap",
+        "--unshare-helper",
+        "/bin/bash",
+        "-c",
+        "set -euo pipefail\nroot=\"$1\"; shift\nmount --make-rprivate /\nfor name in null zero full random urandom tty; do\n target=\"$root/dev/$name\"\n test ! -L \"$target\"\n if test ! -e \"$target\"; then touch \"$target\"; fi\n mount --bind \"/dev/$name\" \"$target\"\ndone\nmount -t proc proc \"$root/proc\"\nchroot \"$root\" /bin/sh -ec 'test -c /dev/null; test -c /dev/zero; test -c /dev/urandom; mountpoint -q /proc'\nexec chroot \"$root\" \"$@\"\n",
+        "binutils-check-root",
+        "/tmp/be19000ai-ubuntu26-binutils-env",
+        "/bin/bash",
+        "-s"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.69,
+      "log": "build/ubuntu26-binutils/cortex-a53-isa.log",
+      "log_sha256": "bf7e70b6f67846e632f1ddfa17c63b779beb7738c3b612c00be527bfa956ae01"
+    }
+  ],
+  "limitations": [
+    "No router deployment or full ASUS integration claimed.",
+    "Full upstream DejaGNU suite not run.",
+    "QEMU user-mode verifies Cortex-A53 ISA and functional behavior against host kernel; kernel10 full-system package execution remains a separate integration check.",
+    "ARM32 output syscall payloads use qemu-arm max because this QEMU lacks an AArch32 Cortex-A53 CPU model.",
+    "No native ARM32-host tools or GCC compiler packages built by this task.",
+    "Packages are local unsigned candidate artifacts; repository signing/distribution not performed."
+  ],
+  "test_script_sha256": "24342c0ce9c60f9612ce11b59db9482a259df3aeace7bf693b7ac0a9553992c1",
+  "audit_script_sha256": "869bf348306bde47d0f4355c653a83539ebaaddfcd3b2ad526cdab351b0ce9d8",
+  "tests_package_database_audit": "dpkg --audit empty after install and remove/reinstall cycle"
+}

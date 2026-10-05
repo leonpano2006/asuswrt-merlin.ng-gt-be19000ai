@@ -1,0 +1,301 @@
+{
+  "schema_version": 1,
+  "passed": true,
+  "errors": [],
+  "scenarios": [
+    {
+      "scenario": "positive",
+      "checks": {
+        "complete": true,
+        "exact_initramfs": true,
+        "log_unchanged": true,
+        "readonly_squashfs_start": true,
+        "no_restore_failure": true,
+        "no_vendor_exec_failure": true,
+        "real_systemd_started": true,
+        "apt_real_writable_root": true,
+        "ext4_pid1": true,
+        "no_fallback": true,
+        "actual_exec": true
+      },
+      "elapsed_seconds": 40.71,
+      "serial_sha256": "af8b313b5869cdce47ed288b0ebe006034b8d4347dcd2215ce77749bf1bc05a3",
+      "result_path": "build/qemu/ubuntu26-pivot-v4-positive/result.json",
+      "result_sha256": "6eee5adb1d87380ace5b4f58ab65461ec9915666e4a8d06d6a6bb90f7796f882"
+    },
+    {
+      "scenario": "bad-uuid",
+      "checks": {
+        "complete": true,
+        "exact_initramfs": true,
+        "log_unchanged": true,
+        "readonly_squashfs_start": true,
+        "no_restore_failure": true,
+        "no_vendor_exec_failure": true,
+        "exact_failure_stage": true,
+        "vendor_fixture_pid1": true,
+        "exact_vendor_exec": true,
+        "did_not_start_ubuntu": true,
+        "no_pivot_exec": true
+      },
+      "elapsed_seconds": 10.43,
+      "serial_sha256": "a54784a7b095f45c5f0448f886548650e7fb71d8d98d79d2c421d078cbe774d4",
+      "result_path": "build/qemu/ubuntu26-pivot-v4-bad-uuid/result.json",
+      "result_sha256": "1b7c91f98286e15531953c0be47871080549d5e5738ae5dab0b386a6afc8120e"
+    },
+    {
+      "scenario": "bad-size",
+      "checks": {
+        "complete": true,
+        "exact_initramfs": true,
+        "log_unchanged": true,
+        "readonly_squashfs_start": true,
+        "no_restore_failure": true,
+        "no_vendor_exec_failure": true,
+        "exact_failure_stage": true,
+        "vendor_fixture_pid1": true,
+        "exact_vendor_exec": true,
+        "did_not_start_ubuntu": true,
+        "no_pivot_exec": true
+      },
+      "elapsed_seconds": 10.63,
+      "serial_sha256": "a971b17161d86084a266fb200776075a14ab5f7447f14dba2462f7ef50fc6d19",
+      "result_path": "build/qemu/ubuntu26-pivot-v4-bad-size/result.json",
+      "result_sha256": "3687b7277d07b8f506c6f72f50098a1f116aa726f52239f589215f6fa3475a12"
+    },
+    {
+      "scenario": "bad-generation",
+      "checks": {
+        "complete": true,
+        "exact_initramfs": true,
+        "log_unchanged": true,
+        "readonly_squashfs_start": true,
+        "no_restore_failure": true,
+        "no_vendor_exec_failure": true,
+        "exact_failure_stage": true,
+        "vendor_fixture_pid1": true,
+        "exact_vendor_exec": true,
+        "did_not_start_ubuntu": true,
+        "no_pivot_exec": true
+      },
+      "elapsed_seconds": 11.05,
+      "serial_sha256": "32db0c67dce30bbc1c5c5e2e36aa6417fddb5e2e32a59e8278309469a752d63c",
+      "result_path": "build/qemu/ubuntu26-pivot-v4-bad-generation/result.json",
+      "result_sha256": "adbca2281df8863392a60139a6a5a33d78748987d6c4c97c137451c68c2adfc6"
+    },
+    {
+      "scenario": "bad-root-mode",
+      "checks": {
+        "complete": true,
+        "exact_initramfs": true,
+        "log_unchanged": true,
+        "readonly_squashfs_start": true,
+        "no_restore_failure": true,
+        "no_vendor_exec_failure": true,
+        "exact_failure_stage": true,
+        "vendor_fixture_pid1": true,
+        "exact_vendor_exec": true,
+        "did_not_start_ubuntu": true,
+        "no_pivot_exec": true
+      },
+      "elapsed_seconds": 11.22,
+      "serial_sha256": "5e25c01d4e3d1eb7e08143811bf63648a4c747c26807e8e5ebea06fd42f36e64",
+      "result_path": "build/qemu/ubuntu26-pivot-v4-bad-root-mode/result.json",
+      "result_sha256": "406ba70a9388df0f08638fce79c72014482e2d498d868b96bd9452b6c720b5ab"
+    },
+    {
+      "scenario": "bad-init-parent",
+      "checks": {
+        "complete": true,
+        "exact_initramfs": true,
+        "log_unchanged": true,
+        "readonly_squashfs_start": true,
+        "no_restore_failure": true,
+        "no_vendor_exec_failure": true,
+        "exact_failure_stage": true,
+        "vendor_fixture_pid1": true,
+        "exact_vendor_exec": true,
+        "did_not_start_ubuntu": true,
+        "no_pivot_exec": true
+      },
+      "elapsed_seconds": 11.22,
+      "serial_sha256": "65e082cb001aa84a4950dc63df16d12e24997e2765d8c7e15677c71027d00a61",
+      "result_path": "build/qemu/ubuntu26-pivot-v4-bad-init-parent/result.json",
+      "result_sha256": "d990dc69c8f4d63596da9415e8ab19d616b4ddeebd95c2aac773840742078d2c"
+    },
+    {
+      "scenario": "symlink-init-parent",
+      "checks": {
+        "complete": true,
+        "exact_initramfs": true,
+        "log_unchanged": true,
+        "readonly_squashfs_start": true,
+        "no_restore_failure": true,
+        "no_vendor_exec_failure": true,
+        "exact_failure_stage": true,
+        "vendor_fixture_pid1": true,
+        "exact_vendor_exec": true,
+        "did_not_start_ubuntu": true,
+        "no_pivot_exec": true
+      },
+      "elapsed_seconds": 11.42,
+      "serial_sha256": "b16cccd6f9e8e9c30aecd4a750b7f74437b2d5c4cfbe21da8b1b80012e3ac696",
+      "result_path": "build/qemu/ubuntu26-pivot-v4-symlink-init-parent/result.json",
+      "result_sha256": "ebaadfcc0d5415138580fdf944c807153516d8e04d2345ae157a6932bf5e40d3"
+    },
+    {
+      "scenario": "owned-mounts",
+      "checks": {
+        "complete": true,
+        "exact_initramfs": true,
+        "log_unchanged": true,
+        "readonly_squashfs_start": true,
+        "no_restore_failure": true,
+        "no_vendor_exec_failure": true,
+        "exact_failure_stage": true,
+        "vendor_fixture_pid1": true,
+        "exact_vendor_exec": true,
+        "did_not_start_ubuntu": true,
+        "no_pivot_exec": true,
+        "all_owned_mounts_removed": true
+      },
+      "elapsed_seconds": 10.45,
+      "serial_sha256": "44859b8a88ab18293b85ab9f6a5dc534197eb26a3d065b6f4fa3f9b998b8ae1b",
+      "result_path": "build/qemu/ubuntu26-pivot-v4-owned-mounts/result.json",
+      "result_sha256": "a90e79519271fed4dfe422d01d4f259d21a7231d1f68be85fcda2740c526891b"
+    },
+    {
+      "scenario": "fsck-reboot",
+      "checks": {
+        "complete": true,
+        "exact_initramfs": true,
+        "log_unchanged": true,
+        "readonly_squashfs_start": true,
+        "no_restore_failure": true,
+        "no_vendor_exec_failure": true,
+        "exact_failure_stage": true,
+        "vendor_fixture_pid1": true,
+        "exact_vendor_exec": true,
+        "did_not_start_ubuntu": true,
+        "no_pivot_exec": true
+      },
+      "elapsed_seconds": 11.08,
+      "serial_sha256": "6c0b63bff56d5a14c49ceed5a29acb67db8111e6d6f379b3efcae26863f2eba3",
+      "result_path": "build/qemu/ubuntu26-pivot-v4-fsck-reboot/result.json",
+      "result_sha256": "86c82bb20df7e18060bf126a9e62df5af08a74d013e880db4f0b38c9e6e6ed85"
+    },
+    {
+      "scenario": "fsck-error",
+      "checks": {
+        "complete": true,
+        "exact_initramfs": true,
+        "log_unchanged": true,
+        "readonly_squashfs_start": true,
+        "no_restore_failure": true,
+        "no_vendor_exec_failure": true,
+        "exact_failure_stage": true,
+        "vendor_fixture_pid1": true,
+        "exact_vendor_exec": true,
+        "did_not_start_ubuntu": true,
+        "no_pivot_exec": true
+      },
+      "elapsed_seconds": 10.42,
+      "serial_sha256": "2f01374a069d11ea3ad9f5a8dc2fdad491c6ef2134730553fac79e087a08fcff",
+      "result_path": "build/qemu/ubuntu26-pivot-v4-fsck-error/result.json",
+      "result_sha256": "5fb6b9bb575d07cb0d751f8a11b959d58db4f9a60b29b47c066c3acedddb1e0f"
+    },
+    {
+      "scenario": "fsck-timeout",
+      "checks": {
+        "complete": true,
+        "exact_initramfs": true,
+        "log_unchanged": true,
+        "readonly_squashfs_start": true,
+        "no_restore_failure": true,
+        "no_vendor_exec_failure": true,
+        "exact_failure_stage": true,
+        "vendor_fixture_pid1": true,
+        "exact_vendor_exec": true,
+        "did_not_start_ubuntu": true,
+        "no_pivot_exec": true
+      },
+      "elapsed_seconds": 14.63,
+      "serial_sha256": "dc5052c964c87407bc84ca17fed30968a588082c603aa139fa3722881916ca0d",
+      "result_path": "build/qemu/ubuntu26-pivot-v4-fsck-timeout/result.json",
+      "result_sha256": "0fc0a4a2df58a4bed1c536ad2620f09843e1e94ac9483a5f68d36f9fc1e68110"
+    },
+    {
+      "scenario": "mount-error",
+      "checks": {
+        "complete": true,
+        "exact_initramfs": true,
+        "log_unchanged": true,
+        "readonly_squashfs_start": true,
+        "no_restore_failure": true,
+        "no_vendor_exec_failure": true,
+        "exact_failure_stage": true,
+        "vendor_fixture_pid1": true,
+        "exact_vendor_exec": true,
+        "did_not_start_ubuntu": true,
+        "no_pivot_exec": true
+      },
+      "elapsed_seconds": 11.02,
+      "serial_sha256": "582131329fd5dbda9216b0c03167b0036f771a4caa72424263908ed2af6ef7d9",
+      "result_path": "build/qemu/ubuntu26-pivot-v4-mount-error/result.json",
+      "result_sha256": "d6822b7c90333aff9a92e6fb704312015330458efecfe1651914b37415e71a52"
+    },
+    {
+      "scenario": "loader-error",
+      "checks": {
+        "complete": true,
+        "exact_initramfs": true,
+        "log_unchanged": true,
+        "readonly_squashfs_start": true,
+        "no_restore_failure": true,
+        "no_vendor_exec_failure": true,
+        "exact_failure_stage": true,
+        "vendor_fixture_pid1": true,
+        "exact_vendor_exec": true,
+        "did_not_start_ubuntu": true,
+        "no_pivot_exec": true
+      },
+      "elapsed_seconds": 10.82,
+      "serial_sha256": "71322a2eaf1527466ff153ac2a29a410185ad1168b60b0b4d5840ec1b270a8ad",
+      "result_path": "build/qemu/ubuntu26-pivot-v4-loader-error/result.json",
+      "result_sha256": "739d6692c10c81561bda570cf439266531aa0e5b2eb2c748bca6efe502e3776c"
+    },
+    {
+      "scenario": "exec-error",
+      "checks": {
+        "complete": true,
+        "exact_initramfs": true,
+        "log_unchanged": true,
+        "readonly_squashfs_start": true,
+        "no_restore_failure": true,
+        "no_vendor_exec_failure": true,
+        "exact_failure_stage": true,
+        "vendor_fixture_pid1": true,
+        "exact_vendor_exec": true,
+        "did_not_start_ubuntu": true,
+        "after_pivot_failure": true
+      },
+      "elapsed_seconds": 10.25,
+      "serial_sha256": "e4cd9dcf69c4e6df810a84765d48835d39ef27758e2c12f6cdbddcee2e1bc6ac",
+      "result_path": "build/qemu/ubuntu26-pivot-v4-exec-error/result.json",
+      "result_sha256": "7f62a48ef5f2755f9ac7363cc9d692cae43a2a36fe3440e9e476bec1b6f4255a"
+    }
+  ],
+  "fixture_manifest_sha256": "86e12c9598ad159484cbe462261ddd8da0212f6772dffdfd66c6e64e8d9facbe",
+  "helper_source_sha256": "412d92c10820c4c2774791fa12fd14f93e4f83ba7ed02fa7a25d805016e45018",
+  "helper_sha256": "25d301ccc702d19ff238ae55c372ad01b7960bab018c3c3ccf0a863fab5207e8",
+  "input_disk_images_unchanged": true,
+  "limitations": [
+    "RAM-backed loop devices, no host block device or network; not power-loss or physical eMMC validation.",
+    "Vendor rc is an explicit fixture; fallback proves restoration and PID1 exec, not ASUS networking.",
+    "Positive run starts real native systemd and apt on ext4; no ASUS driver or daemon starts.",
+    "The helper can restore only before successful systemd exec; later failures require the separate board trial/watchdog policy.",
+    "Generation marker identifies the selected root; it is not a signature over a writable filesystem."
+  ],
+  "router_accessed": false,
+  "flash_or_boot_commit_accepted": false
+}

@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "status": "read_only_final_delta_review_no_new_actionable_findings",
+  "source": {
+    "path": "scripts/asus-integration/device-provision/coordinator.c",
+    "sha256": "0342e3b0823f1f8e8eb0c4e204c9fec36e469aa2d2a07ba485bda3e06e7db893"
+  },
+  "shared_p11_clear_view": {
+    "path": "scripts/asus-integration/slot-proof/p11-clear-view.h",
+    "sha256": "988d0b81d28e09f16aab6303721b9425ac66dbd0d6f2b74ecd3609483c29bdf3"
+  },
+  "build": {
+    "path": "build/asus-device-provision/identity-v8/manifest.json",
+    "sha256": "cdd162ee304c89adc3901f9fac204c6b087f271056325d506dec278bdeaf0589"
+  },
+  "previous_review": {
+    "path": "reports/ubuntu26/device-identity-coordinator-source-review-v2.json",
+    "sha256": "12a39f5cce221594d1c9e7dfe9003b1d0f26962d12cc3ac7abb0c324b4dbaa90"
+  },
+  "reviewed_delta": [
+    "Remove unsupported stock CLONE_NEWNET, keep mandatory CLONE_NEWNS and private mount propagation; no network-isolation claim. Exact pinned account NSS uses files for passwd/group/shadow/gshadow; selected commands are local useradd/ssh-keygen.",
+    "After shared identity flock and before stock-hash read/mkdtemp, scan all observed process mount namespaces, block holders and swap devices/files for p11 consumers. Read/directory errors fail closed, except disappeared process ENOENT."
+  ],
+  "limitations": [
+    "No real device operation by reviewer.",
+    "Cross-namespace scan is an observation, not exclusion of future unrelated mounters or raw writers; exclusive maintenance remains required."
+  ]
+}

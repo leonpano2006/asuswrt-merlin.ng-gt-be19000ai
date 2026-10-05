@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "status": "read_only_final_source_review_no_outstanding_actionable_findings",
+  "sources": [
+    {
+      "path": "scripts/asus-integration/slot-proof/device.c",
+      "sha256": "b618cabe4984858bf9f73c40c5f9f139b87cb999cfecc645052702401978ee21"
+    },
+    {
+      "path": "scripts/asus-integration/slot-proof/slot-proof.c",
+      "sha256": "e6e5ed929d78ed6f42bd1935f5c84d9e937ebb2fa0bca64821318b963214c77e"
+    },
+    {
+      "path": "scripts/asus-integration/slot-proof/slot-proof.h",
+      "sha256": "eb611bdaaea8caf69ca2e8047877c019f9c01e827d15cd4aad358b4d418205de"
+    },
+    {
+      "path": "scripts/asus-integration/slot-proof/p11-clear-view.h",
+      "sha256": "988d0b81d28e09f16aab6303721b9425ac66dbd0d6f2b74ecd3609483c29bdf3"
+    }
+  ],
+  "builder": {
+    "path": "scripts/build-ubuntu26-slot-proof.py",
+    "sha256": "937fabe68a9994b2f4cb94273f8117005658f11038ed3319c8b7900beed673ea"
+  },
+  "receipt": {
+    "path": "build/ubuntu26-slot-proof/v7/validated-manifest.json",
+    "sha256": "546d19137c01d4118b7cfd77adee93380bf8371e4b13d86b4c97cbc27a2de6c5"
+  },
+  "reviewed": [
+    "Exact fixed CID/GPT/p11 extent/UUID and all kernel partitions, both full262144byte metadata copies and CRC/header/COMMITTED2/VALID1,2/canonicalSEQ, complete pinned stock p5/p6 hashes.",
+    "Private mount namespace only, shared identity flock, all-process p11 mounts/holders/swap exclusion, mandatory existing filesystems health; read/readdir errors reject.",
+    "Own private p11 mount allowed only once at exact own path; all other observed namespaces must not expose p11.",
+    "Exact generation and token root permissions, regular inode/same filesystem, absent prior/leftover token.",
+    "Stage temp fsync, fresh metadata recheck, renameat2 RENAME_NOREPLACE, directory fsync and exact published readback.",
+    "Failure before publication deletes only same temporary inode; published token is retained on post-publication failure. No metadata/GPT/firmware mutation, no arm/reboot/slot selection."
+  ],
+  "resolved_findings": [
+    "Directory iteration errors now explicitly reject in allproc/holders/kernel partition scans; only disappearing PID ENOENT permitted.",
+    "Builder rejects optimized Python before output directory creation, preserving asserted fixed-policy verification."
+  ],
+  "owner_test_scope": "36 synthetic token/parser cases and17 synthetic shared-view cases. Review does not count these as physical device execution.",
+  "limitations": [
+    "Private ext4 mount can update journal/metadata; no other payload file should be changed by token transaction.",
+    "Snapshot scans and advisory lock do not exclude unrelated raw writers or future mounts; caller must provide exclusive maintenance.",
+    "Actual stock-kernel private mount, physical writes/durability and boot acceptance remain untested."
+  ],
+  "reviewer_device_operations": false
+}

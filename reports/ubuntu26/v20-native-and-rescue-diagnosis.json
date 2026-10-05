@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "status": "v20_native_success_backup_rule_parser_failure_and_actual_automatic_stock2_return",
+  "native_boot_id": "00000000-0000-4000-8000-000000000026",
+  "native_primary_login_passed": true,
+  "normal_root_rw_explicitly_verified": true,
+  "backup_login_passed": false,
+  "guardian_preflight_passed_and_ARMED": true,
+  "UBUNTU_EXEC_proved": true,
+  "actual_current_stock2_boot_id": "00000000-0000-4000-8000-000000000002",
+  "metadata_sha256": "f555ad0bca09747d8305f659cb1c5465f6c2903144cd7ccaa1ae682254c21a73",
+  "ACK_sent": false,
+  "manual_powercycle_performed": false,
+  "permanent_acceptance": false,
+  "git_commit_or_push": false,
+  "evidence": {
+    "native_primary": {
+      "path": "evidence/ubuntu26/trial-live/twentieth-primary-readonly-v1/result.json",
+      "sha256": "c56e1b56aca63cf5aaf35c2ed4ea0daa23b5ba2f3acf5ca86ce967da09c7f9f6",
+      "bytes": 811
+    },
+    "primary_stdout": {
+      "path": "evidence/ubuntu26/trial-live/twentieth-primary-readonly-v1/stdout",
+      "sha256": "743c0a1f62a73c7489297fae7037ec81ce18454874a81f9b2fdea85bc0318812",
+      "bytes": 4447
+    },
+    "backup": {
+      "path": "evidence/ubuntu26/trial-live/twentieth-uplink-backup/result.json",
+      "sha256": "0fff78e098b9c5c6a4781c0a54064b409aa62fa49308e173657e8de81b84f3ad",
+      "bytes": 479
+    },
+    "new_rule_readonly": {
+      "path": "evidence/ubuntu26/trial-live/twentieth-rule-raw-readonly-v1/stdout",
+      "sha256": "42c1a4111e97f540b30d96c1b26999f05ebcb5a906d0cf39b3e1901c9937bf37",
+      "bytes": 451
+    },
+    "actual_stock": {
+      "path": "evidence/ubuntu26/trial-live/twentieth-return-forensics-v1/stock-result.json",
+      "sha256": "307c843b1081e2273090d64cc14fde7e516d1afc1abda93eaeabf5c034ad9763",
+      "bytes": 1504
+    },
+    "clean_export": {
+      "path": "evidence/ubuntu26/trial-live/twentieth-return-forensics-v1/result.json",
+      "sha256": "8618cd6871fc9995512b78a7c92ec0b4f9f257feaa9781ca6514bbac9799eb4c",
+      "bytes": 1483
+    },
+    "fixed_crc_trace": {
+      "path": "evidence/ubuntu26/trial-live/twentieth-fixed-trace-v1/parsed.json",
+      "sha256": "f52dec9b0c4e9551b13f49c2dfc50a78a33a0350c771b308a1227d982aed4a81",
+      "bytes": 2392
+    }
+  },
+  "diagnosis": "Live new-boot journal capture reports rule-attribute-shape in RTM_NEWRULE; actual ip-details lists defaults plus priority20/table8437. SDK fib_nl_fill_rule emits header252+FRA_TABLE8437, rejected by old decoder. Exact failed raw packet unavailable because native Python absent; source defect is proved and causal attribution remains inference.",
+  "guardian_final": {
+    "policy_reason": 3,
+    "first_failure": "policy-expiry",
+    "worker_bits": 7,
+    "lan_sequence": 0,
+    "monotonic_ms": 339586,
+    "last_successful_keepalive_ms": 300535
+  },
+  "verification_scope": "New fixed CRC trace only bound independently to actual authenticated nativeBOOT and stockreturn; no journal extraction/verification/query, oldtests untouched."
+}

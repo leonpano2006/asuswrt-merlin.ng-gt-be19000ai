@@ -1,0 +1,916 @@
+{
+  "schema_version": 1,
+  "audited_at_utc": "2026-10-04T15:22:26.431173+00:00",
+  "scope": "Read-only inspection of the existing native candidate tar, stored authenticated archive indices, package metadata and local source reports. Only this report was written; no rootfs changes, package installation, network update, repository/key creation or device operations.",
+  "deployment_gate": {
+    "status": "not_ready",
+    "reason": "No signed custom APT repository, protected update policy or tested multiarch security-update pipeline exists for the custom dependency families. Native boot/package acceptance is separate from sustainable update readiness.",
+    "does_not_override_native_runtime_results": true
+  },
+  "candidate": {
+    "path": "build/ubuntu26-rootfs/ubuntu26-bcm-gnu-systemd-b53-v3.tar",
+    "sha256": "057c52f70d8974691179235c4e273a6be0d474edde11d6c1cb85b09b11b250a4",
+    "bytes": 512396800,
+    "custom_gnu_packages": 35,
+    "custom_systemd_packages": 6,
+    "custom_total": 41,
+    "installed_custom_architectures": [
+      "arm64"
+    ],
+    "dpkg_architectures": [
+      "arm64",
+      "armel",
+      "armhf"
+    ],
+    "foreign_abi_runtime_complete": false
+  },
+  "observed_apt_configuration": {
+    "files": {
+      "etc/apt/apt.conf.d/01-vendor-ubuntu": "Acquire::Changelogs::AlwaysOnline \"true\";\nAcquire::http::User-Agent-Non-Interactive \"true\";\n",
+      "etc/apt/apt.conf.d/01autoremove": "APT\n{\n  NeverAutoRemove\n  {\n\t\"^firmware-linux.*\";\n\t\"^linux-firmware$\";\n\t\"^linux-image-[a-z0-9]*$\";\n\t\"^linux-image-[a-z0-9]*-[a-z0-9]*$\";\n  };\n\n  VersionedKernelPackages\n  {\n\t# kernels\n\t\"linux-.*\";\n\t\"kfreebsd-.*\";\n\t\"gnumach-.*\";\n\t# (out-of-tree) modules\n\t\".*-modules\";\n\t\".*-kernel\";\n  };\n\n  Never-MarkAuto-Sections\n  {\n\t\"metapackages\";\n\t\"tasks\";\n  };\n\n  Move-Autobit-Sections\n  {\n\t\"oldlibs\";\n  };\n};\n",
+      "etc/apt/apt.conf.d/70debconf": "// Pre-configure all packages with debconf before they are installed.\n// If you don't like it, comment it out.\nDPkg::Pre-Install-Pkgs {\"/usr/sbin/dpkg-preconfigure --apt || true\";};\n",
+      "etc/apt/sources.list.d/ubuntu.sources": "# Managed as a dpkg conffile by leon-bcm-rootfs-config.\n# armel is reserved for the future signed project repository.\nTypes: deb\nURIs: https://ports.ubuntu.com/ubuntu-ports\nSuites: resolute resolute-updates resolute-security\nComponents: main restricted universe multiverse\nArchitectures: arm64 armhf\nSigned-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg\n"
+    },
+    "preferences_files": [],
+    "held_packages": [],
+    "custom_repository_present": false,
+    "official_signed_by": "/usr/share/keyrings/ubuntu-archive-keyring.gpg",
+    "custom_signed_by_present": false,
+    "official_archive_architectures": [
+      "arm64",
+      "armhf"
+    ],
+    "armel_source_present": false,
+    "apt_lists_in_tar": "Package indices are cleaned from candidate; an apt update is needed before a new solver transaction. Existing signed index snapshot below is evidence, not a fresh-network claim.",
+    "unattended_upgrades_package_installed": false,
+    "automatic_upgrade_enablement": "Not established by this audit; findings apply to future apt upgrade/full-upgrade/install transactions. No automatic updater was enabled."
+  },
+  "apt_selection_semantics": {
+    "primary_reference": "Candidate usr/share/man/man5/apt_preferences.5.gz (APT 3.2.0)",
+    "reference_sha256": "058aaaa7bc49869e13c7c8742338f380dadd54789f89f0d6c71fad2ef89edaf5",
+    "installed_only_default_priority": 100,
+    "ordinary_archive_default_priority": 500,
+    "downgrade_default": false,
+    "version_suffix_is_not_a_pin": true,
+    "inference": "A higher official version may replace a locally installed custom version when its dependency closure is satisfiable. A lower official security version normally does not downgrade a newer custom version, so keeping the higher version does not import its security fixes.",
+    "solver_full_upgrade_simulation_run": false
+  },
+  "version_ordering_tests": [
+    {
+      "family": "systemd",
+      "official_base": "259.5-0ubuntu3.4",
+      "installed": "259.5-0ubuntu3.4+leonb53.2",
+      "hypothetical_future_revision": "259.5-0ubuntu3.5",
+      "tested_order": "official_base < installed < hypothetical_future_revision",
+      "future_revision_is_example_not_publication_claim": true
+    },
+    {
+      "family": "glibc",
+      "official_base": "2.44-1ubuntu1",
+      "installed": "2.44-1ubuntu1+leonb53.1",
+      "hypothetical_future_revision": "2.44-1ubuntu2",
+      "tested_order": "official_base < installed < hypothetical_future_revision",
+      "future_revision_is_example_not_publication_claim": true
+    },
+    {
+      "family": "gcc",
+      "official_base": "16.2.0-3ubuntu1",
+      "installed": "16.2.0-3ubuntu1+leonb53.1",
+      "hypothetical_future_revision": "16.2.0-3ubuntu2",
+      "tested_order": "official_base < installed < hypothetical_future_revision",
+      "future_revision_is_example_not_publication_claim": true
+    },
+    {
+      "family": "binutils",
+      "official_base": "2.47-6ubuntu1",
+      "installed": "2.47-6ubuntu1+leonb53.1",
+      "hypothetical_future_revision": "2.47-6ubuntu2",
+      "tested_order": "official_base < installed < hypothetical_future_revision",
+      "future_revision_is_example_not_publication_claim": true
+    }
+  ],
+  "findings": [
+    {
+      "id": "systemd-custom-fallback-can-be-replaced",
+      "severity": "high",
+      "status": "open",
+      "packages": [
+        "systemd",
+        "systemd-sysv",
+        "udev",
+        "libsystemd-shared",
+        "libsystemd0",
+        "libudev1"
+      ],
+      "installed": "259.5-0ubuntu3.4+leonb53.2",
+      "current_snapshot_official": "259.5-0ubuntu3.4",
+      "risk": "The current official revision is lower, but a later official revision such as the explicitly hypothetical 259.5-0ubuntu3.5 sorts above +leonb53.2. With no hold/pin it can become the selected candidate and replace the coherent family. Official signatures authenticate origin; they do not retain this project's legacy credentials mount fallback.",
+      "impact": "Previously verified service credentials on Linux 4.19 can fail again if an unpatched systemd/libsystemd-shared is selected. Exact-version dependencies keep related packages consistent but do not protect project modifications.",
+      "required_gate": "Publish tested rebases of the complete required systemd family through an authenticated custom source and exercise upgrade/rollback with real credential services on the exact kernel."
+    },
+    {
+      "id": "newer-gnu-builds-need-own-security-maintenance",
+      "severity": "high",
+      "status": "open",
+      "packages": [
+        "libc6",
+        "libc6-dev",
+        "libc-bin",
+        "libc-dev-bin",
+        "libc-gconv-modules-extra",
+        "gcc-16-base",
+        "libgcc-s1",
+        "libstdc++6",
+        "binutils"
+      ],
+      "snapshot_examples": {
+        "glibc": "2.43-2ubuntu2.4",
+        "gcc_runtime": "16-20260322-1ubuntu1",
+        "binutils": "2.46-3ubuntu2"
+      },
+      "risk": "Installed 2.44 / 16.2.0 / 2.47 versions are above the recorded Resolute packages. Security fixes released only on lower Resolute branches will not automatically be applied to these custom newer branches. If a future official version does overtake them, no current policy preserves the tested custom build.",
+      "qualification": "This audit does not assert an unpatched vulnerability is currently present, nor that official GNU packages are necessarily incompatible. GNU changes include the explicit 4.19 build baseline and CPU tuning; the known required old-mount fallback is in systemd.",
+      "required_gate": "Track security fixes applicable to the chosen newer GNU branches, rebase/rebuild with preserved package semantics, validate on kernel10, and publish authenticated project revisions. A permanent hold alone is not a security maintenance solution."
+    },
+    {
+      "id": "multiarch-coinstall-version-gap",
+      "severity": "high",
+      "status": "open",
+      "rule": "For each Multi-Arch:same package name, simultaneously installed arm64/armel/armhf instances must carry the same full Debian version; matching upstream 2.44 or GCC16 alone is insufficient. Different ABI package payloads are still separately built and ABI-correct.",
+      "glibc": "libc6, libc-gconv-modules-extra and libc6-dev are Multi-Arch:same. libc6 requires the exact gconv version; libc6-dev requires exact libc6 and libc-dev-bin. libc-bin/libc-dev-bin are Multi-Arch:foreign, so do not assume three copies are needed.",
+      "gcc": "gcc-16-base, libgcc-s1, libstdc++6 and other runtime/development libraries are Multi-Arch:same; runtimes require the exact gcc-16-base version. Native triplet compiler executables marked Multi-Arch:foreign are not a substitute for foreign-ABI runtime packages.",
+      "systemd": "libsystemd0/libudev1/libsystemd-shared are also Multi-Arch:same; future foreign packages that need them require coherent custom builds too.",
+      "current_gap": "Only custom arm64 is installed. Official armhf libc6/GCC runtime versions differ from the custom arm64 versions; a plain apt install libc6:armhf or a dependent foreign application cannot be assumed to coinstall. armel is registered with dpkg but excluded from official sources because Ubuntu does not publish that ABI.",
+      "development_headers": "A real libc6-dev:armel also needs an ABI-correct linux-libc-dev:armel dependency. Cross-SDK sysroot packages are not a native armel repository replacement.",
+      "required_gate": "Build and publish matching complete ABI families and required dependency closure, then test actual arm64+armel+armhf installation and coordinated upgrades. Keep the native-only acceptance claim until then."
+    },
+    {
+      "id": "local-artifacts-are-not-an-update-channel",
+      "severity": "medium",
+      "status": "open",
+      "risk": "The 41 packages were installed from local .deb paths during bootstrap and those temporary .debs were removed. Their hashes and source provenance are recorded, but no custom Packages/Release/InRelease/Signed-By channel is configured for later installs or fixes. The rootfs tar itself is not signed.",
+      "required_gate": "Set up a deliberately owned signing identity, scoped Signed-By configuration and auditable release metadata only when authorized for implementation; do not invent a key or use trusted=yes/allow-unauthenticated."
+    }
+  ],
+  "proposed_release_policy_not_applied": [
+    "Keep signed Resolute sources enabled for ordinary supported dependency updates; do not globally freeze or mix an entire development distribution into the rootfs.",
+    "Serve the custom GNU/systemd ABI families from a dedicated signed repository with an explicit maintained release scope. Add package-scoped preference rules that select approved project builds and prevent accidental replacement by an unvalidated official build; key trust and package preferences solve different problems.",
+    "An exact hold or allowlist can be a temporary controlled deployment measure, but must expose pending security updates and cannot substitute for the custom rebuild/retest pipeline.",
+    "Before each project update: verify source signatures/hashes, rebuild relevant complete ABI families, check control data and dependency closure, simulate upgrades, and boot/run compatibility tests on the exact kernel before publishing.",
+    "Test update rollback and keep recoverable prior package/rootfs artifacts. Do not claim repository-based reproducible rollback from live upstream indices alone."
+  ],
+  "installed_custom_packages": [
+    {
+      "Package": "binutils",
+      "Version": "2.47-6ubuntu1+leonb53.1",
+      "Architecture": "arm64",
+      "Status": "install ok installed",
+      "Depends": "libbinutils (= 2.47-6ubuntu1+leonb53.1), libc6 (>= 2.38), libgcc-s1 (>= 3.0), libgprofng0 (>= 2.45.50), libstdc++6 (>= 13.1), binutils-common (= 2.47-6ubuntu1+leonb53.1), binutils-aarch64-linux-gnu (= 2.47-6ubuntu1+leonb53.1)"
+    },
+    {
+      "Package": "binutils-aarch64-linux-gnu",
+      "Version": "2.47-6ubuntu1+leonb53.1",
+      "Architecture": "arm64",
+      "Status": "install ok installed",
+      "Multi-Arch": "allowed",
+      "Depends": "binutils-common (= 2.47-6ubuntu1+leonb53.1), libbinutils (= 2.47-6ubuntu1+leonb53.1), libc6 (>= 2.38), libctf-nobfd0 (>= 2.36), libctf0 (>= 2.36), libjansson4 (>= 2.14), libsframe3 (>= 2.45.50), libzstd1 (>= 1.5.5), zlib1g (>= 1:1.1.4)"
+    },
+    {
+      "Package": "binutils-arm-linux-gnueabi",
+      "Version": "2.47-6ubuntu1+leonb53.1",
+      "Architecture": "arm64",
+      "Status": "install ok installed",
+      "Multi-Arch": "allowed",
+      "Depends": "binutils-common (= 2.47-6ubuntu1+leonb53.1), libc6 (>= 2.38), libjansson4 (>= 2.14), libsframe3 (>= 2.45.50), libzstd1 (>= 1.5.5), zlib1g (>= 1:1.1.4)"
+    },
+    {
+      "Package": "binutils-arm-linux-gnueabihf",
+      "Version": "2.47-6ubuntu1+leonb53.1",
+      "Architecture": "arm64",
+      "Status": "install ok installed",
+      "Multi-Arch": "allowed",
+      "Depends": "binutils-common (= 2.47-6ubuntu1+leonb53.1), libc6 (>= 2.38), libjansson4 (>= 2.14), libsframe3 (>= 2.45.50), libzstd1 (>= 1.5.5), zlib1g (>= 1:1.1.4)"
+    },
+    {
+      "Package": "binutils-common",
+      "Version": "2.47-6ubuntu1+leonb53.1",
+      "Architecture": "arm64",
+      "Status": "install ok installed",
+      "Multi-Arch": "same"
+    },
+    {
+      "Package": "cpp-16",
+      "Version": "16.2.0-3ubuntu1+leonb53.1",
+      "Architecture": "arm64",
+      "Status": "install ok installed",
+      "Depends": "gcc-16-base (= 16.2.0-3ubuntu1+leonb53.1), cpp-16-aarch64-linux-gnu (= 16.2.0-3ubuntu1+leonb53.1)"
+    },
+    {
+      "Package": "cpp-16-aarch64-linux-gnu",
+      "Version": "16.2.0-3ubuntu1+leonb53.1",
+      "Architecture": "arm64",
+      "Status": "install ok installed",
+      "Multi-Arch": "foreign",
+      "Depends": "gcc-16-base (= 16.2.0-3ubuntu1+leonb53.1), libc6 (>= 2.38), libgmp10 (>= 2:6.3.0+dfsg), libisl23 (>= 0.15), libmpc3 (>= 1.1.0), libmpfr6 (>= 4.2.0), libzstd1 (>= 1.5.5), zlib1g (>= 1:1.1.4)"
+    },
+    {
+      "Package": "g++-16",
+      "Version": "16.2.0-3ubuntu1+leonb53.1",
+      "Architecture": "arm64",
+      "Status": "install ok installed",
+      "Depends": "g++-16-aarch64-linux-gnu (= 16.2.0-3ubuntu1+leonb53.1), gcc-16-base (= 16.2.0-3ubuntu1+leonb53.1), gcc-16 (= 16.2.0-3ubuntu1+leonb53.1)"
+    },
+    {
+      "Package": "g++-16-aarch64-linux-gnu",
+      "Version": "16.2.0-3ubuntu1+leonb53.1",
+      "Architecture": "arm64",
+      "Status": "install ok installed",
+      "Multi-Arch": "foreign",
+      "Depends": "gcc-16-base (= 16.2.0-3ubuntu1+leonb53.1), gcc-16-aarch64-linux-gnu (= 16.2.0-3ubuntu1+leonb53.1), libstdc++-16-dev (= 16.2.0-3ubuntu1+leonb53.1), libc6 (>= 2.38), libgmp10 (>= 2:6.3.0+dfsg), libisl23 (>= 0.15), libmpc3 (>= 1.1.0), libmpfr6 (>= 4.2.0), libzstd1 (>= 1.5.5), zlib1g (>= 1:1.2.2)"
+    },
+    {
+      "Package": "gcc-16",
+      "Version": "16.2.0-3ubuntu1+leonb53.1",
+      "Architecture": "arm64",
+      "Status": "install ok installed",
+      "Depends": "gcc-16-aarch64-linux-gnu (= 16.2.0-3ubuntu1+leonb53.1), gcc-16-base (= 16.2.0-3ubuntu1+leonb53.1), cpp-16 (= 16.2.0-3ubuntu1+leonb53.1), binutils (>= 2.39)"
+    },
+    {
+      "Package": "gcc-16-aarch64-linux-gnu",
+      "Version": "16.2.0-3ubuntu1+leonb53.1",
+      "Architecture": "arm64",
+      "Status": "install ok installed",
+      "Multi-Arch": "foreign",
+      "Depends": "cpp-16-aarch64-linux-gnu (= 16.2.0-3ubuntu1+leonb53.1), gcc-16-base (= 16.2.0-3ubuntu1+leonb53.1), libcc1-0 (>= 16.2.0-3ubuntu1+leonb53.1), binutils-aarch64-linux-gnu (>= 2.39), libgcc-16-dev (= 16.2.0-3ubuntu1+leonb53.1), libc6 (>= 2.38), libgcc-s1 (>= 3.0), libgmp10 (>= 2:6.3.0+dfsg), libisl23 (>= 0.15), libmpc3 (>= 1.1.0), libmpfr6 (>= 4.2.0), libstdc++6 (>= 5), libzstd1 (>= 1.5.5), zlib1g (>= 1:1.1.4)"
+    },
+    {
+      "Package": "gcc-16-base",
+      "Version": "16.2.0-3ubuntu1+leonb53.1",
+      "Architecture": "arm64",
+      "Status": "install ok installed",
+      "Multi-Arch": "same"
+    },
+    {
+      "Package": "libasan8",
+      "Version": "16.2.0-3ubuntu1+leonb53.1",
+      "Architecture": "arm64",
+      "Status": "install ok installed",
+      "Multi-Arch": "same",
+      "Depends": "gcc-16-base (= 16.2.0-3ubuntu1+leonb53.1), libc6 (>= 2.34), libgcc-s1 (>= 3.3)"
+    },
+    {
+      "Package": "libatomic1",
+      "Version": "16.2.0-3ubuntu1+leonb53.1",
+      "Architecture": "arm64",
+      "Status": "install ok installed",
+      "Multi-Arch": "same",
+      "Depends": "gcc-16-base (= 16.2.0-3ubuntu1+leonb53.1), libc6 (>= 2.17)"
+    },
+    {
+      "Package": "libbinutils",
+      "Version": "2.47-6ubuntu1+leonb53.1",
+      "Architecture": "arm64",
+      "Status": "install ok installed",
+      "Multi-Arch": "same",
+      "Depends": "libc6 (>= 2.38), libsframe3, libzstd1 (>= 1.5.5), zlib1g (>= 1:1.2.11), binutils-common (= 2.47-6ubuntu1+leonb53.1)"
+    },
+    {
+      "Package": "libc-bin",
+      "Version": "2.44-1ubuntu1+leonb53.1",
+      "Architecture": "arm64",
+      "Status": "install ok installed",
+      "Multi-Arch": "foreign",
+      "Depends": "libc6 (>> 2.44), libc6 (<< 2.45)"
+    },
+    {
+      "Package": "libc-dev-bin",
+      "Version": "2.44-1ubuntu1+leonb53.1",
+      "Architecture": "arm64",
+      "Status": "install ok installed",
+      "Multi-Arch": "foreign",
+      "Depends": "libc6 (>> 2.44), libc6 (<< 2.45)"
+    },
+    {
+      "Package": "libc-gconv-modules-extra",
+      "Version": "2.44-1ubuntu1+leonb53.1",
+      "Architecture": "arm64",
+      "Status": "install ok installed",
+      "Multi-Arch": "same"
+    },
+    {
+      "Package": "libc6",
+      "Version": "2.44-1ubuntu1+leonb53.1",
+      "Architecture": "arm64",
+      "Status": "install ok installed",
+      "Multi-Arch": "same",
+      "Depends": "libgcc-s1, libc-gconv-modules-extra (= 2.44-1ubuntu1+leonb53.1)"
+    },
+    {
+      "Package": "libc6-dev",
+      "Version": "2.44-1ubuntu1+leonb53.1",
+      "Architecture": "arm64",
+      "Status": "install ok installed",
+      "Multi-Arch": "same",
+      "Depends": "libc6 (= 2.44-1ubuntu1+leonb53.1), libc-dev-bin (= 2.44-1ubuntu1+leonb53.1), linux-libc-dev"
+    },
+    {
+      "Package": "libcc1-0",
+      "Version": "16.2.0-3ubuntu1+leonb53.1",
+      "Architecture": "arm64",
+      "Status": "install ok installed",
+      "Multi-Arch": "same",
+      "Depends": "gcc-16-base (= 16.2.0-3ubuntu1+leonb53.1), libc6 (>= 2.17), libgcc-s1 (>= 3.0), libstdc++6 (>= 5.2)"
+    },
+    {
+      "Package": "libctf-nobfd0",
+      "Version": "2.47-6ubuntu1+leonb53.1",
+      "Architecture": "arm64",
+      "Status": "install ok installed",
+      "Multi-Arch": "same",
+      "Depends": "libc6 (>= 2.33), zlib1g (>= 1:1.2.0)"
+    },
+    {
+      "Package": "libctf0",
+      "Version": "2.47-6ubuntu1+leonb53.1",
+      "Architecture": "arm64",
+      "Status": "install ok installed",
+      "Multi-Arch": "same",
+      "Depends": "libbinutils (= 2.47-6ubuntu1+leonb53.1), libc6 (>= 2.33), zlib1g (>= 1:1.2.0)"
+    },
+    {
+      "Package": "libgcc-16-dev",
+      "Version": "16.2.0-3ubuntu1+leonb53.1",
+      "Architecture": "arm64",
+      "Status": "install ok installed",
+      "Multi-Arch": "same",
+      "Depends": "gcc-16-base (= 16.2.0-3ubuntu1+leonb53.1), libgcc-s1 (>= 16.2.0-3ubuntu1+leonb53.1), libgomp1 (>= 16.2.0-3ubuntu1+leonb53.1), libitm1 (>= 16.2.0-3ubuntu1+leonb53.1), libatomic1 (>= 16.2.0-3ubuntu1+leonb53.1), libasan8 (>= 16.2.0-3ubuntu1+leonb53.1), liblsan0 (>= 16.2.0-3ubuntu1+leonb53.1), libtsan2 (>= 16.2.0-3ubuntu1+leonb53.1), libubsan1 (>= 16.2.0-3ubuntu1+leonb53.1), libhwasan0 (>= 16.2.0-3ubuntu1+leonb53.1)"
+    },
+    {
+      "Package": "libgcc-s1",
+      "Version": "16.2.0-3ubuntu1+leonb53.1",
+      "Architecture": "arm64",
+      "Status": "install ok installed",
+      "Multi-Arch": "same",
+      "Depends": "gcc-16-base (= 16.2.0-3ubuntu1+leonb53.1), libc6 (>= 2.35)"
+    },
+    {
+      "Package": "libgomp1",
+      "Version": "16.2.0-3ubuntu1+leonb53.1",
+      "Architecture": "arm64",
+      "Status": "install ok installed",
+      "Multi-Arch": "same",
+      "Depends": "gcc-16-base (= 16.2.0-3ubuntu1+leonb53.1), libc6 (>= 2.38)"
+    },
+    {
+      "Package": "libgprofng0",
+      "Version": "2.47-6ubuntu1+leonb53.1",
+      "Architecture": "arm64",
+      "Status": "install ok installed",
+      "Multi-Arch": "same",
+      "Depends": "libbinutils (= 2.47-6ubuntu1+leonb53.1), libc6 (>= 2.38), libgcc-s1 (>= 3.0), libstdc++6 (>= 14), zlib1g (>= 1:1.1.4)"
+    },
+    {
+      "Package": "libhwasan0",
+      "Version": "16.2.0-3ubuntu1+leonb53.1",
+      "Architecture": "arm64",
+      "Status": "install ok installed",
+      "Multi-Arch": "same",
+      "Depends": "gcc-16-base (= 16.2.0-3ubuntu1+leonb53.1), libc6 (>= 2.34), libgcc-s1 (>= 3.3)"
+    },
+    {
+      "Package": "libitm1",
+      "Version": "16.2.0-3ubuntu1+leonb53.1",
+      "Architecture": "arm64",
+      "Status": "install ok installed",
+      "Multi-Arch": "same",
+      "Depends": "gcc-16-base (= 16.2.0-3ubuntu1+leonb53.1), libc6 (>= 2.34)"
+    },
+    {
+      "Package": "liblsan0",
+      "Version": "16.2.0-3ubuntu1+leonb53.1",
+      "Architecture": "arm64",
+      "Status": "install ok installed",
+      "Multi-Arch": "same",
+      "Depends": "gcc-16-base (= 16.2.0-3ubuntu1+leonb53.1), libc6 (>= 2.34), libgcc-s1 (>= 3.3)"
+    },
+    {
+      "Package": "libsframe3",
+      "Version": "2.47-6ubuntu1+leonb53.1",
+      "Architecture": "arm64",
+      "Status": "install ok installed",
+      "Multi-Arch": "same",
+      "Depends": "libc6 (>= 2.17)"
+    },
+    {
+      "Package": "libstdc++-16-dev",
+      "Version": "16.2.0-3ubuntu1+leonb53.1",
+      "Architecture": "arm64",
+      "Status": "install ok installed",
+      "Multi-Arch": "same",
+      "Depends": "gcc-16-base (= 16.2.0-3ubuntu1+leonb53.1), libgcc-16-dev (= 16.2.0-3ubuntu1+leonb53.1), libstdc++6 (>= 16.2.0-3ubuntu1+leonb53.1), libc6-dev (>= 2.13-0ubuntu6)"
+    },
+    {
+      "Package": "libstdc++6",
+      "Version": "16.2.0-3ubuntu1+leonb53.1",
+      "Architecture": "arm64",
+      "Status": "install ok installed",
+      "Multi-Arch": "same",
+      "Depends": "gcc-16-base (= 16.2.0-3ubuntu1+leonb53.1), libc6 (>= 2.38), libgcc-s1 (>= 4.5)"
+    },
+    {
+      "Package": "libsystemd-shared",
+      "Version": "259.5-0ubuntu3.4+leonb53.2",
+      "Architecture": "arm64",
+      "Status": "install ok installed",
+      "Multi-Arch": "same",
+      "Depends": "libc6 (>= 2.39), libcrypt1 (>= 1:4.4.0), libssl3t64 (>= 3.4.0)"
+    },
+    {
+      "Package": "libsystemd0",
+      "Version": "259.5-0ubuntu3.4+leonb53.2",
+      "Architecture": "arm64",
+      "Status": "install ok installed",
+      "Multi-Arch": "same",
+      "Depends": "libc6 (>= 2.39)"
+    },
+    {
+      "Package": "libtsan2",
+      "Version": "16.2.0-3ubuntu1+leonb53.1",
+      "Architecture": "arm64",
+      "Status": "install ok installed",
+      "Multi-Arch": "same",
+      "Depends": "gcc-16-base (= 16.2.0-3ubuntu1+leonb53.1), libc6 (>= 2.34), libgcc-s1 (>= 3.3)"
+    },
+    {
+      "Package": "libubsan1",
+      "Version": "16.2.0-3ubuntu1+leonb53.1",
+      "Architecture": "arm64",
+      "Status": "install ok installed",
+      "Multi-Arch": "same",
+      "Depends": "gcc-16-base (= 16.2.0-3ubuntu1+leonb53.1), libc6 (>= 2.34), libgcc-s1 (>= 3.3), libstdc++6 (>= 4.1.1)"
+    },
+    {
+      "Package": "libudev1",
+      "Version": "259.5-0ubuntu3.4+leonb53.2",
+      "Architecture": "arm64",
+      "Status": "install ok installed",
+      "Multi-Arch": "same",
+      "Depends": "libc6 (>= 2.38)"
+    },
+    {
+      "Package": "systemd",
+      "Version": "259.5-0ubuntu3.4+leonb53.2",
+      "Architecture": "arm64",
+      "Status": "install ok installed",
+      "Multi-Arch": "foreign",
+      "Depends": "libc6 (>= 2.41), libssl3t64 (>= 3.4.0), libsystemd0 (= 259.5-0ubuntu3.4+leonb53.2), mount",
+      "Pre-Depends": "libc6 (>= 2.38), libsystemd-shared (= 259.5-0ubuntu3.4+leonb53.2)"
+    },
+    {
+      "Package": "systemd-sysv",
+      "Version": "259.5-0ubuntu3.4+leonb53.2",
+      "Architecture": "arm64",
+      "Status": "install ok installed",
+      "Multi-Arch": "foreign",
+      "Depends": "systemd (= 259.5-0ubuntu3.4+leonb53.2)",
+      "Pre-Depends": "systemd"
+    },
+    {
+      "Package": "udev",
+      "Version": "259.5-0ubuntu3.4+leonb53.2",
+      "Architecture": "arm64",
+      "Status": "install ok installed",
+      "Multi-Arch": "foreign",
+      "Depends": "libc6 (>= 2.38), libsystemd-shared (= 259.5-0ubuntu3.4+leonb53.2), systemd | systemd-standalone-sysusers | systemd-sysusers, libkmod2, libudev1 (= 259.5-0ubuntu3.4+leonb53.2)"
+    }
+  ],
+  "archive_snapshot_package_records": [
+    {
+      "index": "build/ubuntu26-audit/resolute-arm64-Packages.xz",
+      "Package": "binutils",
+      "Version": "2.46-3ubuntu2",
+      "Architecture": "arm64",
+      "Depends": "libbinutils (= 2.46-3ubuntu2), libc6 (>= 2.38), libgcc-s1 (>= 3.0), libgprofng0 (>= 2.45.50), libstdc++6 (>= 13.1), binutils-common (= 2.46-3ubuntu2), binutils-aarch64-linux-gnu (= 2.46-3ubuntu2)"
+    },
+    {
+      "index": "build/ubuntu26-audit/resolute-arm64-Packages.xz",
+      "Package": "gcc-16-base",
+      "Version": "16-20260322-1ubuntu1",
+      "Architecture": "arm64",
+      "Multi-Arch": "same"
+    },
+    {
+      "index": "build/ubuntu26-audit/resolute-arm64-Packages.xz",
+      "Package": "libc-gconv-modules-extra",
+      "Version": "2.43-2ubuntu2",
+      "Architecture": "arm64",
+      "Multi-Arch": "same"
+    },
+    {
+      "index": "build/ubuntu26-audit/resolute-arm64-Packages.xz",
+      "Package": "libc6",
+      "Version": "2.43-2ubuntu2",
+      "Architecture": "arm64",
+      "Multi-Arch": "same",
+      "Depends": "libgcc-s1, libc-gconv-modules-extra (= 2.43-2ubuntu2)"
+    },
+    {
+      "index": "build/ubuntu26-audit/resolute-arm64-Packages.xz",
+      "Package": "libc6-dev",
+      "Version": "2.43-2ubuntu2",
+      "Architecture": "arm64",
+      "Multi-Arch": "same",
+      "Depends": "libc6 (= 2.43-2ubuntu2), libc-dev-bin (= 2.43-2ubuntu2), linux-libc-dev, rpcsvc-proto"
+    },
+    {
+      "index": "build/ubuntu26-audit/resolute-arm64-Packages.xz",
+      "Package": "libgcc-s1",
+      "Version": "16-20260322-1ubuntu1",
+      "Architecture": "arm64",
+      "Multi-Arch": "same",
+      "Depends": "gcc-16-base (= 16-20260322-1ubuntu1), libc6 (>= 2.35)"
+    },
+    {
+      "index": "build/ubuntu26-audit/resolute-arm64-Packages.xz",
+      "Package": "libstdc++6",
+      "Version": "16-20260322-1ubuntu1",
+      "Architecture": "arm64",
+      "Multi-Arch": "same",
+      "Depends": "gcc-16-base (= 16-20260322-1ubuntu1), libc6 (>= 2.38), libgcc-s1 (>= 4.5)"
+    },
+    {
+      "index": "build/ubuntu26-audit/resolute-arm64-Packages.xz",
+      "Package": "libsystemd0",
+      "Version": "259.5-0ubuntu3",
+      "Architecture": "arm64",
+      "Multi-Arch": "same",
+      "Depends": "libc6 (>= 2.39)"
+    },
+    {
+      "index": "build/ubuntu26-audit/resolute-arm64-Packages.xz",
+      "Package": "libudev1",
+      "Version": "259.5-0ubuntu3",
+      "Architecture": "arm64",
+      "Multi-Arch": "same",
+      "Depends": "libc6 (>= 2.38)"
+    },
+    {
+      "index": "build/ubuntu26-audit/resolute-arm64-Packages.xz",
+      "Package": "systemd",
+      "Version": "259.5-0ubuntu3",
+      "Architecture": "arm64",
+      "Multi-Arch": "foreign",
+      "Depends": "libc6 (>= 2.41), libssl3t64 (>= 3.4.0), libsystemd0 (= 259.5-0ubuntu3), mount"
+    },
+    {
+      "index": "build/ubuntu26-audit/resolute-armhf-Packages.xz",
+      "Package": "binutils",
+      "Version": "2.46-3ubuntu2",
+      "Architecture": "armhf",
+      "Depends": "libc6 (>= 2.34), zlib1g (>= 1:1.2.0), binutils-common (= 2.46-3ubuntu2), libbinutils (= 2.46-3ubuntu2), binutils-arm-linux-gnueabihf (= 2.46-3ubuntu2)"
+    },
+    {
+      "index": "build/ubuntu26-audit/resolute-armhf-Packages.xz",
+      "Package": "gcc-16-base",
+      "Version": "16-20260322-1ubuntu1",
+      "Architecture": "armhf",
+      "Multi-Arch": "same"
+    },
+    {
+      "index": "build/ubuntu26-audit/resolute-armhf-Packages.xz",
+      "Package": "libc-gconv-modules-extra",
+      "Version": "2.43-2ubuntu2",
+      "Architecture": "armhf",
+      "Multi-Arch": "same"
+    },
+    {
+      "index": "build/ubuntu26-audit/resolute-armhf-Packages.xz",
+      "Package": "libc6",
+      "Version": "2.43-2ubuntu2",
+      "Architecture": "armhf",
+      "Multi-Arch": "same",
+      "Depends": "libgcc-s1, libc-gconv-modules-extra (= 2.43-2ubuntu2)"
+    },
+    {
+      "index": "build/ubuntu26-audit/resolute-armhf-Packages.xz",
+      "Package": "libc6-dev",
+      "Version": "2.43-2ubuntu2",
+      "Architecture": "armhf",
+      "Multi-Arch": "same",
+      "Depends": "libc6 (= 2.43-2ubuntu2), libc-dev-bin (= 2.43-2ubuntu2), linux-libc-dev, rpcsvc-proto"
+    },
+    {
+      "index": "build/ubuntu26-audit/resolute-armhf-Packages.xz",
+      "Package": "libgcc-s1",
+      "Version": "16-20260322-1ubuntu1",
+      "Architecture": "armhf",
+      "Multi-Arch": "same",
+      "Depends": "gcc-16-base (= 16-20260322-1ubuntu1), libc6 (>= 2.34)"
+    },
+    {
+      "index": "build/ubuntu26-audit/resolute-armhf-Packages.xz",
+      "Package": "libstdc++6",
+      "Version": "16-20260322-1ubuntu1",
+      "Architecture": "armhf",
+      "Multi-Arch": "same",
+      "Depends": "gcc-16-base (= 16-20260322-1ubuntu1), libc6 (>= 2.38), libgcc-s1 (>= 3.5)"
+    },
+    {
+      "index": "build/ubuntu26-audit/resolute-armhf-Packages.xz",
+      "Package": "libsystemd0",
+      "Version": "259.5-0ubuntu3",
+      "Architecture": "armhf",
+      "Multi-Arch": "same",
+      "Depends": "libc6 (>= 2.39)"
+    },
+    {
+      "index": "build/ubuntu26-audit/resolute-armhf-Packages.xz",
+      "Package": "libudev1",
+      "Version": "259.5-0ubuntu3",
+      "Architecture": "armhf",
+      "Multi-Arch": "same",
+      "Depends": "libc6 (>= 2.38)"
+    },
+    {
+      "index": "build/ubuntu26-audit/resolute-armhf-Packages.xz",
+      "Package": "systemd",
+      "Version": "259.5-0ubuntu3",
+      "Architecture": "armhf",
+      "Multi-Arch": "foreign",
+      "Depends": "libc6 (>= 2.41), libssl3t64 (>= 3.4.0), libsystemd0 (= 259.5-0ubuntu3), mount"
+    },
+    {
+      "index": "build/ubuntu26-audit/resolute-security-arm64-Packages.xz",
+      "Package": "libc-gconv-modules-extra",
+      "Version": "2.43-2ubuntu2.4",
+      "Architecture": "arm64",
+      "Multi-Arch": "same"
+    },
+    {
+      "index": "build/ubuntu26-audit/resolute-security-arm64-Packages.xz",
+      "Package": "libc6",
+      "Version": "2.43-2ubuntu2.4",
+      "Architecture": "arm64",
+      "Multi-Arch": "same",
+      "Depends": "libgcc-s1, libc-gconv-modules-extra (= 2.43-2ubuntu2.4)"
+    },
+    {
+      "index": "build/ubuntu26-audit/resolute-security-arm64-Packages.xz",
+      "Package": "libc6-dev",
+      "Version": "2.43-2ubuntu2.4",
+      "Architecture": "arm64",
+      "Multi-Arch": "same",
+      "Depends": "libc6 (= 2.43-2ubuntu2.4), libc-dev-bin (= 2.43-2ubuntu2.4), linux-libc-dev, rpcsvc-proto"
+    },
+    {
+      "index": "build/ubuntu26-audit/resolute-security-arm64-Packages.xz",
+      "Package": "libsystemd0",
+      "Version": "259.5-0ubuntu3.4",
+      "Architecture": "arm64",
+      "Multi-Arch": "same",
+      "Depends": "libc6 (>= 2.39)"
+    },
+    {
+      "index": "build/ubuntu26-audit/resolute-security-arm64-Packages.xz",
+      "Package": "libudev1",
+      "Version": "259.5-0ubuntu3.4",
+      "Architecture": "arm64",
+      "Multi-Arch": "same",
+      "Depends": "libc6 (>= 2.38)"
+    },
+    {
+      "index": "build/ubuntu26-audit/resolute-security-arm64-Packages.xz",
+      "Package": "systemd",
+      "Version": "259.5-0ubuntu3.4",
+      "Architecture": "arm64",
+      "Multi-Arch": "foreign",
+      "Depends": "libc6 (>= 2.41), libssl3t64 (>= 3.4.0), libsystemd0 (= 259.5-0ubuntu3.4), mount"
+    },
+    {
+      "index": "build/ubuntu26-audit/resolute-security-armhf-Packages.xz",
+      "Package": "libc-gconv-modules-extra",
+      "Version": "2.43-2ubuntu2.4",
+      "Architecture": "armhf",
+      "Multi-Arch": "same"
+    },
+    {
+      "index": "build/ubuntu26-audit/resolute-security-armhf-Packages.xz",
+      "Package": "libc6",
+      "Version": "2.43-2ubuntu2.4",
+      "Architecture": "armhf",
+      "Multi-Arch": "same",
+      "Depends": "libgcc-s1, libc-gconv-modules-extra (= 2.43-2ubuntu2.4)"
+    },
+    {
+      "index": "build/ubuntu26-audit/resolute-security-armhf-Packages.xz",
+      "Package": "libc6-dev",
+      "Version": "2.43-2ubuntu2.4",
+      "Architecture": "armhf",
+      "Multi-Arch": "same",
+      "Depends": "libc6 (= 2.43-2ubuntu2.4), libc-dev-bin (= 2.43-2ubuntu2.4), linux-libc-dev, rpcsvc-proto"
+    },
+    {
+      "index": "build/ubuntu26-audit/resolute-security-armhf-Packages.xz",
+      "Package": "libsystemd0",
+      "Version": "259.5-0ubuntu3.4",
+      "Architecture": "armhf",
+      "Multi-Arch": "same",
+      "Depends": "libc6 (>= 2.39)"
+    },
+    {
+      "index": "build/ubuntu26-audit/resolute-security-armhf-Packages.xz",
+      "Package": "libudev1",
+      "Version": "259.5-0ubuntu3.4",
+      "Architecture": "armhf",
+      "Multi-Arch": "same",
+      "Depends": "libc6 (>= 2.38)"
+    },
+    {
+      "index": "build/ubuntu26-audit/resolute-security-armhf-Packages.xz",
+      "Package": "systemd",
+      "Version": "259.5-0ubuntu3.4",
+      "Architecture": "armhf",
+      "Multi-Arch": "foreign",
+      "Depends": "libc6 (>= 2.41), libssl3t64 (>= 3.4.0), libsystemd0 (= 259.5-0ubuntu3.4), mount"
+    },
+    {
+      "index": "build/ubuntu26-audit/resolute-updates-arm64-Packages.xz",
+      "Package": "libc-gconv-modules-extra",
+      "Version": "2.43-2ubuntu2.4",
+      "Architecture": "arm64",
+      "Multi-Arch": "same"
+    },
+    {
+      "index": "build/ubuntu26-audit/resolute-updates-arm64-Packages.xz",
+      "Package": "libc6",
+      "Version": "2.43-2ubuntu2.4",
+      "Architecture": "arm64",
+      "Multi-Arch": "same",
+      "Depends": "libgcc-s1, libc-gconv-modules-extra (= 2.43-2ubuntu2.4)"
+    },
+    {
+      "index": "build/ubuntu26-audit/resolute-updates-arm64-Packages.xz",
+      "Package": "libc6-dev",
+      "Version": "2.43-2ubuntu2.4",
+      "Architecture": "arm64",
+      "Multi-Arch": "same",
+      "Depends": "libc6 (= 2.43-2ubuntu2.4), libc-dev-bin (= 2.43-2ubuntu2.4), linux-libc-dev, rpcsvc-proto"
+    },
+    {
+      "index": "build/ubuntu26-audit/resolute-updates-arm64-Packages.xz",
+      "Package": "libsystemd0",
+      "Version": "259.5-0ubuntu3.4",
+      "Architecture": "arm64",
+      "Multi-Arch": "same",
+      "Depends": "libc6 (>= 2.39)"
+    },
+    {
+      "index": "build/ubuntu26-audit/resolute-updates-arm64-Packages.xz",
+      "Package": "libudev1",
+      "Version": "259.5-0ubuntu3.4",
+      "Architecture": "arm64",
+      "Multi-Arch": "same",
+      "Depends": "libc6 (>= 2.38)"
+    },
+    {
+      "index": "build/ubuntu26-audit/resolute-updates-arm64-Packages.xz",
+      "Package": "systemd",
+      "Version": "259.5-0ubuntu3.4",
+      "Architecture": "arm64",
+      "Multi-Arch": "foreign",
+      "Depends": "libc6 (>= 2.41), libssl3t64 (>= 3.4.0), libsystemd0 (= 259.5-0ubuntu3.4), mount"
+    },
+    {
+      "index": "build/ubuntu26-audit/resolute-updates-armhf-Packages.xz",
+      "Package": "libc-gconv-modules-extra",
+      "Version": "2.43-2ubuntu2.4",
+      "Architecture": "armhf",
+      "Multi-Arch": "same"
+    },
+    {
+      "index": "build/ubuntu26-audit/resolute-updates-armhf-Packages.xz",
+      "Package": "libc6",
+      "Version": "2.43-2ubuntu2.4",
+      "Architecture": "armhf",
+      "Multi-Arch": "same",
+      "Depends": "libgcc-s1, libc-gconv-modules-extra (= 2.43-2ubuntu2.4)"
+    },
+    {
+      "index": "build/ubuntu26-audit/resolute-updates-armhf-Packages.xz",
+      "Package": "libc6-dev",
+      "Version": "2.43-2ubuntu2.4",
+      "Architecture": "armhf",
+      "Multi-Arch": "same",
+      "Depends": "libc6 (= 2.43-2ubuntu2.4), libc-dev-bin (= 2.43-2ubuntu2.4), linux-libc-dev, rpcsvc-proto"
+    },
+    {
+      "index": "build/ubuntu26-audit/resolute-updates-armhf-Packages.xz",
+      "Package": "libsystemd0",
+      "Version": "259.5-0ubuntu3.4",
+      "Architecture": "armhf",
+      "Multi-Arch": "same",
+      "Depends": "libc6 (>= 2.39)"
+    },
+    {
+      "index": "build/ubuntu26-audit/resolute-updates-armhf-Packages.xz",
+      "Package": "libudev1",
+      "Version": "259.5-0ubuntu3.4",
+      "Architecture": "armhf",
+      "Multi-Arch": "same",
+      "Depends": "libc6 (>= 2.38)"
+    },
+    {
+      "index": "build/ubuntu26-audit/resolute-updates-armhf-Packages.xz",
+      "Package": "systemd",
+      "Version": "259.5-0ubuntu3.4",
+      "Architecture": "armhf",
+      "Multi-Arch": "foreign",
+      "Depends": "libc6 (>= 2.41), libssl3t64 (>= 3.4.0), libsystemd0 (= 259.5-0ubuntu3.4), mount"
+    }
+  ],
+  "snapshot_authentication_reference": "reports/ubuntu26/distribution-audit.json records verified Ubuntu InRelease signatures and matching package-index hashes. This audit reads those stored inputs; it does not refresh network metadata.",
+  "input_evidence": [
+    {
+      "path": "build/ubuntu26-rootfs/gnu-systemd-b53-v3-build.json",
+      "sha256": "68abcd1f54f69cb656f7d07ccc21d0466d0f52c13844e523daa13cf79d0b2cb9"
+    },
+    {
+      "path": "reports/ubuntu26/distribution-audit.json",
+      "sha256": "a2e171752b85947d00a549e058ab2f0e32587f7ef3b7eef257840a508592a202"
+    },
+    {
+      "path": "reports/ubuntu26/glibc-source-policy.json",
+      "sha256": "c9be0cf7280ae4535abc3b02dc937ff177d8ba9ccffc0832a3a359593ad3af58"
+    },
+    {
+      "path": "reports/ubuntu26/glibc-source-changes.patch",
+      "sha256": "8a68eab23002a150a509279d63f3b82bffde60a011fffa892612a3a3d7fbf7ee"
+    },
+    {
+      "path": "reports/ubuntu26/gcc16-source.json",
+      "sha256": "fb0006c726b3f1924e1f4fed85176224b7dd52534ac305ef475334a18eec9c6f"
+    },
+    {
+      "path": "reports/ubuntu26/gcc16-build.json",
+      "sha256": "99a4dcc24e9d54d71fdcfcdd4282f13f77636228b3128903747b5401946f0733"
+    },
+    {
+      "path": "reports/ubuntu26/binutils-build.json",
+      "sha256": "b8a7106cefe76e6cfe443b8a85c79675cd859f740e12bb52c8a0eae5efe185e5"
+    },
+    {
+      "path": "reports/ubuntu26/systemd-credentials-review.json",
+      "sha256": "9f28f695d710cd12ac0499f14ad3f490df9777a235bcbdcfdc627fb7b0d45ccf"
+    },
+    {
+      "path": "patches/ubuntu26/systemd259-legacy-credentials.patch",
+      "sha256": "707c9ac9a4170f45974b120ca56a6f0457de336fc9a3de7441797e0b72f8458b"
+    },
+    {
+      "path": "reports/ubuntu26/deb-control-audit.json",
+      "sha256": "f4a54e69b8c6782c33cac48b5e995f9596837cada12c4c75b21d3da682755145"
+    },
+    {
+      "path": "build/ubuntu26-audit/resolute-InRelease",
+      "sha256": "45f95ce276cdba3e41870516a130e03c58b8b7a79e9546b0efe9e526d255740c"
+    },
+    {
+      "path": "build/ubuntu26-audit/resolute-security-InRelease",
+      "sha256": "578358f7b5e41ad069fc209bfa8ab45410f24d241be80255bdd94dbf3c11dc98"
+    },
+    {
+      "path": "build/ubuntu26-audit/resolute-updates-InRelease",
+      "sha256": "98cdfd908c422570b43437377070602f7a3fba43b66c22d263738eff04f7bfed"
+    },
+    {
+      "path": "build/ubuntu26-audit/resolute-arm64-Packages.xz",
+      "sha256": "537715817d9ed77cc919f5123edb91a48d9ae97abf05588a8f18208cc7227e08"
+    },
+    {
+      "path": "build/ubuntu26-audit/resolute-armhf-Packages.xz",
+      "sha256": "48e3f4fe64e19830b2ec06a3ed854ddb719c7705e37bd3bff3eee77affe9df63"
+    },
+    {
+      "path": "build/ubuntu26-audit/resolute-security-arm64-Packages.xz",
+      "sha256": "185d2ca1c13174019dbb17782a14129030b59ca8954299572969d92485732495"
+    },
+    {
+      "path": "build/ubuntu26-audit/resolute-security-armhf-Packages.xz",
+      "sha256": "54f72bf0eeea4aff04428bbf0619aa274952d20fcd3247f90ea29d8dbebf3bc3"
+    },
+    {
+      "path": "build/ubuntu26-audit/resolute-updates-arm64-Packages.xz",
+      "sha256": "52691fbc4bff4332b672be8b59a35ff6f49273f4fc88034e9b0d0f66abeac0cf"
+    },
+    {
+      "path": "build/ubuntu26-audit/resolute-updates-armhf-Packages.xz",
+      "sha256": "7c93884cdc60b98b2abf546d81d84fb0f5dfd7942cc97797b47972c012d42e93"
+    }
+  ],
+  "limits": [
+    "No fresh network queries or apt update were made.",
+    "No complete apt solver upgrade simulation was executed; version comparisons were executed with dpkg and selection semantics inspected in the candidate APT manual.",
+    "No repository keys, pins, holds or rootfs settings were created.",
+    "Security advisory coverage and future release contents are not asserted by this static metadata review."
+  ]
+}

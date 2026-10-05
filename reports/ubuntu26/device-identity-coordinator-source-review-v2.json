@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "status": "read_only_source_review_no_new_actionable_findings",
+  "source": {
+    "path": "scripts/asus-integration/device-provision/coordinator.c",
+    "sha256": "c63c6dca474cb007244f234453a5ce1ab5e5cbc2d364482e0039c4eedd74cb1b"
+  },
+  "build_manifest": {
+    "path": "build/asus-device-provision/identity-v4/manifest.json",
+    "sha256": "a1b34fbf4fe736a3e8e302cd2d7c693177fafcfe782b334c2a653b5bacce1443"
+  },
+  "previous_review": {
+    "path": "reports/ubuntu26/device-identity-coordinator-source-review-v1.json",
+    "sha256": "d58980a9308752ab2ff686300334dda3d6be0db55d5c1e4f97daf4b6d7c3a583"
+  },
+  "delta": [
+    "Generation file now explicitly requires root-owned regular single-link inode and no group/other writable permission, in addition to exact generation content and trusted parents."
+  ],
+  "limitations": [
+    "Source/build artifact inspection only; no device execution or mount.",
+    "Existing exclusive-maintenance and actual-device-validation requirements remain."
+  ]
+}

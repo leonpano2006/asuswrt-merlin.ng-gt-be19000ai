@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "status": "read_only_delta_review_no_new_actionable_findings",
+  "source": {
+    "path": "scripts/provision-ubuntu26-gpt.py",
+    "sha256": "71b14c1964f34bb7d7edb2a1a49e7bb566b43d35475ea291df0c4053ee0931bd"
+  },
+  "owner_tests": {
+    "path": "build/ubuntu26-gpt-host/v8/result.json",
+    "sha256": "91cfd4b7c46d29a792bb2ddae679486e8ac1b91300217f1f60161180d651e3eb"
+  },
+  "previous": {
+    "path": "reports/ubuntu26/gpt-host-source-review-v1.json",
+    "sha256": "0a85da0af0fc1444486674c557204421f175f373633ab774829851c895c9fcd9"
+  },
+  "reviewed_delta": [
+    "Replace absent stock id/stat applets with exact BusyBox ls -ldn numeric metadata parser and /proc/self/status four root UIDs",
+    "C locale fixed safe paths, symlink rejection, device major/minor columns separated from regular size, numeric root permissions checked",
+    "Existing bounded stdin staging, exact four GPT ranges and unknown-write stop/retained-lock semantics unchanged"
+  ],
+  "limitations": [
+    "No network connection or device operation by reviewer.",
+    "Actual transient transport outcomes remain unknown and must not trigger automatic retry."
+  ]
+}

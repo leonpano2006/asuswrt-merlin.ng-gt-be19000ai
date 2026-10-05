@@ -1,0 +1,64 @@
+{
+  "schema": 1,
+  "status": "source_only_pending_rescue_preflight_diagnoser_wrapper_peer_pass",
+  "wrapper": {
+    "path": "scripts/deploy-uplink-rescue-preflight-diagnoser-v1.py",
+    "sha256": "dda2ba8c9de480a38849921fd4e0f32b192855dcd6a4db8e756b1fc66c4ebd20",
+    "bytes": 8986
+  },
+  "transport": {
+    "path": "scripts/deploy-cfe-recovery-p11.py",
+    "sha256": "db396c87c3e80201c0d2021975b3e8b219c6d412b9e1d46b84c0a968d174f8d7",
+    "bytes": 5917
+  },
+  "preserved_failure": {
+    "path": "evidence/ubuntu26/device-uplink-rescue-live/install-v2/result.json",
+    "sha256": "f42a8fab2dc1c143b191757b204471a6fa9a6e4a4391adbc916204870ff6c85e",
+    "bytes": 5491
+  },
+  "before_pending_refs_filled": true,
+  "pending_manifest": [
+    "build/asus-uplink-rescue/preflight-diagnoser-v1/manifest.json",
+    null
+  ],
+  "pending_source_peer": null,
+  "pending_gate_before_any_output_or_transport": true,
+  "transport_AST_only_no_original_main_import": true,
+  "local_default_plan_only": true,
+  "fresh_exclusive_output": "evidence/ubuntu26/device-uplink-rescue-live/preflight-diagnosis-v1",
+  "fixed_stock_boot_rootp6_CID_p11_geometry_unchanged": true,
+  "clean_gate": {
+    "full_superblock_bytes": 1024,
+    "state": 1,
+    "needs_recovery": false,
+    "error_count": 0,
+    "last_orphan": 0,
+    "fixed_magic_uuid_required": true
+  },
+  "normal_success_requires_before_after_full1024_byte_equality": true,
+  "only_remote_write_contract": "Exclusive fresh /tmp/leon-rescue-preflight-<binary-sha16>, noclobber, SHA checked, mode0700; no existing file removal/replacement.",
+  "native_expected_receipt": {
+    "schema": 1,
+    "status": "fixed_rescue_preflight_metadata_inspected",
+    "payload_count": 7,
+    "link_count": 1,
+    "failed_preflights_range": [
+      0,
+      8
+    ],
+    "writes_to_p11": false,
+    "armed": false,
+    "rebooted": false,
+    "boot_committed": false
+  },
+  "raw_metadata_stdout_and_stderr_retained": true,
+  "no_recovery_flash_selection_reboot_or_installer_invocation": true,
+  "failure_evidence_retained_no_retry": true,
+  "new_plan_import_build_test_VM_or_device_invocations_by_peer": 0,
+  "limits": [
+    "Reviewed wrapper source/hash/AST only before native manifest/source-peer references exist; no default plan or transport executed.",
+    "Native C mount/read-only implementation and actual static binary/build receipt remain separately pending; wrapper review does not prove those properties.",
+    "Final literal pin filling and native JSON/binary-reference schema compatibility must be verified before execution.",
+    "Before/after equality is a condition of normal success; an interrupted/refused native call retains failure evidence and does not claim a successful post-read."
+  ]
+}

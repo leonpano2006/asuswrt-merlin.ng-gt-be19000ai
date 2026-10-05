@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-03",
+  "device_scope": "GT-BE19000AI BCM6813 / Brahma-B53 only; the separate AI board needs its own target profile",
+  "phase": "kernel_first",
+  "profile_status": "Future userspace build inputs; not connected to the current firmware build",
+  "current_firmware_scope": [
+    "kernel",
+    "open-source kernel modules",
+    "zstd SquashFS"
+  ],
+  "current_userspace_policy": "Preserve stock non-module rootfs content until kernel acceptance is complete; userspace fixtures may be used inside disposable QEMU tests",
+  "cpu_policy": {
+    "hardware": "Broadcom Brahma-B53",
+    "compiler_tuning_model": "Cortex-A53",
+    "isa": "ARMv8.0-A plus CRC and Crypto, FP/NEON",
+    "distribution_minimum_cpu_baseline": "Do not inherit generic Debian/Ubuntu armel or armhf CPU flags for our rebuilt components",
+    "default_isa_excludes": [
+      "LSE",
+      "SVE"
+    ],
+    "note": "Tuning alias does not change hardware identity; crypto flags permit instructions but do not automatically rewrite algorithms"
+  },
+  "userspace_targets": {
+    "armel": {
+      "target_flags": [
+        "-march=armv8-a+crc+crypto",
+        "-mtune=cortex-a53",
+        "-mfpu=crypto-neon-fp-armv8",
+        "-mfloat-abi=softfp"
+      ],
+      "role": "Current BCM SDK 32-bit ASUS userspace uses armel/softfp; retain this ABI for rebuilt components and links to its vendor objects",
+      "loader": "/lib/ld-linux.so.3"
+    },
+    "armhf": {
+      "target_flags": [
+        "-march=armv8-a+crc+crypto",
+        "-mtune=cortex-a53",
+        "-mfpu=crypto-neon-fp-armv8",
+        "-mfloat-abi=hard"
+      ],
+      "role": "Optional compatibility target for additional armhf components installed in the future; not a dependency of the current BCM SDK",
+      "loader": "/lib/ld-linux-armhf.so.3",
+      "activation": "Provide its loader and matching runtime libraries when an additional component requires armhf; do not migrate current SDK components to armhf"
+    },
+    "arm64": {
+      "target_flags": [
+        "-mcpu=cortex-a53+crypto+crc"
+      ],
+      "role": "Default for new and successfully ported userspace components without incompatible vendor dependencies",
+      "loader": "/lib/ld-linux-aarch64.so.1"
+    }
+  },
+  "linkage_rules": [
+    "Each enabled ABI gets its own sysroot, loader, libc, libgcc and required libstdc++; armhf runtime provisioning is optional until an added component needs it",
+    "Do not link or dlopen armel, armhf and arm64 objects across ABI boundaries; communicate between processes when needed",
+    "Closed-source binaries retain their original ABI; rebuilding ASUS components as armel applies where source and link-compatible dependencies are available",
+    "Native 64-bit vendor userspace blobs remain 64-bit unless their source can be rebuilt",
+    "All kernel modules remain AArch64 and follow kernel Kbuild flags; userspace FP/NEON flags are not kernel CFLAGS"
+  ],
+  "kernel_acceptance": [
+    "Retain CONFIG_COMPAT and CONFIG_COMPAT_BINFMT_ELF for native AArch32 execution",
+    "For new syscalls/backports validate arm64 and applicable AArch32 compat entry points, structure translation, signals and error behavior",
+    "Run unchanged modern systemd and cgroup-v2 workloads in disposable QEMU; systemd 262 currently fails on kernel #6",
+    "Check vendor ABI layouts and regression-test retained modules",
+    "After QEMU passes, verify hardware Wi-Fi, Ethernet/Runner, AiMesh and AI-board connectivity under stock userspace with the original fallback preserved"
+  ],
+  "validation_status": {
+    "kernel6_config_compat": true,
+    "kernel6_config_compat_binfmt_elf": true,
+    "future_target_flags": "Preprocessor feature/ABI checks passed on available compilers; no future userspace runtime has been built or installed by this check",
+    "compiler_versions_checked": {
+      "armel": "13.3.0",
+      "armhf": "13.3.0",
+      "arm64": "16.2.0"
+    },
+    "gcc16_for_arm32": "Not established by these checks; the existing BE98 ARM32 compiler is GCC 13.3.0"
+  },
+  "references": [
+    "https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html",
+    "https://gcc.gnu.org/onlinedocs/gcc/AArch64-Options.html"
+  ],
+  "be98_reference": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/glibc244-b53-20260915/README.md",
+  "vendor_sdk_context": {
+    "provenance": "Verified by static inspection of official RT-BE92U 102_39063 and 102_40311 firmware plus the current BE19000AI stock-rootfs inventory on 2026-10-03",
+    "current_sdk": "The current BE19000AI BCM SDK inventory has zero armhf ELF files; its 32-bit vendor ABI is armel/softfp",
+    "newer_be92_sdk": "RT-BE92U 102_40311 changes the boot image SDK identifier from 5.04L.04p3 to 6.2.0, kernel 4.19.294 to 5.15.167, glibc 2.32 to 2.38 and main 32-bit ASUS userspace from armel/softfp to armhf; a few shipped legacy exceptions remain",
+    "scope": "Keep the newer BE92 SDK migration separate from optional armhf compatibility in this project; its image targets BCM6765, not BCM6813",
+    "evidence": "reports/be92-40311/assessment.json"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "cause_evidence": "evidence/ubuntu26/trial-live/seventeenth-forensics-analysis-v1/monotonic.txt",
+  "native_boot": "00000000-0000-4000-8000-000000000005",
+  "actual_prepare_failed_stage": "udev-settle",
+  "actual_prepare_exit": 1,
+  "actual_prepare_failed_at_seconds": 19.085208,
+  "asus_broker_never_started": true,
+  "imq0_sysctl_worker_timeout_observed": true,
+  "root_and_systemd_executed": true,
+  "source": "scripts/asus-integration/startup-prepare-scoped-udev-v1.c",
+  "source_sha256": "144e8e0a2fce02f75fad0914489637abf1b4d6c43673dd9a12ba2e64dee1f16a",
+  "old_source_sha256": "ab623de569a8264586029880d6e9739f4660dd773eca43a3f50ef8cf8b724322",
+  "transforms": [
+    {
+      "old": "    command(\"udev-alias-refresh\", (char *const[]){ \"/usr/bin/udevadm\", \"trigger\", \"--action=change\", \"--subsystem-match=block\", \"--sysname-match=mmcblk*p*\", NULL }, 15);\n    command(\"udev-settle\", (char *const[]){ \"/usr/bin/udevadm\", \"settle\", \"--timeout=10\", NULL }, 15);",
+      "new": "    /* Wait only for the MMC partition events this command triggers. Unrelated\n     * network coldplug workers must not gate ASUS storage preparation. */\n    command(\"udev-alias-refresh-scoped\", (char *const[]){ \"/usr/bin/udevadm\", \"trigger\", \"--settle\", \"--action=change\", \"--subsystem-match=block\", \"--sysname-match=mmcblk*p*\", NULL }, 15);"
+    }
+  ],
+  "reverse_exact_old_source": true,
+  "storage_owner_UUID_policy_unchanged": true,
+  "native_device_nodes_unchanged": true,
+  "unit_and_native_namespace_unchanged": true,
+  "trigger_scope_unchanged": "block MMC partitions mmcblk*p*",
+  "trigger_outer_timeout_seconds": 15,
+  "sysctl_worker_still_needs_separate_diagnosis": true,
+  "retest_old_QEMU_or_compiler": false
+}

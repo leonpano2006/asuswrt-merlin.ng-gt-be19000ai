@@ -1,0 +1,51 @@
+[
+  {
+    "source": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/systemd-rc-compat-20260916/src/rc-bridge.h",
+    "source_sha256": "2fcd0a81b2731a7306117c7c78d9fbc288113c033288dfd188b79aa09b6f9770",
+    "port": "scripts/asus-integration/src/rc-bridge.h",
+    "port_sha256": "d783338114a358da8d66d64f7bf3f03494fbf0ed4c176a505b6d64c6747c7e12",
+    "changed": true
+  },
+  {
+    "source": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/systemd-rc-compat-20260916/src/rc-client.c",
+    "source_sha256": "1d17a4bb8bc6beaf7ecac2b8373004e43be78a2cef88a466426c2f13884f5558",
+    "port": "scripts/asus-integration/src/rc-client.c",
+    "port_sha256": "070a5cf8bf674019f920806296922fc090c0caed0dd488b2c99f8f74073fe17a",
+    "changed": true
+  },
+  {
+    "source": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/systemd-rc-compat-20260916/src/rc-manager.c",
+    "source_sha256": "3de5a9bd40e2816d642b6b598217c7bc9a1ef178c9fbeda045ef5d9eacbfb477",
+    "port": "scripts/asus-integration/src/rc-manager.c",
+    "port_sha256": "3f152ae20d12a9a4199d2d50249f12a25906d09b3b85dcbeb6a047c7f3463b50",
+    "changed": true
+  },
+  {
+    "source": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/systemd-rc-compat-20260916/src/rc-broker.c",
+    "source_sha256": "a2ae4478c861cd615c3c930a59d4b7d9348b18ba0b9a7f4e1f66a4901797b21c",
+    "port": "scripts/asus-integration/src/rc-broker.c",
+    "port_sha256": "bc573de15713fc94c6982889162459f95875afd2bd7386af10cdc7dadda55bea",
+    "changed": true
+  },
+  {
+    "source": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/systemd-rc-compat-20260916/src/notify-compat.c",
+    "source_sha256": "7c1e390e9ee9be4a540c0d65a142971fb35a3bd7bf218f99d501b353fc29c8ec",
+    "port": "scripts/asus-integration/src/notify-compat.c",
+    "port_sha256": "9c0710e911ba98aee91b3a095aeb130289200bf0903e3d0f6049917ff5d53c39",
+    "changed": true
+  },
+  {
+    "source": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/systemd-rc-compat-20260916/src/rc-legacy.c",
+    "source_sha256": "5811abcb2425a139f080dfad8634cfaa79be8d863e5fe8e3988be44f21f5955f",
+    "port": "scripts/asus-integration/src/rc-legacy.c",
+    "port_sha256": "5b47de6d3bc72ef2c6620ca6b15243365107eda74fb4438f8e314f91e50e3f6e",
+    "changed": true
+  },
+  {
+    "source": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/systemd-rc-compat-20260916/src/rcctl.c",
+    "source_sha256": "7260b309251afceb1a0ff2ab1c1ae816f4d8f0e17554117cdebd25026004d986",
+    "port": "scripts/asus-integration/src/rcctl.c",
+    "port_sha256": "7260b309251afceb1a0ff2ab1c1ae816f4d8f0e17554117cdebd25026004d986",
+    "changed": false
+  }
+]

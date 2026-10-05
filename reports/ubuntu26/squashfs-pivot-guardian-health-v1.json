@@ -1,0 +1,71 @@
+{
+  "passed": true,
+  "errors": [],
+  "scenarios": [
+    {
+      "scenario": "positive",
+      "checks": {
+        "complete_without_panic": true,
+        "exact_initramfs": true,
+        "exact_serial": true,
+        "real_squashfs_pid1": true,
+        "no_restore_failure": true,
+        "no_vendor_exec_failure": true,
+        "seven_proc_routes_and_rejections": true,
+        "private_fd3_no_extra_descriptors": true,
+        "prepared_before_armed": true,
+        "armed_40": true,
+        "real_systemd": true,
+        "close_on_exec_handoff": true,
+        "actual_service_observes_guard": true,
+        "apt_writable_oldroot_readonly": true,
+        "no_fallback": true,
+        "no_emergency": true,
+        "immutable_guard_identity_and_wrong_boot_and_forgery": true
+      },
+      "elapsed_seconds": 41.0,
+      "serial_sha256": "b314c58949424673364c2b3d94feba768fb0190aeb10716caa7517c8671c8135",
+      "result": {
+        "path": "build/qemu/ubuntu26-pivot-guardian-health-v1-positive/result.json",
+        "sha256": "f3122c4af4a5137d2a5ac76c976ebae8e87d387fe32288b2612f57ddc9bdb47d"
+      }
+    }
+  ],
+  "fixture_manifest": {
+    "path": "build/ubuntu26-pivot-qemu/guardian-health-v1/manifest.json",
+    "sha256": "2db65949c6adbc8f12e5c10d47cc8d2d0772648a9c4dc1b5dac1c1f38c349f41"
+  },
+  "helper_source_sha256": "0f2cc4827ca05d0e36a286668c548dc9ed90c8a3677d56201469ba7c0018e7ab",
+  "helper_sha256": "2fb84913ef07bfcc46db2fb053f5dbabea53af401d3cc698d3c2c174a8636d6f",
+  "guardian_input": {
+    "role": "protocol_mock_without_hardware",
+    "path": "build/ubuntu26-root-init/guardian-health-v1/root-guardian-mock",
+    "sha256": "405b40e06784ded070578712ce803b33acdde8f7c6a39dcb21d07bbf26770a73"
+  },
+  "input_images_unchanged": true,
+  "health_identity_fixture": {
+    "source": "scripts/asus-integration/root-guardian-mock.c",
+    "source_sha256": "59a2d08dcedeb4e66665002abdd0e12b2030bc1aefab792a0d611b2b47325a08",
+    "mock_hardware_armed_response": true,
+    "health_manifest": "build/asus-trial-runtime/native-v8/manifest.json",
+    "health_manifest_sha256": "297a1326af22046ff8028839a65069c9478578c315657c4b304680fc4c3d6a64",
+    "client_sha256": "0d7ca4ce1b4098a9ce819a93a95d523588cea8fb43ca6b54b83b57060595f10c",
+    "control_header_sha256": "a4fda19c1586c5908639d38e0abd7a7864376f2a35fa8445777e903fe369484b",
+    "base_manifest_sha256": "1f9345d97ad93e31724c9f412a95004eafcbd57f14c67f1bbb2c8d61eaed6b0c",
+    "builder_sha256": "0b98a36d453beb9842d63c7d67f1ed61c506180b2ebee0002cb2615e8313cb82"
+  },
+  "limits": [
+    "Real kernel10 PID1 and readonly SquashFS to ext4 pivot, with RAM loop images only; no physical block device or NIC.",
+    "The mock guardian exercises the exact two-phase wire contract; it never opens a watchdog or claims hardware arming.",
+    "Emergency cases use an explicit compile-time parent fault sink; verified proc SysRq b is selected without writing it. Neither board reset nor the last-resort RB_AUTOBOOT is hardware-validated here.",
+    "Successful preexec abort requires exact nonce, ABORTED, and direct-child exit0 before reverse pivot.",
+    "A real gate-closed guardian case proves only refusal before watchdog open, not its unfinished production health collector.",
+    "Vendor rc is a test double; actual ASUS services, board reset, flash and metadata commit never execute.",
+    "When enabled, the frozen real trial-health client checks immutable guardian identity and current boot against explicit mocked armed responses. This does not prove hardware arming."
+  ],
+  "hardware_watchdog_armed": false,
+  "actual_asus_services_executed": false,
+  "hardware_reset_proven": false,
+  "flash_accepted": false,
+  "checker_sha256": "ce225ae8d08c597bd1fb12fa2e3467c90c4cc0dd4a0db889047dffeebc5d5abc"
+}

@@ -1,0 +1,409 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-10-04T15:48:09.177880+00:00",
+  "status": "native ARM64 bridge foundation rebuilt and mock protocol tests passed; real BE19000AI ASUS startup is not yet ported or accepted",
+  "production_ready": false,
+  "flash_ready": false,
+  "scope": "Local source and evidence review; new reusable bridge source/test files and build artifacts only. No existing source checkout, rootfs, configuration, device, active unit, router, firmware slot or Git commit changed. No actual ASUS daemon was executed.",
+  "board_scope": "GT-BE19000AI BCM/B53 runs Ubuntu/systemd; its SL1680 AI board remains a separate OS. BCM AI-control functions must continue working without coupling ordinary radio/web actions to AI reboot/upgrade.",
+  "source": [
+    {
+      "git_path": "release/src/router/rc/init.c",
+      "commit": "69838e4a60564e5550e97f11d8a8cf2c6260c4f0",
+      "sha256": "404eb8d0f1c4a89f34104470259f042e5e1b1a5bce419f34c9760dda42eb29ab",
+      "bytes": 940181
+    },
+    {
+      "git_path": "release/src/router/rc/services.c",
+      "commit": "69838e4a60564e5550e97f11d8a8cf2c6260c4f0",
+      "sha256": "667a87807e299a1911d81973c94cf9e6b41ab4af85df100fbbc2df6e1b6a8664",
+      "bytes": 720250
+    },
+    {
+      "git_path": "release/src/router/rc/rc.c",
+      "commit": "69838e4a60564e5550e97f11d8a8cf2c6260c4f0",
+      "sha256": "215ac3c6322f3d6dfa0a8389e21b12701b69e4f50de4ec016e4c6f62c1f39e45",
+      "bytes": 172353
+    },
+    {
+      "git_path": "release/src/router/rc/ai_service.c",
+      "commit": "69838e4a60564e5550e97f11d8a8cf2c6260c4f0",
+      "sha256": "2dd0013fb961494965ce6d6030c9f46957b1ca34fcba2c6bd31f202f348b86ea",
+      "bytes": 49964
+    },
+    {
+      "git_path": "release/src/router/rc/Makefile",
+      "commit": "69838e4a60564e5550e97f11d8a8cf2c6260c4f0",
+      "sha256": "a45a47574bdf62207c16e1c781af63f60f6715f482bbfc2bc055ab025b0ae6ce",
+      "bytes": 76488
+    }
+  ],
+  "startup_blockers": [
+    {
+      "id": "stock-rc-is-an-init-program",
+      "source": [
+        "release/src/router/rc/rc.c:3096",
+        "release/src/router/rc/rc.c:3998",
+        "release/src/router/rc/rc.c:4008",
+        "release/src/router/rc/init.c:26534",
+        "release/src/router/rc/services.c:1639",
+        "release/src/router/rc/ai_service.c:1240"
+      ],
+      "evidence": "The init/preinit applets dispatch init_main; rc start/stop/restart signal PID1; service functions use getpid()!=1 to forward work instead of doing it. AI tftpd has its own PID1 test beyond the old BE98 port.",
+      "required_change": "Call leon_rc_manager_enter before any board effects; replace only explicit manager-role predicates with leon_rc_is_manager in the actually selected BE19000AI source/object set. Keep real getpid semantics and ensure fork children do not inherit manager authority. Rebuild rc and statically retained call sites with precise linker wrappers; do not merely change the unit Type or daemonize stock rc.",
+      "implemented_in_actual_rc": false
+    },
+    {
+      "id": "persistent-etc-and-var-clobber",
+      "source": [
+        "release/src/router/rc/init.c:25543",
+        "release/src/router/rc/init.c:25575",
+        "release/src/router/rc/init.c:25591",
+        "release/src/router/rc/init.c:25597",
+        "release/src/router/rc/init.c:25612",
+        "release/src/router/rc/init.c:25617",
+        "release/src/router/rc/init.c:26634"
+      ],
+      "evidence": "sysinit creates the old tmp/etc and var tree, changes umask and /tmp mode, truncates hosts/fstab, symlinks rom/etc entries, replaces resolv.conf and invokes ldconfig. setup_passwd follows later. The BE98 patch only guards fstab in the hosts/fstab block and retains the old volatile layout.",
+      "required_change": "In managed mode preserve Ubuntu /etc, /etc/fstab, machine-id, apt/keyring configs, passwd/group/shadow, ld.so paths/cache and /var/lib/{dpkg,apt}. Create only explicitly owned ASUS runtime files under /run/asus or vendor directories; maintain /var/run -> /run and sticky /tmp. Give ASUS generated hosts/DNS/account changes explicit owners and merge/replace only the owned records, rather than importing /rom/etc wholesale.",
+      "qualification": "mkdir calls alone do not delete existing package state. The destructive writes and legacy volatile layout assumptions are the blockers; their exact active board paths still require tests.",
+      "implemented_in_actual_rc": false
+    },
+    {
+      "id": "mount-and-hardware-order-before-handshake",
+      "source": [
+        "release/src/router/rc/init.c:25455",
+        "release/src/router/rc/init.c:25468",
+        "release/src/router/rc/init.c:25482",
+        "release/src/router/rc/init.c:26564",
+        "release/src/router/rc/init.c:26585",
+        "release/src/router/rc/init.c:26613"
+      ],
+      "evidence": "Early rc mounts API filesystems and init_main mounts /data then loads bcm_knvram before sysinit; later it prepares JFFS and certificates.",
+      "required_change": "systemd/initramfs own API and durable root/data mounts. Enter and authenticate manager mode before early mount/module actions. Preserve board-specific NVRAM, JFFS, certificate and hardware ordering behind explicit ready dependencies; do not remount a filesystem over active /run sockets or /var databases. The reused mount helper is only partial protection and does not catch shell mount commands or file writes.",
+      "implemented_in_actual_rc": false
+    },
+    {
+      "id": "shutdown-must-not-kill-systemd-or-ubuntu-services",
+      "source": [
+        "release/src/router/rc/init.c:3167",
+        "release/src/router/rc/init.c:3221",
+        "release/src/router/rc/init.c:3226",
+        "release/src/router/rc/init.c:3253",
+        "release/src/router/rc/init.c:27650",
+        "release/src/router/rc/init.c:27663",
+        "release/src/router/rc/init.c:27691"
+      ],
+      "evidence": "Stock shutdown broadcasts TERM/KILL and directly reboots; reboothalt_main signals PID1 and forks a delayed SysRq reset fallback.",
+      "required_change": "Managed reboot/halt requests go to authenticated broker/systemd; rc waits for ordered stop, drains ASUS hardware, and exits. Disable global kill(-1), raw reboot and delayed SysRq reset only in the managed path. Preserve original standalone init behavior. Select shutdown dependencies so ASUS drain completes before durable data unmount. Broker crash must fail the service without unbounded hardware reinitialization.",
+      "implemented_in_actual_rc": false
+    },
+    {
+      "id": "notify-rc-interposition-is-scoped-per-abi",
+      "source": [
+        "build/kernel9-ui1-rootfs/usr/lib/libshared.so",
+        "scripts/asus-integration/src/notify-compat.c",
+        "scripts/asus-integration/src/rc-client.c"
+      ],
+      "evidence": "Current ARMEL libshared exports all seven notify_rc API names. BE98 preserves libshared notification/NVRAM behavior and only retargets its synchronous kill(1,SIGUSR1) edge while inside those APIs.",
+      "required_change": "Build the correct ARMEL shim and use explicit linking or selected ASUS process launchers. Native broker has its own arm64 dependency; do not pass a native arm64 preload to an ARMEL child. Missing shim or broker fails closed in managed mode. No global LD_PRELOAD, /etc/ld.so.preload, getpid override or blanket kill rewrite is allowed.",
+      "tested_now": "Native ARM64 mock call shape only; not actual BE19000AI libshared/NVRAM queue behavior or concurrency.",
+      "implemented_in_actual_rc": false
+    },
+    {
+      "id": "AI-service-actions-are-separate",
+      "source": [
+        "release/src/router/rc/services.c:18538",
+        "release/src/router/rc/services.c:18557",
+        "release/src/router/rc/ai_service.c:856",
+        "release/src/router/rc/ai_service.c:1223",
+        "release/src/router/rc/ai_service.c:1231",
+        "release/src/router/rc/ai_service.c:1280"
+      ],
+      "evidence": "ai_reboot explicitly toggles AISOM reboot GPIO; ai_upgrade/requests transfer control data; start_ai_service starts response checking and the AI tftpd endpoint (169.254.0.1, /ai). Stopping the AI service stops those BCM daemons, not the AI board OS.",
+      "required_change": "Preserve /ai firmware/docker_images/ctrl_msg/log ownership, AI IPC/keys/control and the internal endpoint. Port AI manager predicates. Keep AI reboot/upgrade as separate explicit actions; do not invoke them during Wi-Fi/web/ordinary port service restarts. Do not translate the BCM broker power operation into a combined BCM+AI reset.",
+      "implemented_in_actual_rc": false
+    },
+    {
+      "id": "shell-contract",
+      "source": [
+        "reports/ubuntu26/asus-shell-portability.json",
+        "release/src/router/rc/init.c:26566",
+        "release/src/router/rc/init.c:25617"
+      ],
+      "evidence": {
+        "bin_sh_scripts": 117,
+        "feature_counts": {
+          "legacy_command_dependency": 31,
+          "source_keyword": 15,
+          "test_double_equals": 60,
+          "echo_e_option": 4,
+          "double_bracket": 14,
+          "read_nonposix_options": 1
+        },
+        "dash_parse_failures": 3
+      },
+      "required_change": "Preserve Ubuntu /bin/sh (dash) and use a vendor-private BusyBox ash with explicit shebang/callsite for unconverted ASUS scripts. Audit command/app option behavior as well as syntax. system()/popen() strings still select libc /bin/sh and ignore SHELL; rebuild relevant rc call sites to explicit private-shell argv or verified POSIX strings. Do not solve this by replacing global /bin/sh, PATH, or global libc/preload interposition.",
+      "prepared_elsewhere": "The closure agent prepared two scoped ai_upgrade == to = patches, for pinned source and distinct extracted rootfs helper. This is not a complete shell migration.",
+      "implemented_in_actual_rc": false
+    }
+  ],
+  "service_ownership_contract": [
+    {
+      "owner": "systemd PID1",
+      "owns": [
+        "API/runtime filesystems",
+        "unit cgroups and lifecycle",
+        "global shutdown/reboot",
+        "journald and distribution services"
+      ],
+      "must_not": [
+        "receive raw ASUS SIGUSR1 as notification",
+        "have its /run or durable /var replaced by sysinit"
+      ]
+    },
+    {
+      "owner": "ASUS rc manager",
+      "owns": [
+        "NVRAM/config policy",
+        "board driver/Runner/radio/bridge/VLAN initialization ordering",
+        "selected ASUS service action dispatch",
+        "hardware drain before data unmount"
+      ],
+      "must_not": [
+        "broadcast kill(-1)",
+        "reset all interfaces for unrelated web/service changes",
+        "rewrite Ubuntu conffiles or package database"
+      ]
+    },
+    {
+      "owner": "future individual ASUS service units",
+      "owns": [
+        "exactly one daemon instance and its child cgroup"
+      ],
+      "must_not": [
+        "race rc legacy launcher",
+        "adopt unrelated external PID",
+        "order After=asus-rc when synchronously started before rc READY"
+      ]
+    },
+    {
+      "owner": "SL1680 AI board",
+      "owns": [
+        "its own OS, containers and reboot lifecycle"
+      ],
+      "must_not": [
+        "be rebooted as a generic side effect of BCM Wi-Fi/web/port restart"
+      ]
+    }
+  ],
+  "be98_reuse_and_corrections": [
+    {
+      "checkpoint": "systemd-rc-compat-20260916",
+      "reuse": "Explicit manager identity, root peer authentication, direct-child handshake, fixed protocol, restricted signals, subreaper and ordered drain. Source/recipe reused, no stale binary copied.",
+      "not_drop_in": "Its volatile /tmp/etc assumptions and hardcoded BE98 trial guard do not implement Ubuntu persistent layout or BE19000AI board guard."
+    },
+    {
+      "checkpoint": "systemd-rc-platform-20260917",
+      "reuse": "One daemon owner, fixed argv records with no shell evaluation, supervisor follows owned children, service split leaves hardware policy in rc.",
+      "not_drop_in": "The 23-unit split is a later stage; closed hostapd objects, board conditionals and AI service ownership differ. The checkpoint explicitly requires later dashboard/AiMesh fixes."
+    },
+    {
+      "checkpoint": "httpd-dashboard-fix-20260917",
+      "required_regression": "netdev_calc used a null strchr result for wlN names and an invalid snprintf bound; port robust interface parsing while preserving fortify. A startup migration must not restore the pre-fix crash."
+    },
+    {
+      "checkpoint": "aimesh-ui-fix-20260917",
+      "required_regression": "Preserve fixed-width legacy shared-memory protocol time fields while application time64 remains enabled; measure BE19000AI cfg/networkmap producer layout rather than copying BE98 struct sizes. Keep bounded MAC formatters, valid empty JSON behavior and processed localization tags."
+    },
+    {
+      "checkpoint": "platform-web-release-20260917",
+      "open_reference_issue": "acsd2 had one initial automatic restart and the precise cause was not proven. Slow daemonization/handoff timing must be measured again, not presented as already solved for this board."
+    }
+  ],
+  "new_foundation": {
+    "directory": "scripts/asus-integration",
+    "port_origins": "scripts/asus-integration/port-origins.json",
+    "files": [
+      {
+        "path": "scripts/asus-integration/README.md",
+        "sha256": "ae8616a244a3ee07354be7a168edcda60514f2d2564549c473f140e1fc4319dd"
+      },
+      {
+        "path": "scripts/asus-integration/check-offline.py",
+        "sha256": "8db4301861c9d7ae905d5eab2c47717292c95ada9846ae974941e1acf5d0dfff"
+      },
+      {
+        "path": "scripts/asus-integration/mock-backend.c",
+        "sha256": "30a7f61b5ac275d3c68c029fae8215d7dec258ba1777e6e3716b718a2601d250"
+      },
+      {
+        "path": "scripts/asus-integration/notify-caller.c",
+        "sha256": "7aaf23f273d6f3e0171d6defadb67c4bab27149832166fca4a213e96f249d7eb"
+      },
+      {
+        "path": "scripts/asus-integration/notify-fixture.c",
+        "sha256": "acd57a3f4bb184142a8f489ca9ce2b0b7008e940192a612aea874478763c5a1a"
+      },
+      {
+        "path": "scripts/asus-integration/port-origins.json",
+        "sha256": "41f2a04c1d7bfa057b13d106dc767f25c7d91ca26664abfd9f46b660901f074a"
+      },
+      {
+        "path": "scripts/asus-integration/src/notify-compat.c",
+        "sha256": "7c1e390e9ee9be4a540c0d65a142971fb35a3bd7bf218f99d501b353fc29c8ec"
+      },
+      {
+        "path": "scripts/asus-integration/src/rc-bridge.h",
+        "sha256": "083b11c0fc1ad11ada8e57df40d09238efd926e938f924a719b720b845a4248c"
+      },
+      {
+        "path": "scripts/asus-integration/src/rc-broker.c",
+        "sha256": "4faa7cc5a1a51f00880c29e2d0f383f97b8054f7ba6235bbd9a2c07a6cf4e4c8"
+      },
+      {
+        "path": "scripts/asus-integration/src/rc-client.c",
+        "sha256": "9c862d731cc5620a3aa6703152e7c669ce4913ddc69cffed3d16f8456d3800de"
+      },
+      {
+        "path": "scripts/asus-integration/src/rc-legacy.c",
+        "sha256": "5811abcb2425a139f080dfad8634cfaa79be8d863e5fe8e3988be44f21f5955f"
+      },
+      {
+        "path": "scripts/asus-integration/src/rc-manager.c",
+        "sha256": "3de5a9bd40e2816d642b6b598217c7bc9a1ef178c9fbeda045ef5d9eacbfb477"
+      },
+      {
+        "path": "scripts/asus-integration/src/rcctl.c",
+        "sha256": "7260b309251afceb1a0ff2ab1c1ae816f4d8f0e17554117cdebd25026004d986"
+      }
+    ],
+    "native_artifacts": [
+      {
+        "path": "build/asus-integration/production-foundation/leon-rc-broker",
+        "sha256": "8870a148d5ed55040ee584f833560c65489832f5a86f0368be89aafc3289cbe9",
+        "elf_header": "ELF Header:\n  Magic:   7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00 \n  Class:                             ELF64\n  Data:                              2's complement, little endian\n  Version:                           1 (current)\n  OS/ABI:                            UNIX - System V\n  ABI Version:                       0\n  Type:                              DYN (Position-Independent Executable file)\n  Machine:                           AArch64\n  Version:                           0x1\n  Entry point address:               0x1c80\n  Start of program headers:          64 (bytes into file)\n  Start of section headers:          93088 (bytes into file)\n  Flags:                             0x0\n  Size of this header:               64 (bytes)\n  Size of program headers:           56 (bytes)\n  Number of program headers:         9\n  Size of section headers:           64 (bytes)\n  Number of section headers:         39\n  Section header string table index: 38\n"
+      },
+      {
+        "path": "build/asus-integration/production-foundation/leon-rcctl",
+        "sha256": "e3292f671f80fb2bfad4a3a7f5003e853256fcb783763a54524ad2468aaea3db",
+        "elf_header": "ELF Header:\n  Magic:   7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00 \n  Class:                             ELF64\n  Data:                              2's complement, little endian\n  Version:                           1 (current)\n  OS/ABI:                            UNIX - System V\n  ABI Version:                       0\n  Type:                              DYN (Position-Independent Executable file)\n  Machine:                           AArch64\n  Version:                           0x1\n  Entry point address:               0xc40\n  Start of program headers:          64 (bytes into file)\n  Start of section headers:          79144 (bytes into file)\n  Flags:                             0x0\n  Size of this header:               64 (bytes)\n  Size of program headers:           56 (bytes)\n  Number of program headers:         9\n  Size of section headers:           64 (bytes)\n  Number of section headers:         40\n  Section header string table index: 39\n"
+      },
+      {
+        "path": "build/asus-integration/production-foundation/libleon-rc-notify.so",
+        "sha256": "f45160c2754d1f64f6af5fa0f281c78c56ce37292d7c0ef1c68fb3457b21b439",
+        "elf_header": "ELF Header:\n  Magic:   7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00 \n  Class:                             ELF64\n  Data:                              2's complement, little endian\n  Version:                           1 (current)\n  OS/ABI:                            UNIX - System V\n  ABI Version:                       0\n  Type:                              DYN (Shared object file)\n  Machine:                           AArch64\n  Version:                           0x1\n  Entry point address:               0x0\n  Start of program headers:          64 (bytes into file)\n  Start of section headers:          80456 (bytes into file)\n  Flags:                             0x0\n  Size of this header:               64 (bytes)\n  Size of program headers:           56 (bytes)\n  Number of program headers:         8\n  Size of section headers:           64 (bytes)\n  Number of section headers:         38\n  Section header string table index: 37\n"
+      }
+    ],
+    "compiler": "gcc-16 (GCC 16.1.0 gb10 O3+LTO+PGO) 16.1.0",
+    "target_flags": [
+      "-mcpu=cortex-a53+crypto+crc",
+      "-D_TIME_BITS=64",
+      "-D_FILE_OFFSET_BITS=64"
+    ],
+    "changes_from_reference": [
+      "Private compile-time path overrides for isolated fixtures",
+      "Reject unused nonzero request fields and duplicate READY",
+      "Remove BE98-specific ARMEL trial guard injection and clear broker process-local LD_PRELOAD before child exec",
+      "Offline builds compile out direct legacy PID1 and real power fallbacks"
+    ],
+    "deployment_limit": "Built with host GCC16.1.0; these artifacts are NOT the accepted Ubuntu GCC16.2/glibc2.44 deployment binaries. Rebuild from these sources in that accepted environment; also build ARMEL and optional ARMHF shims with matched runtime closure. No unit or preload configuration was installed."
+  },
+  "validation": {
+    "report": "build/asus-integration/offline-test.json",
+    "report_sha256": "6aa3ea7dcc208f32cd8a4da546e819272492379fd9671f182e1bf935db83e76c",
+    "status": "passed",
+    "cases": [
+      "missing_shim_refuses_backend",
+      "pre_ready_wrong_child_unknown_op_reserved_value_malformed_rejected",
+      "nonroot_peer_rejected_even_with_accessible_socket",
+      "direct_child_ready_role_not_inherited_subreaper_reaps",
+      "unlisted_signal_rejected",
+      "allowed_signals_only_reach_owned_backend",
+      "seven_notify_call_shapes_and_ordinary_self_signal",
+      "power_request_recorded_only_ordered_shutdown_no_real_power",
+      "missing_broker_notify_fails_closed",
+      "backend_crash_fails_broker_no_restart_stale_socket_removed"
+    ],
+    "identity": "Actual root and uid65534 peers inside a private user namespace; disposable socket permissions relaxed only to prove SO_PEERCRED rejection.",
+    "power_scope": "Private text receipt only. No systemctl power command or real reboot syscall executed. All delivered signals target owned fixtures or the caller itself.",
+    "initial_harness_failures_preserved": [
+      "build/asus-integration/1791128616847947985-offline-test.json",
+      "build/asus-integration/1791128635651036999-offline-test.json"
+    ],
+    "not_acceptance": [
+      "Actual ARMEL rc initialization",
+      "Actual proprietary libshared/NVRAM notifications",
+      "Real board/kernel GPIO/radio/Runner path",
+      "systemd PID1 unit ordering with this broker",
+      "Foreign ABI shims",
+      "ASUS HTTP/AiMesh/USB/AI functionality",
+      "Hardware boot rollback"
+    ]
+  },
+  "minimum_next_source_work": [
+    "Capture exact BE19000AI rc compile configuration, include files, selected prebuilt objects and linker inputs at the pinned source revision. rc Makefile chooses model/SDK-specific prebuilt hostapd/WPS objects and has a separate ai_service.o path; do not link old BE98 object files.",
+    "Wire the role/client/manager helpers into current rc before any early /data/NVRAM effects, replace active manager checks (including ai_service.c), and audit retained object kill/reboot references under narrow linker wrappers.",
+    "Implement a managed sysinit ownership branch for persistent Ubuntu filesystems/accounts/DNS, with regression sentinels proving /etc/fstab, machine-id, apt config and /var/lib/dpkg survive start/stop/restart.",
+    "Port managed shutdown gate and eliminate global signal/direct SysRq/reboot paths only for managed mode; preserve original standalone behavior.",
+    "Provide scoped per-ABI notification shim linkage/launchers and private ASUS shell call paths, then rebuild with accepted candidate toolchain and all required ARMEL libraries. No full rc compile/link was attempted by this foundation task.",
+    "Reuse later web/AiMesh fixes against actual AI producer contracts; retain time64 default with explicit legacy protocol fields.",
+    "Only after offline actual-binary/QEMU acceptance, introduce disabled package-owned units and prove one daemon owner, then perform the root task hardware acceptance gate before any flash. Packaging stock files alone is not startup acceptance."
+  ],
+  "evidence_references": [
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/systemd-rc-compat-20260916/README.md",
+      "sha256": "15508a078b6b1d9a524265cde58c16af44bb39e1a8947ad76d51537317ebf4f2"
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/systemd-rc-compat-20260916/patches/asus-rc-systemd.patch",
+      "sha256": "0d11c209e9eb73dd69aad94ba71f79e5346d574d09b658b9d9d596c257425912"
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/systemd-rc-platform-20260917/README.md",
+      "sha256": "5410a964b24d3e3c65ab9c538e8f2785a459877652f8b46e26c38886f44a66f0"
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/systemd-rc-platform-20260917/candidate/KNOWN-ISSUE-aimesh.json",
+      "sha256": "0389debca92965702992f87ecc121bf54e3922d630d406d98a88984f43b55026"
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/httpd-dashboard-fix-20260917/README.md",
+      "sha256": "808549996cef2e8a3786a1fdfab5b6cbaacd8e2ab69c6d79cda6271fb4f3de66"
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/aimesh-ui-fix-20260917/README.md",
+      "sha256": "9d70f15e7593a23ba5122651b7dbe9176a1b0a10ee069fba09a57cb848ba92f3"
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/platform-web-release-20260917/KNOWN-ISSUE-acsd-startup.json",
+      "sha256": "fabf888e9eed58240b6370e8af29b37c61660bbb64b24753572dac5adb3755b2"
+    },
+    {
+      "path": "reports/ubuntu26/asus-integration-audit.json",
+      "sha256": "4244bd71567bf2846dd38d417b737475ed14404927ee0657a472e02239f32b05"
+    },
+    {
+      "path": "configs/ubuntu26/userspace-patches.json",
+      "sha256": "bb372ae72170090abc03224e47d57cf3235dab79a346a936031f4820e2145989"
+    },
+    {
+      "path": "reports/ubuntu26/asus-shell-portability.json",
+      "sha256": "f71a8cbf846568018e5ed62cf5cc9f8c55a467dd5e1dc015451426302d19bc9e"
+    }
+  ],
+  "stock_libshared": {
+    "path": "build/kernel9-ui1-rootfs/usr/lib/libshared.so",
+    "sha256": "0b280a0c80b16e0ecf1f36281661c9c24fa483fb1adb3de0b2e266d7c9f011d8",
+    "notify_exports": [
+      "notify_rc",
+      "notify_rc_after_wait",
+      "notify_rc_and_wait",
+      "notify_rc_and_wait_1min",
+      "notify_rc_and_wait_2min",
+      "notify_rc_after_period_wait",
+      "notify_rc_and_period_wait"
+    ],
+    "executed": false
+  }
+}

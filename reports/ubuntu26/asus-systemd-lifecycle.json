@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "status": "passed_mock_lifecycle_only",
+  "scope": "Actual kernel10/systemd259 Ubuntu boot; native ARM64 broker with native and ARMEL mock managers. No actual ASUS daemon or hardware initialization.",
+  "qemu_result": {
+    "path": "build/qemu/ubuntu26-asus-systemd-phase1-v2/result.json",
+    "sha256": "f8105570b29e80ee184cbabfdd1fc88e1ea926e71b121eb604a6a6080dba9fb5"
+  },
+  "fixture": {
+    "path": "build/ubuntu26-rootfs/ubuntu26-asus-systemd-phase1-v2-manifest.json",
+    "sha256": "c72b5a084e3680cdd2dc3ac9ac3f308d4bbc1dc1963ad0bafda1984c5221e074"
+  },
+  "kernel_sha256": "4a15601eada042576aed2a3680dcc48e9228eea70f70c478840767aaa89a9f8e",
+  "initramfs_sha256": "0478654f67864e14377f352d6b4006dc11901c91c43f063be47290bffb287f44",
+  "log_sha256": "5a877358828a0e8f9d2f344732e96155730a0d90ae71dc57bb7103fce7e7b60c",
+  "ubuntu_rootfs_sha256": "057c52f70d8974691179235c4e273a6be0d474edde11d6c1cb85b09b11b250a4",
+  "elapsed_seconds": 71.96,
+  "cases": {
+    "native": [
+      "ALARM_AND_CHILD_MASK",
+      "SYSTEMD_READY_CGROUP",
+      "NOTIFICATION",
+      "ORDERED_STOP",
+      "RESTART",
+      "CRASH_RECOVERY",
+      "SYSTEMD_LIFECYCLE"
+    ],
+    "armel": [
+      "ALARM_AND_CHILD_MASK",
+      "SYSTEMD_READY_CGROUP",
+      "NOTIFICATION",
+      "ORDERED_STOP",
+      "RESTART",
+      "CRASH_RECOVERY",
+      "SYSTEMD_LIFECYCLE"
+    ]
+  },
+  "native_build": "Fresh guest GCC16.2 / glibc2.44 / Cortex-A53+CRC+crypto / time64 and off64",
+  "armel_reference": {
+    "scope": "Fresh mock/shim from GCC15.2 reference SDK, isolated BE98 glibc2.44; not final Ubuntu armel packages",
+    "elf_inputs": [
+      {
+        "path": "build/asus-integration/armel-fixtures/systemd-phase1-v2/mock-backend",
+        "sha256": "366c344045aae722385d69a8d6fa2d1d95d9daa9d61d82cb1a219e16485d3504",
+        "elf_class": 32,
+        "machine": "EM_ARM"
+      },
+      {
+        "path": "build/asus-integration/armel-fixtures/systemd-phase1-v2/libleon-rc-notify.so",
+        "sha256": "0a1e63515f707f31f6b19ed036fcce3a61c256f26f3bdfbf6d677833dee11cca",
+        "elf_class": 32,
+        "machine": "EM_ARM"
+      },
+      {
+        "path": "build/asus-integration/armel-fixtures/systemd-phase1-v2/ld-linux.so.3",
+        "sha256": "e79a2323c16afd204dc9cca028d42fd23912aca42489e41a422219572f42b4d4",
+        "elf_class": 32,
+        "machine": "EM_ARM"
+      },
+      {
+        "path": "build/asus-integration/armel-fixtures/systemd-phase1-v2/libc.so.6",
+        "sha256": "4da295b81a9bb1038e434ff373faff6c0b84a0d95a5d312848e2e477199c380a",
+        "elf_class": 32,
+        "machine": "EM_ARM"
+      },
+      {
+        "path": "build/asus-integration/armel-fixtures/systemd-phase1-v2/libdl.so.2",
+        "sha256": "3d3b3aae6e7d46023ca31b5f2667b9a7b087b5b2ffd28899f020470199e6e30f",
+        "elf_class": 32,
+        "machine": "EM_ARM"
+      }
+    ]
+  },
+  "power_scope": "Test broker records reboot request; no real power action is requested by the broker.",
+  "intentional_failures": "Each verified fixture child is killed once to check systemd failure visibility, stale socket removal, no automatic restart and explicit recovery.",
+  "actual_asus_services_executed": false,
+  "production_rc_compiled": false,
+  "asus_functional_acceptance": false,
+  "flash_allowed": false,
+  "physical_or_network_access": false,
+  "earlier_run": "build/qemu/ubuntu26-asus-systemd-phase1-v1/result.json; lifecycle passed before adding target-kernel signal-mask proof",
+  "checker": {
+    "path": "scripts/asus-integration/check-systemd-qemu.py",
+    "sha256": "f592413656116041586e19e8f726a9bd0894f5fc8b064a081d4da5811dfa86f0"
+  }
+}

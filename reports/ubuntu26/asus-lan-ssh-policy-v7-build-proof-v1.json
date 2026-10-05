@@ -1,0 +1,285 @@
+{
+  "schema": 1,
+  "status": "read_only_build_artifact_verification_passed",
+  "scope": "Completed two-object compile and single rc link inspected; no builder re-invocation or binary execution",
+  "plan": {
+    "path": "build/asus-lan-ssh-lease/build-plan-v2-policy/plan.json",
+    "sha256": "4a5b34094032b9478bfa1b36672e58346339194c9d105282fb70c51b2dfb8130",
+    "bytes": 200052
+  },
+  "receipt": {
+    "path": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-emmc-wdt-cfe-lan-ssh-policy-v7/build-receipt.json",
+    "sha256": "a048be0c0c9b51734502f594b84bf146df663ab7942b088ac0e020133b9ce202",
+    "bytes": 89340
+  },
+  "builder": {
+    "path": "scripts/asus-integration/build-rc-lan-ssh-successor.py",
+    "sha256": "19ab5d45bbbb1a34fe707e106374631655f569f82f2a8a05b54e8528edf4064e",
+    "bytes": 9387
+  },
+  "baseline_compile": {
+    "path": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-emmc-wdt-cfe-v6/compile-result.json",
+    "sha256": "09f18e359e19fe4d78e2f47094dcd0fde073acbf2f4a84a2d12dc06259045493",
+    "bytes": 1332195
+  },
+  "baseline_link": {
+    "path": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-emmc-wdt-cfe-v6/link-result.json",
+    "sha256": "df295115cfeee1aee44930422a3f799ebb722129d25174ded764fa6c61fdd4a1",
+    "bytes": 66831
+  },
+  "baseline_rc": {
+    "path": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-emmc-wdt-cfe-v6/linked/rc",
+    "sha256": "7e00ff39b48ff4b5efcba7829b1d4849343c88232af3090038bd53b1e9791355",
+    "bytes": 7709628
+  },
+  "outputs": [
+    {
+      "path": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-emmc-wdt-cfe-lan-ssh-policy-v7/objects/init.o",
+      "sha256": "6ea9c7ec001f3e86f216944aa7dfd7374c0becb9d35be534a114ccefd1984cee",
+      "elf": {
+        "elf_class": 32,
+        "machine": 40,
+        "type": 1,
+        "flags": "0x5000000"
+      }
+    },
+    {
+      "path": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-emmc-wdt-cfe-lan-ssh-policy-v7/objects/udhcpc.o",
+      "sha256": "a943633e5ab3f82f3365754599fe40b7d0a819d2e4016a0a4640558e72a1c5c6",
+      "elf": {
+        "elf_class": 32,
+        "machine": 40,
+        "type": 1,
+        "flags": "0x5000000"
+      }
+    },
+    {
+      "path": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-emmc-wdt-cfe-lan-ssh-policy-v7/linked/rc",
+      "sha256": "ddd02bc669cc1760cdca577178d9b4d9d4cd57d5674081d0fc20d7c4808955c2",
+      "elf": {
+        "elf_class": 32,
+        "machine": 40,
+        "type": 2,
+        "flags": "0x5000200"
+      }
+    }
+  ],
+  "compiled_sources": [
+    {
+      "path": "build/asus-trial-network-policy/source-v1/source/release/src/router/rc/init.c",
+      "sha256": "4518af331dbb060faa1b4fc1200298354942d4a5aa33789d313d705ee1191202",
+      "bytes": 969300
+    },
+    {
+      "path": "build/asus-lan-ssh-lease/v2/source/release/src/router/rc/udhcpc.c",
+      "sha256": "2c070f10e1b40c57b336983a6b3bcbeef538412d0038ac108cfdee5834d52209",
+      "bytes": 81230
+    }
+  ],
+  "source_manifests": [
+    {
+      "path": "build/asus-lan-ssh-lease/v2/manifest.json",
+      "sha256": "53636a1a692b111bbf778e615d45db7933e8c4f2dda801bcb05a02833c9dd221",
+      "bytes": 3265
+    },
+    {
+      "path": "build/asus-trial-network-policy/source-v1/manifest.json",
+      "sha256": "1397b908ca0c149bb743c0f7fa006800f09db39b0d4f84887ff4add992e9bd24",
+      "bytes": 1936
+    }
+  ],
+  "headers": [
+    {
+      "path": "build/asus-lan-ssh-lease/v2/source/release/src/router/rc/rc-lan-ssh-update.h",
+      "sha256": "c178d7b821b8f6d04965fcd7be418aeb3485e1d04b8f25547f3171d6aae27d8a",
+      "bytes": 1935
+    },
+    {
+      "path": "build/asus-trial-network-policy/source-v1/source/release/src/router/rc/rc-trial-network-policy.h",
+      "sha256": "46817174ea4953415e38a5be07a0bb23cd551ed80ef69b0d7019a06a6f416b65",
+      "bytes": 2451
+    }
+  ],
+  "commands": {
+    "count": 3,
+    "returncodes": [
+      0,
+      0,
+      0
+    ],
+    "compile_normalized_exact_v6_except_c_o_MF": true,
+    "link_normalized_exact_v6_except_output_and_two_objects": true,
+    "compiler": {
+      "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain/usr/bin/arm-linux-gnueabi-gcc-15",
+      "sha256": "e365a6b1721565fe88f9d11a9d28b144d9c12b0279c82fece55ac5c660ab2c59"
+    },
+    "explicit_ABI_flags": "ARMEL softfp / time32 / off32 unchanged",
+    "effective_recorded_switches": {
+      "init.o": "GNU C11 15.2.0 -D_FORTIFY_SOURCE=3 -mcpu=cortex-a53 -mfpu=crypto-neon-fp-armv8 -mfloat-abi=softfp -marm -mtls-dialect=gnu -march=armv8-a+crc+crypto -g -Os -Os -std=gnu11 -fPIC -ffunction-sections -fdata-sections -fcommon -fstack-protector-strong -fzero-init-padding-bits=all",
+      "udhcpc.o": "GNU C11 15.2.0 -D_FORTIFY_SOURCE=3 -mcpu=cortex-a53 -mfpu=crypto-neon-fp-armv8 -mfloat-abi=softfp -marm -mtls-dialect=gnu -march=armv8-a+crc+crypto -g -Os -Os -std=gnu11 -fPIC -ffunction-sections -fdata-sections -fcommon -fstack-protector-strong -fzero-init-padding-bits=all"
+    }
+  },
+  "retained": {
+    "object_count": 121,
+    "all121_current_sha_match_plan_and_receipt": true,
+    "full_object_pins_in": {
+      "path": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-emmc-wdt-cfe-lan-ssh-policy-v7/build-receipt.json",
+      "sha256": "a048be0c0c9b51734502f594b84bf146df663ab7942b088ac0e020133b9ce202",
+      "bytes": 89340
+    },
+    "libovpn": {
+      "path": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-emmc-wdt-cfe-v6/linked/libovpn.so",
+      "sha256": "c524b4b1944b49ac21227e5d37f86decb0b7f7aeea3bb0609b3f6f5d8fee7915"
+    },
+    "patched_ledg": {
+      "path": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-emmc-wdt-cfe-v6/objects/ledg.o",
+      "sha256": "960fd7c830da0b723bc148956a64b23572fb05857e266c0abe1a0952e213dfe5",
+      "bytes": 26676
+    },
+    "old_rc_and_libovpn_unchanged": true
+  },
+  "ELF_comparison": {
+    "class": 32,
+    "machine": "ARM",
+    "type": "ET_EXEC",
+    "flags": "0x5000200",
+    "flags_exact_match": true,
+    "interpreter": "/lib/ld-linux.so.3",
+    "interpreter_exact_match": true,
+    "needed_count": 38,
+    "needed_order_exact_match": true,
+    "needed": [
+      "libconn_diag.so",
+      "libes.so",
+      "libbcm_afc.so",
+      "libai.so",
+      "libnvram.so",
+      "libshared.so",
+      "libcrypt.so.1",
+      "libgen_util.so",
+      "libsys_util.so",
+      "libwlcsm.so",
+      "libbcm_flashutil.so",
+      "libbcm_util.so",
+      "libbcm_boardctl.so",
+      "libwpa_client.so",
+      "libbcm.so",
+      "libcrypto.so.3",
+      "libssl.so.3",
+      "libark_db.so",
+      "libjson-c.so.2",
+      "libsqlite3.so.0",
+      "libbwdpi.so",
+      "libdisk.so",
+      "libnt.so",
+      "libwebapi.so",
+      "libcfgmnt.so",
+      "libnmpapi.so",
+      "libovpn.so",
+      "libasc.so",
+      "libletsencrypt.so",
+      "libcurl.so.4",
+      "libamas-utils.so",
+      "liblldpctl.so.4",
+      "libjansson.so.4",
+      "libasuslog.so",
+      "libcodb.so",
+      "libm.so.6",
+      "libc.so.6",
+      "ld-linux.so.3"
+    ],
+    "arm_attribute_section_bytes_exact_match": true,
+    "arm_attribute_section_sha256": "70a5189e9cb0e8bd164ea9cc7b4cff1411ef4fb64f9590349ab99b5cbdebb408"
+  },
+  "logs": [
+    {
+      "new": {
+        "path": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-emmc-wdt-cfe-lan-ssh-policy-v7/logs/0.log",
+        "sha256": "49a1fdfbfbedeeab4140612e5b414f48e327a24813d2f33011878e9fcd62d4ac",
+        "bytes": 55933
+      },
+      "baseline": {
+        "path": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-emmc-wdt-cfe-v6/compile-logs/init.log",
+        "sha256": "ada0310632a15cd043a96351539c291e6f8410b512c0d969c1f220aef549c7cb",
+        "bytes": 61700
+      },
+      "warning_count": 68,
+      "normalized_warning_messages_equal": true
+    },
+    {
+      "new": {
+        "path": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-emmc-wdt-cfe-lan-ssh-policy-v7/logs/1.log",
+        "sha256": "3ecf95c6572a5d8ed2acc3a1c4f6e7a100b8699181204a2f735a76f005dfd7bf",
+        "bytes": 11829
+      },
+      "baseline": {
+        "path": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-emmc-wdt-cfe-v6/compile-logs/udhcpc.log",
+        "sha256": "b8f846e26051c58521a44eff3797f6b64667cb35d17516334aac9367b89e62e6",
+        "bytes": 13142
+      },
+      "warning_count": 18,
+      "normalized_warning_messages_equal": true
+    },
+    {
+      "new": {
+        "path": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-stop-emmc-wdt-cfe-lan-ssh-policy-v7/logs/2.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "link_log_empty": true
+    }
+  ],
+  "warning_normalization": "ANSI escapes removed; Unicode single quotes normalized to ASCII; warning messages/counts equal after source-location omission",
+  "new_rodata_strings_present": [
+    "LEON_NETWORK_POLICY_BEGIN schema=1 phase=post-ready",
+    "LEON_NETWORK_POLICY_END schema=1",
+    "Post-READY native SSH policy reconciliation failed",
+    "LAN address changed; native SSH policy refresh was not queued"
+  ],
+  "linked_callsite_evidence": {
+    "ready_before_reconcile": {
+      "address": "0x3b2a8",
+      "instruction": "eb092532",
+      "target": "0x284778"
+    },
+    "once_policy_snapshot": {
+      "address": "0x3b530",
+      "instruction": "ebffc5d2",
+      "target": "0x2cc80"
+    },
+    "enabled_post_ready_ssh": {
+      "address": "0x3b548",
+      "instruction": "eb04a9de",
+      "target": "0x165cc8"
+    },
+    "bound_after_lan_up": {
+      "address": "0xaea8c",
+      "instruction": "ebfffc04",
+      "target": "0xadaa4"
+    },
+    "deconfig_after_lan_down": {
+      "address": "0xb1128",
+      "instruction": "ebfff25d",
+      "target": "0xadaa4"
+    },
+    "existing_notify_shim": {
+      "address": "0xadb90",
+      "instruction": "ebfdcd45",
+      "target": "0x210ac"
+    }
+  },
+  "once_guard": "init_main+0x35f0 reads local flag and skips at +0x35f8; compiler stores flag=1 at +0x368c before next dispatcher iteration; source marks before policy/apply. This is static evidence, not runtime scheduling proof.",
+  "compiler_or_linker_invoked_for_this_audit": false,
+  "builder_invoked": false,
+  "tests_run": false,
+  "QEMU_run": false,
+  "runtime_execution": false,
+  "device_access": false,
+  "runtime_validated": false,
+  "production_ready": false,
+  "limits": [
+    "Previous ABI/runtime/RGB/CFE fixtures not repeated.",
+    "Emitted calls/strings do not prove DHCP delivery, SSH rebinding or AiMesh recovery.",
+    "Unchanged retained object inputs can move to different linked addresses after the two rebuilt objects change."
+  ]
+}

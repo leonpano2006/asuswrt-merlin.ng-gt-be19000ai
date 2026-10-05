@@ -1,0 +1,395 @@
+{
+  "scope": "Archive metadata only; writable state directories need explicit semantic review",
+  "packages": [
+    {
+      "package": "binutils-aarch64-linux-gnu",
+      "architecture": "arm64",
+      "version": "2.47-6ubuntu1+leonb53.1",
+      "sha256": "73f20077d6a11d02083dc1e1c7ef3747171c21be2761bd69adcbabc6eb1e1b73",
+      "writable_entries": []
+    },
+    {
+      "package": "binutils-arm-linux-gnueabi",
+      "architecture": "arm64",
+      "version": "2.47-6ubuntu1+leonb53.1",
+      "sha256": "af7b7ccb4cb10bc761bae1a270bfc4c1b81da44acb4206742d951a2f2b328911",
+      "writable_entries": []
+    },
+    {
+      "package": "binutils-arm-linux-gnueabihf",
+      "architecture": "arm64",
+      "version": "2.47-6ubuntu1+leonb53.1",
+      "sha256": "e33d07999535a1e1c163b83856c5f3e399a609f4cf23f60eba1867bb94adc822",
+      "writable_entries": []
+    },
+    {
+      "package": "binutils-common",
+      "architecture": "arm64",
+      "version": "2.47-6ubuntu1+leonb53.1",
+      "sha256": "d4435632a9888d025a93fb1182508de3285e33f52568ffdfebce8e871e740913",
+      "writable_entries": []
+    },
+    {
+      "package": "binutils",
+      "architecture": "arm64",
+      "version": "2.47-6ubuntu1+leonb53.1",
+      "sha256": "bca769a762db141626ef4a3f1bcde594fa2ae8e46244f4263529f0e478d9def3",
+      "writable_entries": []
+    },
+    {
+      "package": "libbinutils",
+      "architecture": "arm64",
+      "version": "2.47-6ubuntu1+leonb53.1",
+      "sha256": "d86d7386707573cebcc486ec0ccfcde00006839fb2e7c82f66aed99d4598a437",
+      "writable_entries": []
+    },
+    {
+      "package": "libctf-nobfd0",
+      "architecture": "arm64",
+      "version": "2.47-6ubuntu1+leonb53.1",
+      "sha256": "a6d30e1d9200fb4729a5ce9a5279e1e8af7a81d97633ee2f180ab9fcf14dbda8",
+      "writable_entries": []
+    },
+    {
+      "package": "libctf0",
+      "architecture": "arm64",
+      "version": "2.47-6ubuntu1+leonb53.1",
+      "sha256": "fc0cdbbfdda0757faa3a94a818f24359c7366920d1d4bcc0c01b0154a49ab6ae",
+      "writable_entries": []
+    },
+    {
+      "package": "libgprofng0",
+      "architecture": "arm64",
+      "version": "2.47-6ubuntu1+leonb53.1",
+      "sha256": "4b635803a531e885ab20708496b38325fdb0a7a01708973545b9ac0c67574bae",
+      "writable_entries": []
+    },
+    {
+      "package": "libsframe3",
+      "architecture": "arm64",
+      "version": "2.47-6ubuntu1+leonb53.1",
+      "sha256": "d7e0d8412f0da615328ad5c30c2a76762726e4e7223887106a974bc8e84573ea",
+      "writable_entries": []
+    },
+    {
+      "package": "cpp-16",
+      "architecture": "arm64",
+      "version": "16.2.0-3ubuntu1+leonb53.1",
+      "sha256": "a672f5929089489ff19401578667a5a0fc93d6453c80b872c35fea6f45283ff2",
+      "writable_entries": []
+    },
+    {
+      "package": "cpp-16-aarch64-linux-gnu",
+      "architecture": "arm64",
+      "version": "16.2.0-3ubuntu1+leonb53.1",
+      "sha256": "4af23822ce87200c0d2e111d1152c11ee9645881d4e1253f47ab8f20277de68d",
+      "writable_entries": []
+    },
+    {
+      "package": "g++-16",
+      "architecture": "arm64",
+      "version": "16.2.0-3ubuntu1+leonb53.1",
+      "sha256": "7367a8991752b42cfbbfb2772a7656b1a63a949ecf371ac40ca818f91265e8d6",
+      "writable_entries": []
+    },
+    {
+      "package": "g++-16-aarch64-linux-gnu",
+      "architecture": "arm64",
+      "version": "16.2.0-3ubuntu1+leonb53.1",
+      "sha256": "f4d8fd2b2b0a0b2bfbee05b1af5a9c76e2e7048a3c181b95b577f8daff51a116",
+      "writable_entries": []
+    },
+    {
+      "package": "gcc-16",
+      "architecture": "arm64",
+      "version": "16.2.0-3ubuntu1+leonb53.1",
+      "sha256": "ab4e8674ec7a269b5910394d3a160c900dafebacf825d77b985183a63d90aa87",
+      "writable_entries": []
+    },
+    {
+      "package": "gcc-16-aarch64-linux-gnu",
+      "architecture": "arm64",
+      "version": "16.2.0-3ubuntu1+leonb53.1",
+      "sha256": "e12ed37f2d9810dba282d60f1269a3973364de7b963050712656823202a54bed",
+      "writable_entries": []
+    },
+    {
+      "package": "gcc-16-base",
+      "architecture": "arm64",
+      "version": "16.2.0-3ubuntu1+leonb53.1",
+      "sha256": "92dcc5ec52ae2c04fdc74986dd4089f66aae354b729036abec40f6349dc22c4e",
+      "writable_entries": []
+    },
+    {
+      "package": "libasan8",
+      "architecture": "arm64",
+      "version": "16.2.0-3ubuntu1+leonb53.1",
+      "sha256": "cc3d630abae4029c89059221555d3702a837c51ca806fab6cb1d1388b8765b10",
+      "writable_entries": []
+    },
+    {
+      "package": "libatomic1",
+      "architecture": "arm64",
+      "version": "16.2.0-3ubuntu1+leonb53.1",
+      "sha256": "90bf7607ca2ec8cbdb553fab4ce4d80151273a7f8f0a5cb2ead0a8e2bbe76af8",
+      "writable_entries": []
+    },
+    {
+      "package": "libcc1-0",
+      "architecture": "arm64",
+      "version": "16.2.0-3ubuntu1+leonb53.1",
+      "sha256": "8bdf5ab838f374048bc1993461554e55b099f6d791eaae327a770d45b5da49de",
+      "writable_entries": []
+    },
+    {
+      "package": "libgcc-16-dev",
+      "architecture": "arm64",
+      "version": "16.2.0-3ubuntu1+leonb53.1",
+      "sha256": "925836b6423a626e59e83759defbf13d476527d560a0788d7ac3afcb496cacd6",
+      "writable_entries": []
+    },
+    {
+      "package": "libgcc-s1",
+      "architecture": "arm64",
+      "version": "16.2.0-3ubuntu1+leonb53.1",
+      "sha256": "849ab8fb72ec61d99396d95eaa49ebe2ee270b3acefd9cb9c67c119fbcf4b264",
+      "writable_entries": []
+    },
+    {
+      "package": "libgomp1",
+      "architecture": "arm64",
+      "version": "16.2.0-3ubuntu1+leonb53.1",
+      "sha256": "ca8b51331fdf96432bcc225e9102fb3e32e64698d2533ad137a5f3d99b8fd50e",
+      "writable_entries": []
+    },
+    {
+      "package": "libhwasan0",
+      "architecture": "arm64",
+      "version": "16.2.0-3ubuntu1+leonb53.1",
+      "sha256": "e074a4a6105f95acaadc3743e3f61052b4fbf1585738efcfcf8b625109292e1f",
+      "writable_entries": []
+    },
+    {
+      "package": "libitm1",
+      "architecture": "arm64",
+      "version": "16.2.0-3ubuntu1+leonb53.1",
+      "sha256": "e444b45684625401c6ae6594b61f4d2387c2ca8fe3415a545c72ff8e26e4d70b",
+      "writable_entries": []
+    },
+    {
+      "package": "liblsan0",
+      "architecture": "arm64",
+      "version": "16.2.0-3ubuntu1+leonb53.1",
+      "sha256": "1f9e925b4c7824dc3b22411633a92464c117c59dc5f292fb86acb365c36c3060",
+      "writable_entries": []
+    },
+    {
+      "package": "libstdc++-16-dev",
+      "architecture": "arm64",
+      "version": "16.2.0-3ubuntu1+leonb53.1",
+      "sha256": "ac966528abf72d2cce95f7b2345737a1baa41c7a53ccd78b4b4950d8f0b41bb7",
+      "writable_entries": []
+    },
+    {
+      "package": "libstdc++6",
+      "architecture": "arm64",
+      "version": "16.2.0-3ubuntu1+leonb53.1",
+      "sha256": "de8ca931f7e593e0a34265aea051666de0dc913323ed59d39b0979fa47a2d433",
+      "writable_entries": []
+    },
+    {
+      "package": "libtsan2",
+      "architecture": "arm64",
+      "version": "16.2.0-3ubuntu1+leonb53.1",
+      "sha256": "d50e7807ae0eab153580d30119d42c69f3879fa8b224ebc3f4dcb9ca11ad306a",
+      "writable_entries": []
+    },
+    {
+      "package": "libubsan1",
+      "architecture": "arm64",
+      "version": "16.2.0-3ubuntu1+leonb53.1",
+      "sha256": "ea5052417c4028ec9ad2cc90eef1f7b88df26992674361c16d9a03cbd6db9461",
+      "writable_entries": []
+    },
+    {
+      "package": "libc6",
+      "architecture": "arm64",
+      "version": "2.44-1ubuntu1+leonb53.1",
+      "sha256": "e3c6fb808d4d57e6fcacdcbc2a03f671eed88e7cde3626316f63419edb4ca46c",
+      "writable_entries": []
+    },
+    {
+      "package": "libc-bin",
+      "architecture": "arm64",
+      "version": "2.44-1ubuntu1+leonb53.1",
+      "sha256": "857b6618194aa259469bb4c6ec054e355c8a57f5941a147047c72ac1cbec8a94",
+      "writable_entries": []
+    },
+    {
+      "package": "libc-gconv-modules-extra",
+      "architecture": "arm64",
+      "version": "2.44-1ubuntu1+leonb53.1",
+      "sha256": "d62010757e39f4867e8b24bc3593249eee75b5d1eba528c412eec57ac1651a81",
+      "writable_entries": []
+    },
+    {
+      "package": "libc6-dev",
+      "architecture": "arm64",
+      "version": "2.44-1ubuntu1+leonb53.1",
+      "sha256": "de3e9def4f97f2c28873aba5fcad93d70595c04a4ab8039a453f78a8ac098d8d",
+      "writable_entries": []
+    },
+    {
+      "package": "libc-dev-bin",
+      "architecture": "arm64",
+      "version": "2.44-1ubuntu1+leonb53.1",
+      "sha256": "c8d7818da166bfa78e7c3d6012678690228ac6c92493c3f5cde4f29887ee5230",
+      "writable_entries": []
+    },
+    {
+      "package": "libsystemd-shared",
+      "architecture": "arm64",
+      "version": "259.5-0ubuntu3.4+leonb53.2",
+      "sha256": "0df829eac0b3fcfe9cc28aa153d24952a96769e5f5766cd6f23fe64534b03e6b",
+      "writable_entries": []
+    },
+    {
+      "package": "libsystemd0",
+      "architecture": "arm64",
+      "version": "259.5-0ubuntu3.4+leonb53.2",
+      "sha256": "8227914576e2bd650a70d4b99d804395718caf756e04b03cdd50f6af332c8ef8",
+      "writable_entries": []
+    },
+    {
+      "package": "libudev1",
+      "architecture": "arm64",
+      "version": "259.5-0ubuntu3.4+leonb53.2",
+      "sha256": "7f3bc9d3ba9bf645c71bc87935b56d589fa0c82cc190d7d5bc42acdac2ffb364",
+      "writable_entries": []
+    },
+    {
+      "package": "systemd-sysv",
+      "architecture": "arm64",
+      "version": "259.5-0ubuntu3.4+leonb53.2",
+      "sha256": "59f48acaeae0247cab98710bc8527a3208007ce9850d020d4be14144e6a56655",
+      "writable_entries": []
+    },
+    {
+      "package": "systemd",
+      "architecture": "arm64",
+      "version": "259.5-0ubuntu3.4+leonb53.2",
+      "sha256": "f747faad09704cbe202a28e1bd563e5539ef21f1a7ec0d1e5a11e1385507a233",
+      "writable_entries": []
+    },
+    {
+      "package": "udev",
+      "architecture": "arm64",
+      "version": "259.5-0ubuntu3.4+leonb53.2",
+      "sha256": "a41df64df02a517afeef50695130d6568d0dea8c8297b2eb0143d3c729b39fb4",
+      "writable_entries": []
+    },
+    {
+      "package": "leon-asus-shell",
+      "architecture": "arm64",
+      "version": "0.2+asus3006.102.9",
+      "sha256": "08028c6e09eac02276919866ebc4a1f8e4418f58eeea0e8007e0a952010b794a",
+      "writable_entries": []
+    },
+    {
+      "package": "libc6",
+      "architecture": "armel",
+      "version": "2.44-1ubuntu1+leonb53.1",
+      "sha256": "d63d210f2200881d0cdc1c7e8971d77da21c400607859f8b668f790b19872e14",
+      "writable_entries": []
+    },
+    {
+      "package": "libc-gconv-modules-extra",
+      "architecture": "armel",
+      "version": "2.44-1ubuntu1+leonb53.1",
+      "sha256": "aedd8335383779972fb40f4fbeda0748e83f53e9467807e6f80e6743a4d50ba5",
+      "writable_entries": []
+    },
+    {
+      "package": "leon-gcc15-runtime",
+      "architecture": "armel",
+      "version": "15.2.0-0leonb53.1",
+      "sha256": "24a34d288b0d8d119567ecb05fdd3620131f6d60933c7cc982c18c24c51732b8",
+      "writable_entries": [
+        {
+          "path": ".",
+          "mode": "0o775",
+          "uid": 0,
+          "gid": 0
+        },
+        {
+          "path": "./usr",
+          "mode": "0o775",
+          "uid": 0,
+          "gid": 0
+        },
+        {
+          "path": "./usr/lib",
+          "mode": "0o775",
+          "uid": 0,
+          "gid": 0
+        },
+        {
+          "path": "./usr/lib/arm-linux-gnueabi",
+          "mode": "0o775",
+          "uid": 0,
+          "gid": 0
+        },
+        {
+          "path": "./usr/share",
+          "mode": "0o775",
+          "uid": 0,
+          "gid": 0
+        },
+        {
+          "path": "./usr/share/doc",
+          "mode": "0o775",
+          "uid": 0,
+          "gid": 0
+        },
+        {
+          "path": "./usr/share/doc/leon-gcc15-runtime",
+          "mode": "0o775",
+          "uid": 0,
+          "gid": 0
+        },
+        {
+          "path": "./usr/share/doc/leon-gcc15-runtime/README",
+          "mode": "0o664",
+          "uid": 0,
+          "gid": 0
+        },
+        {
+          "path": "./usr/share/doc/leon-gcc15-runtime/build",
+          "mode": "0o775",
+          "uid": 0,
+          "gid": 0
+        },
+        {
+          "path": "./usr/share/doc/leon-gcc15-runtime/build/armel.json",
+          "mode": "0o664",
+          "uid": 0,
+          "gid": 0
+        }
+      ]
+    },
+    {
+      "package": "libcrypt1",
+      "architecture": "arm64",
+      "version": "1:4.5.1-1+leonb53.1",
+      "sha256": "b8b842abd5b81a28a73c71035dbbff3563fabfe79aacd35d2197a0bb324ded3b",
+      "writable_entries": []
+    },
+    {
+      "package": "libcrypt1",
+      "architecture": "armel",
+      "version": "1:4.5.1-1+leonb53.1",
+      "sha256": "222c9759525b98fffd970ca974ada27f7857357be1e1b69da2e66e0529c875ac",
+      "writable_entries": []
+    }
+  ]
+}

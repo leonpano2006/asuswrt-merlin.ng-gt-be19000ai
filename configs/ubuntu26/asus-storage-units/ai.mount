@@ -1,0 +1,14 @@
+[Unit]
+Description=Verified BE19000AI BCM ai filesystem
+# Device identity was read-only verified; this unit never repairs or formats.
+Before=leon-asus-storage.target
+
+[Mount]
+What=/dev/disk/by-uuid/d6754055-3be0-4b1d-8dc4-3c3bb8493fbe
+Where=/ai
+Type=ext4
+Options=rw
+TimeoutSec=30s
+
+[Install]
+WantedBy=leon-asus-storage.target

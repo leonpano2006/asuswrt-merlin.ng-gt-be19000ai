@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "scope": "GT-BE19000AI BCM Ubuntu migration; separate AI-board OS remains unchanged",
+  "user_requirement": "ASUS functionality must be validated before flashing the Ubuntu migration. Debian packaging is authorized but does not establish runtime compatibility.",
+  "current_flash_allowed": false,
+  "acceptance_is_bound_to": ["integrated rootfs hash", "kernel and module hashes", "package versions", "board and service profile"],
+  "offline_prerequisites": [
+    {"id": "package_ownership", "requirement": "Collision-free dpkg ownership, actual apt install/remove/reinstall, unchanged Ubuntu base files, correct per-ABI runtime and protected updates."},
+    {"id": "vendor_closure", "requirement": "Actual target-runtime loader and relocation checks for rc, HTTPD, AiMesh, radios, RGB, AI control, native helpers and required plugins; all GLIBC_PRIVATE dependencies resolved with preserved vendor ABI."},
+    {"id": "manager_role", "requirement": "Board-specific rebuilt rc works below systemd PID1, uses authenticated manager notification, retains ordinary signals, and never accidentally signals PID1 or starts duplicate daemons."},
+    {"id": "persistent_files", "requirement": "ASUS startup/shutdown and config changes preserve Ubuntu fstab, hosts policy, machine-id, apt/dpkg state and persistent /var; ownership of generated ASUS configs is explicit."},
+    {"id": "shell_contract", "requirement": "ASUS script and system()/popen() semantics are validated; private legacy shell use is explicit and Ubuntu /bin/sh is preserved."},
+    {"id": "asus_service_boot", "requirement": "Actual ASUS service orchestration boots, stops, restarts and recovers under the exact Ubuntu/kernel candidate in isolated testing; mocks alone do not satisfy this gate."},
+    {"id": "time_abi", "requirement": "Shared-memory/message layouts match actual producers and consumers. New time64 code preserves tested legacy blob boundaries; no blanket ARM32 time32 workaround."},
+    {"id": "recovery", "requirement": "Final eMMC layout, UUID boot selection, fallback and firmware updater behavior are validated; installing a .deb cannot flash or commit a slot."}
+  ],
+  "functional_profile": [
+    "NVRAM reads/writes and persistent settings",
+    "all configured radios, SSIDs, authentication and client association",
+    "wired AiMesh membership, management and backhaul",
+    "Ethernet/bridge/VLAN/LACP and Broadcom acceleration ownership",
+    "local authenticated web management, settings, language and existing UI fixes",
+    "AI-board link and management without unintended AI-board restart",
+    "RGB changes and retained RGB fix",
+    "USB detection/mount and enabled USB applications",
+    "telemetry, client tables, CCR overview and integrated collectors",
+    "targeted service restarts and orderly system shutdown"
+  ],
+  "physical_acceptance": {
+    "required": true,
+    "status": "not_run_for_Ubuntu_candidate",
+    "limitation": "QEMU cannot establish physical Broadcom radio/Runner or CAN/USB behavior. A recoverable board trial and its limitations must be explicitly recorded after offline prerequisites; permanent boot acceptance additionally requires this functional profile to pass on the exact board candidate.",
+    "permanent_commit_allowed": false
+  },
+  "forbidden_shortcuts": [
+    "Treating a staged payload .deb, loader trace, mock broker or Ubuntu-only boot as proof ASUS works",
+    "Replacing native Ubuntu libc, shell, init or package-owned files by force-overwrite",
+    "Running ASUS hardware initialization or firmware upgrade from package maintainer scripts",
+    "Copying a BE98 runtime binary without checking this board's ABI and required behavior"
+  ]
+}

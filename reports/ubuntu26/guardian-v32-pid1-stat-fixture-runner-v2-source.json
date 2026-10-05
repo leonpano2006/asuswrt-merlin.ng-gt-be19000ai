@@ -1,0 +1,54 @@
+{
+  "accepted_actual_compile_plan": {
+    "bytes": 6814,
+    "path": "build/asus-accepted-runtime/v31-focused-host-v1/plan.json",
+    "sha256": "02af238b08fd5ad0ca8db3a5730967ddf6a1b24b3dd5d79382008dfac66098b1"
+  },
+  "accepted_old_toolchain_proof": {
+    "bytes": 9296,
+    "path": "reports/ubuntu26/guardian-v31-focused-validation-v1.json",
+    "sha256": "3990ccc55feb827195d968bc2534c25b352c46677a9a97c9fae6be502382c2be"
+  },
+  "compiler_version_probes": 0,
+  "device_accessed": false,
+  "fixture_source": {
+    "bytes": 4247,
+    "path": "scripts/asus-integration/accepted-guard/v32-pid1-stat-fixture-v1.c",
+    "sha256": "71038d81edf1006d670f1ae5a5787ef33bf9ab750b51030539c9cff381c4188d"
+  },
+  "literal_regions": [
+    {
+      "after": "argv=['/usr/bin/cc'",
+      "before": "argv=['/usr/bin/ccache','/usr/bin/cc'"
+    },
+    {
+      "after": "need(Path('/usr/bin/cc').exists(),'Accepted host compile recipe unavailable')",
+      "before": "need(Path('/usr/bin/cc').exists() and Path('/usr/bin/ccache').exists(),'Accepted host compile recipe unavailable')"
+    }
+  ],
+  "native_guardian_gcc16_ccache_unchanged": true,
+  "new_compile_count": 0,
+  "new_fixture_run_count": 0,
+  "new_runner": {
+    "bytes": 6980,
+    "path": "scripts/run-guardian-v32-pid1-stat-fixture-v2.py",
+    "sha256": "3b85e2b82e02eb3dd1b038e6bb1bb9146a8854d0e3af273fed557567cd66eaa1"
+  },
+  "old_runner": {
+    "bytes": 7035,
+    "path": "scripts/run-guardian-v32-pid1-stat-fixture-v1.py",
+    "sha256": "cacb0285080511497e691aa9e206309f99fbf65210f5c5a51092ffdfc846db4a"
+  },
+  "prior_v1_fixed_output_absent_at_source_preparation": true,
+  "prior_v1_preflight_compile_count": 0,
+  "prior_v1_preflight_fixture_run_count": 0,
+  "reverse_matches_exact_v1": true,
+  "same_21_cases_and_fixed_result_path": true,
+  "schema": 1,
+  "source_report": {
+    "bytes": 12531,
+    "path": "reports/ubuntu26/guardian-v32-pid1-zero-time-source-v1.json",
+    "sha256": "a7cc84a3ecebefd9522cadc693a0948c750d8eaf52af0f633c0b6163762e4ee1"
+  },
+  "status": "source_only_corrected_accepted_host_recipe_not_executed"
+}

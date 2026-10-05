@@ -1,0 +1,75 @@
+{
+  "schema": 1,
+  "status": "source_compatibility_defect_owned_route_linkdown_rejected",
+  "sources": [
+    {
+      "path": "scripts/asus-integration/uplink-rescue/rescue-link.c",
+      "sha256": "491680f38d5cbaf6140a47c867c42e5bdf8b8886938362b8f90e4f0d2a7f9d10",
+      "bytes": 27229
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/net/ipv4/fib_frontend.c",
+      "sha256": "aa9755f5404e2eb25ebc5864ef5625bd70f3e6487bc1733739c957a96fce03e0",
+      "bytes": 34968
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/net/ipv4/fib_semantics.c",
+      "sha256": "af4c22e8a3975615bd355010da9890100944ea60c0af4d638403ceded78bb5a7",
+      "bytes": 43849
+    },
+    {
+      "path": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/uapi/linux/rtnetlink.h",
+      "sha256": "05c70fdb9fba73294e0d6a12ea9c158f1056fe9291ffb04d4ec9bd1609d43994",
+      "bytes": 18853
+    }
+  ],
+  "evidence": {
+    "path": "build/qemu/uplink-rescue-focused-v6/result.json",
+    "sha256": "574c3ff1d141164adcfc24bf8c4f2f912af69cad7e3c888dc94a88e40498bf62",
+    "serial_path": "build/qemu/uplink-rescue-focused-v6/serial.log",
+    "observations": [
+      "actual PAM key login/wrong-key/peer rejection passed",
+      "br0 migration and normal IPv4 update login passed",
+      "after eth0 nomaster helper refused snapshot-or-foreign-state errno17 then cleanup-retained errno17",
+      "br0 remained UP/NO-CARRIER with own br0:lr address and normal192.168.100.16"
+    ]
+  },
+  "source_chain": [
+    {
+      "file": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/net/ipv4/fib_frontend.c",
+      "lines": "1288-1294",
+      "claim": "NETDEV_CHANGE tests link carrier state and invokes fib_sync_down_dev on carrier loss."
+    },
+    {
+      "file": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/net/ipv4/fib_semantics.c",
+      "lines": "1525-1584",
+      "claim": "Carrier loss NETDEV_CHANGE sets RTNH_F_LINKDOWN on affected nexthop and fib_info; scope-host is excluded unless force."
+    },
+    {
+      "file": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/net/ipv4/fib_semantics.c",
+      "lines": "1314,1337-1344",
+      "claim": "fib_dump_info emits fib_flags as rtm_flags; if ignore_routes_with_linkdown is enabled, it also adds DEAD for linkdown."
+    },
+    {
+      "file": "source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/include/uapi/linux/rtnetlink.h",
+      "lines": "371-375",
+      "claim": "DEAD=1, LINKDOWN=16."
+    },
+    {
+      "file": "scripts/asus-integration/uplink-rescue/rescue-link.c",
+      "lines": "181,285-295,364-370",
+      "claim": "parse_route preserves rtm_flags; exact same_route requires flags0; objects rejects peer route EEXIST before desired/withdraw reconciliation."
+    },
+    {
+      "file": "scripts/asus-integration/uplink-rescue/rescue-link.c",
+      "lines": "255,282-284,297-303",
+      "claim": "Enrolled link check requires MAC/type/index rather than carrier; local FIB ownership does not require flags0; captured own address still has required label/scope/noprefixroute."
+    }
+  ],
+  "recommendation": "Keep exact ownership attributes and foreign route rejection. Separate known kernel transient status recognition for withdrawal from flags0 ready/readback acceptance; do not accept arbitrary flags. Await bounded raw route evidence before choosing supported status set.",
+  "limits": [
+    "V6 did not capture raw native route flags; source incompatibility is proven, actual flag16 on that route remains an inference.",
+    "A host model can expose raw flags but does not replace exact Kernel10 functional proof.",
+    "No source patch, helper build, test, VM, device or network action performed."
+  ]
+}

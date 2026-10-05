@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "status": "native_preflight_and_trial_clients_validated_production_guardian_gated",
+  "deployment_gate_enabled": false,
+  "runtime_accepted": false,
+  "hardware_watchdog_opened": false,
+  "hardware_reset_proven": false,
+  "router_accessed": false,
+  "automatic_commit_allowed": false,
+  "evidence": {
+    "native_build": {
+      "path": "build/asus-trial-runtime/native-v15/manifest.json",
+      "sha256": "f7f93b28b11c72f82156ed66afc1bad6a7a9b22d86abac73e808b1c17abf3d12"
+    },
+    "readonly_preflight_tests": {
+      "path": "build/asus-trial-runtime/native-v15/fixture-test.log",
+      "sha256": "70aa47912da28263c5451b507c8b351b408f5ea8edb3b534ad3562fe15b3ad88"
+    },
+    "worker_lifecycle_tests": {
+      "path": "build/asus-trial-runtime/native-v15/worker-test.log",
+      "sha256": "35ee53abe81608e2eac671d2a520ba228d3a21d1d7f376090b78b263b40779b1"
+    },
+    "sha256_ack_parser_tests": {
+      "path": "build/asus-trial-runtime/native-v15/adapter-test.log",
+      "sha256": "a3c1e2ee568fa8e0553b76434e58daedc355649a116166569053284a5fdc34d7"
+    },
+    "ack_qemu_result": {
+      "path": "build/qemu/asus-trial-ack-kernel10-v2/result.json",
+      "sha256": "f0b39636d8adb9573ea718c43c4e4b24b5ebacae0951ae0362c2a633c939eef8"
+    },
+    "ack_qemu_serial": {
+      "path": "build/qemu/asus-trial-ack-kernel10-v2/serial.log",
+      "sha256": "420afa8a7d07d2607323b24b5c8f3e6f9251ae80c4e27ddeee4ab1a4f541efc1"
+    },
+    "root_identity_qemu_result": {
+      "path": "build/qemu/ubuntu26-pivot-guardian-health-v1-positive/result.json",
+      "sha256": "f3122c4af4a5137d2a5ac76c976ebae8e87d387fe32288b2612f57ddc9bdb47d"
+    },
+    "root_identity_qemu_serial": {
+      "path": "build/qemu/ubuntu26-pivot-guardian-health-v1-positive/serial.log",
+      "sha256": "b314c58949424673364c2b3d94feba768fb0190aeb10716caa7517c8671c8135"
+    }
+  },
+  "package_manifest": {
+    "path": "build/asus-trial-control/package-v1/manifest.json",
+    "sha256": "7a0290548cc4d8967e86f017c282aa263b4e8458ec5e86c30266cd7298a67640"
+  },
+  "package": {
+    "path": "build/asus-trial-control/package-v1/leon-asus-trial-control_0.1+leonb53.1_arm64.deb",
+    "sha256": "f261b1b0d458cae1bfe1567312341aa9c6e34a59810e19db979bfa43e8d885a4",
+    "name": "leon-asus-trial-control",
+    "version": "0.1+leonb53.1",
+    "architecture": "arm64"
+  },
+  "checks": {
+    "readonly_preflight_cases": 34,
+    "known_sha256_and_uint64_parser_passed": true,
+    "worker_real_fork_sigkill_reap_cases": 3,
+    "real_ssh_ack_markers": [
+      "LAB_TRIAL_ACK_LOCAL_AND_UNARMED_REJECT_PASS",
+      "LAB_TRIAL_ACK_REAL_IPV4_SESSION_AND_REPLAY_PASS",
+      "LAB_TRIAL_ACK_REAL_IPV6_SESSION_PASS",
+      "LAB_TRIAL_ACK_SAME_TCP_REJECT_PASS",
+      "LAB_TRIAL_ACK_ENDPOINT_CHANGE_REJECT_PASS",
+      "LAB_TRIAL_ACK_EXPIRED_CHALLENGE_REJECT_PASS",
+      "LAB_TRIAL_ACK_KERNEL10_COMPLETE"
+    ],
+    "immutable_guardian_identity_current_boot_and_forged_root_server": true,
+    "static_guardian_no_interpreter_or_needed": true,
+    "empty_environment_refusal": true
+  },
+  "bootstate_audit": {
+    "sources": [
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/bcmdrivers/opensource/char/bcm_bootstate/impl1/bcm_bootstate.c",
+        "sha256": "ab800f54a98d12bdd531f2ce36fdd9f9013908e532e5c2d17aee75fd4443b581"
+      },
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/bcmdrivers/opensource/include/bcm963xx/bcm_bootstate.h",
+        "sha256": "aea4b3c930648e5eec6fb8b12eaa72f7079525e451c0af2574b26c2d8875c2ef"
+      },
+      {
+        "path": "source/release/src-rt-5.04behnd.4916/bootloaders/u-boot-2019.07/board/broadcom/bcmbca/sdk_test_commands.c",
+        "sha256": "4fe081fd0147b330ee5930c4231833f0ed21d0cf59a6d12571c3dddc86ec37b1"
+      },
+      {
+        "path": "build/kernel9-ui1-rootfs/lib/libbcm_flashutil.so",
+        "sha256": "18c98a3c45d78b7ccc26e82a94ea225ac3b422d123b6b783f71691f5639fb0d0"
+      },
+      {
+        "path": "build/asus-trial-runtime/source-audit/getBootReason.txt",
+        "sha256": "6eb3e6bab82479e35932b58715dee6f2de002bf76856563e68338b8e58654554"
+      },
+      {
+        "path": "build/asus-trial-runtime/source-audit/GPT_getBootImageState.txt",
+        "sha256": "503c8c17c78958062cf7476badf9d198dd05f5b0aadf89308b2a70ff0a70940e"
+      }
+    ],
+    "exact_vendor_semantics": "GPT COMMITTED2 branch calls getBootReason, which returns raw hexadecimal strtoul unchanged; compares full value with integer1 and selects PART2 when different. It does not mask to the low nibble.",
+    "conservative_candidate_semantics": "Require <=16bit hexadecimal, known current reason0,2,4 and phase0x00..0x60; reject ACTIVATE nibble1 even with phase/history bits. Upper byte is preserved history. This is intentionally stricter than vendor, and may refuse an unexpected first-trial encoding.",
+    "observed_raw": "134 (no newline), from separately recorded read-only current kernel9 capture; not presumed exact future kernel10 startup value.",
+    "seq_bound": "Primary SDK sets newly written image seq=(other+1)%1000; accept canonical decimal0..999; never compile current5,4.",
+    "token": "/etc/leon/trial-slot-proof root0600, exact5-line schema. Requires final postflash metadata fullhash + pinned full stock p5/p6 hashes; no token generated by these scripts."
+  },
+  "production_guardian": {
+    "binary": {
+      "path": "build/asus-trial-runtime/native-v15/guardian-integrated",
+      "sha256": "fe6d1a46c5b3fe3c8edd6dc36bb0bce229885368d5ac39bcb335d908d3b81704"
+    },
+    "source_snapshot": "build/asus-trial-runtime/native-v15/source-snapshot",
+    "scope": "Source includes two-phase preflight/arm/exec/confirmed-abort, native worker health, authenticated ACK and immutable ownership query, metadata recheck, sole hardware adapter. Compile-time deployment gate is fixedfalse.",
+    "startup_grace_seconds": 300,
+    "prearm_deadline_seconds": 15,
+    "arm_ack_deadline_seconds": 3,
+    "hardware_timeout_seconds": 40,
+    "external_lease_seconds": 60,
+    "collector_limit_ms": 6500,
+    "source_peer_fixes": [
+      "Verified proc SysRq b before last-resort reboot syscall; fallback cannot claim watchdog preservation.",
+      "Retain worker PID until actual nonblocking reap; failure prevents overlapping replacement.",
+      "Canonical active sshd argv/private config check required in addition to -T."
+    ]
+  },
+  "remaining": [
+    "Final candidate exact critical-file composition and whole integrated production collector tests under kernel10.",
+    "Verify actual kernel10 /sys/kernel/notes equals pinned vmlinux notes section.",
+    "Device-local selected-account migration and individual host keys; trusted observer hostkey provisioning.",
+    "Final postflash fresh slot token plus first-trial reset-reason semantics.",
+    "Explicit deployment gate activation only after review; sole-owner hardware readback/reset/stock-slot fallback remains physically unproven.",
+    "Real ASUS Wi-Fi/AiMesh/AI hardware behavior is not proved by broker READY or these SSH tests."
+  ],
+  "checker_sha256": "a1552f1fe73517834ad83c6a844e7b1b86987d6c90db6517648e86b8366b77c0"
+}

@@ -1,0 +1,87 @@
+{
+  "schema": 1,
+  "status": "offline_static_helper_transaction_and_clear_view_passed",
+  "production_ready": false,
+  "build_manifest": {
+    "path": "build/ubuntu26-slot-proof/v7/manifest.json",
+    "sha256": "2a3db1ff59671dcd39089ec6fe7af67e45b8304047113ff756e9476d7e51c567"
+  },
+  "device_helper": {
+    "path": "build/ubuntu26-slot-proof/v7/slot-proof-device",
+    "sha256": "ba1345ff727fa073e36de7888dc74342fee922788a88d8938829bd2ef101c51a"
+  },
+  "tests": {
+    "transaction_cases": 36,
+    "clear_view_cases": 17,
+    "logs": [
+      {
+        "path": "build/ubuntu26-slot-proof/v7/fixture.log",
+        "sha256": "0a2772d1a7214202fdb259697d8a5fe032d80b4dbb91c7a4a7961b4c2443fc6c"
+      },
+      {
+        "path": "build/ubuntu26-slot-proof/v7/clear-view-fixture.log",
+        "sha256": "b686d554ecd7bcbd9f6a782f9f40352abe89dde86d5a7cd8c31f32292a492a18"
+      },
+      {
+        "path": "build/ubuntu26-slot-proof/v7/nondevice.log",
+        "sha256": "4c5c122d2245ce3c81f64903f1f748d75b1d3b8fe03f93c2caace6a46eb51e86"
+      }
+    ],
+    "optimized_python": {
+      "path": "build/ubuntu26-slot-proof/v7/optimized-python-refusal.json",
+      "sha256": "1be9cdee1c048c2a113680ad1e274af3d829b5598b507890d2a64d588feb429c"
+    }
+  },
+  "namespace_compatibility": {
+    "path": "build/ubuntu26-slot-proof/v7/stock-namespace-evidence.json",
+    "sha256": "2c0ccccaaa20739e8bb396887252ac4a0c95a4eb76d002322d486e749ebe65d0"
+  },
+  "shared_clear_view": {
+    "path": "scripts/asus-integration/slot-proof/p11-clear-view.h",
+    "sha256": "988d0b81d28e09f16aab6303721b9425ac66dbd0d6f2b74ecd3609483c29bdf3"
+  },
+  "contract": {
+    "path": "build/ubuntu26-provisioning/runtime07-archive-v1/device-local-contract.json",
+    "sha256": "6ea98ac838a903c8d7cd7c3f3141d304048cbbbeb56655673acc320f84589f6c"
+  },
+  "existing_live_readonly_capture": {
+    "path": "evidence/ubuntu26/gpt-live/kernel9-readonly-v1/capture.json",
+    "sha256": "14d94cd5baee31177aa6c9913a742f6278544f5a5d43f163ff3eeb52caba2b2a",
+    "eligible_stock_slot2": false,
+    "reason": "Existing captured boot is kernel9/rootp4; this is source/capture compatibility evidence, not token authorization."
+  },
+  "usage": "slot-proof-device --create-slot-proof <fresh reviewed postflash metadata SHA256> <same current stock boot UUID>",
+  "freshness": "Both complete physical 262144-byte metadata copies must equal each other and supplied fresh hash, pass header lengths/CRC/COMMITTED=2/VALID=1,2/canonical SEQ. Recheck before staging, before atomic publication, after readback and after clean unmount.",
+  "checks": [
+    "Root UID and initial PID1 mount namespace with read-only original squashfs p6 and root cmdline",
+    "Fixed CID/capacity/512 sector/native179:0 node; two exact candidateGPT regions and all11 kernelpartitionextents",
+    "p11 exactUUID/size/4KiBext4/zeroerrors; clean feature/state before mounting",
+    "Four required existing ext4 UUIDs, rw mounts, superblock and sysfs zero error counts",
+    "Full physical original p5 and p6 hashes",
+    "All-process mountinfo, holders, active swaps; shared identity flock",
+    "Private mount namespace only, rootfd/ext4 ownership and exact root-generation",
+    "Root-owned0600 single-link five-line token, stage filefsync, renameat2NOREPLACE, directoryfsync, readback, syncfs and cleanunmount"
+  ],
+  "writes": [
+    "New /etc/leon/trial-slot-proof and temporary atomic-publication file only on Ubuntu root; ext4 journal metadata follows normal mount/fsync semantics",
+    "Root-only lock and empty temporary mountpoint under stock /tmp"
+  ],
+  "forbidden_actions_done": {
+    "gpt_writes": false,
+    "boot_metadata_writes": false,
+    "firmware_writes": false,
+    "account_or_key_reads": false,
+    "guardian_arm": false,
+    "reboot": false,
+    "boot_commit": false,
+    "real_device_connection": false
+  },
+  "limits": [
+    "Synthetic transaction runs in user/mount/network namespaces on new regular directories only; no real p11 mount or hardware preflight was exercised.",
+    "Private ext4 mounting can update filesystem journal/metadata; no other payload file is written.",
+    "Any existing token or leftover staging token requires explicit review; this helper never overwrites it.",
+    "After publication/fsync failure the token remains and the command fails, with published=1; no silent retry or boot acceptance.",
+    "Advisory lock does not exclude unrelated firmware writers or mounts; caller must provide exclusive maintenance."
+  ],
+  "builder_delta": "Added optimized Python early refusal after v7 build; production C/header snapshots and both fixture binaries unchanged and source hashes verified."
+}

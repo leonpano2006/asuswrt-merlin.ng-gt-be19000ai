@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "status": "inactive design and mock-validated decision engine; deployment gate closed",
+  "deployment_enabled": false,
+  "automatic_commit_allowed": false,
+  "physical_reset_and_fallback_proven": false,
+  "sole_hardware_owner": {
+    "owner": "static native guardian started by SquashFS PID1 after pivot and before exec systemd",
+    "device": "/dev/watchdog0",
+    "identity": "BCM96xxx Watchdog timer",
+    "timeout_seconds": 40,
+    "pretimeout_seconds": 0,
+    "feed_period_seconds": 5,
+    "readback_required": "Exact timeout 40 and pretimeout 0, WDIOF_MAGICCLOSE/KEEPALIVEPING/SETTIMEOUT/PRETIMEOUT, sole open succeeds",
+    "systemd_settings": {
+      "RuntimeWatchdogSec": 0,
+      "RebootWatchdogSec": 0,
+      "KExecWatchdogSec": 0
+    },
+    "vendor_change_required": "In LEON_SYSTEMD_RC, start_hw_wdt must query authenticated native guardian ownership and never launch wdtctl -d. Preserve ASUS software watchdog daemon.",
+    "rc_patch_reservation": "0019; not implemented or compiled by this candidate"
+  },
+  "handoff": {
+    "point": "After successful pivot and before final exec; static guardian is loaded from immutable old SquashFS, using the new root and moved /dev and /run",
+    "parent": "PID1 only; root-owned immutable executable and policy must be verified before child launch",
+    "transport": "Private AF_UNIX SOCK_SEQPACKET socketpair, guardian FD3; parent end FD_CLOEXEC, no inherited duplicate held by other processes",
+    "abi": "scripts/asus-integration/trial-guard/trial-handoff.h, fixed 56-byte messages, per-boot getrandom nonce",
+    "armed": "Two phase: PREPARED_UNARMED follows bounded 15-second read-only preflight. No hardware open is possible before nonce-bound ARM_REQUEST. Then ARMED exact timeout 40 must arrive within 3 seconds.",
+    "exec_success": "EOF at guardian control FD starts nonextendable 300-second startup deadline; no unit-start dependency",
+    "exec_failure": "While parent still owns preexec FD, send nonce-bound ABORT_PREEXEC. Only confirmed hardware disable and ABORTED authorize rollback mounts and vendor exec.",
+    "abort_failure": "Unknown state after ARM_REQUEST or failed abort requires direct emergency reboot syscall, never normal services shutdown or vendor watchdog. Any already armed watchdog remains backup.",
+    "unexpected_parent_close": "Treat like exec: require verified health before startup deadline, never silently disarm"
+  },
+  "health": {
+    "startup_deadline_seconds": 300,
+    "stable_samples": 3,
+    "minimum_sample_span_seconds": 10,
+    "local_freshness_seconds": 15,
+    "lan_ack_freshness_seconds": 60,
+    "clock": "Guard-owned CLOCK_BOOTTIME, not wall clock or peer timestamps; regression fails closed",
+    "required_local": [
+      "Actual authenticated ASUS manager ready response bound to current PID/starttime/boot and selected board profile; process existence alone is insufficient",
+      "Real successful native OpenSSH authentication using an explicit dedicated trial credential or selected migrated admin; listening port alone is insufficient",
+      "Native LAN interface/address and expected bridge/backhaul profile are operational"
+    ],
+    "required_external": "External LAN observer must successfully authenticate to native SSH and submit exact current boot nonce plus increasing sequence over a constrained authenticated acknowledgement path. Local loopback cannot prove LAN accessibility.",
+    "trust_boundary": "Local collector native namespace, root peer credentials, pinned executable inode and bounded requests; external acknowledgement additionally binds the approved account and real sshd session ancestry/remote LAN endpoint. These adapters remain to implement and validate.",
+    "replay": "Wrong boot nonce, zero/duplicate/regressing sequences and peer timestamps cannot refresh leases",
+    "after_ready": "Continue all checks indefinitely through the trial; first explicit failed check or expired lease latches expiry. Healthy does not mean accepted and never writes boot metadata.",
+    "intentional_disable": "Trial requires management SSH enabled. An intentional SSH shutdown ends this trial through a separate explicit operator workflow; no silent relaxation is implemented."
+  },
+  "failure": {
+    "action": "Latch failure, retain open watchdog FD, cease keepalives and await hardware expiry; never run normal shutdown, whose driver shutdown callback stops WDT",
+    "service_restart": "No systemd Restart=always or automatic guardian replacement; failure cannot obtain a fresh startup deadline",
+    "signals": "SIGTERM/SIGINT/SIGHUP latch expiry and retain ownership. SIGKILL unexpectedly releases fd; current core gives one final ping then leaves active timer, subject to physical proof and no competing opener.",
+    "budget": "Nominal reset no later than startup deadline plus accepted hardware timeout, with a bounded preexec phase. BCM interrupt/time-left quirks and physical reset must be separately measured.",
+    "metadata": "RO metadata partitions prevent ordinary rc auto-commit, not raw whole-disk writes or privileged BLKROSET. Trial slot must differ from verified committed known-good slot and one-shot next-boot choice must be read back.",
+    "guardian_lifetime": "Preexec child remains in init.scope after systemd startup in the fixture; production must prevent service stop/cgroup cleanup/reexec from restarting or silently disabling it. QEMU does not prove hardware shutdown ordering."
+  },
+  "remaining_before_activation": [
+    "Implement board-specific fresh metadata/CRC/boot-selection and exact candidate identity preflight; source evidence is not a live acceptance token",
+    "Connect actual hardware adapter to guardian only after reviewed deployment policy; current executable refuses before device access",
+    "Implement real ASUS/native SSH health collector and constrained external LAN acknowledgement path; current fixture deliberately injects synthetic results",
+    "Implement authenticated ARMED query and LEON-only vendor wdtd suppression, while retaining software ASUS watchdog",
+    "Integrate PID1 handoff and confirmed abort into root-init, then test combined pivot/systemd/exec-failure paths",
+    "Validate sole-owner behavior, timeout readback, intentional failure reset and bootloader fallback on exact board candidate before trusting unattended recovery"
+  ]
+}

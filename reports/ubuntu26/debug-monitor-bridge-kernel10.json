@@ -1,0 +1,76 @@
+{
+  "schema": 1,
+  "status": "compiled_armel_and_kernel10_real_notification_chain_validated",
+  "production_ready": false,
+  "hardware_recovery_proven": false,
+  "build": {
+    "path": "build/asus-debug-monitor-bridge/production-v5/manifest.json",
+    "sha256": "b7463b7daf0f4a85a5e3c2bef2e6ec819ed26b080cd51825c74e369d070c9341"
+  },
+  "fixture": {
+    "path": "build/asus-debug-monitor-bridge/qemu-v2/manifest.json",
+    "sha256": "12719a952d6572f5f05c8cdaec050acc2a7533ddf00d54de38557efb3b1bb17e"
+  },
+  "qemu": {
+    "path": "build/qemu/asus-dm-bridge-v2/result.json",
+    "sha256": "473dd27ce11703b8f0597a70cde0c0f494670284855277c93c3142c6ff72c33f"
+  },
+  "serial": {
+    "path": "build/qemu/asus-dm-bridge-v2/serial.log",
+    "sha256": "85c7ac6e8103660036c6346c285808137490106b8f8c8e988a14248efa0f8aad"
+  },
+  "kernel_sha256": "4a15601eada042576aed2a3680dcc48e9228eea70f70c478840767aaa89a9f8e",
+  "elapsed_seconds": 69.62,
+  "expected_markers": [
+    "LAB_DM_NATIVE_NAMESPACE_REFUSED_PASS",
+    "LAB_DM_PRODUCTION_IDENTITY_NOT_BYPASSED_PASS",
+    "LAB_DM_PRODUCTION_HASH_GATE_PASS",
+    "LAB_DM_NOT_READY_REFUSED_PASS",
+    "LAB_DM_SELF_SIGNAL_UNCHANGED_PASS",
+    "LAB_DM_EXEC_DESCENDANT_NO_ADAPTER_PASS",
+    "LAB_DM_UNKNOWN_CALLSITE_REFUSED_PASS",
+    "LAB_DM_MISSING_BROKER_REFUSED_PASS",
+    "LAB_DM_MISSING_PRIVATE_MARKER_REFUSED_PASS",
+    "LAB_DM_CHANGED_EXECUTABLE_REFUSED_PASS",
+    "LAB_DM_EXISTING_FIFO_BUDGET_REFUSED_PASS",
+    "LAB_DM_DAEMON_FORK_FIXED_EVENT_PASS",
+    "LAB_DM_RESPAWN_BUDGET_REFUSED_PASS",
+    "LAB_DM_CHAIN_FIXED_EVENT_ONE_SIGNAL_PASS",
+    "LAB_DM_BROKER_RESTART_BUDGET_REFUSED_PASS",
+    "LAB_DM_NO_POWER_NATIVE_HOST_UNCHANGED_PASS",
+    "LAB_DM_REAL_CHAIN_COMPLETE",
+    "LAB_DM_EXIT_code=0",
+    "LAB_SYSTEMD_FULL_PROBE_EXIT_code=0"
+  ],
+  "production_artifacts": [
+    {
+      "path": "build/asus-debug-monitor-bridge/production-v5/production/debug-monitor-launch",
+      "sha256": "ce935430b1d1fc51fba62b66b7f584c2ce9664bcc52e1c277ed97d9016f0f625"
+    },
+    {
+      "path": "build/asus-debug-monitor-bridge/production-v5/production/libdebug-monitor-bridge.so",
+      "sha256": "1d870a2a955ed299c9874ab2e284b00f236aa4aed9ee4ef9009e0a654ea5d1d1"
+    }
+  ],
+  "exported_functions": [
+    "kill"
+  ],
+  "protocol": "Exact vendor return 0x17224 for kill(1,SIGTERM) -> notify_rc(\"restart_wireless\") -> verified existing notify shim -> native broker SIGUSR1 -> mock manager. No PID1 SIGTERM forwarded.",
+  "budget": "Root-owned 0700 /run/leon-asus-wifi-recovery, O_EXCL root0600 once file with boot UUID. Consumed before enqueue; survives daemon and broker restarts; ambiguous failure never retries.",
+  "fixture_scope": "Real production native broker and dual-ABI notify libraries, ARMEL same bridge sources with distinct synthetic ET_EXEC hash/return constants. Actual production launcher executes only rejection against synthetic executable. No actual ASUS monitor/rc/NVRAM/BSP/WiFi code runs.",
+  "limits": [
+    "No Broadcom device, actual WiFi recovery or all-port continuity proven.",
+    "Existing ASUS restart_wireless may restart wireless/AiMesh/networkmap/printer and selected firewall/VLAN branches; it is not radio-only.",
+    "Constructor validates original ELF and fixed callsite. A new vendor ELF/broker/notify hash requires explicit rebuild/review.",
+    "Other monitor signals delegate to existing notify compatibility shim, preserving its TLS SIGUSR1 routing. No global loader configuration or original vendor binary is changed.",
+    "Root-owned private namespace checks prevent accidental host invocation; this is not a sandbox against malicious root.",
+    "An enqueue failure still consumes this boot's automatic recovery allowance; manual explicit management and separate guardian policy are unaffected."
+  ],
+  "router_access": false,
+  "firmware_modified": false,
+  "vendor_binary_modified": false,
+  "checker": {
+    "path": "scripts/asus-integration/debug-monitor-bridge/check-qemu.py",
+    "sha256": "eda8faad3787c60e26e6a31948ff6df6d8b39244fe72b4197262ed3aae5db592"
+  }
+}

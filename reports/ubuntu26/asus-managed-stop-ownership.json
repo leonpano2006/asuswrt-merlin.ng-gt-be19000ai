@@ -1,0 +1,99 @@
+{
+  "status": "source_patch_and_controlled_managed_branch_tests_pass",
+  "source_pin": "9b25e55ca5c56a6f01d6a56264c0f6c47459ada0",
+  "source_base": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-v1/compile-source",
+  "patch": {
+    "path": "patches/ubuntu26/asuswrt6/0017-asus-managed-stop-ownership.patch",
+    "sha256": "75c3d22691d0589a0e62ffa2c74e919c109ad5a22207d304d4a2fdd9d9236a39"
+  },
+  "changes": [
+    {
+      "path": "release/src/router/rc/init.c",
+      "before_sha256": "418ff357d32a39534be4488531cf8c27212dd7ca12dc979838623ad77d6b721d",
+      "after_sha256": "b10708eee117ee7e2372ba8bc48966c371e593a5bdea13549adc593ae7d4aa1b"
+    },
+    {
+      "path": "release/src/router/rc/services.c",
+      "before_sha256": "8176fe9a44cb37dfb095d64eaf063535af34114e04029c5ad7b8fadd1b0badb2",
+      "after_sha256": "89ac90d51d420bd74b9a3273082e1bff882a5ff4f77e8f65a2c0533fffd3c512"
+    }
+  ],
+  "apply": {
+    "fuzz": 0,
+    "stdout": "patching file release/src/router/rc/init.c\npatching file release/src/router/rc/services.c\n",
+    "stderr": ""
+  },
+  "managed_branch_tests": [
+    {
+      "mode": 0,
+      "reboot_argument": 0,
+      "exit": 0,
+      "stdout": "gate:0\nrunner:/usr/libexec/asus/bsp-runner:stop\nsync\n",
+      "stderr": ""
+    },
+    {
+      "mode": 0,
+      "reboot_argument": 1,
+      "exit": 0,
+      "stdout": "gate:1\nrunner:/usr/libexec/asus/bsp-runner:stop\nsync\n",
+      "stderr": ""
+    },
+    {
+      "mode": 1,
+      "reboot_argument": 0,
+      "exit": 1,
+      "stdout": "gate:0\n",
+      "stderr": "ASUS rc shutdown gate: Success\n"
+    },
+    {
+      "mode": 2,
+      "reboot_argument": 0,
+      "exit": 125,
+      "stdout": "gate:0\nrunner:/usr/libexec/asus/bsp-runner:stop\n",
+      "stderr": "ASUS managed BSP stop incomplete; see stage diagnostics\n"
+    }
+  ],
+  "general_stop_ssh_preprocessor_tests": [
+    {
+      "managed": false,
+      "expanded": "stop_sshd();"
+    },
+    {
+      "managed": true,
+      "expanded": ""
+    }
+  ],
+  "main_init_loop_service_cleanup_unchanged": true,
+  "legacy_tail_excluded_in_managed_build": [
+    "check_action 30-second wait",
+    "set_action ACT_REBOOT",
+    "knvram_recover_war",
+    "duplicate stop_wan",
+    "rtkswitch_LanPort_linkDown / rtkswitch 45",
+    "aura RGB off",
+    "global kill(-1) TERM/KILL",
+    "setAllLedOff",
+    "config_jumbo_frame",
+    "ed_thresh_clear",
+    "mtd_erase_misc2 from /jffs/remove_hidden_flag",
+    "stop_bcm_boot_launcher NVRAM mutation",
+    "reboot/halt and infinite sleep"
+  ],
+  "ai_stop_evidence": {
+    "object": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-v1/objects/ai_service.o",
+    "object_sha256": "cecd8d888f0cd91c8a5847588edbff4d4bb363408f508fa1b3e5e35bec3cf043",
+    "disassembly": "build/asus-managed-stop/v2/ai-stop-static.txt",
+    "disassembly_sha256": "02d8c4274b580c03b035c00bb54abb821562dbea47a2df68eb0848f9814ca2ce",
+    "finding": "stop_ai_service stops three local services; explicit start_ai_reboot alone invokes trigger_aisom. Background consumer behavior is outside this static claim."
+  },
+  "fixture_scope": "Only extracted managed branch and SSH compile-time guard with inert doubles; no real eval, sync, ASUS services or device commands.",
+  "limitations": [
+    "Full source rebuild/link and actual hardware shutdown not performed here.",
+    "Normal ASUS cleanup remains as stock, including per-service stop helpers and K scripts; runner success alone does not prove hardware health.",
+    "Fatal-signal callers already bypassed general stop_services in stock; cgroup cleanup is the final systemd bound."
+  ],
+  "actual_asus_services_executed": false,
+  "flash_allowed": false,
+  "builder_sha256": "d5c364afa06f8a579d63f14c9ace465a7d73ce59cbd469a3464178101e68388e",
+  "fixture_sha256": "cd54421a545281f85978f662639ee8665da5a7d2a18a8d6c7f1d5a607e971129"
+}

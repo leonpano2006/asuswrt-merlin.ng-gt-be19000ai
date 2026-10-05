@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "status": "native_GNU_package_candidate_QEMU_passed_no_full_OS_acceptance",
+  "rootfs": {
+    "rootfs_tar": "build/ubuntu26-rootfs/ubuntu26-bcm-gnu-b53-v1.tar",
+    "bytes": 497886720,
+    "sha256": "e701ec4eb2e40c875803f16e223e85321229ad57f45a13a7a1b4bf9edb777a5a",
+    "hostname": "be19000ai-bcm"
+  },
+  "kernel_sha256": "4a15601eada042576aed2a3680dcc48e9228eea70f70c478840767aaa89a9f8e",
+  "qemu": "build/qemu/ubuntu26-kernel10-gnu-b53-v1/result.json",
+  "qemu_log_sha256": "db2f750b64fb43ecc1de7b393069412e8fbfabfc0f4cd614c926de9f9d36544b",
+  "native_versions": {
+    "glibc": "2.44-1ubuntu1+leonb53.1",
+    "gcc": "16.2.0-3ubuntu1+leonb53.1",
+    "binutils": "2.47-6ubuntu1+leonb53.1"
+  },
+  "local_debs_installed": 35,
+  "checks": [
+    "dpkg audit",
+    "Ubuntu usrmerge",
+    "apt install/remove",
+    "native compiler triplet and multiarch",
+    "B53 default CRC/crypto macros",
+    "compile and execute C and C++",
+    "2100 timestamps and 8GiB private sparse file",
+    "DSO/TLS/thread/exception unwind",
+    "separate-TU LTO",
+    "native loader and absence of RPATH",
+    "binutils native plus armel/armhf targets compile/link/execute",
+    "zstd debug section roundtrip",
+    "glibc244 native pthread/condvar/spawn/NSS/dlopen/timerfd/futimens"
+  ],
+  "foreign_native_runtime_packages_installed": false,
+  "arm32_gcc_cross_compilers_built": false,
+  "full_systemd_acceptance": false,
+  "full_systemd_followup": "reports/ubuntu26/systemd259-kernel10-full-boot.json",
+  "physical_router_modified": false,
+  "limitations": [
+    "Native arm64 packages only; armel/hf runtime and GCC Multi-Arch:same matching versions still required.",
+    "4GiB guest RAM accommodates RAM-backed full compiler rootfs; this is not a physical BCM memory usage benchmark.",
+    "No full upstream compiler/libc testsuite or ASUS service integration acceptance."
+  ],
+  "writable_ext4": {
+    "report": "reports/ubuntu26/writable-root-test-gnu-b53-v1-capacityfix.json",
+    "passed": true,
+    "scope": "GNU candidate ext4 mount/unmount persistence, apt operations, switch_root and original Ubuntu259 minimal service; still not full base boot."
+  }
+}

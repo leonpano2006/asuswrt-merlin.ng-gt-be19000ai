@@ -1,0 +1,179 @@
+diff --git a/release/src/router/rc/Makefile b/release/src/router/rc/Makefile
+--- a/release/src/router/rc/Makefile
++++ b/release/src/router/rc/Makefile
+@@ -1392,7 +1392,7 @@
+ # Ubuntu-only managed ASUS rc integration.
+ ifeq ($(LEON_SYSTEMD_RC),y)
+ CFLAGS += -DLEON_SYSTEMD_RC=1
+-OBJS += rc-client.o rc-manager.o rc-legacy.o rc-shell-boundary.o rc-vendor-role.o
++OBJS += rc-client.o rc-manager.o rc-legacy.o rc-shell-boundary.o rc-openssh-client.o rc-vendor-role.o
+ LDFLAGS2 += -Wl,--wrap=kill,--wrap=reboot,--wrap=system,--export-dynamic-symbol=leon_rc_is_manager -ldl
+ endif
+ 
+diff --git a/release/src/router/rc/rc-openssh-client.c b/release/src/router/rc/rc-openssh-client.c
+--- /dev/null
++++ b/release/src/router/rc/rc-openssh-client.c
+@@ -0,0 +1,37 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++#define _GNU_SOURCE
++#include "rc.h"
++#include "rc-private-etc.h"
++#include "rc-openssh-control.h"
++#include <errno.h>
++#include <shadow.h>
++#include <string.h>
++#include <sys/socket.h>
++#include <sys/un.h>
++#include <unistd.h>
++/* Transport compiled in the same ARMEL ABI as rc; only fixed-width wire data
++ * crosses to the native service. Vendor shadow access remains private here. */
++#include "rc-openssh-transport.c"
++static int leon_openssh_request(unsigned int operation) {
++ struct leon_ssh_request request={.magic=LEON_SSH_MAGIC,.version=LEON_SSH_VERSION,.op=operation};
++ const struct spwd *password;int result,saved;
++ leon_rc_private_etc_require();
++ if(strlcpy(request.username,nvram_safe_get("http_username"),sizeof(request.username))>=sizeof(request.username)){errno=EINVAL;return -1;}
++ request.enable=nvram_get_int("sshd_enable");request.port=nvram_get_int("sshd_port");
++ request.password_auth=nvram_get_int("sshd_pass");request.forwarding=nvram_get_int("sshd_forwarding");
++ if(strlcpy(request.lan_address,nvram_safe_get("lan_ipaddr"),sizeof(request.lan_address))>=sizeof(request.lan_address)){errno=EINVAL;return -1;}
++ if(operation==LEON_SSH_IDENTITY || request.enable){
++  password=getspnam(request.username);
++  if(!password || strlcpy(request.password_hash,password->sp_pwdp,sizeof(request.password_hash))>=sizeof(request.password_hash)){errno=EINVAL;return -1;}
++  if(strlcpy(request.public_keys,nvram_safe_get("sshd_authkeys"),sizeof(request.public_keys))>=sizeof(request.public_keys)){errno=E2BIG;goto failed;}
++  for(char *p=request.public_keys;*p;p++)if(*p=='>')*p='\n';
++ }
++ result=leon_ssh_exchange(&request);saved=errno;
++ for(volatile unsigned char *p=(volatile unsigned char*)&request;p<(volatile unsigned char*)(&request+1);p++)*p=0;
++ errno=saved;return result;
++ failed:saved=errno;for(volatile unsigned char *p=(volatile unsigned char*)&request;p<(volatile unsigned char*)(&request+1);p++)*p=0;errno=saved;return -1;
++}
++int leon_openssh_apply(void) { return leon_openssh_request(LEON_SSH_APPLY); }
++void leon_openssh_sync_identity(void) {
++ if(leon_openssh_request(LEON_SSH_IDENTITY))logmessage("sshd","Native admin identity sync deferred (error %d)",errno);
++}
+diff --git a/release/src/router/rc/rc-openssh-control.h b/release/src/router/rc/rc-openssh-control.h
+--- /dev/null
++++ b/release/src/router/rc/rc-openssh-control.h
+@@ -0,0 +1,27 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++#ifndef LEON_OPENSSH_CONTROL_H
++#define LEON_OPENSSH_CONTROL_H
++#include <stdint.h>
++#define LEON_SSH_MAGIC UINT32_C(0x4c535348)
++#define LEON_SSH_VERSION 1
++#define LEON_SSH_ADMIN "MastermixStudios"
++#ifndef LEON_SSH_SOCKET
++#define LEON_SSH_SOCKET "/run/leon-asus-ssh/control"
++#endif
++#ifndef LEON_SSH_APPROVED_EXE
++#define LEON_SSH_APPROVED_EXE "/usr/libexec/asus/rc"
++#endif
++#ifndef LEON_SSH_LAN_INTERFACE
++#define LEON_SSH_LAN_INTERFACE "br0"
++#endif
++#define LEON_SSH_APPLY 1
++#define LEON_SSH_IDENTITY 2
++struct leon_ssh_request {
++ uint32_t magic,version,op,enable,port,password_auth,forwarding,reserved;
++ char username[64],lan_address[16],password_hash[256],public_keys[3072];
++};
++struct leon_ssh_reply { uint32_t magic,version; int32_t error,reserved; };
++_Static_assert(sizeof(struct leon_ssh_request)==3440,"cross-ABI fixed request layout");
++_Static_assert(sizeof(struct leon_ssh_reply)==16,"cross-ABI fixed reply layout");
++int leon_ssh_exchange(const struct leon_ssh_request *request);
++#endif
+diff --git a/release/src/router/rc/rc-openssh-transport.c b/release/src/router/rc/rc-openssh-transport.c
+--- /dev/null
++++ b/release/src/router/rc/rc-openssh-transport.c
+@@ -0,0 +1,23 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++#define _GNU_SOURCE
++#include "rc-openssh-control.h"
++#include <errno.h>
++#include <string.h>
++#include <sys/socket.h>
++#include <sys/un.h>
++#include <unistd.h>
++int leon_ssh_exchange(const struct leon_ssh_request *request) {
++ struct sockaddr_un address={.sun_family=AF_UNIX};struct leon_ssh_reply reply;
++ struct timeval limit={.tv_sec=15};struct ucred peer;socklen_t length=sizeof(peer);
++ int fd=socket(AF_UNIX,SOCK_SEQPACKET|SOCK_CLOEXEC,0),saved;ssize_t n;
++ if(fd<0)return -1;
++ strcpy(address.sun_path,LEON_SSH_SOCKET);
++ if(setsockopt(fd,SOL_SOCKET,SO_RCVTIMEO,&limit,sizeof(limit)) || setsockopt(fd,SOL_SOCKET,SO_SNDTIMEO,&limit,sizeof(limit)) || connect(fd,(struct sockaddr*)&address,sizeof(address)) || getsockopt(fd,SOL_SOCKET,SO_PEERCRED,&peer,&length))goto fail;
++ if(peer.uid!=0){errno=EACCES;goto fail;}
++ if(send(fd,request,sizeof(*request),MSG_NOSIGNAL)!=(ssize_t)sizeof(*request)){errno=EPROTO;goto fail;}
++ do{n=recv(fd,&reply,sizeof(reply),MSG_TRUNC);}while(n<0 && errno==EINTR);
++ if(n!=(ssize_t)sizeof(reply) || reply.magic!=LEON_SSH_MAGIC || reply.version!=LEON_SSH_VERSION || reply.reserved){errno=EPROTO;goto fail;}
++ if(reply.error){errno=reply.error;goto fail;}
++ close(fd);return 0;
++fail:saved=errno;close(fd);errno=saved;return -1;
++}
+diff --git a/release/src/router/rc/rc-openssh.h b/release/src/router/rc/rc-openssh.h
+--- /dev/null
++++ b/release/src/router/rc/rc-openssh.h
+@@ -0,0 +1,6 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++#ifndef LEON_RC_OPENSSH_H
++#define LEON_RC_OPENSSH_H
++int leon_openssh_apply(void);
++void leon_openssh_sync_identity(void);
++#endif
+diff --git a/release/src/router/rc/services.c b/release/src/router/rc/services.c
+--- a/release/src/router/rc/services.c
++++ b/release/src/router/rc/services.c
+@@ -1,3 +1,6 @@
++#ifdef LEON_SYSTEMD_RC
++#include "rc-openssh.h"
++#endif
+ #include "rc-private-etc.h"
+ #include "rc-systemd-select.h"
+ /*
+@@ -880,6 +883,10 @@
+ 	PMS_Init_Database();
+ #endif
+ 	create_passwd();
++#ifdef LEON_SYSTEMD_RC
++	/* Send only the selected private admin entry to the native owner. */
++	leon_openssh_sync_identity();
++#endif
+ }
+ 
+ static void
+diff --git a/release/src/router/rc/ssh.c b/release/src/router/rc/ssh.c
+--- a/release/src/router/rc/ssh.c
++++ b/release/src/router/rc/ssh.c
+@@ -1,3 +1,6 @@
++#ifdef LEON_SYSTEMD_RC
++#include "rc-openssh.h"
++#endif
+ #include "rc-systemd-select.h"
+ /*
+ 
+@@ -43,10 +46,9 @@
+ int start_sshd(void)
+ {
+ #ifdef LEON_SYSTEMD_RC
+-	/* Do not touch OpenSSH keys/config or start a second SSH server. */
+-	logmessage("sshd", "OpenSSH is owned by Ubuntu ssh.service; ASUS SSH policy translation is not installed");
+-	errno = ENOTSUP;
+-	return -1;
++	/* Native Ubuntu owns identity, policy, hostkeys and ssh.service. */
++	if (!leon_rc_is_manager()) { notify_rc("start_sshd"); return 0; }
++	return leon_openssh_apply();
+ #else
+ 	char buf[3500], *port;
+ 	char *dropbear_argv[] = { "dropbear",
+@@ -107,8 +109,10 @@
+ void stop_sshd(void)
+ {
+ #ifdef LEON_SYSTEMD_RC
+-	/* SSH remains available across ASUS subsystem stop/restart. */
+-	logmessage("sshd", "OpenSSH lifetime is owned by Ubuntu ssh.service; ASUS stop ignored");
++	/* Generic ASUS stop/restart must not close native management access. */
++	if (nvram_get_int("sshd_enable") != 0) return;
++	if (!leon_rc_is_manager()) { notify_rc("stop_sshd"); return; }
++	if (leon_openssh_apply()) logmessage("sshd", "Native SSH disable failed (error %d)", errno);
+ 	return;
+ #else
+ 	if (!leon_rc_is_manager()) {

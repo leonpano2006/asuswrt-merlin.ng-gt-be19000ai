@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "decision": "Prefer the Ubuntu 26.04 systemd binary packages and their matching source/package family.",
+  "tested_baseline": "259.5-0ubuntu3.4",
+  "reason": "Keep the Ubuntu package relationships, maintainer scripts, service presets and security update path while implementing genuine kernel interfaces.",
+  "kernel_strategy": "Backport the required upstream interfaces into the BCM kernel with proprietary-module ABI preservation and semantic tests. Do not claim a newer kernel version or fake feature-probe results.",
+  "custom_build_trigger": "Rebuild only when a demonstrated device integration or build-option change cannot be supplied through units/drop-ins and ordinary configuration.",
+  "custom_build_rules": [
+    "Start with the matching Ubuntu source package and retain its Debian packaging, dependency versions, maintainer scripts and triggers.",
+    "Distribute modifications as versioned Debian packages with a recorded source/patch/build manifest; do not copy untracked systemd binaries over dpkg-owned files.",
+    "Keep patches small and review upstream/Ubuntu changes when rebasing; a local package needs an explicit update policy.",
+    "Do not select a newer upstream release merely to obtain a larger version number; evaluate its additional kernel requirements first.",
+    "Keep time64 application defaults enabled and test legacy vendor boundaries individually."
+  ],
+  "acceptance": [
+    "Boot PID 1 and execute a real service on the exact candidate kernel; an audit watchdog or an 'about to execute' log is not success.",
+    "Verify pidfd lifetime, polling, waiting/reaping, signalling permissions and error cleanup, including ARM32 callers.",
+    "Retest apt service-install/restart behavior, udev and the ASUS service ownership/startup changes before a real root switch.",
+    "Keep systemd and the package database on the persistent writable Ubuntu root."
+  ],
+  "deployment_status": "local_preparation_only",
+  "demonstrated_custom_build_trigger": {
+    "report": "reports/ubuntu26/systemd259-kernel10-full-boot.json",
+    "failure": "Credentials require fsopen/new mount API; original package full base boot fails on kernel10",
+    "next_action": "Prepare narrowly scoped legacy-mount fallback in matching Ubuntu source packaging, preserving credentials protections; not yet accepted"
+  }
+}

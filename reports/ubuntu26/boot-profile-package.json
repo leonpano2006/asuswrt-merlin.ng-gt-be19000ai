@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "status": "reproducible_data_only_package_and_offline_apt_coinstallation_passed",
+  "production_ready": false,
+  "flash_allowed": false,
+  "package": {
+    "name": "leon-bcm-boot-profile",
+    "version": "0.1+leonb53.1",
+    "architecture": "all",
+    "path": "build/ubuntu26-boot-profile/package-v4/leon-bcm-boot-profile_0.1+leonb53.1_all.deb",
+    "sha256": "f59184bec27dc059f68338a5c75ee6c5b0acb2123714fb6887852ebe3f873c0a",
+    "bytes": 2552
+  },
+  "manifest": {
+    "path": "build/ubuntu26-boot-profile/package-v4/manifest.json",
+    "sha256": "5a82dbac17400b57767db074d8251b733f7989717d67619d8d33b12d423d36a9"
+  },
+  "config": {
+    "path": "configs/ubuntu26/boot-profile-device.json",
+    "sha256": "7d24c2c059a4042f6ad27821a6417c9a9254aeb2db5b828692b54530eb8d986f"
+  },
+  "builder": {
+    "path": "scripts/build-ubuntu26-boot-profile.py",
+    "sha256": "9f653e96afbb47bc07a522fe91a273d873da69e13e0e2f646e73606ca279e143"
+  },
+  "production_root_init_policy": {
+    "path": "configs/ubuntu26/root-init-device-policy.json",
+    "sha256": "30712a94da46e44b6012ec8888e7e7a52ae27269c0533a77e7258916dc51e552"
+  },
+  "generation_exactly_matches_production_policy": true,
+  "generation": "be19000ai-ubuntu26-kernel10-systemd-v1\n",
+  "ownership": {
+    "own": [
+      "/etc/leon/root-generation",
+      "/mnt/leon-vendor-root"
+    ],
+    "marker": "root:root regular0644, exactID plus newline, package data not a preserved user-editable conffile",
+    "parents": "root:root real directories0755",
+    "no_ownership": [
+      "root-init helper",
+      "trial guardian",
+      "/etc/fstab",
+      "/run",
+      "/tmp",
+      "native storage mount units",
+      "systemd enablement"
+    ]
+  },
+  "mount_review": {
+    "source": {
+      "path": "scripts/asus-integration/ubuntu-root-init.c",
+      "sha256": "f39a8ea66c413cb1c8d61f39bbc34276f02401e09fe01ba496529b1c225d4d8e"
+    },
+    "root": "mount(ROOT_DEVICE,NEWROOT,\"ext4\",MS_RELATIME,\"data=ordered,errors=remount-ro\") => initialrw; no rootnosuid, officialsudo setuid retained",
+    "run": "root-init validates/adopts/creates tmpfs and moves it acrosspivot; native systemd owns lifecycle",
+    "tmp": "baseline Ubuntu tmp.mount includes mode1777,nosuid,nodev and local-fs.target.wants link; package leaves it unchanged",
+    "storage": "data.mount,jffs.mount,ai.mount,mnt-defaults.mount exactUUIDs owned by leon-asus-integration; no duplicatefstab entries"
+  },
+  "acceptance": {
+    "two_builds_byte_identical": true,
+    "archive_entries_root_owned_expected_modes": 12,
+    "offline_install_reinstall_and_purge": true,
+    "installed_package_count": 179,
+    "package_owned_marker_and_mountpoint": [
+      "leon-bcm-boot-profile: /etc/leon/root-generation",
+      "leon-bcm-boot-profile: /mnt/leon-vendor-root"
+    ],
+    "marker_disappears_on_purge": true,
+    "existing_package_versions_unchanged": true,
+    "native_files_and_fstab_unchanged": true,
+    "unit_enablement_unchanged": true,
+    "base_rootfs_unchanged": true,
+    "new_rootfs_exported": false
+  },
+  "apt_proof": {
+    "path": "build/ubuntu26-boot-profile/package-v4/result.json",
+    "sha256": "83280c20f909e01d095bf73810c92fbc96ad6df514fb50f976ec350b670f8ed7"
+  },
+  "limits": [
+    "Data package alone never enables,pivots,flashes,reboots or accepts a trial.",
+    "The root-init guardian implementation and exact physical storage identity require their own acceptance.",
+    "runtime06 sealed base was cloned only for the install test and remains immutable; package is ready as a runtime07 input."
+  ],
+  "historical_failures": [
+    {
+      "path": "build/ubuntu26-boot-profile/package-v1/namespace.log",
+      "cause": "Sandbox denied newuidmap; no install began."
+    },
+    {
+      "path": "build/ubuntu26-boot-profile/package-v2/manifest.json",
+      "cause": "Mapped root could not traverse host home; fixed staged /tmp inputs and namespace result gathering."
+    },
+    {
+      "path": "build/ubuntu26-boot-profile/package-v3/manifest.json",
+      "cause": "APT --no-download also disabled required local-file acquisition; isolated network namespace remains the network boundary."
+    }
+  ]
+}

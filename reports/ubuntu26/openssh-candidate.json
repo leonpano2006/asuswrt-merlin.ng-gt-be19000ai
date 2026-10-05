@@ -1,0 +1,257 @@
+{
+  "status": "built",
+  "namespaces": {
+    "user": "user:[4026534364]",
+    "mnt": "mnt:[4026534365]",
+    "pid": "pid:[4026534370]",
+    "net": "net:[4026531833]"
+  },
+  "before_packages": "apt\t3.2.0\tarm64\nbase-files\t14ubuntu6.2\tarm64\nbase-passwd\t3.6.8\tarm64\nbash\t5.3-2ubuntu1\tarm64\nbinutils\t2.47-6ubuntu1+leonb53.1\tarm64\nbinutils-aarch64-linux-gnu\t2.47-6ubuntu1+leonb53.1\tarm64\nbinutils-arm-linux-gnueabi\t2.47-6ubuntu1+leonb53.1\tarm64\nbinutils-arm-linux-gnueabihf\t2.47-6ubuntu1+leonb53.1\tarm64\nbinutils-common:arm64\t2.47-6ubuntu1+leonb53.1\tarm64\nca-certificates\t20260601~26.04.1\tall\ncoreutils\t9.5-1ubuntu2+0.0.0~ubuntu25\tall\ncoreutils-from-uutils\t0.0.0~ubuntu25\tall\ncpp-16\t16.2.0-3ubuntu1+leonb53.1\tarm64\ncpp-16-aarch64-linux-gnu\t16.2.0-3ubuntu1+leonb53.1\tarm64\ndash\t0.5.12-12ubuntu3\tarm64\ndbus\t1.16.2-2ubuntu4\tarm64\ndbus-bin\t1.16.2-2ubuntu4\tarm64\ndbus-daemon\t1.16.2-2ubuntu4\tarm64\ndbus-session-bus-common\t1.16.2-2ubuntu4\tall\ndbus-system-bus-common\t1.16.2-2ubuntu4\tall\ndebconf\t1.5.92\tall\ndebianutils\t5.23.2build1\tarm64\ndiffutils\t1:3.12-1ubuntu0.1\tarm64\ndpkg\t1.23.7ubuntu1\tarm64\ne2fsprogs\t1.47.2-3ubuntu4\tarm64\nfindutils\t4.10.0-3build2\tarm64\ng++-16\t16.2.0-3ubuntu1+leonb53.1\tarm64\ng++-16-aarch64-linux-gnu\t16.2.0-3ubuntu1+leonb53.1\tarm64\ngcc-16\t16.2.0-3ubuntu1+leonb53.1\tarm64\ngcc-16-aarch64-linux-gnu\t16.2.0-3ubuntu1+leonb53.1\tarm64\ngcc-16-base:arm64\t16.2.0-3ubuntu1+leonb53.1\tarm64\ngnu-coreutils\t9.7-3ubuntu2.1\tarm64\ngpgv\t2.4.8-4ubuntu3.1\tarm64\ngrep\t3.12-1\tarm64\ngzip\t1.14-1~exp2ubuntu1.1\tarm64\nhostname\t3.25build1\tarm64\ninit-system-helpers\t1.69\tall\niproute2\t6.19.0-1ubuntu1.1\tarm64\nkmod\t34.2-2ubuntu2\tarm64\nleon-bcm-rootfs-config\t0.2\tall\nlibacl1:arm64\t2.3.2-2\tarm64\nlibapparmor1:arm64\t5.0.2-0ubuntu1~26.04.1\tarm64\nlibapt-pkg7.0:arm64\t3.2.0\tarm64\nlibasan8:arm64\t16.2.0-3ubuntu1+leonb53.1\tarm64\nlibatomic1:arm64\t16.2.0-3ubuntu1+leonb53.1\tarm64\nlibattr1:arm64\t1:2.5.2-4ubuntu0.1\tarm64\nlibaudit-common\t1:4.1.2-1ubuntu0.1\tall\nlibaudit1:arm64\t1:4.1.2-1ubuntu0.1\tarm64\nlibbinutils:arm64\t2.47-6ubuntu1+leonb53.1\tarm64\nlibblkid1:arm64\t2.41.3-3ubuntu2.2\tarm64\nlibbpf1:arm64\t1:1.6.3-1ubuntu1\tarm64\nlibbz2-1.0:arm64\t1.0.8-6ubuntu0.1\tarm64\nlibc-bin\t2.44-1ubuntu1+leonb53.1\tarm64\nlibc-dev-bin\t2.44-1ubuntu1+leonb53.1\tarm64\nlibc-gconv-modules-extra:arm64\t2.44-1ubuntu1+leonb53.1\tarm64\nlibc6:arm64\t2.44-1ubuntu1+leonb53.1\tarm64\nlibc6-dev:arm64\t2.44-1ubuntu1+leonb53.1\tarm64\nlibcap-ng0:arm64\t0.8.5-4build5\tarm64\nlibcap2:arm64\t1:2.75-10ubuntu2\tarm64\nlibcap2-bin\t1:2.75-10ubuntu2\tarm64\nlibcc1-0:arm64\t16.2.0-3ubuntu1+leonb53.1\tarm64\nlibcom-err2:arm64\t1.47.2-3ubuntu4\tarm64\nlibcrypt1:arm64\t1:4.5.1-1\tarm64\nlibctf-nobfd0:arm64\t2.47-6ubuntu1+leonb53.1\tarm64\nlibctf0:arm64\t2.47-6ubuntu1+leonb53.1\tarm64\nlibdb5.3t64:arm64\t5.3.28+dfsg2-10ubuntu1\tarm64\nlibdbus-1-3:arm64\t1.16.2-2ubuntu4\tarm64\nlibdebconfclient0:arm64\t0.280ubuntu1\tarm64\nlibelf1t64:arm64\t0.194-4\tarm64\nlibexpat1:arm64\t2.7.4-1ubuntu0.2\tarm64\nlibext2fs2t64:arm64\t1.47.2-3ubuntu4\tarm64\nlibgcc-16-dev:arm64\t16.2.0-3ubuntu1+leonb53.1\tarm64\nlibgcc-s1:arm64\t16.2.0-3ubuntu1+leonb53.1\tarm64\nlibgcrypt20:arm64\t1.12.0-2ubuntu1.1\tarm64\nlibgmp10:arm64\t2:6.3.0+dfsg-5ubuntu2\tarm64\nlibgomp1:arm64\t16.2.0-3ubuntu1+leonb53.1\tarm64\nlibgpg-error0:arm64\t1.58-2\tarm64\nlibgprofng0:arm64\t2.47-6ubuntu1+leonb53.1\tarm64\nlibgssapi-krb5-2:arm64\t1.22.1-2ubuntu4.1\tarm64\nlibhwasan0:arm64\t16.2.0-3ubuntu1+leonb53.1\tarm64\nlibisl23:arm64\t0.27-1build1\tarm64\nlibitm1:arm64\t16.2.0-3ubuntu1+leonb53.1\tarm64\nlibjansson4:arm64\t2.14-2build4\tarm64\nlibk5crypto3:arm64\t1.22.1-2ubuntu4.1\tarm64\nlibkeyutils1:arm64\t1.6.3-6ubuntu3\tarm64\nlibkmod2:arm64\t34.2-2ubuntu2\tarm64\nlibkrb5-3:arm64\t1.22.1-2ubuntu4.1\tarm64\nlibkrb5support0:arm64\t1.22.1-2ubuntu4.1\tarm64\nliblsan0:arm64\t16.2.0-3ubuntu1+leonb53.1\tarm64\nliblz4-1:arm64\t1.10.0-8\tarm64\nliblzma5:arm64\t5.8.3-1\tarm64\nlibmd0:arm64\t1.1.0-2build4\tarm64\nlibmnl0:arm64\t1.0.5-3build1\tarm64\nlibmount1:arm64\t2.41.3-3ubuntu2.2\tarm64\nlibmpc3:arm64\t1.3.1-3\tarm64\nlibmpfr6:arm64\t4.2.2-3\tarm64\nlibpam-modules:arm64\t1.7.0-5ubuntu3.2\tarm64\nlibpam-modules-bin\t1.7.0-5ubuntu3.2\tarm64\nlibpam-runtime\t1.7.0-5ubuntu3.2\tall\nlibpam0g:arm64\t1.7.0-5ubuntu3.2\tarm64\nlibpcre2-8-0:arm64\t10.46-1build1\tarm64\nlibseccomp2:arm64\t2.6.0-2ubuntu5\tarm64\nlibselinux1:arm64\t3.9-4build1\tarm64\nlibsframe3:arm64\t2.47-6ubuntu1+leonb53.1\tarm64\nlibsmartcols1:arm64\t2.41.3-3ubuntu2.2\tarm64\nlibss2:arm64\t1.47.2-3ubuntu4\tarm64\nlibssl3t64:arm64\t3.5.5-1ubuntu3.7\tarm64\nlibstdc++-16-dev:arm64\t16.2.0-3ubuntu1+leonb53.1\tarm64\nlibstdc++6:arm64\t16.2.0-3ubuntu1+leonb53.1\tarm64\nlibsystemd-shared:arm64\t259.5-0ubuntu3.4+leonb53.2\tarm64\nlibsystemd0:arm64\t259.5-0ubuntu3.4+leonb53.2\tarm64\nlibtinfo6:arm64\t6.6+20251231-1\tarm64\nlibtirpc-common\t1.3.7-0.1\tall\nlibtirpc3t64:arm64\t1.3.7-0.1\tarm64\nlibtsan2:arm64\t16.2.0-3ubuntu1+leonb53.1\tarm64\nlibubsan1:arm64\t16.2.0-3ubuntu1+leonb53.1\tarm64\nlibudev1:arm64\t259.5-0ubuntu3.4+leonb53.2\tarm64\nlibuuid1:arm64\t2.41.3-3ubuntu2.2\tarm64\nlibxtables12:arm64\t1.8.11-2ubuntu3\tarm64\nlibxxhash0:arm64\t0.8.3-2build1\tarm64\nlibzstd1:arm64\t1.5.7+dfsg-3\tarm64\nlinux-libc-dev:arm64\t7.0.0-38.38\tarm64\nlogsave\t1.47.2-3ubuntu4\tarm64\nmawk\t1.3.4.20260129-1\tarm64\nmount\t2.41.3-3ubuntu2.2\tarm64\nncurses-base\t6.6+20251231-1\tall\nncurses-bin\t6.6+20251231-1\tarm64\nopenssl\t3.5.5-1ubuntu3.7\tarm64\nopenssl-provider-legacy\t3.5.5-1ubuntu3.7\tarm64\nperl-base\t5.40.1-7ubuntu0.3\tarm64\nrust-coreutils\t0.10.0-1ubuntu2~26.04.1\tarm64\nsed\t4.9-2ubuntu1\tarm64\nsystemd\t259.5-0ubuntu3.4+leonb53.2\tarm64\nsystemd-sysv\t259.5-0ubuntu3.4+leonb53.2\tarm64\nsysvinit-utils\t3.15-5ubuntu1\tarm64\ntar\t1.35+dfsg-4ubuntu0.4\tarm64\nubuntu-keyring\t2023.11.28.1build1\tall\nudev\t259.5-0ubuntu3.4+leonb53.2\tarm64\nutil-linux\t2.41.3-3ubuntu2.2\tarm64\nzlib1g:arm64\t1:1.3.dfsg+really1.3.1-1ubuntu3.1\tarm64\n",
+  "downloaded_official_debs": [
+    {
+      "filename": "adduser_3.153ubuntu1_all.deb",
+      "sha256": "78de3c5c3ec5657bcbdc10c2b2bcd9cedd78e6814182566f1522af422b26d3ce",
+      "bytes": 194420,
+      "control": "Package: adduser\nVersion: 3.153ubuntu1\nArchitecture: all"
+    },
+    {
+      "filename": "libbsd0_0.12.2-2build2_arm64.deb",
+      "sha256": "21ceca917fdee4d568dd616121be4b436801448d7f436ca1b8a7604ed6fd9f30",
+      "bytes": 41882,
+      "control": "Package: libbsd0\nVersion: 0.12.2-2build2\nArchitecture: arm64"
+    },
+    {
+      "filename": "libcbor0.10_0.10.2-2ubuntu3_arm64.deb",
+      "sha256": "9e18177bd4e3a26f32eae09ae19c5faf7c3833947bbc19d098b383e639ac5082",
+      "bytes": 25212,
+      "control": "Package: libcbor0.10\nVersion: 0.10.2-2ubuntu3\nArchitecture: arm64"
+    },
+    {
+      "filename": "libedit2_3.1-20251016-1_arm64.deb",
+      "sha256": "a184af2ab98ee85ed2b7616a995b93bd9d0b65c7552b4f799ee27ada2b52707f",
+      "bytes": 96286,
+      "control": "Package: libedit2\nVersion: 3.1-20251016-1\nArchitecture: arm64"
+    },
+    {
+      "filename": "libfido2-1_1.16.0-2build1_arm64.deb",
+      "sha256": "984608cbb1a99216936bb6861513b2b9012902d0b857a9a19ec6e2239dd78c55",
+      "bytes": 83064,
+      "control": "Package: libfido2-1\nVersion: 1.16.0-2build1\nArchitecture: arm64"
+    },
+    {
+      "filename": "libncursesw6_6.6+20251231-1_arm64.deb",
+      "sha256": "65515d2ede026103196fc5c394752f19dd8dd92205cb2f10612c84ee3d348b93",
+      "bytes": 146774,
+      "control": "Package: libncursesw6\nVersion: 6.6+20251231-1\nArchitecture: arm64"
+    },
+    {
+      "filename": "libproc2-0_2%3a4.0.4-9ubuntu1_arm64.deb",
+      "sha256": "f41255f7683fbe0f2085e22873d3059e2bdcbe00eee729fe761e5229dff64efb",
+      "bytes": 59452,
+      "control": "Package: libproc2-0\nVersion: 2:4.0.4-9ubuntu1\nArchitecture: arm64"
+    },
+    {
+      "filename": "libsemanage-common_3.9-1build1_all.deb",
+      "sha256": "09668f05e1a860672d94f31a5ae025d2b41269ff6cc5479554825758ee9dcf3a",
+      "bytes": 6828,
+      "control": "Package: libsemanage-common\nVersion: 3.9-1build1\nArchitecture: all"
+    },
+    {
+      "filename": "libsemanage2_3.9-1build1_arm64.deb",
+      "sha256": "e1859421767473730419d929768632d9830e5a5c79c47a7043c3623ef428c7d9",
+      "bytes": 95198,
+      "control": "Package: libsemanage2\nVersion: 3.9-1build1\nArchitecture: arm64"
+    },
+    {
+      "filename": "libsepol2_3.9-2_arm64.deb",
+      "sha256": "5869338efb1fd6072ddb4db7ea3fc26104c2a8fbb3fc9da743a6afd104ab5379",
+      "bytes": 304712,
+      "control": "Package: libsepol2\nVersion: 3.9-2\nArchitecture: arm64"
+    },
+    {
+      "filename": "libtext-charwidth-perl_0.04-11build4_arm64.deb",
+      "sha256": "93d6be153e950f000145c593662b79027462008f4745e6e20b5cb3e9fec72522",
+      "bytes": 9584,
+      "control": "Package: libtext-charwidth-perl\nVersion: 0.04-11build4\nArchitecture: arm64"
+    },
+    {
+      "filename": "libtext-wrapi18n-perl_0.06-10_all.deb",
+      "sha256": "936619071dd5d81ff672b685af9ad20e1f524be2241cbd80556aedc376844a36",
+      "bytes": 7694,
+      "control": "Package: libtext-wrapi18n-perl\nVersion: 0.06-10\nArchitecture: all"
+    },
+    {
+      "filename": "libwrap0_7.6.q-36build2_arm64.deb",
+      "sha256": "fa1cc6dd44ef8b89fe3cfb391ca90dcd1c71727829178c763cf9154b325a2f70",
+      "bytes": 49054,
+      "control": "Package: libwrap0\nVersion: 7.6.q-36build2\nArchitecture: arm64"
+    },
+    {
+      "filename": "login.defs_1%3a4.17.4-2ubuntu3_all.deb",
+      "sha256": "3331efa0bfbf0caeed828beddb179e32719f744891359bd28beb489f8f7a9fbd",
+      "bytes": 65080,
+      "control": "Package: login.defs\nVersion: 1:4.17.4-2ubuntu3\nArchitecture: all"
+    },
+    {
+      "filename": "openssh-client_1%3a10.2p1-2ubuntu3.6_arm64.deb",
+      "sha256": "a45915ace6a172e1247e3f2413d7bffc981622eb5da4b49f079e4b6625525f81",
+      "bytes": 904558,
+      "control": "Package: openssh-client\nVersion: 1:10.2p1-2ubuntu3.6\nArchitecture: arm64"
+    },
+    {
+      "filename": "openssh-server_1%3a10.2p1-2ubuntu3.6_arm64.deb",
+      "sha256": "e44145352d528765fdfd5ef5b94f833b6604b39d44ef3e422e34497dd4ccdcd5",
+      "bytes": 603590,
+      "control": "Package: openssh-server\nVersion: 1:10.2p1-2ubuntu3.6\nArchitecture: arm64"
+    },
+    {
+      "filename": "openssh-sftp-server_1%3a10.2p1-2ubuntu3.6_arm64.deb",
+      "sha256": "a6203e0d82c9395e96d96788fb66a5b9e7279b163260bfa721e62aacb9e056f6",
+      "bytes": 36808,
+      "control": "Package: openssh-sftp-server\nVersion: 1:10.2p1-2ubuntu3.6\nArchitecture: arm64"
+    },
+    {
+      "filename": "passwd_1%3a4.17.4-2ubuntu3_arm64.deb",
+      "sha256": "109eba39cfa103b6f7ad89efb3b85ddfbea6b212ae4eff0533d666f2d6cf8ac5",
+      "bytes": 1118320,
+      "control": "Package: passwd\nVersion: 1:4.17.4-2ubuntu3\nArchitecture: arm64"
+    },
+    {
+      "filename": "procps_2%3a4.0.4-9ubuntu1_arm64.deb",
+      "sha256": "9284173a698baae1fd4b7aa100a9c927069ba386a96d34eddfa1812731e9240e",
+      "bytes": 706618,
+      "control": "Package: procps\nVersion: 2:4.0.4-9ubuntu1\nArchitecture: arm64"
+    },
+    {
+      "filename": "sensible-utils_0.0.26build1_all.deb",
+      "sha256": "ee67d2df8ac299b20668d93c4817e9db88626b0636cc4cda76b1948e140e364b",
+      "bytes": 27060,
+      "control": "Package: sensible-utils\nVersion: 0.0.26build1\nArchitecture: all"
+    },
+    {
+      "filename": "ucf_3.0052ubuntu1_all.deb",
+      "sha256": "42354d322fda598511b62288123e8b4b6daf6b7bbb268d68e8e7f88efa498305",
+      "bytes": 44280,
+      "control": "Package: ucf\nVersion: 3.0052ubuntu1\nArchitecture: all"
+    }
+  ],
+  "inrelease_hashes": {
+    "ports.ubuntu.com_ubuntu-ports_dists_resolute-security_InRelease": "578358f7b5e41ad069fc209bfa8ab45410f24d241be80255bdd94dbf3c11dc98",
+    "ports.ubuntu.com_ubuntu-ports_dists_resolute-updates_InRelease": "b01932d3a6c1796a9ee7428ed58300b6cc288e0dfc004337c408ae865007d19e",
+    "ports.ubuntu.com_ubuntu-ports_dists_resolute_InRelease": "45f95ce276cdba3e41870516a130e03c58b8b7a79e9546b0efe9e526d255740c"
+  },
+  "after_packages": "adduser\t3.153ubuntu1\tall\napt\t3.2.0\tarm64\nbase-files\t14ubuntu6.2\tarm64\nbase-passwd\t3.6.8\tarm64\nbash\t5.3-2ubuntu1\tarm64\nbinutils\t2.47-6ubuntu1+leonb53.1\tarm64\nbinutils-aarch64-linux-gnu\t2.47-6ubuntu1+leonb53.1\tarm64\nbinutils-arm-linux-gnueabi\t2.47-6ubuntu1+leonb53.1\tarm64\nbinutils-arm-linux-gnueabihf\t2.47-6ubuntu1+leonb53.1\tarm64\nbinutils-common:arm64\t2.47-6ubuntu1+leonb53.1\tarm64\nca-certificates\t20260601~26.04.1\tall\ncoreutils\t9.5-1ubuntu2+0.0.0~ubuntu25\tall\ncoreutils-from-uutils\t0.0.0~ubuntu25\tall\ncpp-16\t16.2.0-3ubuntu1+leonb53.1\tarm64\ncpp-16-aarch64-linux-gnu\t16.2.0-3ubuntu1+leonb53.1\tarm64\ndash\t0.5.12-12ubuntu3\tarm64\ndbus\t1.16.2-2ubuntu4\tarm64\ndbus-bin\t1.16.2-2ubuntu4\tarm64\ndbus-daemon\t1.16.2-2ubuntu4\tarm64\ndbus-session-bus-common\t1.16.2-2ubuntu4\tall\ndbus-system-bus-common\t1.16.2-2ubuntu4\tall\ndebconf\t1.5.92\tall\ndebianutils\t5.23.2build1\tarm64\ndiffutils\t1:3.12-1ubuntu0.1\tarm64\ndpkg\t1.23.7ubuntu1\tarm64\ne2fsprogs\t1.47.2-3ubuntu4\tarm64\nfindutils\t4.10.0-3build2\tarm64\ng++-16\t16.2.0-3ubuntu1+leonb53.1\tarm64\ng++-16-aarch64-linux-gnu\t16.2.0-3ubuntu1+leonb53.1\tarm64\ngcc-16\t16.2.0-3ubuntu1+leonb53.1\tarm64\ngcc-16-aarch64-linux-gnu\t16.2.0-3ubuntu1+leonb53.1\tarm64\ngcc-16-base:arm64\t16.2.0-3ubuntu1+leonb53.1\tarm64\ngnu-coreutils\t9.7-3ubuntu2.1\tarm64\ngpgv\t2.4.8-4ubuntu3.1\tarm64\ngrep\t3.12-1\tarm64\ngzip\t1.14-1~exp2ubuntu1.1\tarm64\nhostname\t3.25build1\tarm64\ninit-system-helpers\t1.69\tall\niproute2\t6.19.0-1ubuntu1.1\tarm64\nkmod\t34.2-2ubuntu2\tarm64\nleon-bcm-rootfs-config\t0.2\tall\nleon-openssh-config\t0.1\tall\nlibacl1:arm64\t2.3.2-2\tarm64\nlibapparmor1:arm64\t5.0.2-0ubuntu1~26.04.1\tarm64\nlibapt-pkg7.0:arm64\t3.2.0\tarm64\nlibasan8:arm64\t16.2.0-3ubuntu1+leonb53.1\tarm64\nlibatomic1:arm64\t16.2.0-3ubuntu1+leonb53.1\tarm64\nlibattr1:arm64\t1:2.5.2-4ubuntu0.1\tarm64\nlibaudit-common\t1:4.1.2-1ubuntu0.1\tall\nlibaudit1:arm64\t1:4.1.2-1ubuntu0.1\tarm64\nlibbinutils:arm64\t2.47-6ubuntu1+leonb53.1\tarm64\nlibblkid1:arm64\t2.41.3-3ubuntu2.2\tarm64\nlibbpf1:arm64\t1:1.6.3-1ubuntu1\tarm64\nlibbsd0:arm64\t0.12.2-2build2\tarm64\nlibbz2-1.0:arm64\t1.0.8-6ubuntu0.1\tarm64\nlibc-bin\t2.44-1ubuntu1+leonb53.1\tarm64\nlibc-dev-bin\t2.44-1ubuntu1+leonb53.1\tarm64\nlibc-gconv-modules-extra:arm64\t2.44-1ubuntu1+leonb53.1\tarm64\nlibc6:arm64\t2.44-1ubuntu1+leonb53.1\tarm64\nlibc6-dev:arm64\t2.44-1ubuntu1+leonb53.1\tarm64\nlibcap-ng0:arm64\t0.8.5-4build5\tarm64\nlibcap2:arm64\t1:2.75-10ubuntu2\tarm64\nlibcap2-bin\t1:2.75-10ubuntu2\tarm64\nlibcbor0.10:arm64\t0.10.2-2ubuntu3\tarm64\nlibcc1-0:arm64\t16.2.0-3ubuntu1+leonb53.1\tarm64\nlibcom-err2:arm64\t1.47.2-3ubuntu4\tarm64\nlibcrypt1:arm64\t1:4.5.1-1\tarm64\nlibctf-nobfd0:arm64\t2.47-6ubuntu1+leonb53.1\tarm64\nlibctf0:arm64\t2.47-6ubuntu1+leonb53.1\tarm64\nlibdb5.3t64:arm64\t5.3.28+dfsg2-10ubuntu1\tarm64\nlibdbus-1-3:arm64\t1.16.2-2ubuntu4\tarm64\nlibdebconfclient0:arm64\t0.280ubuntu1\tarm64\nlibedit2:arm64\t3.1-20251016-1\tarm64\nlibelf1t64:arm64\t0.194-4\tarm64\nlibexpat1:arm64\t2.7.4-1ubuntu0.2\tarm64\nlibext2fs2t64:arm64\t1.47.2-3ubuntu4\tarm64\nlibfido2-1:arm64\t1.16.0-2build1\tarm64\nlibgcc-16-dev:arm64\t16.2.0-3ubuntu1+leonb53.1\tarm64\nlibgcc-s1:arm64\t16.2.0-3ubuntu1+leonb53.1\tarm64\nlibgcrypt20:arm64\t1.12.0-2ubuntu1.1\tarm64\nlibgmp10:arm64\t2:6.3.0+dfsg-5ubuntu2\tarm64\nlibgomp1:arm64\t16.2.0-3ubuntu1+leonb53.1\tarm64\nlibgpg-error0:arm64\t1.58-2\tarm64\nlibgprofng0:arm64\t2.47-6ubuntu1+leonb53.1\tarm64\nlibgssapi-krb5-2:arm64\t1.22.1-2ubuntu4.1\tarm64\nlibhwasan0:arm64\t16.2.0-3ubuntu1+leonb53.1\tarm64\nlibisl23:arm64\t0.27-1build1\tarm64\nlibitm1:arm64\t16.2.0-3ubuntu1+leonb53.1\tarm64\nlibjansson4:arm64\t2.14-2build4\tarm64\nlibk5crypto3:arm64\t1.22.1-2ubuntu4.1\tarm64\nlibkeyutils1:arm64\t1.6.3-6ubuntu3\tarm64\nlibkmod2:arm64\t34.2-2ubuntu2\tarm64\nlibkrb5-3:arm64\t1.22.1-2ubuntu4.1\tarm64\nlibkrb5support0:arm64\t1.22.1-2ubuntu4.1\tarm64\nliblsan0:arm64\t16.2.0-3ubuntu1+leonb53.1\tarm64\nliblz4-1:arm64\t1.10.0-8\tarm64\nliblzma5:arm64\t5.8.3-1\tarm64\nlibmd0:arm64\t1.1.0-2build4\tarm64\nlibmnl0:arm64\t1.0.5-3build1\tarm64\nlibmount1:arm64\t2.41.3-3ubuntu2.2\tarm64\nlibmpc3:arm64\t1.3.1-3\tarm64\nlibmpfr6:arm64\t4.2.2-3\tarm64\nlibncursesw6:arm64\t6.6+20251231-1\tarm64\nlibpam-modules:arm64\t1.7.0-5ubuntu3.2\tarm64\nlibpam-modules-bin\t1.7.0-5ubuntu3.2\tarm64\nlibpam-runtime\t1.7.0-5ubuntu3.2\tall\nlibpam0g:arm64\t1.7.0-5ubuntu3.2\tarm64\nlibpcre2-8-0:arm64\t10.46-1build1\tarm64\nlibproc2-0:arm64\t2:4.0.4-9ubuntu1\tarm64\nlibseccomp2:arm64\t2.6.0-2ubuntu5\tarm64\nlibselinux1:arm64\t3.9-4build1\tarm64\nlibsemanage-common\t3.9-1build1\tall\nlibsemanage2:arm64\t3.9-1build1\tarm64\nlibsepol2:arm64\t3.9-2\tarm64\nlibsframe3:arm64\t2.47-6ubuntu1+leonb53.1\tarm64\nlibsmartcols1:arm64\t2.41.3-3ubuntu2.2\tarm64\nlibss2:arm64\t1.47.2-3ubuntu4\tarm64\nlibssl3t64:arm64\t3.5.5-1ubuntu3.7\tarm64\nlibstdc++-16-dev:arm64\t16.2.0-3ubuntu1+leonb53.1\tarm64\nlibstdc++6:arm64\t16.2.0-3ubuntu1+leonb53.1\tarm64\nlibsystemd-shared:arm64\t259.5-0ubuntu3.4+leonb53.2\tarm64\nlibsystemd0:arm64\t259.5-0ubuntu3.4+leonb53.2\tarm64\nlibtext-charwidth-perl:arm64\t0.04-11build4\tarm64\nlibtext-wrapi18n-perl\t0.06-10\tall\nlibtinfo6:arm64\t6.6+20251231-1\tarm64\nlibtirpc-common\t1.3.7-0.1\tall\nlibtirpc3t64:arm64\t1.3.7-0.1\tarm64\nlibtsan2:arm64\t16.2.0-3ubuntu1+leonb53.1\tarm64\nlibubsan1:arm64\t16.2.0-3ubuntu1+leonb53.1\tarm64\nlibudev1:arm64\t259.5-0ubuntu3.4+leonb53.2\tarm64\nlibuuid1:arm64\t2.41.3-3ubuntu2.2\tarm64\nlibwrap0:arm64\t7.6.q-36build2\tarm64\nlibxtables12:arm64\t1.8.11-2ubuntu3\tarm64\nlibxxhash0:arm64\t0.8.3-2build1\tarm64\nlibzstd1:arm64\t1.5.7+dfsg-3\tarm64\nlinux-libc-dev:arm64\t7.0.0-38.38\tarm64\nlogin.defs\t1:4.17.4-2ubuntu3\tall\nlogsave\t1.47.2-3ubuntu4\tarm64\nmawk\t1.3.4.20260129-1\tarm64\nmount\t2.41.3-3ubuntu2.2\tarm64\nncurses-base\t6.6+20251231-1\tall\nncurses-bin\t6.6+20251231-1\tarm64\nopenssh-client\t1:10.2p1-2ubuntu3.6\tarm64\nopenssh-server\t1:10.2p1-2ubuntu3.6\tarm64\nopenssh-sftp-server\t1:10.2p1-2ubuntu3.6\tarm64\nopenssl\t3.5.5-1ubuntu3.7\tarm64\nopenssl-provider-legacy\t3.5.5-1ubuntu3.7\tarm64\npasswd\t1:4.17.4-2ubuntu3\tarm64\nperl-base\t5.40.1-7ubuntu0.3\tarm64\nprocps\t2:4.0.4-9ubuntu1\tarm64\nrust-coreutils\t0.10.0-1ubuntu2~26.04.1\tarm64\nsed\t4.9-2ubuntu1\tarm64\nsensible-utils\t0.0.26build1\tall\nsystemd\t259.5-0ubuntu3.4+leonb53.2\tarm64\nsystemd-sysv\t259.5-0ubuntu3.4+leonb53.2\tarm64\nsysvinit-utils\t3.15-5ubuntu1\tarm64\ntar\t1.35+dfsg-4ubuntu0.4\tarm64\nubuntu-keyring\t2023.11.28.1build1\tall\nucf\t3.0052ubuntu1\tall\nudev\t259.5-0ubuntu3.4+leonb53.2\tarm64\nutil-linux\t2.41.3-3ubuntu2.2\tarm64\nzlib1g:arm64\t1:1.3.dfsg+really1.3.1-1ubuntu3.1\tarm64\n",
+  "custom_package_versions_preserved": {
+    "binutils": "2.47-6ubuntu1+leonb53.1",
+    "binutils-aarch64-linux-gnu": "2.47-6ubuntu1+leonb53.1",
+    "binutils-arm-linux-gnueabi": "2.47-6ubuntu1+leonb53.1",
+    "binutils-arm-linux-gnueabihf": "2.47-6ubuntu1+leonb53.1",
+    "binutils-common:arm64": "2.47-6ubuntu1+leonb53.1",
+    "cpp-16": "16.2.0-3ubuntu1+leonb53.1",
+    "cpp-16-aarch64-linux-gnu": "16.2.0-3ubuntu1+leonb53.1",
+    "g++-16": "16.2.0-3ubuntu1+leonb53.1",
+    "g++-16-aarch64-linux-gnu": "16.2.0-3ubuntu1+leonb53.1",
+    "gcc-16": "16.2.0-3ubuntu1+leonb53.1",
+    "gcc-16-aarch64-linux-gnu": "16.2.0-3ubuntu1+leonb53.1",
+    "gcc-16-base:arm64": "16.2.0-3ubuntu1+leonb53.1",
+    "libasan8:arm64": "16.2.0-3ubuntu1+leonb53.1",
+    "libatomic1:arm64": "16.2.0-3ubuntu1+leonb53.1",
+    "libbinutils:arm64": "2.47-6ubuntu1+leonb53.1",
+    "libc-bin": "2.44-1ubuntu1+leonb53.1",
+    "libc-dev-bin": "2.44-1ubuntu1+leonb53.1",
+    "libc-gconv-modules-extra:arm64": "2.44-1ubuntu1+leonb53.1",
+    "libc6:arm64": "2.44-1ubuntu1+leonb53.1",
+    "libc6-dev:arm64": "2.44-1ubuntu1+leonb53.1",
+    "libcc1-0:arm64": "16.2.0-3ubuntu1+leonb53.1",
+    "libctf-nobfd0:arm64": "2.47-6ubuntu1+leonb53.1",
+    "libctf0:arm64": "2.47-6ubuntu1+leonb53.1",
+    "libgcc-16-dev:arm64": "16.2.0-3ubuntu1+leonb53.1",
+    "libgcc-s1:arm64": "16.2.0-3ubuntu1+leonb53.1",
+    "libgomp1:arm64": "16.2.0-3ubuntu1+leonb53.1",
+    "libgprofng0:arm64": "2.47-6ubuntu1+leonb53.1",
+    "libhwasan0:arm64": "16.2.0-3ubuntu1+leonb53.1",
+    "libitm1:arm64": "16.2.0-3ubuntu1+leonb53.1",
+    "liblsan0:arm64": "16.2.0-3ubuntu1+leonb53.1",
+    "libsframe3:arm64": "2.47-6ubuntu1+leonb53.1",
+    "libstdc++-16-dev:arm64": "16.2.0-3ubuntu1+leonb53.1",
+    "libstdc++6:arm64": "16.2.0-3ubuntu1+leonb53.1",
+    "libsystemd-shared:arm64": "259.5-0ubuntu3.4+leonb53.2",
+    "libsystemd0:arm64": "259.5-0ubuntu3.4+leonb53.2",
+    "libtsan2:arm64": "16.2.0-3ubuntu1+leonb53.1",
+    "libubsan1:arm64": "16.2.0-3ubuntu1+leonb53.1",
+    "libudev1:arm64": "259.5-0ubuntu3.4+leonb53.2",
+    "systemd": "259.5-0ubuntu3.4+leonb53.2",
+    "systemd-sysv": "259.5-0ubuntu3.4+leonb53.2",
+    "udev": "259.5-0ubuntu3.4+leonb53.2"
+  },
+  "new_or_changed_packages": {
+    "adduser": "3.153ubuntu1",
+    "leon-openssh-config": "0.1",
+    "libbsd0:arm64": "0.12.2-2build2",
+    "libcbor0.10:arm64": "0.10.2-2ubuntu3",
+    "libedit2:arm64": "3.1-20251016-1",
+    "libfido2-1:arm64": "1.16.0-2build1",
+    "libncursesw6:arm64": "6.6+20251231-1",
+    "libproc2-0:arm64": "2:4.0.4-9ubuntu1",
+    "libsemanage-common": "3.9-1build1",
+    "libsemanage2:arm64": "3.9-1build1",
+    "libsepol2:arm64": "3.9-2",
+    "libtext-charwidth-perl:arm64": "0.04-11build4",
+    "libtext-wrapi18n-perl": "0.06-10",
+    "libwrap0:arm64": "7.6.q-36build2",
+    "login.defs": "1:4.17.4-2ubuntu3",
+    "openssh-client": "1:10.2p1-2ubuntu3.6",
+    "openssh-server": "1:10.2p1-2ubuntu3.6",
+    "openssh-sftp-server": "1:10.2p1-2ubuntu3.6",
+    "passwd": "1:4.17.4-2ubuntu3",
+    "procps": "2:4.0.4-9ubuntu1",
+    "sensible-utils": "0.0.26build1",
+    "ucf": "3.0052ubuntu1"
+  },
+  "signed_sources_unchanged": true,
+  "sshd_syntax_passed": true,
+  "effective_config": "port 22\naddressfamily any\nlistenaddress 0.0.0.0:22\nlistenaddress [::]:22\nusepam yes\npamservicename sshd\nlogingracetime 120\nx11displayoffset 10\nmaxauthtries 6\nmaxsessions 10\nclientaliveinterval 0\nclientalivecountmax 3\nrequiredrsasize 1024\nstreamlocalbindmask 0177\nunusedconnectiontimeout none\npermitrootlogin prohibit-password\nignorerhosts yes\nignoreuserknownhosts no\nhostbasedauthentication no\nhostbasedusesnamefrompacketonly no\npubkeyauthentication yes\nkerberosauthentication no\nkerberosorlocalpasswd yes\nkerberosticketcleanup yes\ngssapiauthentication no\ngssapicleanupcredentials yes\ngssapistrictacceptorcheck yes\ngssapikeyexchange no\ngssapistorecredentialsonrekey no\ngssapikexalgorithms gss-group14-sha256-,gss-group16-sha512-,gss-nistp256-sha256-,gss-curve25519-sha256-\npasswordauthentication no\nkbdinteractiveauthentication no\nprintmotd no\nprintlastlog yes\nx11forwarding yes\nx11uselocalhost yes\npermittty yes\npermituserrc yes\nstrictmodes yes\ntcpkeepalive yes\npermitemptypasswords no\ncompression yes\ngatewayports no\nusedns no\nallowtcpforwarding yes\nallowagentforwarding yes\ndisableforwarding no\nallowstreamlocalforwarding yes\nstreamlocalbindunlink no\nfingerprinthash SHA256\nexposeauthinfo no\nrefuseconnection no\ndebianbanner yes\npidfile /run/sshd.pid\nmodulifile /etc/ssh/moduli\nxauthlocation /usr/bin/xauth\nciphers chacha20-poly1305@openssh.com,aes128-gcm@openssh.com,aes256-gcm@openssh.com,aes128-ctr,aes192-ctr,aes256-ctr\nmacs umac-64-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com,hmac-sha1-etm@openssh.com,umac-64@openssh.com,umac-128@openssh.com,hmac-sha2-256,hmac-sha2-512,hmac-sha1\nbanner none\nforcecommand none\nchrootdirectory none\ntrustedusercakeys none\nrevokedkeys none\nsecuritykeyprovider internal\nauthorizedprincipalsfile none\nversionaddendum none\nauthorizedkeyscommand none\nauthorizedkeyscommanduser none\nauthorizedprincipalscommand none\nauthorizedprincipalscommanduser none\nhostkeyagent none\nkexalgorithms mlkem768x25519-sha256,sntrup761x25519-sha512,sntrup761x25519-sha512@openssh.com,curve25519-sha256,curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521\ncasignaturealgorithms ssh-ed25519,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,sk-ssh-ed25519@openssh.com,sk-ecdsa-sha2-nistp256@openssh.com,rsa-sha2-512,rsa-sha2-256\nhostbasedacceptedalgorithms ssh-ed25519-cert-v01@openssh.com,ecdsa-sha2-nistp256-cert-v01@openssh.com,ecdsa-sha2-nistp384-cert-v01@openssh.com,ecdsa-sha2-nistp521-cert-v01@openssh.com,sk-ssh-ed25519-cert-v01@openssh.com,sk-ecdsa-sha2-nistp256-cert-v01@openssh.com,rsa-sha2-512-cert-v01@openssh.com,rsa-sha2-256-cert-v01@openssh.com,ssh-ed25519,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,sk-ssh-ed25519@openssh.com,sk-ecdsa-sha2-nistp256@openssh.com,rsa-sha2-512,rsa-sha2-256\nhostkeyalgorithms ssh-ed25519-cert-v01@openssh.com,ecdsa-sha2-nistp256-cert-v01@openssh.com,ecdsa-sha2-nistp384-cert-v01@openssh.com,ecdsa-sha2-nistp521-cert-v01@openssh.com,sk-ssh-ed25519-cert-v01@openssh.com,sk-ecdsa-sha2-nistp256-cert-v01@openssh.com,rsa-sha2-512-cert-v01@openssh.com,rsa-sha2-256-cert-v01@openssh.com,ssh-ed25519,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,sk-ssh-ed25519@openssh.com,sk-ecdsa-sha2-nistp256@openssh.com,rsa-sha2-512,rsa-sha2-256\npubkeyacceptedalgorithms ssh-ed25519-cert-v01@openssh.com,ecdsa-sha2-nistp256-cert-v01@openssh.com,ecdsa-sha2-nistp384-cert-v01@openssh.com,ecdsa-sha2-nistp521-cert-v01@openssh.com,sk-ssh-ed25519-cert-v01@openssh.com,sk-ecdsa-sha2-nistp256-cert-v01@openssh.com,rsa-sha2-512-cert-v01@openssh.com,rsa-sha2-256-cert-v01@openssh.com,ssh-ed25519,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,sk-ssh-ed25519@openssh.com,sk-ecdsa-sha2-nistp256@openssh.com,rsa-sha2-512,rsa-sha2-256\nsshdsessionpath /usr/lib/openssh/sshd-session\nsshdauthpath /usr/lib/openssh/sshd-auth\npersourcepenaltyexemptlist none\nloglevel INFO\nsyslogfacility AUTH\nauthorizedkeysfile .ssh/authorized_keys .ssh/authorized_keys2\nhostkey /etc/ssh/ssh_host_rsa_key\nhostkey /etc/ssh/ssh_host_ecdsa_key\nhostkey /etc/ssh/ssh_host_ed25519_key\nacceptenv LANG\nacceptenv LC_*\nacceptenv COLORTERM\nacceptenv NO_COLOR\nauthenticationmethods publickey\nchanneltimeout none\nsubsystem sftp /usr/lib/openssh/sftp-server\nmaxstartups 10:30:100\npersourcemaxstartups none\npersourcenetblocksize 32:128\npermittunnel no\nipqos ef cs0\nrekeylimit 0 0\npermitopen any\npermitlisten any\npermituserenvironment no\npubkeyauthoptions none\npersourcepenalties crash:90 authfail:5 noauth:1 grace-exceeded:10 refuseconnection:10 max:600 min:15 max-sources4:65536 max-sources6:65536 overflow:permissive overflow6:permissive\n",
+  "openssh_version": "OpenSSH_10.2p1 Ubuntu-2ubuntu3.6, OpenSSL 3.5.5 27 Jan 2026",
+  "host_public_fingerprints": [
+    "256 SHA256:1rieFcHW10Sw0rBrW8zLfii2AuFbYbZ7NeDACHL0QMo root@be19000ai-bcm (ECDSA)",
+    "256 SHA256:1tc1R71IEFdHAp+g+FdPjEciJZ1iWpPR0TGvbExejO8 root@be19000ai-bcm (ED25519)",
+    "3072 SHA256:2EquMMg0RMr2A601iDvfh4z/ist+WDLmq2VoRj8qK7Q root@be19000ai-bcm (RSA)"
+  ],
+  "root_password_locked": true,
+  "dropbear_installed": false,
+  "ssh_autostart_enabled": false,
+  "candidate_host_key_generation": "Isolated candidate only; private contents never logged. Regenerate production host keys before deployment.",
+  "rootfs_tar": "build/ubuntu26-rootfs/ubuntu26-bcm-gnu-systemd-openssh-b53-v3.tar",
+  "rootfs_sha256": "303cafac152c86df9ac78a7c677e718ec411074dd7c73f33a3f0db26df59fda5",
+  "rootfs_bytes": 779878400,
+  "schema_version": 1,
+  "label": "gnu-systemd-openssh-b53-v3",
+  "returncode": 0,
+  "elapsed_seconds": 18.07,
+  "base_rootfs": "build/ubuntu26-rootfs/ubuntu26-bcm-gnu-systemd-b53-v3.tar",
+  "base_sha256": "057c52f70d8974691179235c4e273a6be0d474edde11d6c1cb85b09b11b250a4",
+  "base_unchanged": true,
+  "config_deb": "build/ubuntu26-openssh/gnu-systemd-openssh-b53-v3/leon-openssh-config_0.1_all.deb",
+  "config_deb_sha256": "f471749cf5ed06c1d71b8e2bdb2b222377748472b4389c0cd0b69a56a0faad4d",
+  "builder_sha256": "345cc210cc25d4e89d84c7888dfd65215657043c62c8b145852fd2e8f6c2e5e1",
+  "namespace_command": [
+    "mmdebstrap",
+    "--unshare-helper",
+    "/usr/bin/python3",
+    "/tmp/openssh-inputs-1ybz9vlo/build-ubuntu26-openssh.py",
+    "--namespace-worker",
+    "/tmp/openssh-inputs-1ybz9vlo/plan.json"
+  ],
+  "logs": "build/ubuntu26-openssh/gnu-systemd-openssh-b53-v3",
+  "host_ssh_modified": false,
+  "router_access": false,
+  "host_or_lan_listener_started": false,
+  "target_kernel_runtime_validated": true,
+  "formal_login_identity_configured": false,
+  "production_ready": false,
+  "target_kernel_validation_scope": "Official Ubuntu native arm64 OpenSSH in isolated no-NIC kernel10 QEMU, guest loopback only. This validates SSH software/service integration with the custom Ubuntu GNU/systemd candidate, not ASUS services or physical-router deployment.",
+  "runtime_evidence": {
+    "path": "reports/ubuntu26/openssh-kernel10.json",
+    "sha256": "f5df87cca6a84b07abb067780a6ed67809d39c31b78a1882a9ac6dfbcf415730"
+  }
+}

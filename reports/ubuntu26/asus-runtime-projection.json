@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "status": "inert runtime and integration accepted offline on Kernel10; next ownership revision in progress",
+  "production_ready": false,
+  "flash_allowed": false,
+  "artifacts": {
+    "projection": {
+      "path": "build/asus-runtime-projection/v4/projection.json",
+      "sha256": "a69de552cc58a80f0fbebd3fe0d2ed1104932e18b04135ade62365374f0a0e97"
+    },
+    "qemu_result": {
+      "path": "build/qemu/asus-runtime-notify-kernel10-v4/result.json",
+      "sha256": "75c33109d621d0fcd44dfef56319655d3bfad9fabaced90f1403b36c4f752b90"
+    },
+    "qemu_fixture": {
+      "path": "build/asus-runtime-projection/v4/qemu-v4/manifest.json",
+      "sha256": "957a20e6e5a51f9f17a7d465991ea9959d1d44852077a22c0974f707f402f1bd"
+    },
+    "candidate_build": {
+      "path": "build/asus-runtime-projection/gnu-systemd-openssh-asus-runtime04-integration-b53-v3/build.json",
+      "sha256": "a8c76cbbc9db56a6c3df648b7f229dcef016842184a9a67aabd1a1e1e50ffc42"
+    },
+    "rootfs": {
+      "path": "build/ubuntu26-rootfs/ubuntu26-bcm-gnu-systemd-openssh-asus-runtime04-integration-b53-v3.tar",
+      "sha256": "be9f1eefe81392ed5449d4e2946e1ba6abc3bebdff7cca06767bf36b4593f322",
+      "bytes": 976465920
+    }
+  },
+  "packages": [
+    {
+      "architecture": "armel",
+      "archive_entries": 1192,
+      "archive_root_owner_and_modes_verified": true,
+      "bytes": 27126532,
+      "name": "leon-asus-runtime-armel",
+      "no_maintainer_scripts_triggers_units": true,
+      "path": "build/asus-runtime-projection/v4/packages-04/leon-asus-runtime-armel_0.4_armel.deb",
+      "sha256": "693f66782fe23859e1b2edd1b65c3689999822f0fff249c8b279b33f245cfe3e",
+      "version": "0.4"
+    },
+    {
+      "architecture": "arm64",
+      "archive_entries": 11,
+      "archive_root_owner_and_modes_verified": true,
+      "bytes": 1108048,
+      "name": "leon-asus-runtime-arm64",
+      "no_maintainer_scripts_triggers_units": true,
+      "path": "build/asus-runtime-projection/v4/packages-04/leon-asus-runtime-arm64_0.4_arm64.deb",
+      "sha256": "565abefc185f3e616b96a1b782083e3aec482f68a7733e61344632391e9574a2",
+      "version": "0.4"
+    },
+    {
+      "path": "build/asus-native-integration/v4/leon-asus-integration_0.2+asus3006.102.9_arm64.deb",
+      "sha256": "0cee25f73ea61981c1afa798e551009d645fffbcdb2a38ef28167af35ae00188",
+      "name": "leon-asus-integration",
+      "version": "0.2+asus3006.102.9",
+      "architecture": "arm64"
+    }
+  ],
+  "counts": {
+    "aliases": 560,
+    "excluded": 26,
+    "files": 638,
+    "missing_library_roots": 0,
+    "rpath_sanitized": 81,
+    "unresolved_symbol_roots": 90,
+    "vendor_glibc_private_imports": 0
+  },
+  "proven": [
+    "Model-matched rebuilt ARMEL rc and libovpn link against Ubuntu multiarch runtime; compatibility time32 confined to rc closed-object ABI.",
+    "81 dynamic library search paths removed; no projected vendor GLIBC_PRIVATE imports.",
+    "All 634 dynamic application/library owner scopes relocate with production ABI-specific notify preload on exact kernel10; no vendor main/constructors.",
+    "Both constructor/main exit canary and negative undefined-symbol detection pass in the same guest.",
+    "Runtime 0.4 and integration 0.2 install via apt; dpkg audit and apt check pass.",
+    "All package regular files match archive hashes; runtime and integration permissions, rc identity root0644, config root0600 pass.",
+    "Offline candidate install+reinstall verifies 3180 directory/file/symlink entries, all pre-existing package versions and protected native files unchanged.",
+    "ASUS storage mount units are disabled and storage target static/inactive; no ASUS broker/service activation.",
+    "RGB five exact ledg callsite fixes are preserved in new rc; old stock rc is not carried forward."
+  ],
+  "excluded_or_unproven": {
+    "static_applications_not_executed": [
+      "fsck_hfs",
+      "newfs_hfs",
+      "ookla"
+    ],
+    "unreferenced_library": [
+      {
+        "target": "/usr/lib/arm-linux-gnueabi/asus/libawsiot_ipc.so",
+        "missing_symbols": [
+          "logmessage_normal",
+          "psname"
+        ],
+        "preferred_missing": {}
+      }
+    ],
+    "hardware": "No ASUS program main, DSO constructor, Broadcom driver or device ran. WiFi/AiMesh/AI/USB/telemetry real operation is not established.",
+    "dlopen": "Owner symbol scopes pass but no constructors/dlopen code ran; absolute path projection is separate work.",
+    "updates": "Custom signed archive/pins/security patch retention still separate.",
+    "next_revision": "0017 shutdown ownership, private commands/plugins, notify0.2 directory metadata fix, startup native wiring and SSH policy remain to compose.",
+    "base_notify_mode": "Current intermediate base retains notify0.1 directory/docs permission issue found by root; no whole-base mode acceptance claim."
+  },
+  "historical_failures": [
+    {
+      "path": "build/asus-runtime-projection/v4/packages.json",
+      "reason": "0.2 generated metadata/directories inherited umask; replaced by mode-normalized builds."
+    },
+    {
+      "path": "build/qemu/asus-runtime-notify-kernel10-v2/result.json",
+      "reason": "0.3+integration0.1 dependency failure: missing foreign architecture metadata and integration incorrectly demanded systemd262."
+    },
+    {
+      "path": "build/qemu/asus-runtime-notify-kernel10-v3/result.json",
+      "reason": "0.4 install succeeded; test incorrectly expected static for mount units with Install section. Corrected fixture expects disabled."
+    }
+  ],
+  "rc_source_revision": "build/asus-rc-recovery/revisions/device-ssh-bsp-rgb-v1/revision-result.json",
+  "rc_sha256": "c2f2a761ec3411a14277d2d2b929edff75e43f64c92a6bc892f5de11c517f8ff"
+}

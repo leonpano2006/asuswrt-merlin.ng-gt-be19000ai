@@ -1,0 +1,292 @@
+{
+  "schema_version": 1,
+  "status": "Real GT-BE19000AI rc and libovpn compile/link recovered; ASUS runtime remains unaccepted",
+  "production_ready": false,
+  "flash_ready": false,
+  "source": {
+    "upstream": "https://github.com/RMerl/asuswrt-merlin.ng",
+    "branch": "asuswrt6",
+    "commit": "9b25e55ca5c56a6f01d6a56264c0f6c47459ada0",
+    "version": "3006.102.9",
+    "revision_commit": "45db862f (2026-09-23 Bumped revision to 3006.102.9 final)",
+    "branch_selection_evidence": "Official tools/build-all: BRANCH_GTBE19000AI=asuswrt6; the preceding main-pin source-only report was examining a different userspace branch",
+    "correction": "GT-BE19000AI model-specific configuration and objects are available in matching asuswrt6; old main-pin missing-model finding is not a global GPL availability claim",
+    "baseline_firmware_sha256": "e9ca880e4ded8b1fd47000179fffe14b9ac3406a25ee5656e80d29290a5ca09c",
+    "selected_sdk": "WIFI7_SDK_20231126; BCM6813; USER_ARCH_ARM_SOFTFP=y; PROFILE_ARCH=armsfp; kernel 4.19",
+    "model_feature_source": {
+      "path": "build/stock-rootfs/rom/rtconfig",
+      "sha256": "9953835547d3687a3fe2b3fba996f027f72300612c566a3a76bcd2ade4a46d9a"
+    },
+    "stock_profile": {
+      "path": "build/stock-rootfs/rom/etc/build_profile",
+      "sha256": "26f13e37cecd01e1eed496f8885f5abaf004ebccf51fa6df58f765a46082eb8b"
+    },
+    "manifests": [
+      {
+        "path": "build/asus-rc-recovery/recovered-inputs.json",
+        "sha256": "79aa6b50f181fa6583747e679604e2ec21d5e7bcf579f0befb8ee1ee7174fdad"
+      },
+      {
+        "path": "build/asus-rc-recovery/extra-inputs-01ab37b0bcd8.json",
+        "sha256": "fd2a00516b0cc064d17322a8ba7b24c1a43ce9e6f4c4d3adbfd671c6a18ab371"
+      },
+      {
+        "path": "build/asus-rc-recovery/extra-inputs-03a3d2012720.json",
+        "sha256": "4a064596e63242890c107e887a11008ab3fb932504e917e24b0d0a70dfde7f31"
+      },
+      {
+        "path": "build/asus-rc-recovery/extra-inputs-24b15b2f1c61.json",
+        "sha256": "edfff4d051099d1ef175c51089c4e35d4293e33e6c3a9ac2c2ff614927ef379e"
+      },
+      {
+        "path": "build/asus-rc-recovery/extra-inputs-4878c8b81d9c.json",
+        "sha256": "959124c54976ca43dd549dd7827854238fcae4afd870e6e31a7aef3174c065c6"
+      }
+    ]
+  },
+  "build": {
+    "compiler": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/toolchain/usr/bin/arm-linux-gnueabi-gcc-15",
+    "compiler_sha256": "e365a6b1721565fe88f9d11a9d28b144d9c12b0279c82fece55ac5c660ab2c59",
+    "compiler_policy": "Official release GCC15.2 ARMEL bootstrap; no unverified GCC16 ARM32 compiler used",
+    "sysroot": "build/asus-rc-recovery/ubuntu-armel-sysroot",
+    "sysroot_manifest": {
+      "path": "build/asus-rc-recovery/ubuntu-sysroot-inputs.json",
+      "sha256": "12ecb757f4b85eceeae0ac483e224eb3cfe82d283d1492d4ca389abf0c7a549e"
+    },
+    "sysroot_policy": "Fresh Ubuntu-format ARMEL libc6/libc6-dev 2.44 and libcrypt4.5.1 from parallel package build; copied into private candidate before final rebuild. BE98 compiler binary only, not BE98 model objects or final libc sysroot.",
+    "cpu_flags": [
+      "-mcpu=cortex-a53",
+      "-mfpu=crypto-neon-fp-armv8",
+      "-mfloat-abi=softfp",
+      "-marm"
+    ],
+    "rc_source_objects_compiled": 66,
+    "rc_model_objects_selected": 56,
+    "retained_objects_byte_identical": 55,
+    "retained_object_with_scoped_relocation_edit": "ai_service.o (2 sites)",
+    "closed_ext4fs_object_removed": true,
+    "replacement": "rc-storage.o; native UUID/identity ownership proof required",
+    "libovpn_source_objects_compiled": 6,
+    "compile_report": {
+      "path": "build/asus-rc-recovery/compile-result.json",
+      "sha256": "cd2fe04749cf5b991cb5ab9cefd218e2dab19463ce482bf0bdcf95b189c6f450"
+    },
+    "link_report": {
+      "path": "build/asus-rc-recovery/link-result.json",
+      "sha256": "4d6ef744adf48be3c1db39a4dab01ef72839f4e15c12e9888611ad08e6585ba3"
+    },
+    "selected_config": {
+      "path": "build/asus-rc-recovery/rc-build-context.json",
+      "sha256": "c8f4987c88c39fdff29944c88862d36f49a7df6dd20a2466c8ab460a59a3eded"
+    },
+    "generated_headers": {
+      "path": "build/asus-rc-recovery/generated-headers.json",
+      "sha256": "77d7499355ddcf1f1c36813484c8156d7a41db0fcdc9bb40aad966184ea02316"
+    },
+    "build_scope": "Selected model Makefile object list and source-derived parent flag fragments, not a clean whole-firmware SDK make build. Requires integration/ABI and runtime acceptance before deployment.",
+    "artifacts": [
+      {
+        "path": "build/asus-rc-recovery/linked/libovpn.so",
+        "sha256": "2c0120d54ad3c6bf7c76cb5904bf1a6ed64d569e6f43bd1814ce77c610dbfd4f",
+        "needed": [
+          "libnvram.so",
+          "libshared.so",
+          "libcrypt.so.1",
+          "libcrypto.so.3",
+          "libssl.so.3",
+          "libm.so.6",
+          "libc.so.6",
+          "ld-linux.so.3"
+        ]
+      },
+      {
+        "path": "build/asus-rc-recovery/linked/rc",
+        "sha256": "4c88d9a5961ad19c8eb88a68058b8cb0baf5d795ce5c051918ea7d772d371b17",
+        "needed": [
+          "libconn_diag.so",
+          "libes.so",
+          "libbcm_afc.so",
+          "libai.so",
+          "libnvram.so",
+          "libshared.so",
+          "libcrypt.so.1",
+          "libgen_util.so",
+          "libsys_util.so",
+          "libwlcsm.so",
+          "libbcm_flashutil.so",
+          "libbcm_util.so",
+          "libbcm_boardctl.so",
+          "libwpa_client.so",
+          "libbcm.so",
+          "libcrypto.so.3",
+          "libssl.so.3",
+          "libark_db.so",
+          "libjson-c.so.2",
+          "libsqlite3.so.0",
+          "libbwdpi.so",
+          "libdisk.so",
+          "libnt.so",
+          "libwebapi.so",
+          "libcfgmnt.so",
+          "libnmpapi.so",
+          "libovpn.so",
+          "libasc.so",
+          "libletsencrypt.so",
+          "libcurl.so.4",
+          "libamas-utils.so",
+          "liblldpctl.so.4",
+          "libjansson.so.4",
+          "libasuslog.so",
+          "libcodb.so",
+          "libm.so.6",
+          "libc.so.6",
+          "ld-linux.so.3"
+        ]
+      }
+    ],
+    "elf_checks": {
+      "basename_only_DT_NEEDED": true,
+      "embedded_rpath_or_runpath": false,
+      "ARM32_softfp": true
+    },
+    "libcrypt_policy": "Final link uses freshly packaged libxcrypt4.5.1 with glibc-obsolete ABI; previous diagnostic libxcrypt4.4.38 linkage archived separately",
+    "archived_bootstrap_link": {
+      "path": "build/asus-rc-recovery/link-result-be98-bootstrap.json",
+      "sha256": "064efbcb8f632998fd786989df205c86964b2caa76a5dd558a8ff3253a65ad68"
+    }
+  },
+  "time_abi": {
+    "explicit_flags": [
+      "-D_TIME_BITS=32",
+      "-D_FILE_OFFSET_BITS=32"
+    ],
+    "reason": "A single rc process shares layouts and exported C APIs with 56 retained ASUS objects and vendor DSOs. Merely dropping time64 flags was insufficient because the compiler specs inject time64 defaults.",
+    "proof": {
+      "path": "build/asus-rc-recovery/abi-role-proof.json",
+      "sha256": "1c3d31485e2345e1bb073e56e99ca004c4c200c3cf9ab27c0203efae4542e6eb"
+    },
+    "final_cc1_log": {
+      "path": "build/asus-rc-recovery/abi-proof/init-final-cc1.log",
+      "sha256": "64936d23718fa6d80b55332164496c6a460da5d7f94892b23bf4d0c706910722"
+    },
+    "armel_probe_stdout": "ABI time_t=4 off_t=4 timeval=8 stat=88 glibc=2.44; role positive/negative/fork/getpid-preserved PASS\n",
+    "examples": [
+      "libshared update_ntp_ts(time_t,int), called by rc/ntpd.c",
+      "libshared rfctime(const time_t*,char*,int)",
+      "libshared get_last_month_timestamp() returns time_t",
+      "shared/nt/nt_common.h notification tstamp time_t members"
+    ],
+    "limitation": "rc/libovpn legacy-facing time/off_t remain 32 bit as an explicit compatibility workaround; this does not provide post-2038 vendor application correctness. New independent native Ubuntu applications retain 64-bit time."
+  },
+  "ai_manager_compat": {
+    "changes": {
+      "input_sha256": "f3febedeb1692389a28047ff04862de17a6ba165f2f895371035951d3dfb6f4a",
+      "output_sha256": "cecd8d888f0cd91c8a5847588edbff4d4bb363408f508fa1b3e5e35bec3cf043",
+      "sites": [
+        {
+          "section": ".rel.text.start_ai_tftpd",
+          "offset": 172,
+          "old_symbol": "getpid",
+          "new_symbol": "leon_rc_vendor_role_pid",
+          "text_sha256": "c98006488edcbf7d49d848907dd0eba6010b6b3342aa6e4454c1ad6cdf472ec1"
+        },
+        {
+          "section": ".rel.text.stop_ai_tftpd",
+          "offset": 40,
+          "old_symbol": "getpid",
+          "new_symbol": "leon_rc_vendor_role_pid",
+          "text_sha256": "72612c8b2af8c0ef575d77233bd8968d987f78e9b0fe1d474896d8f5f228fdb2"
+        }
+      ],
+      "allocated_sections_byte_identical": true,
+      "unknown_hash_rejected": true,
+      "global_getpid_replaced": false,
+      "scope": "two static object relocations; runtime not proven"
+    },
+    "before_disassembly": {
+      "path": "build/asus-rc-recovery/ai-role-before.dis",
+      "sha256": "2d6599070eeb54db19b043f81fbfc062f01027fbcada9d199d8d16195740f36e"
+    },
+    "after_disassembly": {
+      "path": "build/asus-rc-recovery/ai-role-after.dis",
+      "sha256": "168bc583b16cf9506fbe2d430b232ca15c03263d223fc11577d4b05adb3eb132"
+    },
+    "relocation_scan": {
+      "path": "build/asus-rc-recovery/retained-control-relocations.json",
+      "sha256": "4dc4ffa53f21dfe9ee6854ef23353e305ddbd8a2206ad700a3e58e0a14b80b8f"
+    },
+    "wide_compare_scan": {
+      "path": "build/asus-rc-recovery/retained-pid1-wide-scan.json",
+      "sha256": "fcd69ecae6f043bd18b01231a693eb4a9224f2f78e5640b48a09d869d4119acf"
+    },
+    "test": {
+      "path": "build/asus-rc-recovery/abi-role-proof.json",
+      "sha256": "1c3d31485e2345e1bb073e56e99ca004c4c200c3cf9ab27c0203efae4542e6eb"
+    },
+    "tests_scope": "actual rc-manager role logic; broker transport/preload gates stubbed; only ARMEL qemu-user subreaper syscall stubbed; no ASUS daemon or DSO run",
+    "remaining_audit_limit": "The exact immediate/nearby PID==1 sites are covered; relocation/nearby-compare scan is not a proof of all possible vendor control semantics. Ordinary getpid remains unchanged."
+  },
+  "patches": [
+    {
+      "path": "patches/ubuntu26/asuswrt6/0003-asus-rc-systemd-manager.patch",
+      "sha256": "a28637ff79cb7a9a1f4f4dcb04e7790d076ac2768f6fb3a7347613176cd3f754"
+    },
+    {
+      "path": "patches/ubuntu26/asuswrt6/0004-asus-rc-persistent-layout.patch",
+      "sha256": "5169a9a06827b545dc832809d53b4304fb48f0bbfe65e803a75e4548c6b3478b"
+    },
+    {
+      "path": "patches/ubuntu26/asuswrt6/0005-asus-rc-openssh-ownership.patch",
+      "sha256": "ffa29ff0875cd23402608aad901745d1dabf1b88e7e4bc29fbc07acd544478be"
+    },
+    {
+      "path": "patches/ubuntu26/asuswrt6/0006-asus-libovpn-systemd-manager.patch",
+      "sha256": "ea37ab0969bc36b1fe7bdbe7684b6d05bac256b2a1faa42c550edff2420c48f6"
+    },
+    {
+      "path": "patches/ubuntu26/asuswrt6/0007-asus-private-etc-account-ownership.patch",
+      "sha256": "40d95ecb536afd5426106224006f0e9c3f9c3afab18b4e6dbdb599773c729725"
+    },
+    {
+      "path": "patches/ubuntu26/asuswrt6/0008-asus-rc-broadcom-manager.patch",
+      "sha256": "a70ebc7ced016c7837261c68e4c35435475e285c761c707a5964f69ddbf87e20"
+    },
+    {
+      "path": "patches/ubuntu26/asuswrt6/0009-asus-native-storage-ownership.patch",
+      "sha256": "25f3a329dc4bfddad760cc142657a2c4c363bc41768b1b74897cb747c11f7010"
+    },
+    {
+      "path": "patches/ubuntu26/asuswrt6/0010-asus-rc-diagnostic-file-mode.patch",
+      "sha256": "f4af7d461ff6b7c7f51904038e6ff2998246ccd9206201acdc498947eb59fbd3"
+    },
+    {
+      "path": "patches/ubuntu26/asuswrt6/0011-asus-ai-role-thunk.patch",
+      "sha256": "9162a065990a2c551942234a6150aa69f4bc0cfbf65239053f4b43fe285f6f16"
+    }
+  ],
+  "independent_review": {
+    "path": "reports/ubuntu26/asuswrt6-combined-port.json",
+    "sha256": "651edad9988b572d6865621ced5c32371e7b3ce1dc332672e7e079fa28695412"
+  },
+  "frozen_older_reports_unchanged": [
+    "reports/ubuntu26/asus-startup-integration.json",
+    "reports/ubuntu26/asus-rc-systemd-port.json",
+    "patches/ubuntu26/0003-asus-rc-systemd-manager.patch",
+    "patches/ubuntu26/0004-asus-rc-persistent-layout.patch",
+    "patches/ubuntu26/0005-asus-rc-openssh-ownership.patch",
+    "patches/ubuntu26/0006-asus-libovpn-systemd-manager.patch"
+  ],
+  "required_next_acceptance": [
+    "Compose rc/libovpn with exact ARMEL Ubuntu packages and scoped notify shim; test loader/symbol closure in kernel10 guest.",
+    "Actual ASUS rc must receive private /etc, native storage proof and authenticated broker before board actions; this build has not executed rc or any ASUS daemon.",
+    "Verify Wi-Fi/AiMesh/web/switch/USB and AI-board control behavior in staged integration; local source/link/role tests do not establish those functions.",
+    "Complete signed custom repository/update retention policy before deployment; do not let official updates silently replace required compatibility builds."
+  ],
+  "device_operations": {
+    "router_connections": false,
+    "vendor_rc_executed": false,
+    "firmware_packed": false,
+    "flashed": false,
+    "committed": false
+  }
+}

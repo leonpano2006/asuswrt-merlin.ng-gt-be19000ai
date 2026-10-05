@@ -1,0 +1,104 @@
+{
+  "schema": 1,
+  "status": "additive_uplink_rescue_installer_source_peer_pass",
+  "builder": {
+    "path": "scripts/build-uplink-rescue-installer-v1.py",
+    "sha256": "8dadee4ad831395f8bdd1be0ba7a86a6f3c12a94bd2f1a9e8ece99fa49dc2f32",
+    "bytes": 18791
+  },
+  "source_manifest": {
+    "path": "build/asus-uplink-rescue/install-source-v1/manifest.json",
+    "sha256": "c9fb7a261b5a09b556f65de6c6e609abedd6015eb8e14e3b26c88226683544c1",
+    "bytes": 17395
+  },
+  "canonical_compile_plan": {
+    "path": "build/asus-uplink-rescue/install-source-v1/compile-plan.json",
+    "sha256": "25d0d944ec4091b7a9233e1b7b111e7d42c17d51035c2a0abdebc67381fa7548",
+    "bytes": 15063
+  },
+  "baseline": {
+    "path": "build/asus-trial-candidate-v15/install-v1/manifest.json",
+    "sha256": "18c2470a65afa9d2aad2e5e9676b810f6a1757ab4f89bb9b1a1196987a2ff984",
+    "bytes": 19368
+  },
+  "baseline_installer": {
+    "path": "build/asus-trial-candidate-v15/install-v1/install-additions",
+    "sha256": "3ee1c2a1e8b1e78bf03501bb84bb61e549bbd28c75761501ebb1e57a78c11b65",
+    "bytes": 8889008
+  },
+  "package_manifest": {
+    "path": "build/asus-uplink-rescue/package-v1/manifest.json",
+    "sha256": "33d48ca2a97e6c5592792196fb89f56aa7fa4424c78fb5ae33e4fd16e5266794",
+    "bytes": 6922
+  },
+  "actual_focused_transaction_fixture": {
+    "path": "reports/ubuntu26/trial-candidate-v15-focused-fixture-result-v1.json",
+    "sha256": "c3af062c40673e710991c061be101d58a8e6fdfa0d4db2e5e2f2e01cd7835104",
+    "bytes": 2676
+  },
+  "generated_install_source": {
+    "path": "build/asus-uplink-rescue/install-source-v1/source/install.c",
+    "sha256": "1fdb07f0d0c6ee06f7a3d4f31d912322cba7be2c0e8e5d84e70f48dc4b5bc0b7",
+    "bytes": 24230
+  },
+  "generated_payload_header": {
+    "path": "build/asus-uplink-rescue/install-source-v1/source/recovery-payload.h",
+    "sha256": "bcd312bcaea0cd8e1a737f69d895dc5e13ea364db1c3fe46f67c39836a6b25c8",
+    "bytes": 466174
+  },
+  "source_delta": {
+    "path": "build/asus-uplink-rescue/install-source-v1/source-delta.patch",
+    "sha256": "e8053eb08bd410dcbadcbc36e387c72c066e3eecae8aea549afb901a4d4b22ab",
+    "bytes": 2910
+  },
+  "compile_worker": {
+    "path": "build/asus-uplink-rescue/install-source-v1/build.sh",
+    "sha256": "bb3b8062955af87f7aeea658c452b281dd73f05c7f91a0a6eaa4f112ace5774f",
+    "bytes": 856
+  },
+  "binding_findings": {
+    "four_main_literal_changes_reverse_to_frozen_v15_exactly": true,
+    "other19_source_files_byte_identical": true,
+    "all21_source_rows_match_frozen_inventory": true,
+    "original22_function_bodies_unchanged_via_exact_whole_source_reverse": true,
+    "all7_embedded_payload_arrays_match_exact_nonsecret_package_inputs": true,
+    "all7_regular_descriptors_old_sha_null_old_size_zero": true,
+    "replacement_count": 0,
+    "socket_alias_count": 1,
+    "original7_check_only_rows_unchanged": true,
+    "added_RC_v6_check_only": {
+      "sha256": "7e00ff39b48ff4b5efcba7829b1d4849343c88232af3090038bd53b1e9791355",
+      "bytes": 7709628,
+      "mode": "0755",
+      "before_after_hash_inode_required": true
+    },
+    "old90_timer_descriptor_unchanged": true,
+    "public_host_prefix_unchanged": true,
+    "worker_only3_work_label_substitutions": true
+  },
+  "guard_order_refs": {
+    "source": "build/asus-uplink-rescue/install-source-v1/source/install.c",
+    "existing_state0755": 26,
+    "shared_flock_initial_recheck": 349,
+    "original_checks_RCv6_old90_identity": 364,
+    "full_file_link_create0_preflight": 367,
+    "immediately_before_publication_recheck": 373,
+    "actual_additive_and_link_publication": 375,
+    "after_checks_and_inode_preservation": 377
+  },
+  "scope_qualifications": [
+    "Existing sockets.target.wants parent is mandatory; missing parent refuses before publication.",
+    "Frozen clean storage guard is unchanged and does not add an explicit s_last_orphan check. Root device wrapper must retain the requested pure1024B state1/RECOVER-clear/error0/orphan0 precheck.",
+    "Shared flock excludes cooperating writers. Sequential partial/temp publication is retained without retry or rollback.",
+    "V15 fixture evidence covers its original synthetic transaction; this peer review does not claim a rescue installer fixture, native compile or physical guard pass."
+  ],
+  "peer_actions": {
+    "source_reads_hashes_and_pure_AST_parse_only": true,
+    "receipt_creation": true,
+    "builder_or_default_plan_invoked": false,
+    "native_compile": false,
+    "fixture_or_tests_run": false,
+    "device_action": false,
+    "packages_services_or_boot_activation": false
+  }
+}

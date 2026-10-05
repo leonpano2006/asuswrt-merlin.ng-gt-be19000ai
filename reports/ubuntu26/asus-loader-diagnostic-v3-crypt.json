@@ -1,0 +1,338 @@
+{
+  "schema_version": 1,
+  "scope": "Target kernel QEMU, loader trace with LD_WARN and immediate relocations; no ASUS main/constructors, daemon startup or hardware acceptance.",
+  "kernel_sha256": "4a15601eada042576aed2a3680dcc48e9228eea70f70c478840767aaa89a9f8e",
+  "initramfs_sha256": "e61f350f76ae1621e3ea4ebedd40a7d5458f540c1a7045309eba50045416129a",
+  "log_sha256": "c17b20dc47cb47df5ac4bfc9c2981827d784cb1e46de9e2ec31673f588d429a0",
+  "result": "build/qemu/kernel10-asus-loader-diagnostic-v3-crypt/result.json",
+  "fixture_manifest": "build/asus-loader-qemu/v3-crypt/manifest.json",
+  "fixture_manifest_sha256": "87699b2b8330ccd448bab3a7dc92387069b04a7b5d5053a3550f8e79feb91ff5",
+  "checker_sha256": "2f449465d1c06c695dc90f930f2755eb4b123a0cc8da3de9375428dcaddc1c66",
+  "probe_contract_evidence": {
+    "path": "reports/ubuntu26/asus-libcrypt-compat.json",
+    "sha256": "39b6600da4da74f9ddfa7f6f9e642f432f1670db1e4dd891e97170c155ef870f"
+  },
+  "fixture_initial_failure": "build/qemu/kernel10-asus-loader-diagnostic/result.json",
+  "fixture_initial_failure_cause": "Static BusyBox harness copied with non-executable source mode; kernel could not execute /init. Fixed only the harness executable mode in v2.",
+  "runs": [
+    {
+      "runtime": "vendor",
+      "program": "sbin/rc",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "b32afc68b9daec56ac90cdd7f6a9343952b237254b6658f060b6155db966ff75"
+    },
+    {
+      "runtime": "vendor",
+      "program": "usr/sbin/httpd",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "55cb91d2bfe5a301f97c7868efa6ca35552bfa9ca920a8fc8aa2c08ed9c81d45"
+    },
+    {
+      "runtime": "vendor",
+      "program": "usr/sbin/cfg_client",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "b81a1be65d4727fe72e18a514a277965d015c5caa46c3e8a17f13e41a6e1e2ca"
+    },
+    {
+      "runtime": "vendor",
+      "program": "usr/sbin/cfg_server",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "def03ec300233b9f52c3a168c552d5c43dd3569f7fb66007238f6bf87ca4ae94"
+    },
+    {
+      "runtime": "vendor",
+      "program": "usr/sbin/wl",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "ca57a63703bfed99ee519b9f807282174916486904e791ed4ef03fe16364d676"
+    },
+    {
+      "runtime": "vendor",
+      "program": "usr/sbin/wlconf",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "8e63546243eb4aa39699e4691a883924b1879ee3c22401b3e8b51e533ec1efb7"
+    },
+    {
+      "runtime": "vendor",
+      "program": "usr/sbin/hostapd",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "3f1700626a94252797e37965c24023534fa49fd601162f385f735bd13d26d948"
+    },
+    {
+      "runtime": "vendor",
+      "program": "usr/sbin/wpa_supplicant",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "2b5fb81d13f745f3eb6d545d8ac0362c728c873e3ae4f6d1ae7fc8b4e9bc48c0"
+    },
+    {
+      "runtime": "vendor",
+      "program": "usr/sbin/eapd",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "926604507832c4394ba5d951036a7ca78b54f3e26f29edb1f582dc79b89b405a"
+    },
+    {
+      "runtime": "vendor",
+      "program": "usr/sbin/acsd2",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "eb1349dd98774db815aaa27cea220b1d50dd769807b6f56d59a55ad7ff91d0c7"
+    },
+    {
+      "runtime": "vendor",
+      "program": "usr/libexec/ledg-node/rc",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "37ad98acf8e2e99c244e6b9ff2526885a9c2610b8c2b3c5ae73123a4492ad324"
+    },
+    {
+      "runtime": "glibc244",
+      "program": "sbin/rc",
+      "returncode": 0,
+      "diagnostics": [
+        "undefined symbol: __snprintf, version GLIBC_PRIVATE\t(/vendor/lib/libcrypt.so.1)"
+      ],
+      "loader_preflight_passed": false,
+      "output_sha256": "d7b61bafb1e1d9d2429a22c27c7d06148ef78b74a7590b8a62773249a0addbc9"
+    },
+    {
+      "runtime": "glibc244",
+      "program": "usr/sbin/httpd",
+      "returncode": 0,
+      "diagnostics": [
+        "undefined symbol: __snprintf, version GLIBC_PRIVATE\t(/vendor/lib/libcrypt.so.1)"
+      ],
+      "loader_preflight_passed": false,
+      "output_sha256": "ccc32f50d0e40cce1c77d07036285589c0bf9de23a27d987ecbb22f80cdcc46e"
+    },
+    {
+      "runtime": "glibc244",
+      "program": "usr/sbin/cfg_client",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "17952bd933a6fa688d07d7460778323dcc3ab3ef09d853fadbf42ce57f4a1659"
+    },
+    {
+      "runtime": "glibc244",
+      "program": "usr/sbin/cfg_server",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "9389b685c54ca7587e6357b788757f08f7d3cdb33c7e81c1331231ed086d24ab"
+    },
+    {
+      "runtime": "glibc244",
+      "program": "usr/sbin/wl",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "1d8e81541285d230b8a1118e2e52074a16416a5f60962734b2e73366c1ec8749"
+    },
+    {
+      "runtime": "glibc244",
+      "program": "usr/sbin/wlconf",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "1c08d6940cae564ffb0c30b38aafa46d5b449f2254c2be174d45cce443702ca6"
+    },
+    {
+      "runtime": "glibc244",
+      "program": "usr/sbin/hostapd",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "41f4d2c2a6be83c996e94d0fbcfa5ef3ab3b097ee11cfc4850b643fa6c84a5a9"
+    },
+    {
+      "runtime": "glibc244",
+      "program": "usr/sbin/wpa_supplicant",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "46d08f0eab14daf2c9b286ab3efbabfb1baee153b213ae54973ea36254dc725e"
+    },
+    {
+      "runtime": "glibc244",
+      "program": "usr/sbin/eapd",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "954d44e8ce31fd18f99599108b714dca0b90ee71a3d1d188c542ca4a22f4fb14"
+    },
+    {
+      "runtime": "glibc244",
+      "program": "usr/sbin/acsd2",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "9041dd5c7c21a4cf3c22120589f8009c7cdd6b6c428d1405b23a75b82416c325"
+    },
+    {
+      "runtime": "glibc244",
+      "program": "usr/libexec/ledg-node/rc",
+      "returncode": 0,
+      "diagnostics": [
+        "undefined symbol: __snprintf, version GLIBC_PRIVATE\t(/vendor/lib/libcrypt.so.1)"
+      ],
+      "loader_preflight_passed": false,
+      "output_sha256": "6b1fb183a3f79f77ea8e36722659a8a7bd538920960411060cce801a8f6c55ce"
+    },
+    {
+      "runtime": "glibc244_crypt",
+      "program": "sbin/rc",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "0391211835b9951dbb40994667ede86908b7ee49de9f096e1e26fd9a33f49f60"
+    },
+    {
+      "runtime": "glibc244_crypt",
+      "program": "usr/sbin/httpd",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "70d009f2cca33d7c0e94e35ae5febb60db364837b4c2f5b7319b36e96e86b825"
+    },
+    {
+      "runtime": "glibc244_crypt",
+      "program": "usr/sbin/cfg_client",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "f7ddda87809b083081386e79385a097affbcf66e73d8296624bb472127a37d71"
+    },
+    {
+      "runtime": "glibc244_crypt",
+      "program": "usr/sbin/cfg_server",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "de2e21aed24a077f98fad21ebd036650e2d8c5ffa3d3370876bcee2c45850cd5"
+    },
+    {
+      "runtime": "glibc244_crypt",
+      "program": "usr/sbin/wl",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "8bed0e27d41f940689b592d1c67310719e4dafb0d074a8b2798f7138fa44fc9a"
+    },
+    {
+      "runtime": "glibc244_crypt",
+      "program": "usr/sbin/wlconf",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "928ea2316eace831b8f77667de6ae0402fed197779ddd03be470ba73252c744f"
+    },
+    {
+      "runtime": "glibc244_crypt",
+      "program": "usr/sbin/hostapd",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "4df875372c2b22d9781b166a3e9c4374d7b38ea389aaf5cf250f9a4c55d53811"
+    },
+    {
+      "runtime": "glibc244_crypt",
+      "program": "usr/sbin/wpa_supplicant",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "7f22d8d3eb5d1428f177f7cfdc09e85b64f6896e31b7792218ea597dc84ad00e"
+    },
+    {
+      "runtime": "glibc244_crypt",
+      "program": "usr/sbin/eapd",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "cc97355274ead0d3e1a0b8033963b48a183d9e4127541f5f574693c96384d4cf"
+    },
+    {
+      "runtime": "glibc244_crypt",
+      "program": "usr/sbin/acsd2",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "cbf110029edfe4f31f1e568b70f3451fadd4090020187bf1f2ebde7b7d3bc6a1"
+    },
+    {
+      "runtime": "glibc244_crypt",
+      "program": "usr/libexec/ledg-node/rc",
+      "returncode": 0,
+      "diagnostics": [],
+      "loader_preflight_passed": true,
+      "output_sha256": "ab47dedcbd13e9c46d1b737eef0f8a00bcc3644bb3bc5c7f1393ac90df6bbf24"
+    }
+  ],
+  "summary": {
+    "vendor": {
+      "total": 11,
+      "passed": 11
+    },
+    "glibc244": {
+      "total": 11,
+      "passed": 8
+    },
+    "glibc244_crypt": {
+      "total": 11,
+      "passed": 11
+    }
+  },
+  "crypt_probes": [
+    {
+      "probe": "crypt-probe",
+      "returncode": 0,
+      "output": "LAB_ASUS_LIBCRYPT_NEW_HEADER_SIZE=32768 TIME_T=8 OFF_T=8\nLAB_ASUS_LIBCRYPT_DES_MD5_TIME64_PASS",
+      "expected_markers": [
+        "LAB_ASUS_LIBCRYPT_DES_MD5_TIME64_PASS"
+      ],
+      "marker_counts": {
+        "LAB_ASUS_LIBCRYPT_DES_MD5_TIME64_PASS": 1
+      },
+      "passed": true
+    },
+    {
+      "probe": "crypt-legacy-probe-v2",
+      "returncode": 0,
+      "output": "LAB_ASUS_LIBCRYPT_POISON_INITIALIZED_ONLY_PASS\nLAB_ASUS_LIBCRYPT_LEGACY_HEADER_SIZE=131228 INITIALIZED_OFFSET=131224 TIME_T=8 OFF_T=8\nLAB_ASUS_LIBCRYPT_GLIBC24_OBSOLETE_ABI_PASS",
+      "expected_markers": [
+        "LAB_ASUS_LIBCRYPT_POISON_INITIALIZED_ONLY_PASS",
+        "LAB_ASUS_LIBCRYPT_GLIBC24_OBSOLETE_ABI_PASS"
+      ],
+      "marker_counts": {
+        "LAB_ASUS_LIBCRYPT_POISON_INITIALIZED_ONLY_PASS": 1,
+        "LAB_ASUS_LIBCRYPT_GLIBC24_OBSOLETE_ABI_PASS": 1
+      },
+      "passed": true
+    }
+  ],
+  "asus_functional_acceptance": false,
+  "ubuntu_integration_ready": false,
+  "limitations": [
+    "The new armel libc is an isolated BE98 reference, not the final matching Ubuntu libc6:armel package.",
+    "Dynamic plugins, structure/time ABI, configuration writes, manager notifications and physical hardware still need separate validation.",
+    "A clean trace does not mean the service has been started or works."
+  ]
+}

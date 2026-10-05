@@ -1,0 +1,29 @@
+{
+  "status": "static_peer_review_no_remaining_concrete_findings_in_reviewed_scope",
+  "source": "scripts/asus-integration/ubuntu-root-init.c",
+  "source_sha256": "412d92c10820c4c2774791fa12fd14f93e4f83ba7ed02fa7a25d805016e45018",
+  "scope": [
+    "SquashFS to ext4 pseudo-filesystem mount movement and forward pivot",
+    "Exec failure reverse pivot, moved/owned mount restoration, read-only original root before vendor exec",
+    "Root-owned real intermediate directories on generation and native init execution path",
+    "Child spawn signal mask and timeout reaping"
+  ],
+  "resolved_findings": [
+    {
+      "finding": "Blocking waitpid after timeout SIGKILL could hang forever on uninterruptible fsck IO",
+      "resolution": "40 bounded WNOHANG reap attempts then CHILD_REAP_DEFERRED and fallback return"
+    },
+    {
+      "finding": "Native root inode and intermediate init path directories were not checked; parent symlinks could differ across outside/chroot path resolution",
+      "resolution": "Checks NEWROOT/etc/leon before reading generation, and trusted_init_path walks every component before final regular root-owned executable"
+    }
+  ],
+  "notes": [
+    "Reverse restoration moves run/dev/sys/proc back before pivot_root onto the old SquashFS, then unmounts only tracked ext4 and pseudo mounts. It does not lazy-detach or claim recovered if restore fails.",
+    "After successful systemd exec, later boot failure remains the separate board trial/watchdog health mechanism; the bootstrap cannot auto-reverse a successful exec.",
+    "No QEMU or real hardware acceptance is claimed by this static peer review; parent owns those exact-binary fixtures."
+  ],
+  "actual_asus_services_executed": false,
+  "router_access": false,
+  "flash_allowed": false
+}

@@ -1,0 +1,31 @@
+BE19000AI 備援登入
+
+目前原版／Merlin 的 .15：
+  scripts/management/be19000ai-backup-login.sh
+
+只讀取核心、PID1 與開機 UUID：
+  scripts/management/be19000ai-backup-login.sh --check
+
+此工作站經由 .51，使用 .51 原本的 /root/.ssh/netpanel。
+私鑰留在 .51；兩段 SSH 都嚴格核對已登記的主機金鑰。
+原版備援登入已於 2026-10-05 實際成功，完全不使用路由器密碼。
+證據：reports/ubuntu26/management-backup-v1.json
+
+下一版 Ubuntu 的獨立備援入口（完成部署後才可使用）：
+  scripts/management/be19000ai-backup-login.sh --ubuntu-recovery
+
+實機驗收的兩個唯讀指令（新系統啟動後各執行一次）：
+  scripts/management/be19000ai-backup-login.sh --ubuntu-primary-check
+  scripts/management/be19000ai-backup-login.sh --ubuntu-recovery-check
+兩邊應回報相同開機 UUID、PID1 systemd、kernel10、ext4 rw 根目錄，
+並使用既有原生帳號 UID1000。隔離測試中的 UID2000 是測試身分。
+
+該入口使用現有 MastermixStudios 帳號與相同公鑰；只接受 LAN br0
+上的 IPv4 2222 連接，來源限 192.168.100.0/24。停用密碼及轉送。
+由 native systemd/OpenSSH 啟動，不要求華碩 broker 或帳密同步。
+.51 已存入此設備 Ubuntu 公開主機金鑰的獨立名稱，保留原版金鑰。
+公鑰登入不會免除 sudo 的密碼要求，也不提供 root SSH 登入。
+
+每次刷入新候選之前，保留可用的原版備援登入；新系統必須再完成
+主要登入與備援公鑰的實機驗證，才能接受永久啟動／提交版本。
+隔離 QEMU 測試不能替代這項實機驗證。

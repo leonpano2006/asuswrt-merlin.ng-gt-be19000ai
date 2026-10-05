@@ -1,0 +1,22 @@
+[Unit]
+Description=Local radio and Ethernet history in the verified ASUS namespace
+Requires=leon-asus-broker.service
+After=leon-asus-broker.service
+BindsTo=leon-asus-broker.service
+PartOf=leon-asus-broker.service
+StartLimitIntervalSec=300
+StartLimitBurst=3
+
+[Service]
+Type=exec
+ExecStart=/usr/libexec/leon-asus/telemetry-namespace-exec history
+Environment=PATH=/usr/bin:/usr/sbin
+Environment=LC_ALL=C
+UMask=0077
+KillMode=control-group
+TimeoutStopSec=10s
+Restart=on-failure
+RestartSec=60s
+
+[Install]
+WantedBy=multi-user.target

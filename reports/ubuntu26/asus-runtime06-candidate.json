@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "status": "passed_offline_composition_and_kernel10_loader_preflight",
+  "production_ready": false,
+  "flash_allowed": false,
+  "runtime_version": "0.6",
+  "manifest": {
+    "path": "build/asus-runtime-projection/v6/validated-manifest.json",
+    "sha256": "12d5f1944383f8366c70f686a85d762ad024c167eae00cbd31be0b5d36aae226"
+  },
+  "rootfs": {
+    "path": "build/ubuntu26-rootfs/ubuntu26-bcm-gnu-systemd-openssh-asus-runtime06-integration-sealed-b53-v1.tar",
+    "sha256": "a28786218f5540b338fd03cb302b470741e84c1856b6a279092574887283660b",
+    "bytes": 1010053120
+  },
+  "acceptance": {
+    "installed_entries": 4646,
+    "loader_scopes": 643,
+    "loader_scopes_seconds": 18.04,
+    "qemu_seconds": 109.6,
+    "canary_no_vendor_main_or_constructors": true,
+    "negative_undefined_symbol_control": true,
+    "protected_native_files_unchanged": true,
+    "existing_versions_preserved_except_approved_metadata": true,
+    "no_global_preload": true,
+    "no_service_activation": true,
+    "mode_migrations": [
+      {
+        "path": "/usr/lib/aarch64-linux-gnu/leon-asus",
+        "before": "0775",
+        "after": "0755",
+        "owner_package": "leon-asus-notify:arm64"
+      },
+      {
+        "path": "/usr/share/doc/leon-asus-notify",
+        "before": "0775",
+        "after": "0755",
+        "owner_package": "leon-asus-notify:armel"
+      },
+      {
+        "path": "/usr/lib/arm-linux-gnueabi/leon-asus",
+        "before": "0775",
+        "after": "0755",
+        "owner_package": "leon-asus-notify:armel"
+      },
+      {
+        "path": "/usr/share/doc/leon-gcc15-runtime",
+        "before": "0775",
+        "after": "0755",
+        "owner_package": "leon-gcc15-runtime:armel"
+      },
+      {
+        "path": "/usr/share/doc/leon-gcc15-runtime/build",
+        "before": "0775",
+        "after": "0755",
+        "owner_package": "leon-gcc15-runtime:armel"
+      },
+      {
+        "path": "/usr/share/doc/leon-bcm-rootfs-config",
+        "before": "0775",
+        "after": "0755",
+        "owner_package": "leon-bcm-rootfs-config"
+      },
+      {
+        "path": "/usr/share/leon-bcm-rootfs",
+        "before": "0775",
+        "after": "0755",
+        "owner_package": "leon-bcm-rootfs-config"
+      }
+    ]
+  },
+  "evidence": {
+    "composition": {
+      "path": "build/asus-runtime-projection/gnu-systemd-openssh-asus-runtime06-integration-b53-v4/build.json",
+      "sha256": "f6c1c9810c5f2ede3e0af5e44cbca37d31a26ec79ffd89f141e766641f85f9a4"
+    },
+    "hostkey_seal": {
+      "path": "build/ubuntu26-rootfs/ubuntu26-bcm-gnu-systemd-openssh-asus-runtime06-integration-sealed-b53-v1.hostkey-seal.json",
+      "sha256": "e645aad8d6e92035706d12879bab6d4e114ba740eb86e7665b076168630ca3ae"
+    },
+    "qemu": {
+      "path": "build/qemu/asus-runtime06-kernel10-v1/result.json",
+      "sha256": "c5a636e5a7a32ac46cef2d890bf83f6db62fc32e07666fd3faa701e179ca773e"
+    },
+    "fixture": {
+      "path": "build/asus-runtime-projection/v6/qemu-runtime06-v3/manifest.json",
+      "sha256": "3a3f3cacc1fae39ab68e65a884aea5de136be341a110fd015d4ac42697cc70b9"
+    },
+    "source_preflight": {
+      "path": "reports/ubuntu26/asus-runtime06-preflight.json",
+      "sha256": "55480b3361a2d93348fd21e9766a30371bcbcd876317aaa7496e36b03060f965"
+    },
+    "separate_namespace_evidence": {
+      "path": "reports/ubuntu26/asus-startup-wiring.json",
+      "sha256": "41685b00b06a478526eda50439ef527322f12e2b508afc11d51298754448c0f5"
+    }
+  },
+  "source_evidence_preserved": true,
+  "pending": [
+    "Native sole-owner hardware watchdog guard and corresponding next rc revision.",
+    "Resolver 0.2 FIFO hardening plus a new integration dependency revision.",
+    "Device-local SSH identity and authenticated account policy migration.",
+    "Actual Broadcom ASUS service and peripheral acceptance after complete rollback gates."
+  ],
+  "interpretation": "ASUS package installation, ELF relocation/loader trace and native integration fixtures only; no actual ASUS rc main or hardware initialization. QEMU installed the exact same package hashes on the immutable base; sealed output differs from composed tar only by six hash-identified prototype SSH key files.",
+  "all_installed_mode_audit": {
+    "path": "reports/ubuntu26/installed-modes-integration06-sealed-v1.json",
+    "sha256": "92f9ab17a8eae9ad99aa8fb709b9b12ce2dec70ca08cc9f31e62ba4d3f1331c0",
+    "installed_packages": 178,
+    "entries": 20027,
+    "critical_writable": 0,
+    "writable_executables": 0,
+    "custom_setuid_files": 0,
+    "unowned_critical": 0
+  },
+  "frozen_manifest_pending_list_note": "The immutable manifest captured peer mode audit as pending; this report binds the later passing audit without modifying that manifest."
+}

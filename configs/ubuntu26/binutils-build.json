@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "upstream_version": "2.47",
+  "ubuntu_packaging_version": "2.47-6ubuntu1",
+  "package_version": "2.47-6ubuntu1+leonb53.1",
+  "packaging_origin_suite": "stonking",
+  "build_suite": "resolute",
+  "host_architecture": "arm64",
+  "host_flags": [
+    "-O2",
+    "-mcpu=cortex-a53+crypto+crc"
+  ],
+  "targets": [
+    "aarch64-linux-gnu",
+    "arm-linux-gnueabi",
+    "arm-linux-gnueabihf"
+  ],
+  "source_authentication": "Ubuntu archive keyring verifies InRelease; SHA512 verifies Sources index and complete source package",
+  "sources": [
+    {
+      "name": "binutils_2.47.orig.tar.xz",
+      "bytes": 29034716,
+      "sha256": "154ab23b60070e8f27013c22977f1129425d67d1e8acd6e13010e617811e4cff",
+      "sha512": "3126a1064374d8da40d4d70630c204ed1e75d542c447d53fca9778c7ceff095c28e9b445e15a313fef9729082d7966471ee6b5b715d479aa6d568528743e1d98"
+    },
+    {
+      "name": "binutils_2.47-6ubuntu1.debian.tar.xz",
+      "bytes": 137948,
+      "sha256": "8e8e031a5fbb4f7c7d6d2297601c1a8f08d83c48e3303a79348a24433600798e",
+      "sha512": "5dd3d489b2e127ee598603d0fd65d462668236dec684721f5635175a3cdeb7fcf0a637ce4ad6ae3be999ef32e4ada9d22d639b9dfa31097f9e7c79d314af6198"
+    },
+    {
+      "name": "binutils_2.47-6ubuntu1.dsc",
+      "bytes": 9021,
+      "sha256": "69914ae1aeae88d140562d1df71e350058b55941ffc3f73fda23c415794857cb",
+      "sha512": "75ac0eb07888c9cec6b1d89eb5076a00b31eac714c7b8119acea196f6d2f132edc10991b822d00c3e348cba018b4a3e4923561c0a438eca839139ba5b6eeffb5"
+    }
+  ],
+  "source_inrelease_sha256": "a48717fa3399531c278468282cba8f3e674786581fd57c4786f346c7aa57ba70",
+  "source_index_sha256": "af1c2164183f75d0e4fedfbec7c0e091a99019af47abcadd52bcb44dd7ed806f",
+  "jobs": 4,
+  "ccache": "/work/ccache in isolated build root",
+  "build_options": "parallel=4 nomult nopgo nocheck",
+  "tests_policy": "Full upstream DejaGNU suite excluded from first candidate build; package-install and targeted assembler/linker/BFD/LTO regressions required separately. No speedup claimed."
+}

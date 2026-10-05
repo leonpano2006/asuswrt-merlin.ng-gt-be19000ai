@@ -1,0 +1,16 @@
+[Unit]
+Description=Observe ASUS nameserver updates for native clients
+# Bootstrap is a normal service ordered after basic.target. Do not inherit
+# Before=paths.target, which would close a bootstrap/basic/paths ordering cycle.
+DefaultDependencies=no
+Requires=sysinit.target leon-asus-resolver-bootstrap.service
+After=sysinit.target basic.target leon-asus-resolver-bootstrap.service
+Before=shutdown.target
+Conflicts=shutdown.target
+
+[Path]
+PathChanged=/tmp/resolv.conf
+Unit=leon-asus-resolver-update.service
+TriggerLimitIntervalSec=10s
+TriggerLimitBurst=30
+

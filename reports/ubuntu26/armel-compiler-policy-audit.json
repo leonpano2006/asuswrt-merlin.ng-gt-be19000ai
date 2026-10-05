@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "status": "quarantined_pending_compiler_policy",
+  "accepted_for_arm32_runtime": false,
+  "reason": "User requires confirmed GCC15.2 ARM32 baseline; full GCC16 metadata must not be inferred from package name. No candidate install occurred.",
+  "current_gcc16": {
+    "full_banner": "arm-linux-gnueabi-gcc-16 (Ubuntu 16.2.0-3ubuntu1) 16.2.0",
+    "dpkg_version": "16.2.0-3ubuntu1cross1",
+    "base_ver": "16.2.0",
+    "datestamp": "20260918",
+    "dev_phase": "",
+    "changelog": "Update to git 20260918 from the gcc-16 branch",
+    "interpretation": "Release-branch build, not proven experimental; no fabricated regression claim."
+  },
+  "historical_be98": {
+    "evidence": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/libgcc-runtime-20260916/README.md",
+    "evidence_sha256": "d92590d19e5f4e4710b89ea5652ea64a599f0189b0ee680d26a4367fedffeb51",
+    "problem": "GCC15 compiler package dependencies resolved shared libgcc/libstdc++ to GCC16 snapshot; explicit compiler and runtime source verification required",
+    "rejected_historical_runtime_package": "libgcc-s1-armel-cross_16-20260322-1ubuntu1cross1_all.deb",
+    "replacement": "Real GCC15.2 runtime, later source rebuilt for A53"
+  },
+  "preserve_native_candidate": true,
+  "router_access": false,
+  "runtime_candidate_created": false
+}

@@ -1,0 +1,251 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-10-04T13:56:43.122788+00:00",
+  "scope": "Local static source/ELF and prior-test evidence only. No router access, firmware/rootfs change, service operation, Git staging or commit.",
+  "status": "integration requirements and package ownership draft; Ubuntu ASUS runtime integration not yet implemented or accepted",
+  "board": "GT-BE19000AI BCM6813/B53; separate SL/AI-board OS remains outside this migration",
+  "current_runtime": {
+    "source_commit": "69838e4a60564e5550e97f11d8a8cf2c6260c4f0",
+    "rootfs_source": "build/kernel9-ui1-rootfs",
+    "kernel_acceptance": "reports/kernel9/hardware-acceptance.json",
+    "kernel": "4.19.294 #9; AArch64 kernel with AArch32 compat and newly validated ARM32 time64",
+    "vendor_abi": "armel / ARM EABI soft-float calling convention, not armhf",
+    "stock_inventory": "reports/be92-40311/be19000ai-stock-elf-inventory.json",
+    "stock_inventory_counts": {
+      "armel_userspace": 650,
+      "aarch64_userspace": 14,
+      "armhf_userspace": 0,
+      "x86_64_anomaly": 1
+    },
+    "path_layout": {
+      "/bin": "directory",
+      "/sbin": "directory",
+      "/lib": "directory",
+      "/etc": "symlink tmp/etc",
+      "/var": "directory populated by boot",
+      "/run": "absent in packaged image",
+      "/sbin/init": "symlink rc"
+    },
+    "important_elfs": {
+      "sbin/rc": {
+        "sha256": "9d31d5f2c3a97dd38e69ac7978dedc9a86089708d5083d994a693483a7a62814",
+        "file": "ELF 32-bit LSB executable, ARM, EABI5 version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux.so.3, for GNU/Linux 4.19.0, stripped"
+      },
+      "usr/sbin/httpd": {
+        "sha256": "df7d10e24231ccc2f994f4b89c7e73c20264746e06ec8c19e1aba7579d313201",
+        "file": "ELF 32-bit LSB executable, ARM, EABI5 version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux.so.3, for GNU/Linux 4.19.0, stripped"
+      },
+      "usr/sbin/cfg_client": {
+        "sha256": "a0ffd156c805024f21553d259df5fd8c30837d03b5af058f61cc79dce0e6d8da",
+        "file": "ELF 32-bit LSB executable, ARM, EABI5 version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux.so.3, for GNU/Linux 4.19.0, stripped"
+      },
+      "usr/lib/libshared.so": {
+        "sha256": "0b280a0c80b16e0ecf1f36281661c9c24fa483fb1adb3de0b2e266d7c9f011d8",
+        "file": "ELF 32-bit LSB shared object, ARM, EABI5 version 1 (SYSV), dynamically linked, stripped"
+      },
+      "lib/libcrypt.so.1": {
+        "sha256": "50efa54b898167e3bfbf2673c2f682a74ddc455e686328839d79915d0ca422c5",
+        "file": "ELF 32-bit LSB shared object, ARM, EABI5 version 1 (SYSV), dynamically linked, for GNU/Linux 4.19.0, stripped"
+      },
+      "lib/libc.so.6": {
+        "sha256": "ec97457448e4c5033a7ab6ecad44cdbc2fb14d73a796a6eb17c2472eb850efdf",
+        "file": "ELF 32-bit LSB shared object, ARM, EABI5 version 1 (GNU/Linux), dynamically linked, interpreter /lib/ld-linux.so.3, for GNU/Linux 4.19.0, stripped"
+      },
+      "lib/ld-linux.so.3": {
+        "sha256": "a7c3f1b2b3bf43617fc6e1e131b8a7251554092b411007548736a96624938b5e",
+        "file": "ELF 32-bit LSB shared object, ARM, EABI5 version 1 (SYSV), dynamically linked, stripped"
+      },
+      "lib64/libc.so.6": {
+        "sha256": "08a2b15379a1424767cb2fa0712dba619c74ed0cad31a78e8c7cf062483531b6",
+        "file": "ELF 64-bit LSB shared object, ARM aarch64, version 1 (GNU/Linux), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, for GNU/Linux 4.19.0, with debug_info, not stripped"
+      },
+      "lib/libexpat.so": {
+        "sha256": "9996bcfca5c94d7d4ea942f6ec31e5e1b3808d25841fe9d2582706e319bde737",
+        "file": "ELF 64-bit LSB shared object, x86-64, version 1 (SYSV), dynamically linked, not stripped"
+      }
+    },
+    "architecture_anomaly": {
+      "path": "/lib/libexpat.so",
+      "machine": "EM_X86_64",
+      "effect": "Static anomaly in stock image, not a demonstrated cause of current service failure. Do not import host-architecture ELF into the target runtime/development .deb set; resolve the armel libexpat.so alias to an audited target provider if required."
+    }
+  },
+  "ubuntu_systemd_259_5": {
+    "exact_candidate": "Ubuntu 26.04 systemd 259.5-0ubuntu3.4; archive verification and actual binary/QEMU checks belong to the root task",
+    "upstream_source_files": [
+      {
+        "path": "build/ubuntu26-audit/systemd-source/systemd-259.5/README",
+        "sha256": "7f69a112774bbf03d6892ded6309dd7bfe5fa7dfaa63321934238f0318c90dc3"
+      },
+      {
+        "path": "build/ubuntu26-audit/systemd-source/systemd-259.5/src/basic/pidref.c",
+        "sha256": "758ccf1262f0f927f350ac4ba780061519ff307ad2e49d9afcf1419121aa48ff"
+      },
+      {
+        "path": "build/ubuntu26-audit/systemd-source/systemd-259.5/src/basic/mountpoint-util.c",
+        "sha256": "ca0933aaf922b71477fe3fcc3e08624a1a47569b4fa8f1b98268f1a00b6b232a"
+      },
+      {
+        "path": "build/ubuntu26-audit/systemd-source/systemd-259.5/src/basic/fd-util.c",
+        "sha256": "cb60ffa3bbe82f099d62dac6d7b37102cb56ab69e46b75483bf5f7dcfdfd0311"
+      },
+      {
+        "path": "build/ubuntu26-audit/systemd-source/systemd-259.5/src/shared/mount-setup.c",
+        "sha256": "67d7c00d3a530302dfbcc1842ce92b8d97c482b1ce0182808cc36314b703a24d"
+      }
+    ],
+    "upstream_baseline": {
+      "minimum_kernel": "5.4",
+      "recommended_kernel": "5.7",
+      "source": "README:51,58",
+      "meaning": "Backported 4.19 stays below upstream supported version baseline even if selected APIs are supplied."
+    },
+    "source_confirmed_requirements": [
+      {
+        "feature": "pidfd_open",
+        "source": "src/basic/pidref.c:90-119",
+        "behavior": "pidref_set_pid only accepts resource exhaustion as fallback; ENOSYS is an error. Kernel9 does not implement pidfd_open, so this is a concrete integration blocker to investigate with exact Ubuntu binary boot."
+      },
+      {
+        "feature": "cgroup v2",
+        "source": "src/shared/mount-setup.c:201-209; existing kernel6 cgroup probe",
+        "behavior": "systemd mounts cgroup2 with nsdelegate; kernel9 has cgroup2, but controller/delegation/sandbox behavior must be tested and existing ASUS ownership must be migrated."
+      }
+    ],
+    "must_not_misclassify_as_259_universal_boot_blockers": [
+      {
+        "feature": "STATX_ATTR_MOUNT_ROOT",
+        "source": "src/basic/mountpoint-util.c:231-291",
+        "behavior": "259.5 tries file handles and /proc/self/fdinfo when the statx mount-root attribute is absent; unlike the tested262 branch."
+      },
+      {
+        "feature": "close_range",
+        "source": "src/basic/fd-util.c:320-347",
+        "behavior": "259.5 retains unsupported/privilege-error fallback; unlike the262 branch."
+      },
+      {
+        "feature": "memory_recursiveprot",
+        "source": "src/shared/mount-setup.c:44-65",
+        "behavior": "259.5 probes this optional mount option before using it, rather than demanding it unconditionally."
+      }
+    ],
+    "historical_262_test": {
+      "report": "reports/systemd262/assessment.json",
+      "actual_failure": "STATX_ATTR_MOUNT_ROOT absence made early API filesystem setup fail; exact262 test used custom BE98 glibc2.44 and minimal262 build",
+      "boundary": "This is not proof that Ubuntu259.5 fails at the same point. Do not reuse262 missing-API list as259 acceptance result."
+    },
+    "kernel9_scope": "time64 patch does not add pidfds/new mount API or modern cgroup features; native arm64 time_t64 was already present. Three-ABI timer tests establish their tested libc/kernel paths only."
+  },
+  "glibc_transition": {
+    "hard_evidence": {
+      "consumer": {
+        "path": "build/kernel9-ui1-rootfs/lib/libcrypt.so.1",
+        "sha256": "50efa54b898167e3bfbf2673c2f682a74ddc455e686328839d79915d0ca422c5"
+      },
+      "needed_by": "/sbin/rc DT_NEEDED includes libcrypt.so.1",
+      "private_imports": [
+        "errno@GLIBC_PRIVATE",
+        "__open_nocancel@GLIBC_PRIVATE",
+        "__read_nocancel@GLIBC_PRIVATE",
+        "__snprintf@GLIBC_PRIVATE",
+        "__libc_alloca_cutoff@GLIBC_PRIVATE",
+        "__close_nocancel@GLIBC_PRIVATE"
+      ],
+      "tested_reference_libc": {
+        "path": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/glibc244-b53-20260915/builds/armel/stage/lib/libc.so.6",
+        "sha256": "4da295b81a9bb1038e434ff373faff6c0b84a0d95a5d312848e2e477199c380a"
+      },
+      "missing_in_reference": "__snprintf@GLIBC_PRIVATE is absent (the distinct __snprintf_chk@GLIBC_2.4 is present); copying only new libc breaks this consumer dependency."
+    },
+    "be98_reusable_fix": "systemd-rc-compat-20260916 rebuilt libxcrypt4.4.38 with obsolete ABI and verified all original export names/versions plus DES/MD5 vectors. Reuse recipe, then compare BE19000AI libcrypt exports and run actual relocations; do not blindly reuse the BE98 binary.",
+    "package_rule": "Coordinate new loader, libc6, libc-bin, libc6-dev and ABI companions through dpkg packages. No untracked overwrite of Ubuntu libc6 files. Maintain armel, armhf and arm64 runtime closures separately.",
+    "legacy_structure_abi": "Default all newly built components to time64 (ARM32 _TIME_BITS=64 plus _FILE_OFFSET_BITS=64; native arm64 naturally64). At observed vendor boundaries use fixed-width protocol structs/versioned APIs and checked conversion, as BE98 successfully did while preserving application time64. Retain a legacy time32 component only as documented fallback, never blanket armel flags.",
+    "other_closure_risks": [
+      "rc imports about40 direct libraries, including old libjson-c.so.2 plus vendor libai/libcfgmnt/libshared/libnvram; SONAME, symbol versions, plugin dlopen paths and structure ABI must be checked recursively.",
+      "Do not merge different vendor/distribution libraries only because SONAME matches. Keep vendor-private dependencies in per-ABI vendor directories with explicit per-program linkage until replacement is proven.",
+      "Closed-source armel stays armel. Existing AArch64 vendor executables stay arm64. armhf is optional for separately added applications, not a migration of the current SDK."
+    ]
+  },
+  "filesystem_and_pid1_conflicts": [
+    {
+      "source": "release/src/router/rc/init.c:25455,25468",
+      "finding": "sysinit mounts /tmp and sysfs",
+      "required_change": "Under systemd, early filesystem ownership must belong to the new init path; rc must not remount over systemd-owned trees or invalidate runtime sockets."
+    },
+    {
+      "source": "release/src/router/rc/init.c:25591-25617",
+      "finding": "sysinit truncates /etc/hosts and /etc/fstab, links /rom/etc entries into /etc, rewrites resolv.conf and invokes ldconfig",
+      "required_change": "Persistent Ubuntu /etc and package conffiles cannot use stock /etc -> tmp/etc lifecycle. Preserve only explicitly owned ASUS generated files and migrate them without erasing apt/fstab/machine-id configuration."
+    },
+    {
+      "source": "release/src/router/rc/init.c:25543-25564",
+      "finding": "legacy creates /tmp/etc and /var/run,/var/lib,/var/cache paths during boot",
+      "required_change": "Use tmpfs /run, /var/run -> /run, durable /var/lib/dpkg and /var/lib/apt, and /var/cache/apt; no volatile /var overlay that loses package state."
+    },
+    {
+      "source": "release/src/router/rc/init.c:27643-27650",
+      "finding": "ASUS reboot action directly signals PID1 (SIGTERM/SIGQUIT)",
+      "required_change": "Retarget only ASUS manager notification/reboot paths via a validated broker; do not redirect arbitrary kill() calls or fake getpid()."
+    },
+    {
+      "source": "release/src/router/rc/services.c:1639 and many model-conditional branches",
+      "finding": "service entry points distinguish PID1 manager from ordinary callers",
+      "required_change": "Port BE98 explicit manager role checks and peer-validated notification broker to this board-specific rc; source-wide matches include inactive models and are not execution counts."
+    },
+    {
+      "source": "release/src/router/rc/services.c:18538-18555",
+      "finding": "AI service has explicit ai_reboot/ai_upgrade action dispatch",
+      "required_change": "Preserve AI bridge/control as explicit separate actions; ordinary Wi-Fi/HTTP/port operations must not invoke AI-board reboot or firmware actions."
+    }
+  ],
+  "be98_reuse": [
+    {
+      "area": "merged-/usr",
+      "reference": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/usrmerge-20260915/README.md",
+      "reuse": "Collision-rejecting merge script, root-relative symlink resolver, original-path/mode/hash checks and dynamic loader closure tests. Candidate exact aliases matched inspected Ubuntu base-files. Rerun on AI files; prior collision policy hashes are board-specific."
+    },
+    {
+      "area": "armel multiarch",
+      "reference": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/armel-multiarch-20260915/publication/gt-be98/userspace/armel-multiarch/README.md",
+      "reuse": "Triplet migration with compatibility links and explicit libdir, plus ABI export comparisons. Its early blanket legacy time-bits flags are historical and must not be copied into the new time64-default policy. Use the later AiMesh shared-memory fix as the compatibility pattern."
+    },
+    {
+      "area": "systemd rc broker",
+      "reference": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/systemd-rc-compat-20260916/README.md",
+      "reuse": "Explicit rc manager PID, root peer credentials, fixed SOCK_SEQPACKET protocol, notify_rc shims per ABI, linker wraps, readiness, subreaper, ordered shutdown and fail-closed absence checks."
+    },
+    {
+      "area": "service ownership",
+      "reference": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/systemd-rc-platform-20260917/README.md",
+      "reuse": "NVRAM/config/hardware order stays in rc while units own daemon lifetime. 23 low-level platform units were tested offline; inspect latest cumulative corrections, not this checkpoint alone."
+    },
+    {
+      "area": "later correctness fixes",
+      "reference": "/home/leonpano/Documents/Codex/2026-09-14/gt-be98-mastermixstudios-192-168-100/systemd-rc-platform-20260917/candidate/KNOWN-ISSUE-aimesh.json",
+      "reuse": "Platform candidate explicitly requires subsequent httpd-dashboard-fix and aimesh-ui-fix checkpoints; stale platform candidate has known SIGABRT/client-table defects."
+    }
+  ],
+  "service_orchestration_policy": {
+    "first_compatible_cutover": "systemd PID1 -> native arm64 authenticated broker -> board-specific armel rc manager. Preserve hardware startup order initially, then transfer independently testable daemon groups.",
+    "ownership": "Exactly one owner per daemon. rc creates ASUS config and requests explicit units; unit supervisor owns PID/cgroup/restart/stop. No failure fallback to a duplicate legacy launcher.",
+    "network": "Keep Broadcom driver/Runner/bridge/VLAN/WAN/DHCP/firewall policy under audited ASUS path initially. Do not enable Ubuntu networkd, NetworkManager, dnsmasq or resolved to compete for the same interfaces/ports/DNS path.",
+    "targeted_restart": "Wi-Fi setting dispatches the smallest supported ASUS radio/service action; web/collector changes restart only corresponding units. Ethernet port changes need hardware/driver-specific dependency validation. A systemd unit split alone does not prove per-radio or per-port isolation.",
+    "reboot_boundary": "Only explicitly classified changes that genuinely require kernel/firmware restart request systemd reboot; no blanket reboot suppression and no silent AI-board restart.",
+    "shutdown": "ASUS hardware/network cleanup must complete before durable data filesystem and vendor runtime files are unmounted."
+  },
+  "acceptance_gates": [
+    "Immutable offline rootfs: dpkg owns every installed file; apt update/install/remove/configure simulation and real isolated install tests; no host-arch ELF, unresolved loader or architecture collisions.",
+    "All dynamic executable/plugin closure checks using actual per-ABI loaders and LD_BIND_NOW where appropriate, with and without ld.so.cache; GLIBC_PRIVATE references explicitly accounted for.",
+    "Three ABI tests: loader normal execution, pthread/TLS, DNS/NSS, libm, C++ exceptions where used, crypto/CRC CPU execution, time64 and legacy vendor time32 interface checks.",
+    "Exact official Ubuntu systemd binary in disposable QEMU on Image-v9 or successor: PID1 boot, unit start/stop/restart/reexec, journald, cgroup ownership, device/sandbox semantics and orderly unmount.",
+    "ASUS manager/broker regression with actual libshared notification API, malformed/unauthorized clients, single daemon ownership, missing broker/shim handling and non-ASUS signals unchanged.",
+    "Only after kernel/userspace tests, an inactive-slot physical trial: all radios/client association, Ethernet/Runner counters, wired AiMesh, local web edits without global reboot, AI-board bridge/RGB/USB and fallback rollback. A chroot alone cannot validate ASUS hardware startup."
+  ],
+  "not_done": [
+    "No ASUS userspace package built or installed by this audit.",
+    "No live rootfs replaced or writable partition created.",
+    "No claim that all ASUS services work under Ubuntu/systemd259.",
+    "No old BE98 binary is asserted to be drop-in safe on BE19000AI."
+  ],
+  "time64_migration_audit": "reports/ubuntu26/time64-migration-audit.json"
+}

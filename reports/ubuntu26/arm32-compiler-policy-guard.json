@@ -1,0 +1,42 @@
+{
+  "passed": true,
+  "compiler_policy_sha256": "d557b9b135e066fe53af754b4f0a59ca5f90c63cd536fab58fc39c4fde2a85f5",
+  "cases": [
+    {
+      "command": [
+        "python3",
+        "scripts/build-ubuntu26-armel-runtime.py",
+        "--phase",
+        "glibc"
+      ],
+      "exit_code": 2,
+      "diagnostic": "usage: build-ubuntu26-armel-runtime.py [-h] --phase\n                                       {glibc,gcc-runtime,libcrypt-arm64,libcrypt-armel}\nbuild-ubuntu26-armel-runtime.py: error: ARMEL GCC16 build is quarantined by compiler-policy.json; use build-ubuntu26-armel-runtime-gcc15.py",
+      "source_sha256": "2c9c28baa0af8be8d25e7ed623e1141442774161089d3403371a9a7588e828ea"
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/package-ubuntu26-armel-runtime.py"
+      ],
+      "exit_code": 1,
+      "diagnostic": "ARMEL GCC16 packaging is quarantined by compiler-policy.json; use package-ubuntu26-armel-runtime-gcc15.py",
+      "source_sha256": "d458018ea93e72a797ef00b1aeb7f4d84c05331310ee82db9278156372dd3beb"
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/compose-ubuntu26-armel-runtime.py",
+        "--label",
+        "compiler-policy-refusal"
+      ],
+      "exit_code": 2,
+      "diagnostic": "usage: compose-ubuntu26-armel-runtime.py [-h] [--label LABEL]\n                                         [--namespace-worker NAMESPACE_WORKER]\ncompose-ubuntu26-armel-runtime.py: error: ARMEL GCC16 composition is quarantined by compiler-policy.json; use compose-ubuntu26-armel-runtime-gcc15.py",
+      "source_sha256": "201fc4bf3794b95ba3971a2b088eb003e2fd99e529722015b18712ec891a1eb4"
+    }
+  ],
+  "accepted_arm32_compiler_major": 15,
+  "accepted_arm32_runtime_major": 15,
+  "native_arm64_major": 16,
+  "new_build_or_composition_started": false,
+  "router_access": false
+}

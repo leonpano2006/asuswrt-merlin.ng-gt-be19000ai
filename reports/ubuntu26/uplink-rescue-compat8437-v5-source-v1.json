@@ -1,0 +1,75 @@
+{
+  "schema": 1,
+  "status": "source_only_canonical_sdk419_8437_route_and_refusal_diagnostics_successor",
+  "old_source": {
+    "path": "scripts/asus-integration/uplink-rescue/rescue-link-v4.c",
+    "sha256": "e289f45739a661705faf8b526e139514c7861e24557e4f59fa2346c9549874d4",
+    "bytes": 31538
+  },
+  "new_source": {
+    "path": "scripts/asus-integration/uplink-rescue/rescue-link-v5.c",
+    "sha256": "3d980d63514c7e9dc0e4352a364a437c89afab7c12319530cb29832eb1a7f78e",
+    "bytes": 34526
+  },
+  "transforms": [
+    {
+      "old": "static int parse_route(struct snapshot *s,const struct nlmsghdr *h){\n struct rtattr *a;int len;if(attributes(h,sizeof(struct rtmsg),&a,&len))return -1;\n const struct rtmsg *m=NLMSG_DATA(h);if(m->rtm_family!=AF_INET)return -1;\n if(s->routes_n==MAX_ROUTES)return -1;struct route *r=&s->routes[s->routes_n++];\n r->table=m->rtm_table;r->prefix=m->rtm_dst_len;r->src_prefix=m->rtm_src_len;r->tos=m->rtm_tos;\n r->type=m->rtm_type;r->scope=m->rtm_scope;r->protocol=m->rtm_protocol;r->flags=m->rtm_flags;\n for(;RTA_OK(a,len);a=RTA_NEXT(a,len)){uint32_t v;switch(a->rta_type&NLA_TYPE_MASK){\n  case RTA_DST:if(r->has_dst||!u32attr(a,&r->dst))return -1;r->has_dst=true;break;\n  case RTA_SRC:if(!u32attr(a,&r->src))return -1;break;\n  case RTA_OIF:if(!u32attr(a,&r->oif))return -1;break;\n  case RTA_TABLE:if(!u32attr(a,&v)||(r->table&&r->table!=v))return -1;r->table=v;break;\n  case RTA_PREFSRC:if(r->has_pref||!u32attr(a,&r->pref))return -1;r->has_pref=true;break;\n  case RTA_PRIORITY:if(r->has_metric||!u32attr(a,&r->metric))return -1;r->has_metric=true;break;\n  case RTA_GATEWAY:r->gateway=true;break;case RTA_MULTIPATH:r->multipath=true;break;\n  case RTA_CACHEINFO:if(RTA_PAYLOAD(a)!=sizeof(struct rta_cacheinfo))return -1;break;\n  default:r->unknown=true;break;\n }}return len?-1:0;\n}\n",
+      "new": "static int parse_route(struct snapshot *s,const struct nlmsghdr *h){\n const char *reason=\"route-header\";struct rtattr *a;int len;unsigned header_table=0,attribute=0,attribute_bytes=0;\n uint32_t full_table=0;bool has_table=false;\n if(attributes(h,sizeof(struct rtmsg),&a,&len))goto refused;\n const struct rtmsg *m=NLMSG_DATA(h);header_table=m->rtm_table;\n reason=\"route-family\";if(m->rtm_family!=AF_INET)goto refused;\n reason=\"route-count-bound\";if(s->routes_n==MAX_ROUTES)goto refused;\n struct route *r=&s->routes[s->routes_n++];\n r->table=m->rtm_table;r->prefix=m->rtm_dst_len;r->src_prefix=m->rtm_src_len;r->tos=m->rtm_tos;\n r->type=m->rtm_type;r->scope=m->rtm_scope;r->protocol=m->rtm_protocol;r->flags=m->rtm_flags;\n for(;RTA_OK(a,len);a=RTA_NEXT(a,len)){uint32_t v;attribute=a->rta_type&NLA_TYPE_MASK;attribute_bytes=RTA_PAYLOAD(a);\n  switch(attribute){\n   case RTA_DST:reason=\"route-destination-shape-or-duplicate\";if(r->has_dst||!u32attr(a,&r->dst))goto refused;r->has_dst=true;break;\n   case RTA_SRC:reason=\"route-source-shape\";if(!u32attr(a,&r->src))goto refused;break;\n   case RTA_OIF:reason=\"route-interface-shape\";if(!u32attr(a,&r->oif))goto refused;break;\n   case RTA_TABLE:\n    reason=\"route-table-duplicate\";if(has_table)goto refused;\n    reason=\"route-table-shape\";if(!u32attr(a,&v))goto refused;full_table=v;has_table=true;\n    /* SDK4.19 fib_dump_info uses252 plus the full table ID for IDs>=256.\n     * Permit that representation only for the enrolled ASUS8437 lookup;\n     * every8437 destination still passes the unchanged disjointness gate. */\n    reason=\"route-table-conflict-or-noncanonical\";\n    if((header_table==RT_TABLE_COMPAT&&v!=8437)||\n       (header_table!=RT_TABLE_COMPAT&&(v==8437||(r->table&&r->table!=v))))goto refused;\n    r->table=v;break;\n   case RTA_PREFSRC:reason=\"route-preferred-source-shape-or-duplicate\";if(r->has_pref||!u32attr(a,&r->pref))goto refused;r->has_pref=true;break;\n   case RTA_PRIORITY:reason=\"route-metric-shape-or-duplicate\";if(r->has_metric||!u32attr(a,&r->metric))goto refused;r->has_metric=true;break;\n   case RTA_GATEWAY:r->gateway=true;break;case RTA_MULTIPATH:r->multipath=true;break;\n   case RTA_CACHEINFO:reason=\"route-cacheinfo-shape\";if(RTA_PAYLOAD(a)!=sizeof(struct rta_cacheinfo))goto refused;break;\n   default:r->unknown=true;break;\n  }\n }\n reason=\"route-attribute-tail\";if(len)goto refused;\n reason=\"route-compat-table-missing\";if(header_table==RT_TABLE_COMPAT&&(!has_table||r->table!=8437))goto refused;\n return 0;\nrefused:\n fprintf(stderr,\"LEON_RESCUE parser-refused stage=%s header_table=%u full_table=%u table_attr=%u attr_type=%u attr_bytes=%u\\n\",\n  reason,header_table,full_table,has_table?1U:0U,attribute,attribute_bytes);return -1;\n}\n"
+    },
+    {
+      "old": "static int net_exchange(void *request,size_t size,unsigned expected,struct snapshot *s,bool *ambiguous,int64_t end){\n struct nlmsghdr *q=request;struct sockaddr_nl kernel={.nl_family=AF_NETLINK};\n if(++nl_sequence==0)++nl_sequence;q->nlmsg_seq=nl_sequence;q->nlmsg_pid=nl_port;\n if(ambiguous)*ambiguous=false;\n ssize_t sent=sendto(nl,request,size,MSG_DONTWAIT,(void*)&kernel,sizeof(kernel));\n if(sent!=(ssize_t)size){if(sent>=0){errno=EIO;if(ambiguous)*ambiguous=true;}return -1;}if(ambiguous)*ambiguous=true;\n unsigned messages=0;size_t bytes=0;\n for(;;){int64_t left=end-now_ms();if(left<=0){errno=ETIMEDOUT;return -1;}\n  struct pollfd p={.fd=nl,.events=POLLIN};int n=poll(&p,1,left>INT_MAX?INT_MAX:(int)left);\n  if(n<0&&errno==EINTR)continue;if(n<=0){if(!n)errno=ETIMEDOUT;return -1;}\n  if(p.revents&(POLLERR|POLLHUP|POLLNVAL)){errno=EIO;return -1;}\n  unsigned char buf[65536];struct sockaddr_nl from;struct iovec io={buf,sizeof(buf)};\n  struct msghdr msg={.msg_name=&from,.msg_namelen=sizeof(from),.msg_iov=&io,.msg_iovlen=1};\n  ssize_t got=recvmsg(nl,&msg,MSG_DONTWAIT);if(got<0&&errno==EINTR)continue;\n  if(got<=0)return -1;\n  if(msg.msg_flags&(MSG_TRUNC|MSG_CTRUNC)||msg.msg_namelen!=sizeof(from)||from.nl_family!=AF_NETLINK||from.nl_pid||from.nl_groups){errno=EPROTO;return -1;}\n  if((bytes+=(size_t)got)>MAX_DUMP_BYTES){errno=EOVERFLOW;return -1;}\n  int rem=got;for(struct nlmsghdr *h=(void*)buf;NLMSG_OK(h,rem);h=NLMSG_NEXT(h,rem)){\n   if(++messages>MAX_MESSAGES||h->nlmsg_seq!=nl_sequence||(h->nlmsg_pid!=0&&h->nlmsg_pid!=nl_port)||\n      (h->nlmsg_flags&NLM_F_DUMP_INTR)){errno=EPROTO;return -1;}\n   if(h->nlmsg_type==NLMSG_ERROR){if(h->nlmsg_len<NLMSG_LENGTH(sizeof(struct nlmsgerr))){errno=EPROTO;return -1;}\n    const struct nlmsgerr *e=NLMSG_DATA(h);if(e->msg.nlmsg_seq!=nl_sequence||e->msg.nlmsg_type!=q->nlmsg_type){errno=EPROTO;return -1;}\n    if((!s||e->error)&&rem!=(int)NLMSG_ALIGN(h->nlmsg_len)){errno=EPROTO;return -1;}\n    if(ambiguous)*ambiguous=false;if(e->error){errno=-e->error;return -1;}if(!s)return 0;continue;}\n   if(h->nlmsg_type==NLMSG_DONE){if(!s){errno=EPROTO;return -1;}\n    if(rem!=(int)NLMSG_ALIGN(h->nlmsg_len)){errno=EPROTO;return -1;}\n    if(h->nlmsg_len>NLMSG_LENGTH(0)){int result;if(h->nlmsg_len<NLMSG_LENGTH(sizeof(result))){errno=EPROTO;return -1;}memcpy(&result,NLMSG_DATA(h),sizeof(result));if(result){errno=result<0?-result:result;return -1;}}\n    return 0;}\n   if(!s||h->nlmsg_type!=expected){errno=EPROTO;return -1;}\n   int ok=expected==RTM_NEWLINK?parse_link(s,h):expected==RTM_NEWADDR?parse_addr(s,h):expected==RTM_NEWROUTE?parse_route(s,h):parse_rule(s,h);\n   if(ok){errno=EPROTO;return -1;}\n  }if(rem){errno=EPROTO;return -1;}\n }\n}\n",
+      "new": "static int net_protocol_refused(const char *reason,const struct nlmsghdr *h,unsigned expected,unsigned detail){\n fprintf(stderr,\"LEON_RESCUE netlink-refused stage=%s expected_type=%u observed_type=%u flags=%u expected_seq=%u observed_seq=%u detail=%u\\n\",\n  reason,expected,h?(unsigned)h->nlmsg_type:0U,h?(unsigned)h->nlmsg_flags:0U,nl_sequence,h?h->nlmsg_seq:0U,detail);\n errno=EPROTO;return -1;\n}\nstatic int net_exchange(void *request,size_t size,unsigned expected,struct snapshot *s,bool *ambiguous,int64_t end){\n struct nlmsghdr *q=request;struct sockaddr_nl kernel={.nl_family=AF_NETLINK};\n if(++nl_sequence==0)++nl_sequence;q->nlmsg_seq=nl_sequence;q->nlmsg_pid=nl_port;\n if(ambiguous)*ambiguous=false;\n ssize_t sent=sendto(nl,request,size,MSG_DONTWAIT,(void*)&kernel,sizeof(kernel));\n if(sent!=(ssize_t)size){if(sent>=0){errno=EIO;if(ambiguous)*ambiguous=true;}return -1;}if(ambiguous)*ambiguous=true;\n unsigned messages=0;size_t bytes=0;\n for(;;){int64_t left=end-now_ms();if(left<=0){errno=ETIMEDOUT;return -1;}\n  struct pollfd p={.fd=nl,.events=POLLIN};int n=poll(&p,1,left>INT_MAX?INT_MAX:(int)left);\n  if(n<0&&errno==EINTR)continue;if(n<=0){if(!n)errno=ETIMEDOUT;return -1;}\n  if(p.revents&(POLLERR|POLLHUP|POLLNVAL)){errno=EIO;return -1;}\n  unsigned char buf[65536];struct sockaddr_nl from;struct iovec io={buf,sizeof(buf)};\n  struct msghdr msg={.msg_name=&from,.msg_namelen=sizeof(from),.msg_iov=&io,.msg_iovlen=1};\n  ssize_t got=recvmsg(nl,&msg,MSG_DONTWAIT);if(got<0&&errno==EINTR)continue;\n  if(got<=0)return -1;\n  if(msg.msg_flags&(MSG_TRUNC|MSG_CTRUNC))return net_protocol_refused(\"receive-truncated\",NULL,expected,(unsigned)msg.msg_flags);\n  if(msg.msg_namelen!=sizeof(from))return net_protocol_refused(\"sender-envelope-size\",NULL,expected,(unsigned)msg.msg_namelen);\n  if(from.nl_family!=AF_NETLINK||from.nl_pid||from.nl_groups)return net_protocol_refused(\"sender-not-unicast-kernel\",NULL,expected,from.nl_pid);\n  if((bytes+=(size_t)got)>MAX_DUMP_BYTES){errno=EOVERFLOW;return -1;}\n  int rem=got;for(struct nlmsghdr *h=(void*)buf;NLMSG_OK(h,rem);h=NLMSG_NEXT(h,rem)){\n   if(++messages>MAX_MESSAGES)return net_protocol_refused(\"message-count-bound\",h,expected,messages);\n   if(h->nlmsg_seq!=nl_sequence)return net_protocol_refused(\"message-sequence\",h,expected,0);\n   if(h->nlmsg_pid!=0&&h->nlmsg_pid!=nl_port)return net_protocol_refused(\"message-port\",h,expected,h->nlmsg_pid);\n   if(h->nlmsg_flags&NLM_F_DUMP_INTR)return net_protocol_refused(\"dump-interrupted\",h,expected,0);\n   if(h->nlmsg_type==NLMSG_ERROR){\n    if(h->nlmsg_len<NLMSG_LENGTH(sizeof(struct nlmsgerr)))return net_protocol_refused(\"error-header-size\",h,expected,h->nlmsg_len);\n    const struct nlmsgerr *e=NLMSG_DATA(h);\n    if(e->msg.nlmsg_seq!=nl_sequence||e->msg.nlmsg_type!=q->nlmsg_type)return net_protocol_refused(\"error-request-identity\",h,expected,e->msg.nlmsg_type);\n    if((!s||e->error)&&rem!=(int)NLMSG_ALIGN(h->nlmsg_len))return net_protocol_refused(\"error-tail\",h,expected,(unsigned)rem);\n    if(ambiguous)*ambiguous=false;\n    if(e->error){fprintf(stderr,\"LEON_RESCUE netlink-refused stage=kernel-error error=%d expected_type=%u\\n\",e->error,expected);errno=-e->error;return -1;}if(!s)return 0;continue;\n   }\n   if(h->nlmsg_type==NLMSG_DONE){\n    if(!s)return net_protocol_refused(\"done-without-dump\",h,expected,0);\n    if(rem!=(int)NLMSG_ALIGN(h->nlmsg_len))return net_protocol_refused(\"done-tail\",h,expected,(unsigned)rem);\n    if(h->nlmsg_len>NLMSG_LENGTH(0)){int result;\n     if(h->nlmsg_len<NLMSG_LENGTH(sizeof(result)))return net_protocol_refused(\"done-result-size\",h,expected,h->nlmsg_len);\n     memcpy(&result,NLMSG_DATA(h),sizeof(result));\n     if(result){fprintf(stderr,\"LEON_RESCUE netlink-refused stage=done-result result=%d expected_type=%u\\n\",result,expected);errno=result<0?-result:result;return -1;}\n    }\n    return 0;\n   }\n   if(!s||h->nlmsg_type!=expected)return net_protocol_refused(\"message-type\",h,expected,0);\n   int ok=expected==RTM_NEWLINK?parse_link(s,h):expected==RTM_NEWADDR?parse_addr(s,h):expected==RTM_NEWROUTE?parse_route(s,h):parse_rule(s,h);\n   if(ok)return net_protocol_refused(\"payload-parser\",h,expected,0);\n  }\n  if(rem)return net_protocol_refused(\"message-tail\",NULL,expected,(unsigned)rem);\n }\n}\n"
+    }
+  ],
+  "reverse_exact_old_source": true,
+  "unchanged_functions_except": [
+    "parse_route",
+    "net_exchange"
+  ],
+  "new_function": "net_protocol_refused",
+  "canonical_8437": "Exactly one four-byte RTA_TABLE8437 with header RT_TABLE_COMPAT252; missing, duplicate, malformed or conflicting table representations refuse.",
+  "preserved": [
+    "parse_rule",
+    "asus_8437_route_disjoint",
+    "snapshot_until",
+    "objects",
+    "desired",
+    "install_owned",
+    "withdraw",
+    "main",
+    "all writes/ACK/ownership/enrollment/timeouts/service contract"
+  ],
+  "no_epROTO_retry_or_new_write_retry": true,
+  "diagnostics": "Fixed reason strings and numeric envelope/table/attribute metadata only; no address, route destination, credentials, argv or configuration contents.",
+  "kernel_evidence": [
+    {
+      "path": "build/pcan-usb-fd/work/kernel/linux-4.19/net/ipv4/fib_semantics.c",
+      "sha256": "af4c22e8a3975615bd355010da9890100944ea60c0af4d638403ceded78bb5a7",
+      "bytes": 43849
+    },
+    {
+      "path": "build/pcan-usb-fd/work/kernel/linux-4.19/include/uapi/linux/rtnetlink.h",
+      "sha256": "05c70fdb9fba73294e0d6a12ea9c158f1056fe9291ffb04d4ec9bd1609d43994",
+      "bytes": 18853
+    }
+  ],
+  "kernel_lines": {
+    "fib_dump_info": [
+      1307,
+      1312
+    ],
+    "RT_TABLE_COMPAT": 304
+  },
+  "guardian_v30_identity": {
+    "path": "build/asus-trial-runtime/native-v30-scoped-udev-identity/identity-production.h",
+    "sha256": "8b48431ce3982a58c6b39bb5f8c0e846cab4552a53053652f3f7daee8ab91ff6",
+    "bytes": 28791
+  },
+  "guardian_protected_row_count": 213,
+  "guardian_rescue_link_protected": false,
+  "actual_V19_failed_packet_proven": false,
+  "actual_failure_limit": "Formatted later V19 capture contains no8437 route; canonical compatibility defect is source-proven but original EPROTO branch remains unproved.",
+  "compiled": false,
+  "fixtures_executed": false,
+  "device_accessed": false
+}

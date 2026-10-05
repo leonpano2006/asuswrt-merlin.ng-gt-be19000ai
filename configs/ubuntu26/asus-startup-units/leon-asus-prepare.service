@@ -1,0 +1,17 @@
+[Unit]
+Description=Prepare native-owned storage and devices for the ASUS subtree
+Requires=leon-asus-storage.target systemd-udevd.service leon-asus-resolver-bootstrap.service
+BindsTo=leon-asus-storage.target
+After=leon-asus-storage.target systemd-udevd.service leon-asus-resolver-bootstrap.service
+Before=leon-asus-broker.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/libexec/asus/startup-prepare --prepare
+ExecStop=/usr/libexec/asus/startup-prepare --revoke
+TimeoutStartSec=150s
+TimeoutStopSec=10s
+UMask=0022
+# Intentionally uses PID1's mount namespace. No PrivateMounts, ProtectSystem,
+# RootDirectory or bind-path sandbox: storage-owner verifies this ownership.

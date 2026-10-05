@@ -1,0 +1,12 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+[Unit]
+Description=Capture late trial process state once at 170 seconds
+
+[Timer]
+# Independent of broker readiness; this timer never starts ASUS services.
+OnBootSec=170s
+AccuracySec=1s
+Unit=leon-asus-trial-late-snapshot.service
+
+[Install]
+WantedBy=timers.target

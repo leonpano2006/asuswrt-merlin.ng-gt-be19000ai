@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "profile_id": "be19000ai-ubuntu26-kernel10-systemd-v1",
+  "generation": "be19000ai-ubuntu26-kernel10-systemd-v1\n",
+  "package": "leon-bcm-boot-profile",
+  "version": "0.1+leonb53.1",
+  "architecture": "all",
+  "source_date_epoch": 1790195242,
+  "depends": "systemd (>= 259), leon-bcm-rootfs-config (>= 0.3), leon-bcm-kernel-modules (= 4.19.294-10+leonb53.1)",
+  "marker": "/etc/leon/root-generation",
+  "vendor_root_mountpoint": "/mnt/leon-vendor-root",
+  "scope": "Inert package-owned production boot identity and empty vendor-root mountpoint; no automatic activation",
+  "root_mount_contract": {
+    "owner": "SquashFS early root-init, outside this package",
+    "filesystem": "ext4",
+    "flags": "MS_RELATIME, default read-write; neither MS_NOSUID nor MS_NODEV on the Ubuntu root",
+    "options": "data=ordered,errors=remount-ro",
+    "identity": "Exact block device, major/minor, GPT start, size, UUID and generation verified by the separately built root-init policy"
+  },
+  "transient_mount_contract": {
+    "/run": "root-init creates or adopts tmpfs and moves it across pivot; native systemd owns its lifecycle, directory0755",
+    "/tmp": "Existing Ubuntu systemd tmp.mount, mode1777, enabled by vendor local-fs.target.wants; not replaced here",
+    "/proc,/sys,/dev": "Existing root-init API mount validation and move, then native systemd/udev; not owned by this package"
+  },
+  "external_storage_units": {
+    "owner_package": "leon-asus-integration",
+    "units": ["data.mount", "jffs.mount", "ai.mount", "mnt-defaults.mount"],
+    "policy": "Keep separately verified exact UUID units and ownership proofs; do not duplicate them in fstab or this package"
+  },
+  "automatic_activation": false,
+  "flash_accepted": false
+}

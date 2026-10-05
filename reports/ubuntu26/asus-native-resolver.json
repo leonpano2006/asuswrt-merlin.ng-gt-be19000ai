@@ -1,0 +1,167 @@
+{
+  "status": "reproducible_inactive_native_resolver_package",
+  "package": {
+    "name": "leon-asus-resolver",
+    "version": "0.2+asus3006.102.9",
+    "architecture": "arm64",
+    "path": "build/asus-resolver/package-v3/leon-asus-resolver_0.2+asus3006.102.9_arm64.deb",
+    "sha256": "45f15865a2113671c1553d10eab30205e3b8983e33caf48c5857582f33c67ba8"
+  },
+  "archive": [
+    {
+      "path": "/.",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "/etc",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "/etc/asus",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "/etc/asus/native-dns.conf",
+      "mode": 384,
+      "type": "regular",
+      "sha256": "62e8234e424b640d332ade48c2f8235d24fa05c81a83567aa3c88e0db77ea5d7"
+    },
+    {
+      "path": "/usr",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "/usr/lib",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "/usr/lib/systemd",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "/usr/lib/systemd/system",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "/usr/lib/systemd/system/leon-asus-resolver-bootstrap.service",
+      "mode": 420,
+      "type": "regular",
+      "sha256": "a18b99ddcb7fe2277c3939170ad235538049fc933abd81af203d9435b4c5a633"
+    },
+    {
+      "path": "/usr/lib/systemd/system/leon-asus-resolver-update.service",
+      "mode": 420,
+      "type": "regular",
+      "sha256": "771f5a1060453553dda754e2fa250fd4de719c1fc3d28f6051a6a253648b3d17"
+    },
+    {
+      "path": "/usr/lib/systemd/system/leon-asus-resolver.path",
+      "mode": 420,
+      "type": "regular",
+      "sha256": "de10d03215cda264e1d85f182eb5c40bae78285b0f07c9400d18ee8329213c6f"
+    },
+    {
+      "path": "/usr/libexec",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "/usr/libexec/asus",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "/usr/libexec/asus/resolver-export",
+      "mode": 493,
+      "type": "regular",
+      "sha256": "46b08af62e4d19e3b0374701b673257b4d59874704854b88a801ce2dfd5472bf"
+    },
+    {
+      "path": "/usr/share",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "/usr/share/asus",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "/usr/share/asus/integration",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "/usr/share/asus/integration/etc-seed",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "/usr/share/doc",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "/usr/share/doc/leon-asus-resolver",
+      "mode": 493,
+      "type": "directory"
+    },
+    {
+      "path": "/usr/share/doc/leon-asus-resolver/README",
+      "mode": 420,
+      "type": "regular",
+      "sha256": "67c3ff11feede4ca43c4d1263ecd6a5288c3af5c4943d3e2e7bc1f52293eab57"
+    },
+    {
+      "path": "/etc/resolv.conf",
+      "mode": 511,
+      "type": "symlink",
+      "target": "/run/asus/native-resolv.conf"
+    },
+    {
+      "path": "/usr/share/asus/integration/etc-seed/resolv.conf",
+      "mode": 511,
+      "type": "symlink",
+      "target": "/tmp/resolv.conf"
+    }
+  ],
+  "two_builds_identical": true,
+  "automatic_activation": false,
+  "maintainer_scripts": false,
+  "native_dns_working_claim": false,
+  "authorized_base_replacement": {
+    "path": "/etc/resolv.conf",
+    "before": "regular file copied systemd-resolved stub nameserver127.0.0.53 without daemon",
+    "after_type": "symlink",
+    "after_target": "/run/asus/native-resolv.conf",
+    "classification": "functional native DNS ownership change, not metadata-only"
+  },
+  "private_source_link": "/usr/share/asus/integration/etc-seed/resolv.conf -> /tmp/resolv.conf",
+  "initial_upstream": "192.168.100.1",
+  "evidence": {
+    "path": "evidence/ubuntu26/native-network/20261004-v1/capture.txt",
+    "sha256": "01909ed45fd657ef34db97a95abdb5dfdf223bf848c35958905ea0d29c7442ed"
+  },
+  "offline_tests": {
+    "path": "build/asus-resolver/test-v2/result.json",
+    "sha256": "bf36240beeef536584f4866ce22b083ddbebdda8e2d65ea4a82bd7639a9ded98",
+    "cases": 16
+  },
+  "inputs": {
+    "native_build_sha256": "29556ca6b0cb6e81c5e24563c0ab352a62d405b9e50b1f1c5ee043e8ec67dd02",
+    "exporter_source_sha256": "d6d20981a4dd89b105ecdc16b5a3073b756b85be3f58954b4de00fbcd19e3484",
+    "exporter_binary_sha256": "46b08af62e4d19e3b0374701b673257b4d59874704854b88a801ce2dfd5472bf"
+  },
+  "inactive_state": "Runtime native resolv symlink remains dangling before explicit bootstrap; package installation alone does not provide network connectivity.",
+  "actual_network_tested": false,
+  "actual_asus_services_executed": false,
+  "flash_allowed": false,
+  "builder_sha256": "130fd71d493036945f8b059dadd6aa7000d6132050c07f16df2ef2ddd653623c"
+}

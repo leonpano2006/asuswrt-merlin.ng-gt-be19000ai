@@ -1,0 +1,11 @@
+{
+  "status": "rejected_local_package_control_metadata",
+  "label": "gnu-systemd-b53-v1",
+  "composition_result": "build/ubuntu26-rootfs/gnu-systemd-b53-v1-build.json",
+  "reason": "Generated systemd .1 Debian triggers contain find diagnostics instead of valid directives; dpkg rejected libsystemd0 before completing the local rootfs.",
+  "rootfs_runtime_tested": false,
+  "kernel_modified": false,
+  "device_modified": false,
+  "repair_owner": "Ubuntu systemd package build recipe and clean packaging environment; source credential patch does not cause this metadata error",
+  "followup": "Rebuild new systemd package revision; audit all control scripts and triggers and perform apt install before full QEMU."
+}

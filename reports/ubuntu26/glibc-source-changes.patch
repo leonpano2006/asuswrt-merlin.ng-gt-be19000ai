@@ -1,0 +1,50 @@
+--- a/debian/changelog
++++ b/debian/changelog
+@@ -1,3 +1,12 @@
++glibc (2.44-1ubuntu1+leonb53.1) resolute; urgency=medium
++
++  * Rebuild Ubuntu glibc 2.44 packaging for BCM6813 Brahma-B53.
++  * Compile native arm64 code for Cortex-A53 with crypto and CRC extensions.
++  * Require Linux 4.19 in both libc configuration and package preinst.
++  * Retain libc internal legacy ABI support and Ubuntu multiarch packaging.
++
++ -- Leon BCM Project <noreply@localhost>  Sun, 04 Oct 2026 16:00:00 +0000
++
+ glibc (2.44-1ubuntu1) stonking; urgency=medium
+ 
+   * Merge from Debian experimental (LP: #2163528)
+--- a/debian/sysdeps/linux.mk
++++ b/debian/sysdeps/linux.mk
+@@ -1,7 +1,7 @@
+ # When changing this, make sure:
+ # - to update debian/debhelper.in/libc.preinst!
+ # - that all builds for a given gnu triplet have the same minimum version (see bug#882255)
+-MIN_KERNEL_SUPPORTED := 3.2
++MIN_KERNEL_SUPPORTED := 4.19
+ libc = libc6
+ 
+ # Do not build pt_chown on this platform
+--- a/debian/sysdeps/arm64.mk
++++ b/debian/sysdeps/arm64.mk
+@@ -4,3 +4,6 @@
+ 
+ # main library
+ libc_mvec = yes
++
++# Fixed hardware target; never infer ISA from the build host.
++extra_cflags += -mcpu=cortex-a53+crypto+crc
+--- a/debian/debhelper.in/libc.preinst
++++ b/debian/debhelper.in/libc.preinst
+@@ -62,9 +62,9 @@
+         kernel_ver=`uname -r`
+         case ${DPKG_MAINTSCRIPT_ARCH} in
+             *)
+-                # The GNU libc requires a >= 3.2 kernel, found in wheezy
+-                kernel_ver_min=3.2
+-                kernel_ver_rec=3.2
++                # The GNU libc B53 build requires a >= 4.19 kernel
++                kernel_ver_min=4.19
++                kernel_ver_rec=4.19
+                 ;;
+         esac
+ 

@@ -1,0 +1,134 @@
+{
+  "version": "2.44-1ubuntu1+leonb53.1",
+  "architecture": "arm64",
+  "command": [
+    "mmdebstrap",
+    "--mode=unshare",
+    "--architectures=arm64",
+    "--variant=essential",
+    "--include=apt,ca-certificates,ubuntu-keyring,build-essential,ccache",
+    "--format=tar",
+    "--customize-hook=upload /home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/ubuntu26-glibc/b53-source.tar /tmp/b53-source.tar",
+    "--customize-hook=upload /home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/ubuntu26-glibc/build-in-namespace.sh /tmp/build-glibc.sh",
+    "--customize-hook=chroot \"$1\" /bin/sh /tmp/build-glibc.sh",
+    "--customize-hook=copy-out /results /home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/ubuntu26-glibc",
+    "resolute",
+    "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/ubuntu26-glibc/build-environment.tar",
+    "deb [signed-by=/usr/share/keyrings/ubuntu-archive-keyring.gpg] https://ports.ubuntu.com/ubuntu-ports resolute main universe",
+    "deb [signed-by=/usr/share/keyrings/ubuntu-archive-keyring.gpg] https://ports.ubuntu.com/ubuntu-ports resolute-updates main universe",
+    "deb [signed-by=/usr/share/keyrings/ubuntu-archive-keyring.gpg] https://ports.ubuntu.com/ubuntu-ports resolute-security main universe"
+  ],
+  "namespace_returncode": 0,
+  "elapsed_seconds": 728.87,
+  "target_flags": [
+    "-mcpu=cortex-a53+crypto+crc"
+  ],
+  "minimum_kernel": "4.19",
+  "upstream_test_suite_requested": false,
+  "scope": "Isolated host-kernel build and package transaction; no old-kernel or router acceptance",
+  "foreign_abi_packages_built": [],
+  "package_version_for_all_abis": "2.44-1ubuntu1+leonb53.1",
+  "build-returncode": 0,
+  "upgrade-returncode": 100,
+  "packages": [
+    {
+      "path": "build/ubuntu26-glibc/results/glibc-doc_2.44-1ubuntu1+leonb53.1_all.deb",
+      "bytes": 4028684,
+      "sha256": "8fe6e38fbab266a1f88f402d9cfc190b646122bcda31998ca86f326575c396e0"
+    },
+    {
+      "path": "build/ubuntu26-glibc/results/glibc-source_2.44-1ubuntu1+leonb53.1_all.deb",
+      "bytes": 23023330,
+      "sha256": "de717a32f2ab20cb73b2829ca878e6ca27912434f0f208ccf414dd0dbfbda2dc"
+    },
+    {
+      "path": "build/ubuntu26-glibc/results/libc-bin_2.44-1ubuntu1+leonb53.1_arm64.deb",
+      "bytes": 661664,
+      "sha256": "857b6618194aa259469bb4c6ec054e355c8a57f5941a147047c72ac1cbec8a94"
+    },
+    {
+      "path": "build/ubuntu26-glibc/results/libc-dev-bin_2.44-1ubuntu1+leonb53.1_arm64.deb",
+      "bytes": 47422,
+      "sha256": "c8d7818da166bfa78e7c3d6012678690228ac6c92493c3f5cde4f29887ee5230"
+    },
+    {
+      "path": "build/ubuntu26-glibc/results/libc-devtools_2.44-1ubuntu1+leonb53.1_arm64.deb",
+      "bytes": 57256,
+      "sha256": "7265cc958522efe540b1bcb655a2ced084f06295eaf94a17865f2c3f1468dd7c"
+    },
+    {
+      "path": "build/ubuntu26-glibc/results/libc-gconv-modules-extra_2.44-1ubuntu1+leonb53.1_arm64.deb",
+      "bytes": 1381402,
+      "sha256": "d62010757e39f4867e8b24bc3593249eee75b5d1eba528c412eec57ac1651a81"
+    },
+    {
+      "path": "build/ubuntu26-glibc/results/libc6-dbg_2.44-1ubuntu1+leonb53.1_arm64.deb",
+      "bytes": 5658954,
+      "sha256": "268fa0f2584cc9811ac89367790c9ca7cae0d36e2d24c64637678d17b4ff1469"
+    },
+    {
+      "path": "build/ubuntu26-glibc/results/libc6-dev_2.44-1ubuntu1+leonb53.1_arm64.deb",
+      "bytes": 1895202,
+      "sha256": "de3e9def4f97f2c28873aba5fcad93d70595c04a4ab8039a453f78a8ac098d8d"
+    },
+    {
+      "path": "build/ubuntu26-glibc/results/libc6_2.44-1ubuntu1+leonb53.1_arm64.deb",
+      "bytes": 1664510,
+      "sha256": "e3c6fb808d4d57e6fcacdcbc2a03f671eed88e7cde3626316f63419edb4ca46c"
+    },
+    {
+      "path": "build/ubuntu26-glibc/results/locales-all_2.44-1ubuntu1+leonb53.1_arm64.deb",
+      "bytes": 11164404,
+      "sha256": "d58cac4eceaa2d77357dfb0229662ac074a7d2e33ef67c1cdda4225d39b792b9"
+    },
+    {
+      "path": "build/ubuntu26-glibc/results/locales_2.44-1ubuntu1+leonb53.1_all.deb",
+      "bytes": 4227982,
+      "sha256": "040c83d8aa85e1cb459050a17d529365a40ecb0a1d8d8f15a13e120ba140f8a0"
+    },
+    {
+      "path": "build/ubuntu26-glibc/results/nscd_2.44-1ubuntu1+leonb53.1_arm64.deb",
+      "bytes": 94074,
+      "sha256": "11b9bd63e1df5e30d0838089d7694f2544319523d51c510c08c270e771bb76b0"
+    }
+  ],
+  "initial_upgrade_failure_explanation": "The first build hook requested only core four packages and omitted the exact-version libc-gconv-modules-extra dependency. APT correctly refused this partial transaction. Corrected full-family runtime verification is tracked in glibc-native-probe.json.",
+  "recipe_corrected_after_first_build": true,
+  "initial_build_hook_sha256": "9437e15ec15fa46d629c03ec5e7346f1107ca29984264716272d268441f84a51",
+  "status": "native_packages_built_clean_namespace_and_kernel10_qemu_validation_passed",
+  "corrected_upgrade_validation": {
+    "report": "reports/ubuntu26/glibc-native-probe.json",
+    "namespace_returncode": 0,
+    "workflow_returncode": 0,
+    "probe_returncode": 0,
+    "package_count_upgraded": 5,
+    "new_packages_installed": 0,
+    "dpkg_audit_empty": true,
+    "native_probe_sha256": "b1a851559df559c8cc3299716e7ce461cc7e58b55d91d992b330aa825ec5fa43",
+    "runtime_glibc": "2.44",
+    "completed_marker": "GLIBC244_NATIVE_WRAPPER_PASS"
+  },
+  "ccache_preserved": {
+    "archive": "build/ubuntu26-glibc/ccache.tar",
+    "bytes": 250275840,
+    "sha256": "c8327c9bea2f42f12ea3c507aa3e680ffe52520905f4057863a3d6bfcc78bc85",
+    "entries": 25734,
+    "source": "First successful package build environment tar; only work/ccache entries copied",
+    "future_recipe": "Import ccache archive into new isolated /work before compile; export it after build."
+  },
+  "remaining": [
+    "Build matching armel/armhf packages and native armel kernel UAPI header dependency later.",
+    "Full glibc upstream regression suite and hardware acceptance are not complete.",
+    "Configure a signed custom APT repository/pinning before production delivery."
+  ],
+  "kernel10_qemu_validation": {
+    "result": "build/qemu/ubuntu26-kernel10-glibc244-binutils247/result.json",
+    "result_sha256": "da45493418275d8714b6284aaa5f093369a18246e01d43555980edb85a00e69b",
+    "kernel_sha256": "4a15601eada042576aed2a3680dcc48e9228eea70f70c478840767aaa89a9f8e",
+    "initramfs_sha256": "ad3adea4755538f9ae04b360c03d51ad6e35c978ca543a1d5ab5dfd72ead2e7b",
+    "log_sha256": "7d8606bead266bc2a6b3fdf657466f907ac62ac0dd468876bf06fa749008fd9e",
+    "native_probe_passed": true,
+    "apt_install_remove_passed": true,
+    "scope": "Actual kernel10 in Cortex-A53 QEMU with new native glibc Debian packages; not a hardware test."
+  }
+}
