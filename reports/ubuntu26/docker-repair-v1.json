@@ -1,0 +1,223 @@
+{
+  "schema": 1,
+  "status": "kernel11_live_docker_tests_passed_current_boot_accepted",
+  "boot_id": "00000000-0000-4000-8000-000000000025",
+  "kernel": "4.19.294 #11",
+  "pid1": "systemd",
+  "permanent_slot": 2,
+  "docker_version": "29.8.2",
+  "cgroup_version": 2,
+  "cgroup_driver": "systemd",
+  "storage_driver": "overlayfs",
+  "daemon_failure_cause": "iptables-nft default selected but BCM kernel lacks required IPv4 nftables operations",
+  "daemon_fix": {
+    "package_manifest": "build/ubuntu26-docker-compat/v1/manifest.json",
+    "manifest_sha256": "848eadc969de8a2dc192e16f5ce779d3b29ba9a619936857d034a0050e8ff208",
+    "scope": "Docker service PATH chooses legacy iptables; global alternatives unchanged; ip-forward-no-drop preserves FORWARD ACCEPT",
+    "installed": true,
+    "daemon_start_passed": true,
+    "asus_mainpid_unchanged": null,
+    "rebooted": false,
+    "asus_observation_limit": "Startup receipt compared inactive compatibility unit asus-rc.service MainPID0; not proof of real RC lifetime. Later readonly pre-reboot context observed live leon-asus-broker.service MainPID313. Real live container proof will bind actual broker before/after.",
+    "actual_broker_rc_lifetime_proof": "live_validation before/after PID/start_ticks, plus final readonly"
+  },
+  "container_failure": {
+    "image": "busybox:1.37.0",
+    "digest": "sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e",
+    "attempts": 1,
+    "result": "OCI error setting cgroup config: bpf_prog_query(BPF_CGROUP_DEVICE) failed: function not implemented",
+    "container_started": false,
+    "dns_or_http_verified": false,
+    "scope": "historical kernel10 first attempt; fixed by kernel11"
+  },
+  "kernel_candidate": {
+    "source_patch": "patches/0010-bcm-cgroup-device-bpf-v2.patch",
+    "source_peer_review": "Device-only profile source GO; ABI audit and single targeted QEMU passed; actual Docker29.8.2/systemd cgroup2 passed",
+    "full_cgroup_bpf": false,
+    "sock_cgroup_data": false,
+    "device_bpf": true,
+    "v1_superseded": true,
+    "applied_once": true,
+    "build_started_once": true,
+    "built": true,
+    "qemu_passed": true,
+    "hardware_passed": true,
+    "abi_passed": true,
+    "abi_result": "build/kernel11-device-bpf/abi/result.json",
+    "image_sha256": "7d0be9c9c719291e52cf8994221d3c6267185a27e9b5bd4079f40d9bf21a21ed",
+    "qemu_result": {
+      "path": "build/qemu/kernel11-device-bpf-docker-v2/result.json",
+      "sha256": "d01bee2acf64ecdd2a64c33adbc1ef9bbc844981fc17d0c6203ebfc3710954fc",
+      "single_run": true,
+      "checks_passed": 8,
+      "hardware_claim": false
+    },
+    "v1_archive": "build/kernel-device-bpf/superseded-v1/manifest.json",
+    "active_patch_stack": "Only final0010-v2 remains under patches/; obsoletev1 archived to prevent dual application",
+    "ordered_stack_check": {
+      "command": "python3 scripts/apply-patch-stack.py --source source --patches patches --check-only",
+      "passed": true,
+      "prefix": 10,
+      "total": 10,
+      "touched_files": 158,
+      "source_modified_by_check": false,
+      "kernel_rebuilt": false,
+      "normalization": "SHA-pinned kernel-relative0010 normalized to BSProot only in temporary file; originalpatch/hunks retained",
+      "applicator_sha256": "de3929de009f18e0401101e79f98c89c8aabf20838dffecc47726b0ea1e18ca3"
+    }
+  },
+  "receipts": {
+    "docker-diagnose-v1": {
+      "capture.txt": {
+        "path": "evidence/ubuntu26/docker-repair-v1/docker-diagnose-v1/capture.txt",
+        "sha256": "b85359052436c8e294f147bddb2169a30ae059bfec0eddef299465fc7022a6c8"
+      },
+      "result.json": {
+        "path": "evidence/ubuntu26/docker-repair-v1/docker-diagnose-v1/result.json",
+        "sha256": "369cc80236619aa9c26cfba1b796ac016bd83eb9dba39a96d81b9e20c4a31b3e"
+      }
+    },
+    "docker-legacy-preflight-v1": {
+      "capture.txt": {
+        "path": "evidence/ubuntu26/docker-repair-v1/docker-legacy-preflight-v1/capture.txt",
+        "sha256": "8b2f8bea846783cbad8388808f7182166eaf8bd5a523530afac951ee42b6c1ea"
+      },
+      "result.json": {
+        "path": "evidence/ubuntu26/docker-repair-v1/docker-legacy-preflight-v1/result.json",
+        "sha256": "ab6a0ef1f472579110a610baf8148e519e0fde7371b65653caccecf2434a46a6"
+      }
+    },
+    "docker-legacy-install-v1": {
+      "capture.txt": {
+        "path": "evidence/ubuntu26/docker-repair-v1/docker-legacy-install-v1/capture.txt",
+        "sha256": "af24e441ee41e5c1037a1c4bb515bcbe8751aba58321296759756ee24aec1d7f"
+      },
+      "result.json": {
+        "path": "evidence/ubuntu26/docker-repair-v1/docker-legacy-install-v1/result.json",
+        "sha256": "16b4909ba66d7747ca325c917de237d7429851fe712e02e61e2ef36790d4500b"
+      }
+    },
+    "docker-container-smoke-v1": {
+      "capture.txt": {
+        "path": "evidence/ubuntu26/docker-repair-v1/docker-container-smoke-v1/capture.txt",
+        "sha256": "6509ab1cddffd3d908271907f5f4322f692a10a03e37b09efb0599fae038290b"
+      },
+      "result.json": {
+        "path": "evidence/ubuntu26/docker-repair-v1/docker-container-smoke-v1/result.json",
+        "sha256": "c9d3e6d48676cc9c480018bdd64f402dd7d0cb6374afb5e82758ca1d9e7cf088"
+      }
+    },
+    "docker-container-smoke-v2": {
+      "capture.txt": {
+        "path": "evidence/ubuntu26/docker-repair-v1/docker-container-smoke-v2/capture.txt",
+        "sha256": "d3bceca21f536a7c0a5973b88f61a72f382221f4388dbcc4066e568c64f1e58e"
+      },
+      "result.json": {
+        "path": "evidence/ubuntu26/docker-repair-v1/docker-container-smoke-v2/result.json",
+        "sha256": "01c3356382b4963b699005ecde6503251e2ed8887d2c59edcb9d7b83d02c4432"
+      }
+    },
+    "docker-container-smoke-v3": {
+      "capture.txt": {
+        "path": "evidence/ubuntu26/docker-repair-v1/docker-container-smoke-v3/capture.txt",
+        "sha256": "0ac636ce29ee590655989dcfeb90078be34015503d5a231737316e9b588b165f"
+      },
+      "result.json": {
+        "path": "evidence/ubuntu26/docker-repair-v1/docker-container-smoke-v3/result.json",
+        "sha256": "08bfedfb9145a6934ec217956d431cbe6e2082cdc7703ca20ec46cf13c220d97"
+      }
+    }
+  },
+  "do_not_repeat": [
+    "Already installed Docker legacy compatibility package or startup preflight",
+    "Successful development/locale/ASUS CLI checks",
+    "Prior cgroup-v1-only Docker QEMU broadtests",
+    "Actual single kernel11 build, targeted QEMU, guardian33 build and V24 pack",
+    "Successful same-boot primary/backup logins and three actual Docker containers"
+  ],
+  "next": "Docker repair complete; existing permanent Ubuntu normal-boot implementation and UI work remain separate",
+  "current_boot_id": "00000000-0000-4000-8000-000000000025",
+  "current_kernel": "4.19.294 #11",
+  "hardware_passed": true,
+  "live_validation": {
+    "receipt": {
+      "capture.txt": {
+        "path": "evidence/ubuntu26/docker-repair-v1/docker-container-smoke-v3/capture.txt",
+        "sha256": "0ac636ce29ee590655989dcfeb90078be34015503d5a231737316e9b588b165f"
+      },
+      "result.json": {
+        "path": "evidence/ubuntu26/docker-repair-v1/docker-container-smoke-v3/result.json",
+        "sha256": "08bfedfb9145a6934ec217956d431cbe6e2082cdc7703ca20ec46cf13c220d97"
+      }
+    },
+    "source": "scripts/asus-integration/acceptance/docker-container-smoke-v24-v2.sh",
+    "source_sha256": "2eb3cd67ed5712c863c973083737684554600d4f88773b02d9c883cb7e184a70",
+    "image_pulled_again": false,
+    "normal_container_started": true,
+    "memory_max": 67108864,
+    "cpu_max": "25000 100000",
+    "pids_max": 32,
+    "dns_passed": true,
+    "http_passed": true,
+    "default_device_denied_errno": 1,
+    "explicit_read_device_allowed": true,
+    "device_probe_reads_writes_ioctls": false,
+    "device_major_minor": "7:0",
+    "privileged_mode_used": false,
+    "asus_broker_pid": 328,
+    "asus_rc_pid": 329,
+    "broker_rc_pid_start_ticks_unchanged": true,
+    "wired_backhaul": "eth0->br0 carrier1 speed10000 forwarding3",
+    "dhd_hnd_loaded": true,
+    "forward_policies": "ACCEPT bothfamilies",
+    "test_containers_removed": true
+  },
+  "fixture_correction": {
+    "receipt": {
+      "capture.txt": {
+        "path": "evidence/ubuntu26/docker-repair-v1/docker-container-smoke-v2/capture.txt",
+        "sha256": "d3bceca21f536a7c0a5973b88f61a72f382221f4388dbcc4066e568c64f1e58e"
+      },
+      "result.json": {
+        "path": "evidence/ubuntu26/docker-repair-v1/docker-container-smoke-v2/result.json",
+        "sha256": "01c3356382b4963b699005ecde6503251e2ed8887d2c59edcb9d7b83d02c4432"
+      }
+    },
+    "failure": "optional CONFIG_PROC_CHILDREN interface absent; failed before Docker commands",
+    "containers_started_by_failed_fixture": 0,
+    "fix": "Use established bounded canonical executable/PPID scan; no kernel or firmware rebuild",
+    "source_version_final": 2,
+    "bcm_enet_guard_removed": "Valid module name alone did not prove current load; actual eth0 link/bridge and dhd/hnd retained"
+  },
+  "activation": {
+    "flash_receipt": "evidence/ubuntu26/flash-live/twentyfourth-kernel11-inactive-flash-v1/result.json",
+    "flash_readback_passed": true,
+    "stock2_GPT_full_p11_preserved": true,
+    "primary": "evidence/ubuntu26/trial-live/twentyfourth-primary-readonly-v1/result.json",
+    "backup": "evidence/ubuntu26/trial-live/twentyfourth-uplink-backup/result.json",
+    "acceptance": "evidence/ubuntu26/trial-live/twentyfourth-kernel11-accept-this-boot-v1/result.json",
+    "accepted_this_boot": true,
+    "observer_stopped": true,
+    "observer_exit": 130,
+    "observer_ack_count": 20,
+    "permanent_slot": 2,
+    "permanent_ubuntu_boot_committed": false,
+    "final_readonly": {
+      "capture.txt": {
+        "path": "evidence/ubuntu26/docker-repair-v1/docker-final-readonly-v24-v1/capture.txt",
+        "sha256": "c1b9d184bf76b5258398a2b644f8f72c46249b1257b19f831267f41be3a63e77"
+      },
+      "result.json": {
+        "path": "evidence/ubuntu26/docker-repair-v1/docker-final-readonly-v24-v1/result.json",
+        "sha256": "194fd263ea951678255369498252b355e0fcb7fa8dc5570839f1b987662fc089"
+      }
+    },
+    "same_boot_after_external_ack_stopped": true,
+    "docker_autostart_enabled": true
+  },
+  "initial_diagnosis_context": {
+    "boot_id": "00000000-0000-4000-8000-000000000008",
+    "kernel": "4.19.294 #10",
+    "scope": "Historical kernel10 daemon fix and first OCI failure"
+  }
+}

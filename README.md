@@ -6,14 +6,15 @@ Git submodule pins ASUSWRT-Merlin tag `3006.102.9` at
 through that repository; this repository records the ordered modification history
 as reviewable patches. It is not a second GitHub fork-network entry.
 
-The BCM side currently runs kernel10 with an Ubuntu 26.04 ext4 root, systemd,
+The BCM side currently runs kernel11 with an Ubuntu 26.04 ext4 root, systemd,
 native OpenSSH and the ASUS services in their private compatibility environment.
-The V23 image has passed actual current-boot acceptance and survival after the
+The V24 image has passed actual current-boot acceptance and survival after the
 external observer stopped. The separate SL1680 AI-board OS is not modified.
 The retained original firmware in slot2 is still the permanent boot default;
 this milestone does not enable permanent Ubuntu boot.
 
-See the [V23 hardware milestone](reports/ubuntu26/v23-current-boot-milestone-v1.json)
+See the [V24 Docker repair](reports/ubuntu26/docker-repair-v1.json) and earlier
+[V23 hardware milestone](reports/ubuntu26/v23-current-boot-milestone-v1.json)
 for the actual same-boot checks, evidence hashes and remaining limits. Raw device
 captures, credentials, keys and build artifacts stay outside this repository.
 Device-specific deployment tools deliberately refuse when their private, pinned
@@ -33,6 +34,31 @@ bio handle keep vendor-facing structure sizes unchanged. BE19000AI stock feature
 including ICP201XX, CRC8 and MMC oops are retained. Net-device field offsets used
 by proprietary drivers are protected separately; this is not a proof of every
 proprietary driver's internal ABI.
+
+## Kernel11 Docker repair — V24 hardware milestone
+
+Docker 29.8.2 now starts through a private legacy-iptables service PATH, packaged
+as `leon-docker-bcm-compat`. Global alternatives remain unchanged, and Docker
+preserves the router's `FORWARD ACCEPT` policy. Kernel11 supplies real cgroup v2
+device-BPF verification, attachment, queries and enforcement through
+`CONFIG_BCM_CGROUP_DEVICE_BPF`, while socket cgroup data and network BPF hooks
+stay disabled to preserve the recorded Broadcom task/socket layouts.
+
+The ABI audit passes against the accepted kernel10. One targeted QEMU run checks
+ordinary containers, resource limits and actual device deny/allow behavior.
+On hardware, Docker 29.8.2 with the systemd cgroup driver passes CPU, memory and
+PID limits, DNS/HTTP and device deny/allow checks. The ASUS broker/RC process
+identities and 10Gbps wired backhaul remain unchanged throughout. Main and
+backup OpenSSH logins pass, Docker autostart is enabled, and the accepted boot
+survives stopping the external observer. Slot2 remains the permanent default.
+
+Use `configs/kernel11.config` for this profile. The existing stack runner
+normalizes the exact recorded kernel-relative patch `0010` into BSP paths before
+checking or applying it; all ten patches match the current source tree. The
+kernel11 build uses ccache. The 181 kernel10 module files and the prior root-init
+are reused after the ABI checks; guardian33 changes only the kernel version and
+notes identities. The build, QEMU and deployment tools retain distinct evidence
+for their own validation scope.
 
 ## Kernel10 and writable Ubuntu root — V23 current-boot hardware milestone
 

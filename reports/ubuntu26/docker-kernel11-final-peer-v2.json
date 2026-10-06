@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "status": "source_and_final_report_go",
+  "previous_peer": {
+    "path": "reports/ubuntu26/docker-kernel11-final-peer-v1.json",
+    "sha256": "02ebb90502a7896d8570d74d31bc911f0bce63dbb88694302b2c29b10a993523",
+    "bytes": 5015
+  },
+  "previous_report_binding": "Historical report739bf0 remains valid for unchanged live Docker proof; this addendum binds final report with superseded-v1 archive and ordered-stack-check metadata.",
+  "final_report": {
+    "path": "reports/ubuntu26/docker-repair-v1.json",
+    "sha256": "7baa9e1bfc4fd6c7171b576609966c2ddb598bac29622a671f97fb2ae116780c",
+    "bytes": 10317
+  },
+  "applicator": {
+    "path": "scripts/apply-patch-stack.py",
+    "sha256": "de3929de009f18e0401101e79f98c89c8aabf20838dffecc47726b0ea1e18ca3",
+    "bytes": 4111
+  },
+  "unchanged_device_bpf_v2_patch": {
+    "path": "patches/0010-bcm-cgroup-device-bpf-v2.patch",
+    "sha256": "c0e559f756bb5f20fabb40fd0de5c15129a6ea88014f39dc380541af85a48a9d",
+    "bytes": 10551
+  },
+  "normalization_scope": {
+    "exact_basename": "0010-bcm-cgroup-device-bpf-v2.patch",
+    "sha256_required": "c0e559f756bb5f20fabb40fd0de5c15129a6ea88014f39dc380541af85a48a9d",
+    "kernel_prefix": "release/src-rt-5.04behnd.4916/kernel/linux-4.19/",
+    "unique_paired_source_paths": 9,
+    "hunk_bytes_unchanged": true,
+    "original_patch_written": false,
+    "temporary_normalized_path_used_for_inventory_reverse_check_and_apply": true,
+    "old_nine_patch_handling_unchanged": true,
+    "unknown_source_state_refusal_unchanged": true,
+    "temporary_lifetime_covers_whole_operation": true
+  },
+  "findings": [
+    "No material blocker for the documented normal python3 invocation.",
+    "Superseded v1 is explicitly historical and excluded from active patch stack; final kernel-relative v2 stays byte-identical.",
+    "Recorded 10/10 ordered-stack check is local check-only and does not claim kernel rebuild or new physical validation.",
+    "Current boot ae4c5b94/#11, actual Docker and acceptance proof, and permanent-stock2 limitations retain the reviewed meanings."
+  ],
+  "qualification": "As in the inherited applicator, assertions require ordinary Python execution; -O/PYTHONOPTIMIZE is outside the reviewed documented invocation.",
+  "material_blockers": [],
+  "execution_performed": false,
+  "device_access_performed": false,
+  "tests_or_builds_performed": false,
+  "source_modified": false,
+  "previous_receipt_modified": false
+}
