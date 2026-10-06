@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "created_utc": "2026-10-06T06:32:23.559220+00:00",
+  "status": "installed_and_targeted_hardware_checks_passed",
+  "package": {
+    "name": "leon-asus-command-access",
+    "version": "0.1+leonb53.1",
+    "architecture": "all",
+    "path": "build/asus-command-access/package-v2/leon-asus-command-access_0.1+leonb53.1_all.deb",
+    "sha256": "6511224e34f77440bac1ca1c07220d36ec0dc0b0ff009022952fe6d27d4d6dd2"
+  },
+  "source_sha256": "1ab85e4740b489f17f510fa22731ade1a74543d1e86ae10f4faf8c39d657cdef",
+  "diagnosis": [
+    "native nvram/wl/ethctl/rc absent from PATH",
+    "explicit native nvram ELF fails to locate libnvram.so",
+    "same preserved nvram and wl work with private namespace/library environment",
+    "native service is Ubuntu service 1.69",
+    "locales-all not installed; locales remains custom 2.44-1ubuntu1+leonb53.1"
+  ],
+  "install_attempt": "evidence/ubuntu26/asus-command-access-install-v1/result.json",
+  "install_attempt_returncode": 0,
+  "package_installed": true,
+  "lock_holder": {
+    "pid": 708180,
+    "executable": "/usr/bin/aptitude-curses"
+  },
+  "lock_removed": false,
+  "process_killed": false,
+  "service_actions": false,
+  "remaining": [
+    "amtm and separately downloaded addon scripts need Ubuntu compatibility review"
+  ],
+  "source_review_fixes": [
+    "package-v1 mode0775 corrected to0755 in preserved successor v2",
+    "removed timeout --foreground so timeout covers worker group"
+  ],
+  "amtm": {
+    "stock_bootstrap_present": true,
+    "command_user_typed": "atam",
+    "likely_intended_command": "amtm",
+    "present_in_ELF_projection": false,
+    "compatibility_status": "not ported or tested on native Ubuntu; bootstrap downloads/includes modules and changes JFFS"
+  },
+  "next_build_policy": "configs/ubuntu26/asus-command-access-v1.json",
+  "successful_install": {
+    "path": "evidence/ubuntu26/asus-command-access-install-v2/result.json",
+    "sha256": "bb63cf812b48cea7e57a6acf830c46d0c00d7b316572dd88b3e8ddafa4d8c7e2"
+  },
+  "verification": [
+    "same native boot before and after",
+    "nvram get productid returns GT-BE19000AI",
+    "wl -i wl0 ver returns preserved Broadcom BSP version",
+    "rc ping succeeds through existing broker",
+    "asus service with no action returns ASUS action_service usage; no action sent",
+    "managed power alias refused before execution",
+    "native service/dash/systemd hashes unchanged",
+    "native mount namespace unchanged",
+    "dpkg audit empty"
+  ],
+  "user_lock_resolution": "User confirmed aptitude exited; reused already-verified package, no lock deletion or process termination"
+}

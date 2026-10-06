@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "purpose": "Restore native SSH access to reviewed ASUS command map through the active service namespace",
+  "package_manifest": "build/asus-command-access/package-v2/manifest.json",
+  "package_manifest_sha256": "d0ab5a8694623b589e4b3eb51e849d871b5e9f3b27680c372d40ccb06176c59e",
+  "package": {
+    "name": "leon-asus-command-access",
+    "version": "0.1+leonb53.1",
+    "architecture": "all",
+    "path": "build/asus-command-access/package-v2/leon-asus-command-access_0.1+leonb53.1_all.deb",
+    "sha256": "6511224e34f77440bac1ca1c07220d36ec0dc0b0ff009022952fe6d27d4d6dd2"
+  },
+  "composition": "Include via compose-runtime-candidate.py --extra-manifest in the next distinct candidate",
+  "entry": "/usr/bin/asus",
+  "aliases": {
+    "usr/bin/nvram": "asus",
+    "usr/sbin/wl": "../bin/asus",
+    "usr/sbin/ethctl": "../bin/asus",
+    "usr/sbin/rc": "../bin/asus",
+    "usr/sbin/asus-service": "../bin/asus"
+  },
+  "ASUS_service": "sudo asus service ACTION or sudo asus-service ACTION",
+  "broker_control": "sudo rc {ping|notify|start|stop|restart}",
+  "rules": [
+    "Uses caller existing root/sudo permissions; no sudo policy or setuid changes",
+    "Keeps native Ubuntu service binary and loader configuration",
+    "Namespace and broker/RC lifetime checked before each invocation",
+    "No shell eval; preserve tool argv0 and positional arguments",
+    "CLI command timeout applies to the worker group; intentionally detached descendants are not a security sandbox",
+    "amtm is a separate script compatibility item, not in the current ELF command map"
+  ]
+}

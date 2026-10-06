@@ -1,0 +1,31 @@
+{
+  "schema": 1,
+  "purpose": "SSH/apt UTF-8 and dialog support for the next distinct Ubuntu candidate",
+  "required_rootfs_builder_flag": "--terminal-support",
+  "required_extra_deb": "build/ubuntu26-glibc/results/locales_2.44-1ubuntu1+leonb53.1_all.deb",
+  "locales_sha256": "040c83d8aa85e1cb459050a17d529365a40ecb0a1d8d8f15a13e120ba140f8a0",
+  "ordinary_packages": [
+    "dialog"
+  ],
+  "default_locale": "C.UTF-8",
+  "generated_locales": [
+    "en_US.UTF-8",
+    "zh_TW.UTF-8"
+  ],
+  "rules": [
+    "Do not persist LC_ALL or DEBIAN_FRONTEND=noninteractive system-wide.",
+    "Use noninteractive only for unattended package commands.",
+    "Interactive SSH must request a real PTY and pass a supported TERM.",
+    "Require matching custom locales and libc-bin package versions; no stock libc replacement.",
+    "Preserve /etc/default/locale compatibility with PAM via the package symlink to /etc/locale.conf.",
+    "Supply current device hostname to the next base recipe and reconcile its local hosts alias after vendor hostname selection.",
+    "Frozen base/runtime artifacts remain unchanged; recomposition must update package closures explicitly."
+  ],
+  "validation": [
+    "locale charmap UTF-8 with empty stderr for all three locales",
+    "fresh SSH default LANG=C.UTF-8",
+    "dialog terminal initialization",
+    "dpkg --audit empty"
+  ],
+  "future_rootfs_build_executed": false
+}

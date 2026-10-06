@@ -1,0 +1,90 @@
+{
+  "schema": 1,
+  "created_utc": "2026-10-06T06:22:25.072894+00:00",
+  "status": "live_native_terminal_locale_fix_verified",
+  "native_boot": "00000000-0000-4000-8000-000000000008",
+  "evidence": [
+    {
+      "path": "evidence/ubuntu26/locale-dialog-readonly-v2/result.json",
+      "sha256": "f1530eb70bfbeae111105badf74768ff66525dad376c41d7013b264b166bf411",
+      "returncode": 0,
+      "complete": true
+    },
+    {
+      "path": "evidence/ubuntu26/terminal-preview-v1/result.json",
+      "sha256": "b02abf30f62d365adacb1522570a0a8fec1b15d7601b35c443289e7ab1182aa8",
+      "returncode": 0,
+      "complete": true
+    },
+    {
+      "path": "evidence/ubuntu26/terminal-support-install-v1/result.json",
+      "sha256": "ae89f456ce375d4bf701a07d4824ca564501a8c2c30609d6d11d44cd12d56a2e",
+      "returncode": 0,
+      "complete": true
+    },
+    {
+      "path": "evidence/ubuntu26/terminal-session-check-v1/result.json",
+      "sha256": "9f66fdd78811bac04578d39eb01d88603ec0cb73fb8f0d603454026ed46deab2",
+      "returncode": 0,
+      "complete": true
+    },
+    {
+      "path": "evidence/ubuntu26/terminal-frontend-check-v2/result.json",
+      "sha256": "8752aa852e78e980568673625cb5de13d8cc18079fbf7a54a09e6cfb8d06c870",
+      "returncode": 0,
+      "complete": true
+    },
+    {
+      "path": "evidence/ubuntu26/terminal-hostname-v1/result.json",
+      "sha256": "1c0e7d59a178cc34a7b5f523e720a5add0b3128fb798118b1e1c614c23adf8d8",
+      "returncode": 0,
+      "complete": true
+    }
+  ],
+  "initial_findings": [
+    "dialog and whiptail absent",
+    "locales/locales-all absent",
+    "only C,C.utf8,POSIX available",
+    "en_US.UTF-8 and zh_TW.UTF-8 reproduced missing-locale errors",
+    "normal locale configuration files absent",
+    "known xterm/screen/tmux terminfo already present"
+  ],
+  "installed": {
+    "dialog": "1.3-20260107-1",
+    "libdialog15:arm64": "1.3-20260107-1",
+    "locales": "2.44-1ubuntu1+leonb53.1"
+  },
+  "runtime_default": "C.UTF-8",
+  "generated": [
+    "en_US.UTF-8",
+    "zh_TW.UTF-8"
+  ],
+  "glibc_versions_unchanged": true,
+  "package_upgrades": 0,
+  "package_removals": 0,
+  "rebooted": false,
+  "service_actions": false,
+  "root_filesystem_changed": false,
+  "verification": [
+    "three actual charmap checks UTF-8 and empty errors",
+    "dpkg audit empty",
+    "new SSH PTY LANG=C.UTF-8 TERM=xterm-256color",
+    "dialog version and terminal maxsize valid",
+    "correctly ordered Debconf Config/Dialog constructor completes without warning",
+    "sudo local-host lookup fixed and nested sudo stderr empty"
+  ],
+  "diagnostic_limits": [
+    "Initial no-root /proc/1/exe gate stopped before data collection; replaced with world-readable comm for the successful read-only snapshot.",
+    "First direct Perl constructor check used an unsuitable module order and emitted a circular import warning; corrected Config-first check clean. This was not attributed to apt itself.",
+    "Actual user terminal font rendering is not observed; shell must reconnect to receive the new default.",
+    "Future rootfs option was reviewed and syntax-checked; no full rootfs rebuild or reflash performed."
+  ],
+  "hostname_fix": {
+    "cause": "runtime hostname absent from native /etc/hosts; old base alias only",
+    "change": "added current local hostname to 127.0.1.1, retaining base alias",
+    "backup": "/etc/hosts.before-terminal-support-v1",
+    "system_hostname_changed": false
+  },
+  "candidate_policy": "configs/ubuntu26/terminal-support-v1.json",
+  "permanent_boot_default_slot": 2
+}

@@ -7,6 +7,7 @@ p=argparse.ArgumentParser(description=__doc__)
 p.add_argument('--config-deb',required=True,type=Path)
 p.add_argument('--label',default='candidate',help='Unique candidate name; completed outputs are never replaced')
 p.add_argument('--extra-deb',action='append',type=Path,default=[],help='Local versioned package to install through apt; repeat as needed')
+p.add_argument('--terminal-support',action='store_true',help='Install dialog and configure UTF-8 locales; requires a matching custom locales --extra-deb')
 p.add_argument('--hostname',default='be19000ai-bcm',help='Initial hostname inside the new candidate, never inherited from the build host')
 a=p.parse_args();deb=a.config_deb.resolve();assert deb.is_file()
 if not re.fullmatch(r'[A-Za-z0-9_-]+',a.label):p.error('Invalid label')
@@ -14,6 +15,10 @@ if not re.fullmatch(r'[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?',a.hostname):p.error(
 if a.extra_deb and a.label=='candidate':p.error('Use a new --label for additional package sets')
 extras=[f.resolve() for f in a.extra_deb]
 assert all(f.is_file() and f.suffix=='.deb' for f in extras)
+if a.terminal_support:
+ locale_debs=[f for f in extras if subprocess.check_output(['dpkg-deb','-f',str(f),'Package'],text=True).strip()=='locales']
+ if len(locale_debs)!=1:p.error('--terminal-support requires exactly one custom locales --extra-deb')
+ if hashlib.sha256(locale_debs[0].read_bytes()).hexdigest()!='040c83d8aa85e1cb459050a17d529365a40ecb0a1d8d8f15a13e120ba140f8a0':p.error('--terminal-support requires the reviewed glibc 2.44 locales package')
 w=R/'build/ubuntu26-rootfs';w.mkdir(parents=True,exist_ok=True)
 target=w/f'ubuntu26-bcm-{a.label}.tar';assert not target.exists(),'Refuse to replace a completed candidate'
 record_prefix='candidate' if a.label=='candidate' else a.label
@@ -26,6 +31,7 @@ test -f /etc/apt/sources.list.d/ubuntu.sources
 rm -f /etc/apt/sources.list
 apt-get -o APT::Update::Error-Mode=any update
 LOCAL_PACKAGE_INSTALL
+TERMINAL_SUPPORT_SETUP
 printf '%s\n' CANDIDATE_HOSTNAME > /etc/hostname
 printf '127.0.0.1 localhost\n127.0.1.1 %s\n::1 localhost ip6-localhost ip6-loopback\n' CANDIDATE_HOSTNAME > /etc/hosts
 dpkg --audit > /tmp/dpkg-audit.txt
@@ -36,11 +42,24 @@ dpkg-query -W -f='${binary:Package}\\t${Version}\\t${Architecture}\\n' > /usr/sh
 rm -f /tmp/leon-bcm-rootfs-config.deb /tmp/leon-customize.sh /tmp/dpkg-audit.txt
 rm -rf /tmp/leon-packages
 '''
-hook.write_text(hook_text.replace('LOCAL_PACKAGE_INSTALL','apt-get -y --no-install-recommends install /tmp/leon-packages/*.deb' if extras else ':').replace('CANDIDATE_HOSTNAME',shlex.quote(a.hostname)))
+terminal_setup='''test "$(dpkg-query -W -f='${Version}' locales)" = "$(dpkg-query -W -f='${Version}' libc-bin)"
+locale-gen --keep-existing en_US.UTF-8 zh_TW.UTF-8
+update-locale --locale-file /etc/locale.conf LANG=C.UTF-8
+test /etc/default/locale -ef /etc/locale.conf
+for loc in C.UTF-8 en_US.UTF-8 zh_TW.UTF-8; do
+ test "$(LC_ALL="$loc" locale charmap 2>/tmp/leon-locale-errors)" = UTF-8
+ test ! -s /tmp/leon-locale-errors
+done
+rm -f /tmp/leon-locale-errors
+dialog --version
+''' if a.terminal_support else ':'
+hook.write_text(hook_text.replace('LOCAL_PACKAGE_INSTALL','apt-get -y --no-install-recommends install /tmp/leon-packages/*.deb' if extras else ':').replace('TERMINAL_SUPPORT_SETUP',terminal_setup).replace('CANDIDATE_HOSTNAME',shlex.quote(a.hostname)))
 hook.chmod(0o755)
 uri='https://ports.ubuntu.com/ubuntu-ports'
 mirrors=[f'deb [signed-by=/usr/share/keyrings/ubuntu-archive-keyring.gpg] {uri} {suite} main restricted universe multiverse' for suite in ['resolute','resolute-updates','resolute-security']]
 cmd=['mmdebstrap','--mode=unshare','--architectures=arm64','--variant=essential','--include=apt,ca-certificates,ubuntu-keyring,systemd-sysv,udev,dbus,kmod,e2fsprogs,iproute2','--format=tar','--customize-hook=upload '+shlex.quote(str(deb))+' /tmp/leon-bcm-rootfs-config.deb','--customize-hook=upload '+shlex.quote(str(hook))+' /tmp/leon-customize.sh']
+if a.terminal_support:
+ cmd=[item+',dialog' if item.startswith('--include=') else item for item in cmd]
 if extras:
  cmd.append('--customize-hook=mkdir -p "$1/tmp/leon-packages"')
  for i,f in enumerate(extras):cmd.append('--customize-hook=upload '+shlex.quote(str(f))+f' /tmp/leon-packages/{i:03d}.deb')
@@ -51,6 +70,7 @@ record={'command':cmd,'returncode':rc,'elapsed_seconds':round(time.monotonic()-s
 record['local_packages']=[{'path':str(f),'sha256':hashlib.sha256(f.read_bytes()).hexdigest(),'bytes':f.stat().st_size} for f in extras]
 record['label']=a.label
 record['hostname']=a.hostname
+record['terminal_support']={'enabled':a.terminal_support,'default_locale':'C.UTF-8' if a.terminal_support else None,'generated_locales':['en_US.UTF-8','zh_TW.UTF-8'] if a.terminal_support else [],'dialog':a.terminal_support}
 record['kernel_assumption']='Host namespace build is not evidence of target-kernel runtime compatibility'
 if rc==0:record.update(rootfs_tar=str(target.relative_to(R)),bytes=target.stat().st_size,sha256=hashlib.sha256(target.read_bytes()).hexdigest())
 (w/f'{record_prefix}-build.json').write_text(json.dumps(record,indent=2)+'\n');print(json.dumps(record,indent=2));raise SystemExit(rc)
