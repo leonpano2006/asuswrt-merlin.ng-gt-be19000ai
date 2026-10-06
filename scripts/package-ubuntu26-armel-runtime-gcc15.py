@@ -114,16 +114,18 @@ Description: GCC15.2 compatibility runtime for BCM B53 foreign ARM ABI
       'sha256':sha(out),'build_origin':'Fresh GCC15.2 source compilation; no default cross compiler shared runtime copied',
       'virtual_provisions_limited_to_version':version,'canonical_paths':sorted(inventory(s)),
       'native_gcc16_package_ownership_changed':False})
-    crypt_stages=[]
+    crypt_stages={'libcrypt1': [], 'libcrypt-dev': []}
     for arch in ['arm64','armel']:
-        inp=RESULTS/('libcrypt15-'+arch)/f'libcrypt1_4.5.1-1+leonb53.1_{arch}.deb'
-        out=OUT/inp.name;shutil.copy2(inp,out)
-        s=STAGE/('libcrypt1-'+arch);run(['dpkg-deb','-R',out,s]);crypt_stages.append(s)
-        records.append({'name':'libcrypt1','architecture':arch,'version':field(out,'Version'),'path':str(out.relative_to(R)),
-                        'sha256':sha(out),'build_origin':'Ubuntu libxcrypt dpkg-buildpackage; obsolete glibc API explicitly retained'})
-    common=shared_check(*crypt_stages)
-    for row in records:
-        if row['name']=='libcrypt1':row['coinstalled_common_files_identical']=common
+        for package in crypt_stages:
+            inp=RESULTS/('libcrypt15-'+arch)/f'{package}_4.5.1-1+leonb53.1_{arch}.deb'
+            out=OUT/inp.name;shutil.copy2(inp,out)
+            s=STAGE/(package+'-'+arch);run(['dpkg-deb','-R',out,s]);crypt_stages[package].append(s)
+            records.append({'name':package,'architecture':arch,'version':field(out,'Version'),'path':str(out.relative_to(R)),
+                            'sha256':sha(out),'build_origin':'Ubuntu libxcrypt dpkg-buildpackage; matched runtime and development packages'})
+    for package, stages in crypt_stages.items():
+        common=shared_check(*stages)
+        for row in records:
+            if row['name']==package:row['coinstalled_common_files_identical']=common
     report={'schema_version':1,'status':'packaged_not_installed_or_runtime_validated','packages':records,
             'library_prefix':'/usr/lib/arm-linux-gnueabi','merged_usr_loader_entry':'/usr/lib/ld-linux.so.3',
             'armhf_packages':[],'host_packages_modified':False,'router_access':False,

@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "status": "installed_and_verified_on_current_ubuntu_boot",
+  "recorded_utc": "2026-10-06T06:45:48.038998+00:00",
+  "cause": [
+    "Runtime collector omitted matching libcrypt-dev; official development package required an incompatible exact libcrypt1 version",
+    "Installed versioned native GCC16 packages lacked generic defaults packages and commands"
+  ],
+  "fix": [
+    "Include matching libcrypt-dev for arm64 and armel in future collector outputs",
+    "Add real native GCC16 defaults packages with exact custom compiler dependencies",
+    "Add small signed development archive with scoped package pins"
+  ],
+  "native_compiler_version": "16.2.0-3ubuntu1+leonb53.1",
+  "libcrypt_dev_version": "1:4.5.1-1+leonb53.1",
+  "requested_packages": [
+    "libncurses-dev",
+    "autotools-dev",
+    "autoconf",
+    "automake",
+    "build-essential",
+    "libnl-3-dev",
+    "libnl-genl-3-dev",
+    "libunwind-dev",
+    "libsensors-dev",
+    "git"
+  ],
+  "new_packages": 25,
+  "existing_packages_upgraded": 0,
+  "packages_removed": 0,
+  "additional_disk_space_apt_mb": 20.5,
+  "checks": [
+    "Signed archive verification",
+    "APT dependency preview selects full build-essential and custom defaults",
+    "dpkg audit empty and apt-get check succeeds",
+    "gcc/g++/cc/c++/cpp report16.2.0",
+    "C compile includes crypt,ncurses,libnl,unwind,sensors headers and links their libraries",
+    "C crypto runtime succeeds and sizeof(time_t)==8",
+    "C++ compile and runtime succeeds",
+    "Protected runtime package versions unchanged",
+    "Base release pins, libcrypt and systemd file hashes unchanged",
+    "Same boot after installation"
+  ],
+  "boot_id": "00000000-0000-4000-8000-000000000008",
+  "rebooted": false,
+  "firmware_repacked": false,
+  "full_rootfs_rebuilt": false,
+  "permanent_boot_activated": false,
+  "install_harness_correction": "Install-v1 succeeded but missing C heredoc terminator skipped final compile probes. Preserved original script and corrected verification-only v2 passed; packages were not reinstalled.",
+  "foreign_armel_runtime_changed": false,
+  "foreign_armel_crypt_dev_installed_live": false,
+  "locales_all_installed_by_this_fix": false,
+  "candidate_policy": "configs/ubuntu26/development-support-v1.json",
+  "package_manifest": "build/ubuntu26-development/v1/packages.json",
+  "archive_manifest": "build/ubuntu26-development/v1/archive-package.json",
+  "evidence": [
+    {
+      "path": "evidence/ubuntu26/development-support-v1/diagnose-v1/result.json",
+      "sha256": "9196e589e2571726956511c3e6bf09d77f727d61a36aae6ae6da8b1f5b9a428f",
+      "capture_sha256": "7e4e5e4aff27083fe2cd5b7b4c4058bdb1468aa3773537f7bedda9070fad59cc"
+    },
+    {
+      "path": "evidence/ubuntu26/development-support-v1/preview-v1/result.json",
+      "sha256": "cdc154e9c4342f80427e6d38af6426e3684a2f5e9d049b642c9fa0a85f3ce73c",
+      "capture_sha256": "f77f5a8b741c2723ee91953d8fc50b58c9596b15f47feb17b073cd9e0fe0edb7"
+    },
+    {
+      "path": "evidence/ubuntu26/development-support-v1/install-v1/result.json",
+      "sha256": "3aee594d71b25c458395108100f14206b85001e1231d29031a8ae890ae4f79fc",
+      "capture_sha256": "75532af85abdf1077e5a226bf503d6729eb33be3e3355e61976cfa417d00935c"
+    },
+    {
+      "path": "evidence/ubuntu26/development-support-v1/verify-v2/result.json",
+      "sha256": "a198b4014080f4c6ebd7e04f4cbeccfc65231ee747260abc348cff6258218e73",
+      "capture_sha256": "64dee2030a553764efec0e4aca6331ef49b232ae0f9185a8091ba49d4c8e0d92"
+    }
+  ],
+  "do_not_repeat_completed_install_or_compile_checks": true
+}

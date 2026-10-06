@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "purpose": "Complete development dependencies without replacing custom runtime libraries",
+  "packages_manifest": "build/ubuntu26-development/v1/packages.json",
+  "archive_package_manifest": "build/ubuntu26-development/v1/archive-package.json",
+  "archive_package": {
+    "name": "leon-bcm-development-archive",
+    "architecture": "all",
+    "version": "0.1+20261006.1",
+    "path": "build/ubuntu26-development/v1/packages/leon-bcm-development-archive_0.1+20261006.1_all.deb",
+    "sha256": "370bf66e48c985877b32720e5a117ce0c987f0c9413be817dc04b3d776d7d6bf",
+    "bytes": 255932
+  },
+  "native_default_compiler": "GCC 16.2.0; real generic defaults packages with exact custom versioned compiler dependencies",
+  "libcrypt_dev_version": "1:4.5.1-1+leonb53.1",
+  "foreign_armel_runtime": "GCC15.2 unchanged; matching crypt-dev available but not installed live",
+  "next_candidate": "Include archive package plus native defaults and arm64 libcrypt-dev; ordinary requested development packages remain from signed Ubuntu sources",
+  "full_rootfs_rebuilt": false,
+  "firmware_repacked": false
+}
