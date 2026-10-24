@@ -1,0 +1,234 @@
+--- a/drivers/hwmon/Kconfig
++++ b/drivers/hwmon/Kconfig
+@@ -23,6 +23,15 @@
+ 	  will be called hwmon.
+ 
+ if HWMON
++
++config SENSORS_BCM4916
++	tristate "Broadcom BCM4916 CPU temperature and clock monitor"
++	depends on ARM64 && BCM96813 && OF
++	help
++	  Read the CPU package temperature and shared CPU cluster PLL clock
++	  using the existing BCM96813 SDK sensor and clock interfaces.
++	  This driver does not change thermal policy or clock settings.
++	  If built as a module, it is called bcm4916_hwmon.
+ 
+ config HWMON_VID
+ 	tristate
+--- a/drivers/hwmon/Makefile
++++ b/drivers/hwmon/Makefile
+@@ -182,3 +182,5 @@
+ 
+ ccflags-$(CONFIG_HWMON_DEBUG_CHIP) := -DDEBUG
+ 
++
++obj-$(CONFIG_SENSORS_BCM4916) += bcm4916_hwmon.o
+--- /dev/null
++++ b/drivers/hwmon/bcm4916_hwmon.c
+@@ -0,0 +1,205 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Read-only CPU telemetry for BCM4916 on the BCM96813 SDK.
++ *
++ * Source contracts in release/src-rt-5.04behnd.4916:
++ *   kernel/dts/6813/6813.dtsi: brcm,therm / bac_cpu_therm_temp
++ *   bcmdrivers/opensource/misc/pmc/impl1/pmc_sysfs.c: cputemp_show()
++ *   bcmdrivers/opensource/misc/pmc/impl1/clk_rst.c: biu_ch_freq_get()
++ *   bcmdrivers/opensource/char/board/bcm963xx/impl1/shared_utils.c:
++ *       UtilGetChipId()
++ *
++ * The existing PMC and thermal drivers configure the sensor. This module
++ * only reads its existing register and queries the existing PLL getter.
++ * It neither binds nor alters the thermal driver's platform device, and
++ * does not register a thermal zone, cooling device, governor or OPP table.
++ *
++ * Linux 4.19 lacks the frequency-channel enum in hwmon.h. Explicit read-only
++ * attribute groups expose the freq1_input ABI understood by libsensors 3.6.2
++ * without altering the kernel's hwmon structures.
++ */
++
++#include <linux/build_bug.h>
++#include <linux/device.h>
++#include <linux/err.h>
++#include <linux/hwmon.h>
++#include <linux/init.h>
++#include <linux/io.h>
++#include <linux/ioport.h>
++#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/of.h>
++#include <linux/of_address.h>
++
++#if !defined(CONFIG_ARM64)
++#error "bcm4916_hwmon requires the matching ARM64 BCM4916 kernel"
++#endif
++
++/* Existing GPL-compatible kernel exports; no vendor-private struct layout. */
++extern unsigned int UtilGetChipId(void);
++extern int pmc_convert_pvtmon(int sel, int value);
++extern int biu_ch_freq_get(unsigned int ch, unsigned int *freq);
++
++#define BCM4916_CHIP_ID             0x4916U
++#define BCM4916_CPU_TEMP_ADDRESS    0x8106037cULL
++#define BCM4916_CPU_TEMP_BYTES      4U
++#define BCM4916_CPU_TEMP_VALID      BIT(31)
++#define BCM4916_CPU_TEMP_ADC_MASK   0x3ffU
++#define BCM_PVT_TEMPERATURE         0
++
++struct bcm4916_monitor {
++	void __iomem *cpu_temp;
++	struct device *parent;
++	struct device *hwmon;
++};
++
++static struct bcm4916_monitor monitor;
++
++static ssize_t temp1_input_show(struct device *dev,
++			       struct device_attribute *attr, char *buf)
++{
++	struct bcm4916_monitor *ctx = dev_get_drvdata(dev);
++	u32 sample = readl(ctx->cpu_temp);
++	int millidegrees;
++
++	if (!(sample & BCM4916_CPU_TEMP_VALID))
++		return -EAGAIN;
++
++	millidegrees = pmc_convert_pvtmon(BCM_PVT_TEMPERATURE,
++					 sample & BCM4916_CPU_TEMP_ADC_MASK);
++	return scnprintf(buf, PAGE_SIZE, "%d\n", millidegrees);
++}
++static DEVICE_ATTR_RO(temp1_input);
++
++static ssize_t temp1_label_show(struct device *dev,
++			       struct device_attribute *attr, char *buf)
++{
++	return scnprintf(buf, PAGE_SIZE, "CPU Package\n");
++}
++static DEVICE_ATTR_RO(temp1_label);
++
++static ssize_t freq1_input_show(struct device *dev,
++			       struct device_attribute *attr, char *buf)
++{
++	unsigned int mhz = 0;
++	int ret;
++
++	/* Channel 0 is the shared CPU cluster PLL output, in MHz. */
++	ret = biu_ch_freq_get(0, &mhz);
++	if (ret)
++		return -EIO;
++	if (!mhz || (unsigned long)mhz > ULONG_MAX / 1000000UL)
++		return -ERANGE;
++
++	/* Promote before multiplication: 2600 MHz does not fit signed 32-bit Hz. */
++	return scnprintf(buf, PAGE_SIZE, "%lu\n", (unsigned long)mhz * 1000000UL);
++}
++static DEVICE_ATTR_RO(freq1_input);
++
++static ssize_t freq1_label_show(struct device *dev,
++			       struct device_attribute *attr, char *buf)
++{
++	return scnprintf(buf, PAGE_SIZE, "CPU Cluster\n");
++}
++static DEVICE_ATTR_RO(freq1_label);
++
++static struct attribute *bcm4916_attrs[] = {
++	&dev_attr_temp1_input.attr,
++	&dev_attr_temp1_label.attr,
++	&dev_attr_freq1_input.attr,
++	&dev_attr_freq1_label.attr,
++	NULL,
++};
++ATTRIBUTE_GROUPS(bcm4916);
++
++static int __init bcm4916_hwmon_init(void)
++{
++	struct device_node *np;
++	struct resource res;
++	unsigned int chip_id;
++	int index, ret;
++
++	BUILD_BUG_ON(sizeof(unsigned long) < 8);
++	chip_id = UtilGetChipId();
++	if (chip_id != BCM4916_CHIP_ID) {
++		pr_err("bcm4916_hwmon: unsupported chip ID 0x%x\n", chip_id);
++		return -ENODEV;
++	}
++
++	np = of_find_compatible_node(NULL, NULL, "brcm,therm");
++	if (!np)
++		return -ENODEV;
++	if (!of_device_is_available(np)) {
++		ret = -ENODEV;
++		goto put_node;
++	}
++
++	index = of_property_match_string(np, "reg-names", "bac_cpu_therm_temp");
++	if (index < 0) {
++		ret = index;
++		goto put_node;
++	}
++	ret = of_address_to_resource(np, index, &res);
++	if (ret)
++		goto put_node;
++	if (resource_type(&res) != IORESOURCE_MEM ||
++	    res.start != BCM4916_CPU_TEMP_ADDRESS ||
++	    resource_size(&res) != BCM4916_CPU_TEMP_BYTES) {
++		pr_err("bcm4916_hwmon: unexpected CPU temperature DT resource\n");
++		ret = -ENODEV;
++		goto put_node;
++	}
++	of_node_put(np);
++
++	/*
++	 * Share the already configured read-only temperature register exactly as
++	 * bcm_thermal_old.c does. Do not request exclusive ownership or replace
++	 * the active thermal driver's device. Address comes from the validated DT.
++	 */
++	monitor.cpu_temp = ioremap(res.start, resource_size(&res));
++	if (!monitor.cpu_temp)
++		return -ENOMEM;
++
++	monitor.parent = root_device_register("bcm4916-monitor");
++	if (IS_ERR(monitor.parent)) {
++		ret = PTR_ERR(monitor.parent);
++		monitor.parent = NULL;
++		goto unmap;
++	}
++	monitor.hwmon = hwmon_device_register_with_groups(monitor.parent,
++						 "bcm4916", &monitor,
++						 bcm4916_groups);
++	if (IS_ERR(monitor.hwmon)) {
++		ret = PTR_ERR(monitor.hwmon);
++		monitor.hwmon = NULL;
++		root_device_unregister(monitor.parent);
++		monitor.parent = NULL;
++		goto unmap;
++	}
++
++	pr_info("bcm4916_hwmon: registered read-only CPU package temperature and cluster frequency\n");
++	return 0;
++
++put_node:
++	of_node_put(np);
++	return ret;
++unmap:
++	iounmap(monitor.cpu_temp);
++	monitor.cpu_temp = NULL;
++	return ret;
++}
++
++static void __exit bcm4916_hwmon_exit(void)
++{
++	/* Remove sysfs callbacks before releasing the memory they read. */
++	hwmon_device_unregister(monitor.hwmon);
++	root_device_unregister(monitor.parent);
++	iounmap(monitor.cpu_temp);
++}
++
++module_init(bcm4916_hwmon_init);
++module_exit(bcm4916_hwmon_exit);
++
++MODULE_AUTHOR("MastermixStudios contributors");
++MODULE_DESCRIPTION("Read-only BCM4916 CPU temperature and cluster clock telemetry");
++MODULE_LICENSE("GPL v2");

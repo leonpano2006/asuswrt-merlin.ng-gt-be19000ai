@@ -1,0 +1,262 @@
+{
+  "status": "source_prepared_no_build_no_load",
+  "external_hwmon_core_feasibility": {
+    "conclusion": "Source/symbol audit supports external stock hwmon.ko on current HWMON=n kernel without rebuilding vmlinux or changing shared layouts; compile/import/load validation still required.",
+    "strategy": "Compile stock drivers/hwmon/hwmon.c as external obj-m using untouched exact kernel11 generated headers/config. It does not require changing CONFIG_HWMON in generated headers. Driver uses unconditional hwmon.h declarations. Use generated hwmon Module.symvers for linking sensor module.",
+    "thermal_interop": "Existing CONFIG_THERMAL=y + CONFIG_THERMAL_OF=y compiles hwmon thermal helper, whose devm_thermal_zone_of_sensor_register export exists. New driver uses register_with_groups without chip-info HWMON_C_REGISTER_TZ, so it never registers thermal policy. Keep THERMAL_HWMON disabled.",
+    "modules": true,
+    "modversions": false,
+    "module_sig": false,
+    "trim_unused_ksyms": false,
+    "arch_quirks": "Stock hwmon PCI quirk guarded CONFIG_X86, inactive on ARM64."
+  },
+  "symbol_evidence": {
+    "path": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/kernel11-device-bpf/attempt1/Module.symvers",
+    "sha256": "87fdb90bbf53af05ef7740065786f9a033adf3ab378ff7efde7aed2d94a3a262",
+    "symbols": {
+      "UtilGetChipId": [
+        "0x00000000",
+        "UtilGetChipId",
+        "vmlinux",
+        "EXPORT_SYMBOL"
+      ],
+      "pmc_convert_pvtmon": [
+        "0x00000000",
+        "pmc_convert_pvtmon",
+        "vmlinux",
+        "EXPORT_SYMBOL"
+      ],
+      "biu_ch_freq_get": [
+        "0x00000000",
+        "biu_ch_freq_get",
+        "vmlinux",
+        "EXPORT_SYMBOL"
+      ],
+      "GetPVT": [
+        "0x00000000",
+        "GetPVT",
+        "vmlinux",
+        "EXPORT_SYMBOL"
+      ],
+      "GetPVTKH2": [
+        "0x00000000",
+        "GetPVTKH2",
+        "vmlinux",
+        "EXPORT_SYMBOL"
+      ],
+      "g_pmc": null,
+      "__class_register": [
+        "0x00000000",
+        "__class_register",
+        "vmlinux",
+        "EXPORT_SYMBOL_GPL"
+      ],
+      "class_unregister": [
+        "0x00000000",
+        "class_unregister",
+        "vmlinux",
+        "EXPORT_SYMBOL_GPL"
+      ],
+      "device_register": [
+        "0x00000000",
+        "device_register",
+        "vmlinux",
+        "EXPORT_SYMBOL_GPL"
+      ],
+      "device_unregister": [
+        "0x00000000",
+        "device_unregister",
+        "vmlinux",
+        "EXPORT_SYMBOL_GPL"
+      ],
+      "devm_thermal_zone_of_sensor_register": [
+        "0x00000000",
+        "devm_thermal_zone_of_sensor_register",
+        "vmlinux",
+        "EXPORT_SYMBOL_GPL"
+      ],
+      "__root_device_register": [
+        "0x00000000",
+        "__root_device_register",
+        "vmlinux",
+        "EXPORT_SYMBOL_GPL"
+      ],
+      "root_device_unregister": [
+        "0x00000000",
+        "root_device_unregister",
+        "vmlinux",
+        "EXPORT_SYMBOL_GPL"
+      ],
+      "of_find_compatible_node": [
+        "0x00000000",
+        "of_find_compatible_node",
+        "vmlinux",
+        "EXPORT_SYMBOL"
+      ],
+      "of_device_is_available": [
+        "0x00000000",
+        "of_device_is_available",
+        "vmlinux",
+        "EXPORT_SYMBOL"
+      ],
+      "of_property_match_string": [
+        "0x00000000",
+        "of_property_match_string",
+        "vmlinux",
+        "EXPORT_SYMBOL_GPL"
+      ],
+      "of_address_to_resource": [
+        "0x00000000",
+        "of_address_to_resource",
+        "vmlinux",
+        "EXPORT_SYMBOL_GPL"
+      ],
+      "__ioremap": [
+        "0x00000000",
+        "__ioremap",
+        "vmlinux",
+        "EXPORT_SYMBOL"
+      ],
+      "vunmap": [
+        "0x00000000",
+        "vunmap",
+        "vmlinux",
+        "EXPORT_SYMBOL"
+      ],
+      "dev_set_name": [
+        "0x00000000",
+        "dev_set_name",
+        "vmlinux",
+        "EXPORT_SYMBOL_GPL"
+      ],
+      "ida_alloc_range": [
+        "0x00000000",
+        "ida_alloc_range",
+        "vmlinux",
+        "EXPORT_SYMBOL"
+      ],
+      "ida_free": [
+        "0x00000000",
+        "ida_free",
+        "vmlinux",
+        "EXPORT_SYMBOL"
+      ]
+    }
+  },
+  "source_evidence": [
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/drivers/hwmon/hwmon.c",
+      "lines": [
+        137,
+        180,
+        637,
+        657,
+        674,
+        694,
+        869,
+        893,
+        897,
+        922
+      ],
+      "sha256": "0ab871df6dc4c8e986f030386b5888df56cb1b1adac44fbcd5fea896600304fd",
+      "meaning": "Stock hwmon core unconditional registration, thermal helper condition and x86-only quirk"
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/source/release/src-rt-5.04behnd.4916/kernel/dts/6813/6813.dtsi",
+      "lines": [
+        876,
+        881
+      ],
+      "sha256": "d46383404219112c74e092d6a98106d7a1b3010a43751152ebc52cbde22d3a4a",
+      "meaning": "Existing enabled named four-byte CPU BAC thermal register, physical0x8106037c"
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/source/release/src-rt-5.04behnd.4916/bcmdrivers/opensource/misc/thermal/impl1/bcm_thermal_old.c",
+      "lines": [
+        62,
+        105,
+        429,
+        438
+      ],
+      "sha256": "b1ff653f35d77c24a0e29697f487f813d62065fc3912c1b2db2c253e25fe0709",
+      "meaning": "Existing thermal driver plain shared ioremap + CPU sample validity/ADC conversion"
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/source/release/src-rt-5.04behnd.4916/bcmdrivers/opensource/misc/pmc/impl1/pmc_sysfs.c",
+      "lines": [
+        526,
+        535
+      ],
+      "sha256": "701e9fbc7d471a295407733571e410b76f2cea9a009285ce089a9d9168f0d57f",
+      "meaning": "CPU-only getter readl checksbit31 and ADC0x3ff then pmc_convert_pvtmon"
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/source/release/src-rt-5.04behnd.4916/bcmdrivers/opensource/misc/pmc/impl1/pmc_drv.c",
+      "lines": [
+        387,
+        421,
+        431,
+        471,
+        579,
+        1115,
+        1123,
+        1163
+      ],
+      "sha256": "caa3a3a86c58e97b84fcacb07ac82d230ca7c8ffac77cd38793f9f55fff68e43",
+      "meaning": "GetPVT family may enable hardware, so avoided; converter exported and yields millidegrees"
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/source/release/src-rt-5.04behnd.4916/bcmdrivers/opensource/misc/pmc/impl1/clk_rst.c",
+      "lines": [
+        257,
+        296,
+        299,
+        421,
+        433
+      ],
+      "sha256": "9c8049b126fb483529370b3eaf63bab0e04d9a20e6b3e8b208130c2c7eaa567b",
+      "meaning": "Exported live PLL getter channel0 inMHz, read-only configuration queries"
+    },
+    {
+      "path": "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/source/release/src-rt-5.04behnd.4916/bcmdrivers/opensource/char/board/bcm963xx/impl1/shared_utils.c",
+      "lines": [
+        81,
+        130
+      ],
+      "sha256": "a8c64271c51e8b414e416fe66faa119c6d99baeba8a55e67bd11496eb5d1e184",
+      "meaning": "unsigned int UtilGetChipId(void), exported"
+    }
+  ],
+  "design": {
+    "name": "bcm4916",
+    "temp1_input": "CPU-only readl on DT-validated existing4-byte register, validbit31, ADCbits0..9, converter selector0. Returns EAGAIN when sample invalid.",
+    "temp1_label": "CPU Package",
+    "freq1_input": "biu_ch_freq_get(0,&unsigned_mhz), multiply by1000000UL onarm64. Returns EIO onerror, ERANGE onzero/overflow.",
+    "freq1_label": "CPU Cluster",
+    "mode": "0444 for all four attrs",
+    "frequency_abi": "Explicit attribute groups; no old hwmon enum/struct changes. Parent reports other agent verified libsensors3.6.2 frequency support; this agent did not re-download that source.",
+    "ownership": "Independent root_device parent; does not bind/take thermal platform driver or exclusive resource claim. Shared ioremap after expectedchip+enabledDT+name+physicaladdress+size validation.",
+    "cleanup": "Unregisterhwmon callbacks, unregisterrootdevice, iounmap. Same reverse cleanup for failedinit.",
+    "writes": "No writel, frequency setting, thermal policy, writableattrs, GetPVT, proc/sysfsreads, userspacehelper or pollingthread."
+  },
+  "pending": [
+    "Root verify live DT, chipID and resource exactly match",
+    "Root chooses exact build invocation and retains original kernel generated config",
+    "Compile stock hwmon core and newdriver, inspect imports/vermagic, root review beforeload",
+    "Actual load/libsensors/htop verification and rollback handledbyroot"
+  ],
+  "artifacts": [
+    {
+      "path": "/home/leonpano/Documents/ChatGPT/asuswrt/hwmon-central-20261010/module/Kbuild",
+      "sha256": "d68874304d243484d6217bbddc2d3d9804e84bf5cedc591b84ea69c007e3011a"
+    },
+    {
+      "path": "/home/leonpano/Documents/ChatGPT/asuswrt/hwmon-central-20261010/module/README.txt",
+      "sha256": "85067370799f4cc054bbc1940fea1385f78fcce8cc85273bafbb10853efe3060"
+    },
+    {
+      "path": "/home/leonpano/Documents/ChatGPT/asuswrt/hwmon-central-20261010/module/bcm4916_hwmon.c",
+      "sha256": "5ed9351b738c6605faf693d00123a810202c42a07e4020dcc5d2e6dbdcd67686"
+    }
+  ]
+}

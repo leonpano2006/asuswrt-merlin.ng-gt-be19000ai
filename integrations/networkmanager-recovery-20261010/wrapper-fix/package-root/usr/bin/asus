@@ -1,0 +1,143 @@
+#!/bin/bash
+# Native Ubuntu entry for the existing, broker-owned ASUS command namespace.
+# Root privileges are supplied by the caller's ordinary sudo policy.
+set -u -o pipefail
+set +m
+export PATH=/usr/bin:/usr/sbin LC_ALL=C
+unset LD_PRELOAD LD_LIBRARY_PATH BASH_ENV ENV
+refuse() { printf 'asus: %s\n' "$*" >&2; exit 125; }
+usage() {
+ cat <<'EOF'
+Usage: sudo asus COMMAND [ARGUMENT...]
+       asus --list
+Examples: sudo nvram get productid
+          sudo wl -i wl0 ver
+          sudo asus service restart_wireless
+          sudo rc ping
+Commands run in the current ASUS service environment. Ubuntu service is separate.
+rc controls the ASUS broker: ping, notify, start, stop, restart.
+EOF
+}
+invoked=${0##*/}
+case $invoked in nvram|wl|ethctl|rc) set -- "$invoked" "$@";; asus-service) set -- service "$@";; esac
+[[ $# -gt 0 ]] || { usage; exit 0; }
+case $1 in --help|-h) usage; exit 0;; esac
+[[ $1 =~ ^[a-zA-Z0-9_.+-]+$ || $1 == --list ]] || refuse 'invalid command name'
+[[ $(readlink /proc/1/exe 2>/dev/null) == /usr/lib/systemd/systemd || $1 == --list ]] || {
+ [[ $EUID == 0 ]] && refuse 'native Ubuntu PID1 required'
+ printf 'asus: use sudo %s\n' "$invoked" >&2; exit 126
+}
+if [[ $1 == --list ]]; then
+ for path in /usr/share/asus/commands/bin/* /usr/share/asus/commands/sbin/*; do
+  [[ -L $path ]] || continue
+  target=$(readlink -f "$path") || continue
+  [[ $target == /usr/libexec/asus/* && $target != /usr/libexec/asus/command-denied ]] || continue
+  printf '%s\n' "${path##*/}"
+ done | sort -u
+ printf '%s\n' 'rc (broker control)'
+ exit 0
+fi
+[[ $EUID == 0 ]] || { printf 'asus: use sudo %s\n' "$invoked" >&2; exit 126; }
+[[ $(readlink /proc/self/ns/mnt) == "$(readlink /proc/1/ns/mnt)" ]] || refuse 'start this entry from native Ubuntu SSH'
+tool=$1; shift
+if [[ $tool == rc ]]; then
+ [[ $# == 1 && $1 =~ ^(ping|notify|start|stop|restart)$ ]] || { usage; exit 2; }
+fi
+# A package reinstall can replace the executable inode while the same broker
+# keeps running. Only identical, protected executable bytes may bridge that gap.
+broker_fd_secure() {
+ local metadata owner mode
+ metadata=$(timeout -k 1s 2s stat -Lc '%u %f' "/proc/self/fd/$1") || return 1
+ read -r owner mode <<< "$metadata"
+ [[ $owner == 0 && $mode =~ ^[0-9a-fA-F]+$ ]] || return 1
+ (( (16#$mode & 0170000) == 0100000 && (16#$mode & 0022) == 0 && (16#$mode & 0111) != 0 ))
+}
+broker_fds_match() {
+ local live_hash disk_hash
+ [[ /proc/self/fd/$1 -ef /proc/self/fd/$2 ]] && return 0
+ broker_fd_secure "$1" && broker_fd_secure "$2" || return 1
+ live_hash=$(timeout -k 1s 2s sha256sum "/proc/self/fd/$1") || return 1
+ disk_hash=$(timeout -k 1s 2s sha256sum "/proc/self/fd/$2") || return 1
+ live_hash=${live_hash%% *}; disk_hash=${disk_hash%% *}
+ [[ $live_hash =~ ^[a-f0-9]{64}$ && $live_hash == "$disk_hash" ]] || return 1
+ broker_fd_secure "$1" && broker_fd_secure "$2"
+}
+broker=$(timeout -k 1s 2s systemctl show leon-asus-broker.service -p MainPID --value)
+[[ $broker =~ ^[1-9][0-9]*$ ]] || refuse 'ASUS broker unavailable'
+exec {brokerfd}< /proc/$broker/exe || refuse 'ASUS broker executable unavailable'
+exec {broker_diskfd}< /usr/libexec/asus/rc-broker || refuse 'ASUS broker executable unavailable'
+broker_fds_match "$brokerfd" "$broker_diskfd" || refuse 'ASUS broker executable identity mismatch'
+exec {broker_diskfd}<&-
+[[ /proc/$broker/exe -ef /proc/self/fd/$brokerfd ]] || refuse 'ASUS broker changed'
+identity() {
+ local raw tail; local -a fields=()
+ [[ $1 =~ ^[1-9][0-9]*$ ]] || return 1
+ IFS= read -r -n 8192 raw < "/proc/$1/stat" || return 1
+ [[ $raw == "$1 ("*") "* ]] || return 1
+ tail=${raw##*) }; read -r -a fields <<< "$tail"
+ [[ ${#fields[@]} -ge 20 && ${fields[19]} =~ ^[0-9]+$ && ${fields[1]} =~ ^[0-9]+$ ]] || return 1
+ start=${fields[19]}; parent=${fields[1]}
+}
+identity "$broker" || refuse 'broker identity unavailable'; broker_start=$start
+rc=; matches=0; scanned=0
+for proc in /proc/[0-9]*; do
+ ((scanned+=1)); ((scanned<=512)) || refuse 'process scan limit'
+ [[ /proc/${proc##*/}/exe -ef /usr/libexec/asus/rc ]] || continue
+ identity "${proc##*/}" && [[ $parent == "$broker" ]] || continue
+ rc=${proc##*/}; rc_start=$start; ((matches+=1))
+done
+[[ $matches == 1 ]] || refuse 'unique active ASUS rc required'
+alive() {
+ [[ /proc/$broker/exe -ef /proc/self/fd/$brokerfd && /proc/$rc/exe -ef /usr/libexec/asus/rc ]] &&
+ identity "$broker" && [[ $start == "$broker_start" ]] &&
+ identity "$rc" && [[ $start == "$rc_start" && $parent == "$broker" ]]
+}
+expected_file=/usr/share/asus/integration/rc.sha256
+[[ -f $expected_file && ! -L $expected_file && $(stat -c '%u %a' "$expected_file") == '0 644' ]] || refuse 'runtime identity file unavailable'
+read -r expected _ < "$expected_file"
+[[ $expected =~ ^[a-f0-9]{64}$ ]] || refuse 'invalid runtime identity'
+actual=$(timeout -k 1s 2s sha256sum /usr/libexec/asus/rc)
+[[ ${actual%% *} == "$expected" ]] || refuse 'runtime binary identity mismatch'
+marker=/proc/$rc/root/etc/.asus-private-etc
+[[ $(timeout -k 1s 2s stat -c '%F %u %g %a %h' "$marker") == 'regular file 0 0 600 1' ]] || refuse 'private environment unavailable'
+actual=$(timeout -k 1s 2s sha256sum "$marker")
+[[ ${actual%% *} == 1c205578ec70bd60cdc74beed8f3d0deef1f045780eac31b91148ed8b3c55bec ]] || refuse 'private environment identity mismatch'
+exec {nsfd}< /proc/$rc/ns/mnt
+[[ $(readlink /proc/self/fd/$nsfd) != "$(readlink /proc/1/ns/mnt)" ]] && alive || refuse 'ASUS process changed'
+if [[ $tool == rc ]]; then
+ exec /usr/libexec/asus/rcctl "$@"
+fi
+selected=
+for prefix in bin sbin; do
+ path=/usr/share/asus/commands/$prefix/$tool
+ [[ -L $path ]] || continue
+ [[ $(stat -c '%u %g' "$path") == '0 0' ]] || refuse 'command map owner mismatch'
+ target=$(readlink -f "$path") || continue
+ [[ $target == /usr/libexec/asus/command-denied ]] && refuse 'command has a separate managed owner'
+ [[ $target == /usr/libexec/asus/* ]] || continue
+ selected=/usr/$prefix/$tool; break
+done
+[[ -n $selected ]] || { printf 'asus: command %s is not in the installed ASUS command map\n' "$tool" >&2; exit 127; }
+worker=
+stop_worker() {
+ [[ -n $worker ]] || return 0
+ kill -TERM -- "-$worker" 2>/dev/null || :
+ sleep 0.2
+ kill -KILL -- "-$worker" 2>/dev/null || :
+ wait "$worker" 2>/dev/null || :
+}
+trap 'stop_worker; exit 130' INT
+trap 'stop_worker; exit 143' TERM HUP
+# A new worker session lets cancellation drain only this invocation. A 30s
+# bound and lifetime checks prevent keeping a stale private environment alive.
+setsid timeout -k 1s 30s nsenter --mount=/proc/self/fd/$nsfd -- \
+ /usr/bin/env -i PATH=/usr/sbin:/usr/bin:/sbin:/bin LC_ALL=C \
+ 'LD_LIBRARY_PATH=/usr/$LIB/asus' "$selected" "$@" <&0 &
+worker=$!
+while kill -0 "$worker" 2>/dev/null; do
+ if ! alive; then stop_worker; refuse 'ASUS service changed during command'; fi
+ sleep 0.2
+done
+wait "$worker"; status=$?
+trap - INT TERM HUP
+exit "$status"

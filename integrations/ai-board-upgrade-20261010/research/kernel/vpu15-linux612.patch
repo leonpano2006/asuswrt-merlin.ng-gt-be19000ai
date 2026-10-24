@@ -1,0 +1,235 @@
+--- a/drivers/soc/berlin/modules/vpu/Makefile
++++ b/drivers/soc/berlin/modules/vpu/Makefile
+@@ -1,9 +1,9 @@
+-INC_PATH = -I$(srctree)/drivers/soc/berlin/modules/tzd/tee/client_api \
+-           -I$(srctree)/drivers/soc/berlin/modules/tzd/tee/common \
+-           -I$(srctree)/drivers/soc/berlin/modules/tzd/include \
+-           -I$(srctree)/drivers/soc/berlin/modules/vpu
++INC_PATH = -I$(srctree)/drivers/synaptics/soc/berlin/modules/tzd/tee/client_api \
++           -I$(srctree)/drivers/synaptics/soc/berlin/modules/tzd/tee/common \
++           -I$(srctree)/drivers/synaptics/soc/berlin/modules/tzd/include \
++           -I$(src)
+ 
+-ccflags-y += $(INC_PATH)
++ccflags-y += $(INC_PATH) -I$(srctree)/drivers/synaptics/include
+ ccflags-y += -Werror
+ 
+ obj-$(CONFIG_BERLIN_VPU) += vpu.o
+--- a/drivers/soc/berlin/modules/vpu/v2/h1_irq.c
++++ b/drivers/soc/berlin/modules/vpu/v2/h1_irq.c
+@@ -71,7 +71,7 @@
+ 		return ret;
+ 	}
+ 
+-	g_h1_ctx.class = class_create(THIS_MODULE, DEV_NAME);
++	g_h1_ctx.class = class_create(DEV_NAME);
+ 	if (IS_ERR(g_h1_ctx.class)) {
+ 		ret = PTR_ERR(g_h1_ctx.class);
+ 		pr_err("Unable to create %s class %d\n", DEV_NAME, ret);
+--- a/drivers/soc/berlin/modules/vpu/v2/vpu_dec_drv.c
++++ b/drivers/soc/berlin/modules/vpu/v2/vpu_dec_drv.c
+@@ -1238,7 +1238,7 @@
+ 	}
+ 
+ 	if (*nplanes) {
+-		if (vq->num_buffers >= SYNA_VPU_MAX_BUF_SLOT)
++		if (vb2_get_num_buffers(vq) >= SYNA_VPU_MAX_BUF_SLOT)
+ 			return -ENOBUFS;
+ 
+ 		if (*nplanes < pixfmt->num_planes)
+@@ -1777,7 +1777,7 @@
+ 	} else if (!test_bit(SYNA_VPU_POOL_ON_REFS, &ctx->status)) {
+ 		/* Display and Reference pool are the same pool */
+ 		dst_vq = v4l2_m2m_get_dst_vq(m2m_ctx);
+-		ctx->n_ref_pool = dst_vq->num_buffers;
++		ctx->n_ref_pool = vb2_get_num_buffers(dst_vq);
+ 	}
+ 
+ 	ret = syna_vdec_configure_stream(ctx);
+@@ -2436,7 +2436,7 @@
+ 	src_vq->timestamp_flags = V4L2_BUF_FLAG_TIMESTAMP_COPY;
+ 	src_vq->lock = &ctx->vpu->mutex;
+ 	src_vq->dev = ctx->vpu->v4l2_dev.dev;
+-	src_vq->min_buffers_needed = 1;
++	src_vq->min_queued_buffers = 1;
+ 
+ 	ret = vb2_queue_init(src_vq);
+ 	if (ret)
+@@ -2451,7 +2451,7 @@
+ 	dst_vq->lock = &ctx->vpu->mutex;
+ 	dst_vq->dev = ctx->vpu->v4l2_dev.dev;
+ 	dst_vq->bidirectional = true;
+-	dst_vq->min_buffers_needed = 0;
++	dst_vq->min_queued_buffers = 0;
+ 	dst_vq->mem_ops = &syna_bm_dh_memops;
+ 	dst_vq->dma_attrs = DMA_ATTR_ALLOC_SINGLE_PAGES |
+ 	    DMA_ATTR_NO_KERNEL_MAPPING;
+--- a/drivers/soc/berlin/modules/vpu/v2/vpu_dmaheap.c
++++ b/drivers/soc/berlin/modules/vpu/v2/vpu_dmaheap.c
+@@ -24,8 +24,8 @@
+ #include <linux/slab.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/dma-heap.h>
+-#include <synaptics/bm.h>
+-#include <linux/berlin_meta.h>
++#include "uapi/bm.h"
++#include <berlin_meta.h>
+ 
+ #include <media/videobuf2-v4l2.h>
+ #include <media/videobuf2-memops.h>
+@@ -51,6 +51,8 @@
+ };
+ 
+ struct vb2_syna_bm_buf {
++	/* New berlin_bm locates metadata in the first private-data word. */
++	struct berlin_meta *bm_meta;
+ 	struct device *dev;
+ 	void *vaddr;
+ 	unsigned long size;
+@@ -60,7 +62,6 @@
+ 	enum dma_data_direction dma_dir;
+ 
+ 	struct bm_pt_param pt_param;
+-	struct berlin_meta *bm_meta;
+ 
+ 	/* MMAP related */
+ 	struct vb2_vmarea_handler handler;
+@@ -332,7 +333,7 @@
+ static void *vb2_syna_bm_vaddr(struct vb2_buffer *vb, void *buf_priv)
+ {
+ 	struct vb2_syna_bm_buf *buf = buf_priv;
+-	struct dma_buf_map map;
++	struct iosys_map map;
+ 	int ret;
+ 
+ 	if (!buf->vaddr) {
+@@ -578,14 +579,14 @@
+ 		return -EINVAL;
+ 	}
+ 
+-	vma->vm_flags &= ~VM_PFNMAP;
++	vm_flags_clear(vma, VM_PFNMAP);
+ 
+ 	ret = dma_buf_mmap(buf->cookie, vma, 0);
+ 	if (ret) {
+ 		pr_err("Remapping memory failed, error: %d\n", ret);
+ 		return ret;
+ 	}
+-	vma->vm_flags |= VM_DONTEXPAND | VM_DONTDUMP;
++	vm_flags_set(vma, VM_DONTEXPAND | VM_DONTDUMP);
+ 	vma->vm_private_data = &buf->handler;
+ 	vma->vm_ops = &vb2_common_vm_ops;
+ 
+@@ -675,7 +676,7 @@
+ }
+ 
+ static int vb2_syna_dh_dmabuf_ops_vmap(struct dma_buf *dbuf,
+-				       struct dma_buf_map *map)
++				       struct iosys_map *map)
+ {
+ 	struct vb2_syna_bm_buf *buf = dbuf->priv;
+ 	int ret = -EINVAL;
+@@ -692,13 +693,13 @@
+ 		return ret;
+ 	}
+ 
+-	dma_buf_map_set_vaddr(map, buf->vaddr);
++	iosys_map_set_vaddr(map, buf->vaddr);
+ 
+ 	return 0;
+ }
+ 
+ static void vb2_syna_dh_dmabuf_ops_vunmap(struct dma_buf *dbuf,
+-					 struct dma_buf_map *map)
++					 struct iosys_map *map)
+ {
+ 	struct vb2_syna_bm_buf *buf = dbuf->priv;
+ 
+@@ -730,17 +731,6 @@
+ 
+ 	if (dh_dbuf->ops->get_flags)
+ 		return dh_dbuf->ops->get_flags(dh_dbuf, flags);
+-
+-	return 0;
+-}
+-
+-static void *vb2_syna_dh_get_meta(struct dma_buf *dbuf)
+-{
+-	struct vb2_syna_bm_buf *buf = dbuf->priv;
+-	struct dma_buf *dh_dbuf = buf->cookie;
+-
+-	if (dh_dbuf->ops->get_meta)
+-		return dh_dbuf->ops->get_meta(dh_dbuf);
+ 
+ 	return 0;
+ }
+@@ -757,7 +747,6 @@
+ 	.mmap = vb2_syna_dh_dmabuf_ops_mmap,
+ 	.release = vb2_syna_dh_dmabuf_ops_release,
+ 	.get_flags = vb2_syna_dh_get_flags,
+-	.get_meta = vb2_syna_dh_get_meta,
+ };
+ 
+ static struct dma_buf *vb2_syna_dh_get_dmabuf(struct vb2_buffer *vb,
+@@ -872,8 +861,17 @@
+ 	if (!buf)
+ 		return ERR_PTR(-ENOMEM);
+ 
++	buf->cookie = dbuf;
+ 	if (bm_fetch_pt(dbuf, &buf->pt_param)) {
+ 		pr_info("can't find this dmabuf in bm module, not cust-heap\n");
++		kfree(buf);
++		return ERR_PTR(-EINVAL);
++	}
++
++	if (V4L2_TYPE_IS_CAPTURE(vb->type)) {
++		buf->bm_meta = bm_fetch_meta(dbuf);
++		if (!buf->bm_meta)
++			pr_err("bm refuse to fetch meta\n");
+ 	}
+ 
+ 	/* TODO: request the permission to access this buffer  */
+@@ -914,4 +912,5 @@
+ };
+ 
+ MODULE_IMPORT_NS(SYNA_BM);
++MODULE_IMPORT_NS(DMA_BUF);
+ #endif
+--- a/drivers/soc/berlin/modules/vpu/v2/vpu_enc_drv.c
++++ b/drivers/soc/berlin/modules/vpu/v2/vpu_enc_drv.c
+@@ -768,13 +768,13 @@
+ 		if (*nplanes != pixfmt->num_planes)
+ 			return -EINVAL;
+ 
+-		if (vq->num_buffers > max_buf_num)
++		if (vb2_get_num_buffers(vq) > max_buf_num)
+ 			return -ENOBUFS;
+ 
+ 		if (*nplanes < pixfmt->num_planes)
+ 			*nplanes = pixfmt->num_planes;
+ 
+-		if (vq->num_buffers + *nbuffers > max_buf_num) {
++		if (vb2_get_num_buffers(vq) + *nbuffers > max_buf_num) {
+ 			*nbuffers = 0;
+ 			vepu_err(
+ 				vpu,
+--- a/drivers/soc/berlin/modules/vpu/vpu_mfd.c
++++ b/drivers/soc/berlin/modules/vpu/vpu_mfd.c
+@@ -257,7 +257,7 @@
+ 	return ret;
+ }
+ 
+-static int syna_vpu_mfd_remove(struct platform_device *pdev)
++static void syna_vpu_mfd_remove(struct platform_device *pdev)
+ {
+ 	struct syna_vpu_mfd_parent *vpu_dev = platform_get_drvdata(pdev);
+ 	struct device *dev;
+@@ -274,8 +274,6 @@
+ 	device_del(dev);
+ #endif
+ 	pm_runtime_disable(vpu_dev->dev);
+-
+-	return 0;
+ }
+ 
+ static struct platform_driver syna_vpu_driver = {

@@ -1,0 +1,13 @@
+--- native-v6/native-control.c
++++ vpn-ssh-v1/source/native-control.c
+@@ -145,6 +145,10 @@
+   strcat(listeners,line);strcat(users,user);
+  }
+  freeifaddrs(all);if(!matched||!count){errno=EADDRNOTAVAIL;return -1;}
++ /* Verified CCR WireGuard source pool; preserve all LAN entries first. */
++ const char vpn_user[]=" " LEON_SSH_ADMIN "@10.5.2.0/24";
++ if(strlen(users)+strlen(vpn_user)>=sizeof(users)){errno=EOVERFLOW;return -1;}
++ strcat(users,vpn_user);
+  int n=snprintf(out,cap,"# Generated from verified native LAN interface addresses.\nPort %u\nAddressFamily any\n%sAllowUsers %s\nPermitRootLogin no\nPasswordAuthentication %s\nPubkeyAuthentication yes\nKbdInteractiveAuthentication no\nPermitEmptyPasswords no\nUsePAM yes\nAuthorizedKeysFile " STATE "/authorized_keys .ssh/authorized_keys\nAllowTcpForwarding %s\nGatewayPorts no\nPermitTunnel no\nX11Forwarding no\nSubsystem sftp /usr/lib/openssh/sftp-server\n",r->port,listeners,users,r->password_auth?"yes":"no",r->forwarding?"yes":"no");
+  if(n<0||(size_t)n>=cap){errno=EOVERFLOW;return -1;}return 0;
+ }

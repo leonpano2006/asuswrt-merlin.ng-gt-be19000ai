@@ -1,0 +1,61 @@
+#!/bin/bash
+# Fixed read-only BE19000AI Ubuntu/ASUS status probe; no caller-selected commands.
+set -euo pipefail
+export PATH=/usr/sbin:/usr/bin LC_ALL=C
+unset LD_PRELOAD LD_LIBRARY_PATH BASH_ENV ENV
+[[ $# == 0 && $EUID == 0 ]] || exit 126
+# Every ASUS command uses the installed broker identity/namespace checks.
+nvram() { /usr/bin/asus nvram "$@"; }
+wl() { /usr/bin/asus wl "$@"; }
+model=$(nvram get productid)
+[[ $model == GT-BE19000AI ]] || exit 125
+printf 'MODEL|%s\nMODE|%s|%s\n' "$model" "$(nvram get sw_mode)" "$(nvram get re_mode)"
+printf 'UPTIME|%s\nPORT_SOURCE|Linux sysfs (BCM individual interfaces)\n' "$(cut -d. -f1 /proc/uptime)"
+# This board exposes each physical Ethernet port separately. Preserve parser's
+# established port tokens, but identify the real source instead of claiming ATE.
+ports=
+for entry in W0:eth0 L1:eth1 L2:eth2 L3:eth3 L4:eth4 L5:eth5 L6:eth6 AI:eth.ai; do
+ key=${entry%%:*}; n=${entry#*:}
+ carrier=$(cat /sys/class/net/"$n"/carrier)
+ [[ $carrier == 0 || $carrier == 1 ]] || exit 125
+ speed=$(cat /sys/class/net/"$n"/speed 2>/dev/null) || speed=0
+ code=X
+ if [[ $carrier == 1 ]]; then
+  case $speed in 10) code=t;; 100) code=M;; 1000) code=G;; 2500) code=Q;; 5000) code=F;; 10000) code=T;; *) exit 125;; esac
+ fi
+ ports+="$key=$code;"
+ master=$(readlink /sys/class/net/"$n"/master) || master=
+ printf 'LINK|%s|%s|%s|%s\n' "$n" "$carrier" "$speed" "${master##*/}"
+done
+printf 'ATE|%s\n' "$ports"
+accel=$(/usr/bin/asus fcctl status) || accel=
+printf '%s\n' "$accel" | awk '
+ /HW Acceleration <[A-Za-z]+>/ {match($0,/HW Acceleration <[A-Za-z]+>/); print "ACCEL|" substr($0,RSTART,RLENGTH)}
+ /Active<[0-9]+>/ {match($0,/Active<[0-9]+>/); print "ACCEL|" substr($0,RSTART,RLENGTH)}'
+# Derive uplink from gateway MAC learned by the bridge, never from link speed.
+gw=$(ip -4 route show default | awk '/via/{for(i=1;i<NF;i++)if($i=="via"){print $(i+1);exit}}')
+if [[ -n $gw ]]; then
+ mac=$(ip neigh show "$gw" | awk '/lladdr/{for(i=1;i<NF;i++)if($i=="lladdr"){print tolower($(i+1));exit}}')
+ if [[ -n $mac ]]; then
+  uplink=$(bridge fdb show br br0 | awk -v m="$mac" 'tolower($1)==m && /master br0/ && !/permanent/{for(i=1;i<NF;i++)if($i=="dev"){print $(i+1);exit}}')
+  [[ -z $uplink ]] || printf 'UPLINK|%s\n' "$uplink"
+ fi
+fi
+printf 'WANIF|%s\n' "$(nvram get wan0_ifname)"
+for i in 0 1 2; do
+ n=$(nvram get wl${i}_ifname)
+ [[ $n =~ ^wl[0-2]$ && -d /sys/class/net/$n ]] || exit 125
+ band=$(nvram get wl${i}_nband)
+ ch=$(wl -i "$n" chanspec) || exit 125
+ ch=$(printf '%s' "$ch" | sed 's/ *(0x.*//' | tr -d ' ')
+ printf 'RADIO|wl%s|%s|%s\n' "$i" "$band" "$ch"
+ for path in /sys/class/net/"$n" /sys/class/net/"$n".*; do
+  [[ -e $path ]] || continue
+  v=${path##*/}; [[ $v =~ ^wl[0-2](\.[0-9]+)?$ ]] || continue
+  rc=0; stations=$(wl -i "$v" assoclist 2>/dev/null) || rc=$?
+  printf 'BSS|wl%s|%s|%s\n' "$i" "$v" "$rc"
+  printf '%s\n' "$stations" | awk '$1=="assoclist"{print $2}' | while IFS= read -r mac; do
+   [[ -z $mac ]] || printf 'STA|wl%s|%s|%s\n' "$i" "$v" "$mac"
+  done
+ done
+done

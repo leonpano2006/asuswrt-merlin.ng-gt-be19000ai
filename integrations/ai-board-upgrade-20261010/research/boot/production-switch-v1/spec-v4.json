@@ -1,0 +1,49 @@
+{
+  "pack_admitted": true,
+  "status": "Reviewed repeatable Yocto production handoff; unchanged accepted kernel/modules/DT",
+  "trial_nonce": "00000000000040008000000000000038",
+  "kernel_release": "6.12.62-leonai7+",
+  "kernel_build": "build/kernel-sl1680-l2-production-v1",
+  "kernel_sha256": "5158ca81f22caea4fcabfcd7091a9a3e7c9ae4aec901994cee5411a2877513a1",
+  "kernel_config_sha256": "0ad31b854094bf50e605ebbfbcf0705557e0c5932dfe6bad5b6f1c56c6772749",
+  "modules_root": "candidate/kernel-gpu-fix-v27/rootfs",
+  "early_module_seeds": [
+    "8021q"
+  ],
+  "root_uuid": "e46de487-2d50-4bfb-9365-33ea9027d40e",
+  "home_uuid": "1dc03244-18dc-4aff-87f4-c6b300a9cc97",
+  "init": {
+    "path": "research/boot/production-switch-v1/production-init-v3",
+    "sha256": "b88aed5ad6031d903443ac90ffd4902def09b1fd0cdca4044645d4d9fc7291fb"
+  },
+  "settings": {
+    "TRIAL_NONCE": "00000000000040008000000000000038",
+    "DEPLOYMENT_NONCE": "00000000000040008000000000000038",
+    "COHORT_DIR": "/home/leon-fulltrial-00000000000040008000000000000038",
+    "EXPECTED_KERNEL": "6.12.62-leonai7+",
+    "ORIGINAL_MAC": "02:00:00:f0:00:03",
+    "MODULES_MANIFEST_SHA256": "7d30a2c3ad8fda41eeaf0c357eb443189909a8dcb48287275ea5640b0ddaa4d9",
+    "MODULE_FILE_COUNT": "451",
+    "POST_HEALTH_SHA256": "9b5a4322a65db95dc6cbcdc98f1c2de4e626643b1855c2a7c2c3b2c2d1de5a0f"
+  },
+  "payload_files": [
+    {
+      "path": "research/boot/production-switch-v1/home.mount",
+      "dest": "payload/home.mount",
+      "sha256": "6dc2ae8347728a3311201970d86a1483f59a54146e0c0222ed48671c1e7dfa52",
+      "mode": "0644"
+    },
+    {
+      "path": "research/boot/production-switch-v1/leon-stock-module-renames.conf",
+      "dest": "payload/leon-stock-module-renames.conf",
+      "sha256": "5939b5db92d4fa77ae1ea7081f0a499d41906a28356fd40fc77a636af74146ee",
+      "mode": "0644"
+    },
+    {
+      "path": "research/userspace/full-service-trial/payload/stock-public.sha256",
+      "dest": "payload/stock-public.sha256",
+      "sha256": "bdfc36050a77465b246575fa65e446b80f76c7e1c8904c95595824e5c6cb4e4b",
+      "mode": "0644"
+    }
+  ]
+}

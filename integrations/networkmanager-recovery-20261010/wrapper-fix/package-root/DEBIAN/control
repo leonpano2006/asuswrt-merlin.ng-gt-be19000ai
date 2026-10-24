@@ -1,0 +1,11 @@
+Package: leon-asus-command-access
+Version: 0.1+leonb53.1+local1
+Architecture: all
+Section: admin
+Priority: optional
+Maintainer: BE19000AI local integration <local@invalid>
+Depends: bash, coreutils, util-linux, systemd, leon-asus-integration, leon-asus-command-map
+Description: Native SSH entry for broker-owned ASUS commands
+ Adds namespace-aware nvram, wl, ethctl and broker rc conveniences.
+ ASUS service remains available as asus service or asus-service.
+ No service restart, sudo policy change or global library configuration.

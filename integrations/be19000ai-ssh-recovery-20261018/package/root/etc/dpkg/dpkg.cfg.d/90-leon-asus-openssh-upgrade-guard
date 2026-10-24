@@ -1,0 +1,2 @@
+pre-invoke=if [ -x /usr/libexec/leon-asus/openssh-upgrade-guard ]; then /usr/libexec/leon-asus/openssh-upgrade-guard pre || true; fi
+post-invoke=if [ -x /usr/libexec/leon-asus/openssh-upgrade-guard ]; then /usr/libexec/leon-asus/openssh-upgrade-guard post || true; fi

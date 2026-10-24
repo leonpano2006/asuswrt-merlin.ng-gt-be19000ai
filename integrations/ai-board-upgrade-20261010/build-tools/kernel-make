@@ -1,0 +1,25 @@
+#!/bin/bash
+# Usage: build-tools/kernel-make SOURCE_DIR OUTPUT_DIR [make arguments/targets...]
+# Preserves the source tree; all Kbuild output is directed to OUTPUT_DIR.
+set -euo pipefail
+if (( $# < 2 )); then
+    printf 'Usage: %s SOURCE_DIR OUTPUT_DIR [make arguments/targets...]\n' "$0" >&2
+    exit 2
+fi
+tool_root=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+kernel_source=$(realpath -- "$1")
+kernel_output=$(realpath -m -- "$2")
+shift 2
+case "$kernel_output" in
+    "$kernel_source"|"$kernel_source"/*)
+        printf 'OUTPUT_DIR must be outside the source tree.\n' >&2
+        exit 2
+        ;;
+esac
+mkdir -p -- "$kernel_output"
+exec make -C "$kernel_source" O="$kernel_output" ARCH=arm64 \
+    CROSS_COMPILE="$tool_root/bin/aarch64-linux-gnu-" \
+    CC="$tool_root/bin/aarch64-linux-gnu-gcc" \
+    LD="$tool_root/bin/aarch64-linux-gnu-ld.bfd" \
+    HOSTCC=/usr/bin/gcc HOSTCXX=/usr/bin/g++ \
+    "$@"

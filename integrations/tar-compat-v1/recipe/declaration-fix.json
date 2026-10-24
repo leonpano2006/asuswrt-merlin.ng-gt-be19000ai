@@ -1,0 +1,8 @@
+{
+  "schema": 1,
+  "old_sha256": "7974e436d9c71ebfa15a186f0df39de88a3b7a2accbae4a8195801e4663f4f89",
+  "new_sha256": "0dfd4ee0c9a9fd48754d0311b9761b06cc7a839915ecff1e6113fd3796013662",
+  "patch_sha256": "7d30af38a9cc50afba6cc1a8945aa2b85c7326faa2e756348e0cb02d99dad20c",
+  "change": "Remove one comma so declaration attributes are in existing macro third argument; no runtime logic change",
+  "first_compile_failure": "/tmp/be19000ai-tar-compat-build-v1/work/build.log"
+}

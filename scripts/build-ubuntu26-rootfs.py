@@ -44,7 +44,7 @@ rm -rf /tmp/leon-packages
 '''
 terminal_setup='''test "$(dpkg-query -W -f='${Version}' locales)" = "$(dpkg-query -W -f='${Version}' libc-bin)"
 locale-gen --keep-existing en_US.UTF-8 zh_TW.UTF-8
-update-locale --locale-file /etc/locale.conf LANG=C.UTF-8
+update-locale --locale-file /etc/locale.conf LANG=en_US.UTF-8
 test /etc/default/locale -ef /etc/locale.conf
 for loc in C.UTF-8 en_US.UTF-8 zh_TW.UTF-8; do
  test "$(LC_ALL="$loc" locale charmap 2>/tmp/leon-locale-errors)" = UTF-8
@@ -70,7 +70,7 @@ record={'command':cmd,'returncode':rc,'elapsed_seconds':round(time.monotonic()-s
 record['local_packages']=[{'path':str(f),'sha256':hashlib.sha256(f.read_bytes()).hexdigest(),'bytes':f.stat().st_size} for f in extras]
 record['label']=a.label
 record['hostname']=a.hostname
-record['terminal_support']={'enabled':a.terminal_support,'default_locale':'C.UTF-8' if a.terminal_support else None,'generated_locales':['en_US.UTF-8','zh_TW.UTF-8'] if a.terminal_support else [],'dialog':a.terminal_support}
+record['terminal_support']={'enabled':a.terminal_support,'default_locale':'en_US.UTF-8' if a.terminal_support else None,'generated_locales':['en_US.UTF-8','zh_TW.UTF-8'] if a.terminal_support else [],'dialog':a.terminal_support}
 record['kernel_assumption']='Host namespace build is not evidence of target-kernel runtime compatibility'
 if rc==0:record.update(rootfs_tar=str(target.relative_to(R)),bytes=target.stat().st_size,sha256=hashlib.sha256(target.read_bytes()).hexdigest())
 (w/f'{record_prefix}-build.json').write_text(json.dumps(record,indent=2)+'\n');print(json.dumps(record,indent=2));raise SystemExit(rc)

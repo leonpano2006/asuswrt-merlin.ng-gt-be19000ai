@@ -1,0 +1,64 @@
+Source-only production bootstrap and post-health re-arm. No device/build/pack/test
+performed by the source author. Root reviews/qualifies the final assembled cohort.
+
+Trust/build contract
+- /trial-settings embeds DEPLOYMENT_NONCE (32hex), EXPECTED_KERNEL,
+  COHORT_DIR=/home/leon-fulltrial-NONCE, ORIGINAL_MAC,
+  MODULES_MANIFEST_SHA256, MODULE_FILE_COUNT=451, POST_HEALTH_SHA256.
+- Root's initial verified ENV adds exactly one leon_production_plan=64hex token
+  beside leon_trial=NONCE. Init validates that token, root/private plan hash and
+  pinned post-health source hash before generating the runtime health unit.
+- plan.json schema1 has exactly deployment_nonce,cohort_dir,kernel_release,
+  environment,files,module_manifest_sha256,module_file_count plus schema.
+  environment has exactly the existing seven keys. Only leon_ramboot contains
+  exactly one @PLAN_SHA256@; source expands it once to the externally accepted
+  plan SHA. Plan.files is basename -> {bytes,sha256}; include Image,board.dtb,
+  initramfs.cpio.gz,modules.tar.gz,post-health.py,stock-public.sha256,modules.sha256.
+  This excludes self-hashing plan.json and avoids initramfs/plan hash cycles.
+- Embedded payload remains home.mount,leon-stock-module-renames.conf,
+  stock-public.sha256 plus existing uuid verifier/8021q/BusyBox necessities.
+
+Enable/runtime contract
+- Runtime-only leon-production-health.service is wanted by multi-user.target,
+  ordered after the seven checked stock units, never After=multi-user.target.
+  RemainAfterExit=no lets root start the same unit again after first acceptance.
+  A root/private flock permits only one health owner at a time on this boot.
+- Before every candidate load, the existing helper must successfully save
+  bootcmd=bootmmc. Keep original bootA/B,misc/boot_slot2,stockB and 5.15 modules.
+- Each guarded qualification boot starts with enable-default.json ABSENT.
+  Health waits for uptime>=90, then checks required stock units, the existing
+  three Docker containers, sole actual /dev/teepriv0 owner, UUIDs, read-only
+  matching-module bind, cgroupv1, THPmadvise, update markers and all cohort hashes.
+- An absent marker emits /run/leon-production/ready.json plus status.json with
+  status=READY_SAVED_STOCK,armed=false,stock_next_boot_verified=true,
+  both_env_crc_valid=true,boot_id,deployment_nonce,plan_sha256,cohort,
+  uptime_seconds>=90 and native_health full proof. No ENV write occurs.
+- Root reads that full proof through independently pinned SSH and verifies
+  current ENV before cancelling the independent BCM qualification watcher.
+  Only then root writes root-owned mode0600/nlink1 enable-default.json containing
+  exactly {schema:1,deployment_nonce:NONCE,plan_sha256:SHA}, then starts the custom
+  health unit again. No native service is restarted.
+- Marker-present success rechecks health/integrity and emits rearmed.json plus
+  status.json with status=ARMED,armed=true,stock_next_boot_verified=false,
+  both_env_crc_valid=true and the same identity/native proof. Full seven-key raw
+  readback and both redundant CRCs are required. Failed stores attempt a stock
+  next-boot restore and report whether it was verified. A repeated arm invocation
+  on an already-armed boot fails closed rather than performing another store.
+- native_health: pass,kernel,root_source/root_uuid,home_source/home_uuid,
+  mandatory_units map,arc_cmd_helper,original_containers[{id,name,running,status,
+  started_at,restart_count}],tee_owners,modules_readonly,modules_bind_source,
+  cgroup_hierarchy=v1,thp_policy,cohort_verified,module_files_verified,
+  cohort_files_verified. SSH authenticity is the controller's independent proof.
+
+Recovery/bounds
+- Health has a 300s alarm and fixed read-only commands have <=5s timeouts. Alarm
+  is disabled before the reviewed non-timeout fw_setenv store. Unit start/stop
+  have no kill deadline; ENV writes must finish before any requested shutdown.
+  Kernel/storage deadlock remains outside the userspace deadline guarantee.
+- No durable BCM production coordinator is supplied. After enabling automatic
+  post-health re-arm, a failure can make the first reset boot another candidate;
+  that boot saves stock, so another reset reaches stock if it hangs. Manual
+  power-cycle recovery remains available. No bounded automatic cold recovery is
+  claimed after qualification watchdog cancellation. SWUpdate-cleared counters
+  do not serve as health retry accounting; updater maintenance must first leave
+  stock selected and remove the enable marker.

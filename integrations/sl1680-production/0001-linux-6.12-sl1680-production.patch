@@ -1,0 +1,734 @@
+diff --git a/arch/arm64/Kconfig.platforms b/arch/arm64/Kconfig.platforms
+index 6c6d11536..afe3f4a86 100644
+--- a/arch/arm64/Kconfig.platforms
++++ b/arch/arm64/Kconfig.platforms
+@@ -96,6 +96,24 @@ config ARCH_BERLIN
+ 	help
+ 	  This enables support for Marvell Berlin SoC Family
+ 
++config ARM64_SL1680_L2_PLACEMENT
++	bool "SL1680 board linear-map L2 placement workaround"
++	depends on ARCH_BERLIN && ARM64_4K_PAGES && ARM64_VA_BITS_39
++	depends on PGTABLE_LEVELS = 3 && !MEMORY_HOTPLUG && OF_EARLY_FLATTREE
++	default n
++	help
++	  Enable only in the dedicated ASUS SL1680 board configuration using
++	  the validated memory map and original firmware. Early boot also
++	  requires a syna,dolphin flat device tree. This compatible identifies
++	  other Dolphin boards too; it is not an ASUS identity check.
++
++	  Retain the ordinary allocated page and allocate the first linear-map
++	  PMD table within [0x80000000, 0xc0000000), capped by memblock's current
++	  limit. Boot fails if this scoped policy cannot be applied safely.
++	  The original fault is not established. Other RAM maps, page/VA
++	  geometries, memory hotplug and broader board use are not validated.
++	  If unsure, say N.
++
+ config ARCH_BITMAIN
+ 	bool "Bitmain SoC Platforms"
+ 	help
+diff --git a/arch/arm64/boot/dts/synaptics/Makefile b/arch/arm64/boot/dts/synaptics/Makefile
+index de71ddda6..e1d290bdc 100644
+--- a/arch/arm64/boot/dts/synaptics/Makefile
++++ b/arch/arm64/boot/dts/synaptics/Makefile
+@@ -2,3 +2,4 @@
+ # Berlin SoC Family
+ dtb-$(CONFIG_ARCH_BERLIN) += berlin4ct-dmp.dtb
+ dtb-$(CONFIG_ARCH_BERLIN) += berlin4ct-stb.dtb
++dtb-$(CONFIG_ARCH_BERLIN) += dolphin-asus-be19000ai.dtb
+diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+index 2d1ebc0c3..5eae00766 100644
+--- a/arch/arm64/mm/fault.c
++++ b/arch/arm64/mm/fault.c
+@@ -8,6 +8,7 @@
+  */
+ 
+ #include <linux/acpi.h>
++#include <linux/atomic.h>
+ #include <linux/bitfield.h>
+ #include <linux/extable.h>
+ #include <linux/kfence.h>
+@@ -773,11 +774,41 @@ static int do_bad(unsigned long far, unsigned long esr, struct pt_regs *regs)
+ 	return 1; /* "fault" */
+ }
+ 
++/* Register-only SEA evidence; no table walk, probe, or recovery change. */
++static void leon_sea_register_snapshot(unsigned long far, unsigned long esr,
++				       const struct pt_regs *regs)
++{
++	static atomic_t records = ATOMIC_INIT(0);
++	u64 ttbr0, ttbr1, tcr, pc, pstate;
++	unsigned long untagged;
++	unsigned int cpu, fnv;
++	int seq;
++
++	if (user_mode(regs) || ESR_ELx_EC(esr) != ESR_ELx_EC_DABT_CUR)
++		return;
++	seq = atomic_fetch_add_unless(&records, 1, 4);
++	if (seq >= 4)
++		return;
++
++	ttbr0 = read_sysreg(ttbr0_el1);
++	ttbr1 = read_sysreg(ttbr1_el1);
++	tcr = read_sysreg(tcr_el1);
++	pc = regs->pc;
++	pstate = regs->pstate;
++	cpu = raw_smp_processor_id();
++	untagged = untagged_addr(far);
++	fnv = !!(esr & ESR_ELx_FnV);
++	pr_emerg("LEON_SEA seq=%d cpu=%u far=%016lx untagged=%016lx fnv=%u esr=%016lx ttbr0=%016llx ttbr1=%016llx tcr=%016llx pc=%016llx pstate=%016llx\n",
++		 seq + 1, cpu, far, untagged, fnv, esr, ttbr0, ttbr1, tcr,
++		 pc, pstate);
++}
++
+ static int do_sea(unsigned long far, unsigned long esr, struct pt_regs *regs)
+ {
+ 	const struct fault_info *inf;
+ 	unsigned long siaddr;
+ 
++	leon_sea_register_snapshot(far, esr, regs);
+ 	inf = esr_to_fault_info(esr);
+ 
+ 	if (user_mode(regs) && apei_claim_sea(regs) == 0) {
+diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+index ea80e2713..47274b92f 100644
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -16,6 +16,7 @@
+ #include <linux/libfdt.h>
+ #include <linux/mman.h>
+ #include <linux/nodemask.h>
++#include <linux/of_fdt.h>
+ #include <linux/memblock.h>
+ #include <linux/memremap.h>
+ #include <linux/memory.h>
+@@ -46,6 +47,64 @@
+ #define NO_CONT_MAPPINGS	BIT(1)
+ #define NO_EXEC_MAPPINGS	BIT(2)	/* assumes FEAT_HPDS is not used */
+ 
++/*
++ * Scoped SL1680 boot workaround: retain the ordinary allocation and place the
++ * first linear-map PMD table in the validated lower physical interval. The
++ * underlying fault is not established; this is not a general RAM-tail rule.
++ * Only the dedicated board configuration may enable this policy.
++ *
++ * Generic constructors also run after init, so their policy state must remain
++ * readable then. Only map_mem(swapper_pg_dir) activates it, and finish clears
++ * active before this state becomes read-only. Saved scalars never read tables.
++ */
++#ifdef CONFIG_ARM64_SL1680_L2_PLACEMENT
++#define SL1680_L2_ALLOC_START ((phys_addr_t)0x80000000)
++#define SL1680_L2_ALLOC_END   ((phys_addr_t)0xc0000000)
++static struct {
++	phys_addr_t retained_original, replacement, range_end;
++	unsigned long target_va, target_pgd_prefix;
++	bool active, pending, applied;
++} sl1680_l2_placement __ro_after_init;
++
++static void __init sl1680_l2_begin(pgd_t *pgdp)
++{
++	BUILD_BUG_ON(PAGE_SHIFT != 12 || VA_BITS != 39 ||
++		     CONFIG_PGTABLE_LEVELS != 3);
++	if (pgdp != swapper_pg_dir)
++		return;
++	if (!initial_boot_params ||
++	    !of_flat_dt_is_compatible(of_get_flat_dt_root(), "syna,dolphin"))
++		panic("SL1680 L2 policy requires a Dolphin flat DT\n");
++	if (sl1680_l2_placement.active || sl1680_l2_placement.pending ||
++	    sl1680_l2_placement.applied)
++		panic("SL1680 L2 policy re-entry\n");
++
++	sl1680_l2_placement.target_va = _PAGE_OFFSET(VA_BITS_MIN);
++	sl1680_l2_placement.target_pgd_prefix =
++		sl1680_l2_placement.target_va >> PGDIR_SHIFT;
++	sl1680_l2_placement.active = true;
++}
++
++static void __init sl1680_l2_finish(void)
++{
++	if (!sl1680_l2_placement.active)
++		return;
++	if (sl1680_l2_placement.pending || !sl1680_l2_placement.applied)
++		panic("SL1680 L2 policy target was not placed\n");
++	sl1680_l2_placement.active = false;
++	pr_info("SL1680_L2_POLICY target_va=%016lx target_pgd_prefix=%lx original=%016llx replacement=%016llx min=%016llx end=%016llx retained_original=1 no_table_reads=1\n",
++		sl1680_l2_placement.target_va,
++		sl1680_l2_placement.target_pgd_prefix,
++		(u64)sl1680_l2_placement.retained_original,
++		(u64)sl1680_l2_placement.replacement,
++		(u64)SL1680_L2_ALLOC_START,
++		(u64)sl1680_l2_placement.range_end);
++}
++#else
++static inline void sl1680_l2_begin(pgd_t *pgdp) { }
++static inline void sl1680_l2_finish(void) { }
++#endif
++
+ u64 kimage_voffset __ro_after_init;
+ EXPORT_SYMBOL(kimage_voffset);
+ 
+@@ -110,13 +169,44 @@ EXPORT_SYMBOL(phys_mem_access_prot);
+ static phys_addr_t __init early_pgtable_alloc(int shift)
+ {
+ 	phys_addr_t phys;
++#ifdef CONFIG_ARM64_SL1680_L2_PLACEMENT
++	phys_addr_t replacement, end;
++#endif
+ 
+ 	phys = memblock_phys_alloc_range(PAGE_SIZE, PAGE_SIZE, 0,
+ 					 MEMBLOCK_ALLOC_NOLEAKTRACE);
+ 	if (!phys)
+ 		panic("Failed to allocate page table page\n");
+ 
++#ifdef CONFIG_ARM64_SL1680_L2_PLACEMENT
++	if (!sl1680_l2_placement.pending)
++		return phys;
++	if (!sl1680_l2_placement.active || shift != PMD_SHIFT ||
++	    sl1680_l2_placement.applied || !PAGE_ALIGNED(phys))
++		panic("SL1680 L2 policy invalid allocation request\n");
++
++	/* Never clear, install or release this ordinary allocated page. */
++	sl1680_l2_placement.retained_original = phys;
++	end = min_t(phys_addr_t, SL1680_L2_ALLOC_END,
++		    memblock_get_current_limit());
++	sl1680_l2_placement.range_end = end;
++	if (end < SL1680_L2_ALLOC_START + PAGE_SIZE)
++		panic("SL1680 L2 policy empty allocation range\n");
++
++	/* Strict range; ordinary memblock free/reserved/NOMAP filtering. */
++	replacement = memblock_phys_alloc_range(PAGE_SIZE, PAGE_SIZE,
++					      SL1680_L2_ALLOC_START, end);
++	if (!replacement || !PAGE_ALIGNED(replacement) ||
++	    replacement < SL1680_L2_ALLOC_START ||
++	    replacement > end - PAGE_SIZE || replacement == phys)
++		panic("SL1680 L2 policy allocation failed\n");
++
++	sl1680_l2_placement.replacement = replacement;
++	sl1680_l2_placement.applied = true;
++	return replacement;
++#else
+ 	return phys;
++#endif
+ }
+ 
+ bool pgattr_change_is_safe(u64 old, u64 new)
+@@ -294,7 +384,21 @@ static void alloc_init_cont_pmd(pud_t *pudp, unsigned long addr,
+ 		if (flags & NO_EXEC_MAPPINGS)
+ 			pudval |= PUD_TABLE_PXN;
+ 		BUG_ON(!pgtable_alloc);
++#ifdef CONFIG_ARM64_SL1680_L2_PLACEMENT
++		if (sl1680_l2_placement.active &&
++		    (addr >> PGDIR_SHIFT) ==
++		    sl1680_l2_placement.target_pgd_prefix) {
++			/* Never rebuild or reuse an already installed replacement. */
++			if (sl1680_l2_placement.pending || sl1680_l2_placement.applied)
++				panic("SL1680 L2 policy target table rebuilt\n");
++			sl1680_l2_placement.pending = true;
++		}
++#endif
+ 		pmd_phys = pgtable_alloc(PMD_SHIFT);
++#ifdef CONFIG_ARM64_SL1680_L2_PLACEMENT
++		if (sl1680_l2_placement.pending)
++			sl1680_l2_placement.pending = false;
++#endif
+ 		pmdp = pmd_set_fixmap(pmd_phys);
+ 		init_clear_pgtable(pmdp);
+ 		pmdp += pmd_index(addr);
+@@ -648,6 +752,8 @@ static void __init map_mem(pgd_t *pgdp)
+ 	if (can_set_direct_map())
+ 		flags |= NO_BLOCK_MAPPINGS | NO_CONT_MAPPINGS;
+ 
++	sl1680_l2_begin(pgdp);
++
+ 	/*
+ 	 * Take care not to create a writable alias for the
+ 	 * read-only text and rodata sections of the kernel image.
+@@ -683,6 +789,7 @@ static void __init map_mem(pgd_t *pgdp)
+ 		       PAGE_KERNEL, NO_CONT_MAPPINGS);
+ 	memblock_clear_nomap(kernel_start, kernel_end - kernel_start);
+ 	arm64_kfence_map_pool(early_kfence_pool, pgdp);
++	sl1680_l2_finish();
+ }
+ 
+ void mark_rodata_ro(void)
+diff --git a/arch/arm64/boot/dts/synaptics/dolphin-asus-be19000ai.dts b/arch/arm64/boot/dts/synaptics/dolphin-asus-be19000ai.dts
+new file mode 100644
+--- /dev/null
++++ b/arch/arm64/boot/dts/synaptics/dolphin-asus-be19000ai.dts
+@@ -0,0 +1,476 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++/* ASUS GT-BE19000AI SL1680 board port candidate.
++ * Generated only from ASUS 171-g7f63bc6_19-gec2d4 shipped DTB board delta.
++ * Base: Synaptics SDK scarthgap_6.12_v2.6.0 dolphin.dtsi.
++ * Compile checked; not hardware validated. Preserve bootloader memory fixups.
++ */
++/dts-v1/;
++/memreserve/ 0x7f000000 0x1000000;
++
++#include "dolphin.dtsi"
++
++/* The standalone AIO dHub interrupt controller accesses registers even
++ * though ASUS leaves the separate AVIO/AIO device disabled.
++ */
++&dhubctr_a {
++	clocks = <&clk CLK_AIOSYS>;
++	clock-names = "bus";
++};
++
++&{/} {
++	chosen {
++		stdout-path = "serial0:115200n8";
++	};
++};
++
++&{/} {
++	dmabuf_heap {
++		compatible = "syna,berlin-heaps";
++		pool-num = <0x2>;
++		reg-names = "NonSecure", "Secure";
++		reg = <0x0 0x7f000000 0x0 0x800000 0x0 0x7f800000 0x0 0x800000>;
++		attributes-num-per-pool = <0x2>;
++		pool-attributes = <0x105 0xf3a 0x102 0xf3d>;
++	};
++};
++
++&{/} {
++	memory {
++		device_type = "memory";
++		reg = <0x0 0x1000000 0x0 0x7f000000>;
++	};
++};
++
++&{/} {
++	regulators {
++		compatible = "simple-bus";
++		#address-cells = <0x1>;
++		#size-cells = <0x0>;
++		vmmc_sdio1 {
++			compatible = "regulator-fixed";
++			regulator-min-microvolt = <0x325aa0>;
++			regulator-max-microvolt = <0x325aa0>;
++			regulator-name = "vmmc_sdio1";
++			enable-active-high;
++			regulator-boot-on;
++		};
++		xhci0_vbus {
++			compatible = "regulator-fixed";
++			regulator-name = "xhci0_vbus";
++			regulator-min-microvolt = <0x4c4b40>;
++			regulator-max-microvolt = <0x4c4b40>;
++			gpio = <&{/soc/apb@f7e80000/gpio@2400/gpio-port@0} 0x9 0x0>;
++			enable-active-high;
++		};
++	};
++};
++
++&{/} {
++	reserved-memory {
++		#address-cells = <0x2>;
++		#size-cells = <0x2>;
++		ranges;
++		ramoops@f901c000 {
++			compatible = "ramoops";
++			reg = <0x0 0xf901c000 0x0 0x4000>;
++			record-size = <0x4000>;
++		};
++	};
++};
++
++&{/soc/apb@f7e80000/i2c@2000} {
++	regulator@00 {
++		status = "okay";
++		compatible = "silergy,sy8827n";
++		regulator-name = "vcpu";
++		regulator-min-microvolt = <0xaae60>;
++		regulator-max-microvolt = <0xf116c>;
++		regulator-always-on;
++		regulator-boot-on;
++		regulator-active-discharge = <0x0>;
++		enable-gpios = <&{/soc/apb@f7fc0000/gpio@8000/gpio-port@4} 0x10 0x0>;
++		silergy,vsel-step = <0x1>;
++		reg = <0x60>;
++	};
++};
++
++&{/soc/apb@f7fc0000/i2c@b000} {
++	regulator@00 {
++		status = "okay";
++		compatible = "silergy,sy8827n";
++		regulator-name = "vcore";
++		regulator-min-microvolt = <0xaae60>;
++		regulator-max-microvolt = <0xe4e1c>;
++		regulator-always-on;
++		regulator-boot-on;
++		regulator-active-discharge = <0x0>;
++		reg = <0x60>;
++	};
++};
++
++&{/soc/dolphin-asoc} {
++	soc-i2s-pri-lpbk {
++		status = "okay";
++		stream-name = "soc-i2s-pri-lpbk";
++		link-name = "soc-i2s-pri-lpbk";
++		format = "i2s";
++		cpu-node = <&{/soc/i2s_pri_lpbk}>;
++		codec-name = "snd-soc-dummy";
++		codec-dai-name = "snd-soc-dummy-dai";
++		platform-node = <&{/soc/dolphin-pcm}>;
++	};
++};
++
++&{/soc/ethernet@f7b60000/mdio0} {
++	ethernet-phy@1 {
++		reg = <0x1>;
++		realtek,clkout-disable;
++		realtek,rxc-ssc-enable;
++		realtek,sysclk-ssc-enable;
++	};
++};
++
++&{/soc/pinctrl@f7ea8000} {
++	gmac0-pmux {
++		groups = "RGMII_MDC", "RGMII_MDIO", "RGMII_TXC", "RGMII_TXD0", "RGMII_TXD1", "RGMII_TXD2", "RGMII_TXD3", "RGMII_TXCTL", "RGMII_RXC", "RGMII_RXD0", "RGMII_RXD1", "RGMII_RXD2", "RGMII_RXD3", "RGMII_RXCTL";
++		function = "rgmii";
++		drive-strength = <0x3>;
++	};
++};
++
++&{/soc/pinctrl@f7ea8000} {
++	i2c1-pmux {
++		groups = "SPI1_SS2n", "SPI1_SS3n";
++		function = "tw1b";
++		drive-strength = <0x3>;
++	};
++};
++
++&{/soc/pinctrl@f7ea8000} {
++	pwm-pmux {
++		groups = "STS1_SOP", "STS1_SD";
++		function = "gpio";
++	};
++};
++
++&{/soc/pinctrl@f7ea8400} {
++	pcie-pmux {
++		groups = "I2S2_DI2", "I2S2_DI3", "I2S2_DI0";
++		function = "gpio";
++		drive-strength = <0x2>;
++	};
++};
++
++&{/soc/pinctrl@f7fe2c10} {
++	fanfoo-pmux {
++		groups = "SM_TW3_SCL";
++		function = "gpio";
++		drive-strength = <0x7>;
++	};
++};
++
++&{/soc/pinctrl@f7fe2c10} {
++	fanpwm-pmux {
++		groups = "SM_TW3_SDA";
++		function = "pwm";
++		drive-strength = <0x7>;
++	};
++};
++
++&{/soc/pinctrl@f7fe2c10} {
++	gmac0-gpio-pmux {
++		groups = "SM_TDO";
++		function = "gpio";
++	};
++};
++
++&{/soc/pinctrl@f7fe2c10} {
++	hrxhpd-pmux {
++		groups = "SM_HDMI_HPD";
++		function = "gpio";
++	};
++};
++
++&{/soc/pinctrl@f7fe2c10} {
++	i2c2-pmux {
++		groups = "SM_URT1_TXD", "SM_URT1_RXD";
++		function = "tw2b";
++		drive-strength = <0x7>;
++	};
++};
++
++&{/soc/pinctrl@f7fe2c10} {
++	levelshift-pmux {
++		groups = "SM_HDMIRX_HPD";
++		function = "gpio";
++	};
++};
++
++&{/soc/pinctrl@f7fe2c10} {
++	mt6990-pmux {
++		groups = "SM_TDI";
++		function = "gpio";
++		drive-strength = <0x7>;
++	};
++};
++
++&{/soc/pinctrl@f7fe2c10} {
++	sm-misc-pmux {
++		groups = "SM_TW2_SCL", "SM_TW2_SDA", "SM_HDMI_HPD", "SM_HDMI_CEC", "SM_TMS", "SM_SPI2_SCLK", "SM_SPI2_SS0n", "SM_SPI2_SS1n", "SM_HDMIRX_HPD", "SM_HDMIRX_PWR5V";
++		function = "gpio";
++	};
++};
++
++&{/soc/pinctrl@f7fe2c10} {
++	uart0-pmux {
++		groups = "SM_URT0_TXD", "SM_URT0_RXD";
++		function = "uart0";
++	};
++};
++
++&{/} {
++	thermal-zones {
++		cpu-thermal {
++			polling-delay-passive = <0xfa>;
++			polling-delay = <0x3e8>;
++			thermal-sensors = <&{/soc/hwmon@f7920100}>;
++			trips {
++				cpu-alert {
++					temperature = <0x18e70>;
++					hysteresis = <0x7d0>;
++					type = "passive";
++				};
++				cpu-crit {
++					temperature = <0x1adb0>;
++					hysteresis = <0x7d0>;
++					type = "critical";
++				};
++			};
++			cooling-maps {
++				map0 {
++					trip = <&{/thermal-zones/cpu-thermal/trips/cpu-alert}>;
++					cooling-device = <&{/cpus/cpu@0} 0xffffffff 0xffffffff>;
++				};
++			};
++		};
++	};
++};
++
++&{/} {
++	compatible = "syna,dolphin-evk", "syna,dolphin";
++	model = "Synaptics Dolphin RDK";
++};
++
++&{/cpus/cpu@0} {
++	#cooling-cells = <0x2>;
++	cpu0-supply = <&{/soc/apb@f7e80000/i2c@2000/regulator@00}>;
++};
++
++&{/soc/aout@f74ac000} {
++	status = "okay";
++};
++
++&{/soc/apb@f7e80000/i2c@1800} {
++	clock-frequency = <0x186a0>;
++	no-irq-suspend;
++	pinctrl-names = "default";
++	status = "okay";
++};
++
++&{/soc/apb@f7e80000/i2c@2000} {
++	pinctrl-0 = <&{/soc/pinctrl@f7ea8000/i2c1-pmux}>;
++	pinctrl-names = "default";
++	status = "okay";
++};
++
++&{/soc/apb@f7fc0000/i2c@b000} {
++	pinctrl-0 = <&{/soc/pinctrl@f7fe2c10/i2c2-pmux}>;
++	pinctrl-names = "default";
++	status = "okay";
++};
++
++&{/soc/apb@f7fc0000/i2c@c000} {
++	clock-frequency = <0x186a0>;
++	no-irq-suspend;
++	pinctrl-names = "default";
++	status = "okay";
++};
++
++&{/soc/apb@f7fc0000/uart@d000} {
++	pinctrl-0 = <&{/soc/pinctrl@f7fe2c10/uart0-pmux}>;
++	pinctrl-names = "default";
++	status = "okay";
++};
++
++&{/soc/axi_meter@f7940000} {
++	status = "okay";
++};
++
++&{/soc/bm} {
++	status = "okay";
++};
++
++&{/soc/cec@f7fe1000} {
++	status = "okay";
++};
++
++&{/soc/dolphin-asoc} {
++	status = "okay";
++};
++
++&{/soc/dolphin-pcm} {
++	status = "okay";
++};
++
++&{/soc/ethernet@f7b60000} {
++	phy-handle = <&{/soc/ethernet@f7b60000/mdio0/ethernet-phy@1}>;
++	phy-mode = "rgmii-id";
++	pinctrl-0 = <&{/soc/pinctrl@f7ea8000/gmac0-pmux} &{/soc/pinctrl@f7fe2c10/gmac0-gpio-pmux}>;
++	pinctrl-names = "default";
++	snps,reset-active-low;
++	snps,reset-delays-us = <0x0 0x2710 0xc350>;
++	snps,reset-gpio = <&{/soc/apb@f7fc0000/gpio@8000/gpio-port@4} 0x8 0x1>;
++	status = "okay";
++};
++
++&{/soc/fb} {
++	status = "okay";
++};
++
++&{/soc/gpu@0xf7980000} {
++	status = "okay";
++};
++
++&{/soc/h1@f7000000} {
++	status = "okay";
++};
++
++&{/soc/hrx@f74a0000} {
++	hrxhpd-gpio = <&{/soc/apb@f7fc0000/gpio@8000/gpio-port@4} 0x14 0x1>;
++	pinctrl-0 = <&{/soc/pinctrl@f7fe2c10/hrxhpd-pmux}>;
++	pinctrl-names = "default";
++	status = "okay";
++};
++
++&{/soc/hwmon@f7920100} {
++	#thermal-sensor-cells = <0x0>;
++};
++
++&{/soc/i2s_hdmi_lpbk} {
++	status = "okay";
++};
++
++&{/soc/i2s_pri_lpbk} {
++	status = "okay";
++};
++
++&{/soc/ir} {
++	status = "okay";
++};
++
++&{/soc/isp@f9100000} {
++	dev-addr = <0x70>;
++	i2c-bus = <&{/soc/apb@f7fc0000/i2c@c000}>;
++	status = "okay";
++};
++
++&{/soc/isp_be} {
++	status = "okay";
++};
++
++&{/soc/isp_scaler} {
++	status = "okay";
++};
++
++&{/soc/mc_dfc@f7cb0000} {
++	status = "okay";
++};
++
++&{/soc/npu@f7bc0000} {
++	status = "okay";
++};
++
++&{/soc/ovp@f78c0000} {
++	status = "okay";
++};
++
++&{/soc/pcie@f7e40000} {
++	enable-gpios = <&{/soc/apb@f7e80000/gpio@2400/gpio-port@0} 0x8 0x0>;
++	pinctrl-0 = <&{/soc/pinctrl@f7ea8400/pcie-pmux}>;
++	pinctrl-names = "default";
++	reset-gpios = <&{/soc/apb@f7e80000/gpio@2400/gpio-port@0} 0xb 0x1>;
++	status = "okay";
++};
++
++&{/soc/phy@f7c40000} {
++	status = "okay";
++};
++
++&{/soc/phy@f7d20100} {
++	status = "okay";
++};
++
++&{/soc/phy@f7e4a02c} {
++	status = "okay";
++};
++
++&{/soc/pwm@f7f20000} {
++	pinctrl-0 = <&{/soc/pinctrl@f7ea8000/pwm-pmux} &{/soc/pinctrl@f7fe2c10/fanpwm-pmux} &{/soc/pinctrl@f7fe2c10/fanfoo-pmux}>;
++	pinctrl-names = "default";
++	status = "okay";
++};
++
++&{/soc/sdhci@f7aa0000} {
++	dll-calibration;
++	dll-delay-offset = <0xfa>;
++	fixed-emmc-driver-type = <0x1>;
++	mmc-ddr-1_8v;
++	mmc-hs200-1_8v;
++	mmc-hs400-1_8v;
++	pad-sn = [0e];
++	pad-sp = [0e];
++	sdclkdl-dc = [1a];
++	status = "okay";
++};
++
++&{/soc/sdhci@f7ab0000} {
++	drv-strength = [03];
++	initial-voltage = [01];
++	mode1-tune;
++	no-mmc;
++	no-sd;
++	non-removable;
++	pad-sn = [0c];
++	pad-sp = [0c];
++	pinctrl-names = "default";
++	sdclkdl-dc = [4b];
++	status = "okay";
++	vmmc-supply = <&{/regulators/vmmc_sdio1}>;
++};
++
++&{/soc/shm} {
++	status = "okay";
++};
++
++&{/soc/sm@f7f80000} {
++	pinctrl-0 = <&{/soc/pinctrl@f7fe2c10/sm-misc-pmux} &{/soc/pinctrl@f7fe2c10/mt6990-pmux}>;
++	pinctrl-names = "default";
++	status = "okay";
++};
++
++&{/soc/tsp@f7a40000} {
++	status = "okay";
++};
++
++&{/soc/vpp} {
++	status = "okay";
++};
++
++&{/soc/vxg@f7600000} {
++	status = "okay";
++};
++
++&{/soc/xhci@f7d00000} {
++	status = "okay";
++	vbus-supply = <&{/regulators/xhci0_vbus}>;
++};

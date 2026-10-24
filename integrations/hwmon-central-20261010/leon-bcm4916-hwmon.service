@@ -1,0 +1,15 @@
+[Unit]
+Description=BCM4916 hardware monitoring through hwmon and libsensors
+After=local-fs.target
+Before=lm-sensors.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/libexec/leon-bcm4916-hwmon-load
+ExecStop=/usr/libexec/leon-bcm4916-hwmon-load --unload
+TimeoutStartSec=30s
+TimeoutStopSec=15s
+
+[Install]
+WantedBy=multi-user.target

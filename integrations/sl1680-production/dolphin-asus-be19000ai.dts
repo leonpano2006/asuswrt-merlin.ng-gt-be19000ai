@@ -1,0 +1,476 @@
+/* SPDX-License-Identifier: GPL-2.0+ */
+/* ASUS GT-BE19000AI SL1680 board port candidate.
+ * Generated only from ASUS 171-g7f63bc6_19-gec2d4 shipped DTB board delta.
+ * Base: Synaptics SDK scarthgap_6.12_v2.6.0 dolphin.dtsi.
+ * Compile checked; not hardware validated. Preserve bootloader memory fixups.
+ */
+/dts-v1/;
+/memreserve/ 0x7f000000 0x1000000;
+
+#include "dolphin.dtsi"
+
+/* The standalone AIO dHub interrupt controller accesses registers even
+ * though ASUS leaves the separate AVIO/AIO device disabled.
+ */
+&dhubctr_a {
+	clocks = <&clk CLK_AIOSYS>;
+	clock-names = "bus";
+};
+
+&{/} {
+	chosen {
+		stdout-path = "serial0:115200n8";
+	};
+};
+
+&{/} {
+	dmabuf_heap {
+		compatible = "syna,berlin-heaps";
+		pool-num = <0x2>;
+		reg-names = "NonSecure", "Secure";
+		reg = <0x0 0x7f000000 0x0 0x800000 0x0 0x7f800000 0x0 0x800000>;
+		attributes-num-per-pool = <0x2>;
+		pool-attributes = <0x105 0xf3a 0x102 0xf3d>;
+	};
+};
+
+&{/} {
+	memory {
+		device_type = "memory";
+		reg = <0x0 0x1000000 0x0 0x7f000000>;
+	};
+};
+
+&{/} {
+	regulators {
+		compatible = "simple-bus";
+		#address-cells = <0x1>;
+		#size-cells = <0x0>;
+		vmmc_sdio1 {
+			compatible = "regulator-fixed";
+			regulator-min-microvolt = <0x325aa0>;
+			regulator-max-microvolt = <0x325aa0>;
+			regulator-name = "vmmc_sdio1";
+			enable-active-high;
+			regulator-boot-on;
+		};
+		xhci0_vbus {
+			compatible = "regulator-fixed";
+			regulator-name = "xhci0_vbus";
+			regulator-min-microvolt = <0x4c4b40>;
+			regulator-max-microvolt = <0x4c4b40>;
+			gpio = <&{/soc/apb@f7e80000/gpio@2400/gpio-port@0} 0x9 0x0>;
+			enable-active-high;
+		};
+	};
+};
+
+&{/} {
+	reserved-memory {
+		#address-cells = <0x2>;
+		#size-cells = <0x2>;
+		ranges;
+		ramoops@f901c000 {
+			compatible = "ramoops";
+			reg = <0x0 0xf901c000 0x0 0x4000>;
+			record-size = <0x4000>;
+		};
+	};
+};
+
+&{/soc/apb@f7e80000/i2c@2000} {
+	regulator@00 {
+		status = "okay";
+		compatible = "silergy,sy8827n";
+		regulator-name = "vcpu";
+		regulator-min-microvolt = <0xaae60>;
+		regulator-max-microvolt = <0xf116c>;
+		regulator-always-on;
+		regulator-boot-on;
+		regulator-active-discharge = <0x0>;
+		enable-gpios = <&{/soc/apb@f7fc0000/gpio@8000/gpio-port@4} 0x10 0x0>;
+		silergy,vsel-step = <0x1>;
+		reg = <0x60>;
+	};
+};
+
+&{/soc/apb@f7fc0000/i2c@b000} {
+	regulator@00 {
+		status = "okay";
+		compatible = "silergy,sy8827n";
+		regulator-name = "vcore";
+		regulator-min-microvolt = <0xaae60>;
+		regulator-max-microvolt = <0xe4e1c>;
+		regulator-always-on;
+		regulator-boot-on;
+		regulator-active-discharge = <0x0>;
+		reg = <0x60>;
+	};
+};
+
+&{/soc/dolphin-asoc} {
+	soc-i2s-pri-lpbk {
+		status = "okay";
+		stream-name = "soc-i2s-pri-lpbk";
+		link-name = "soc-i2s-pri-lpbk";
+		format = "i2s";
+		cpu-node = <&{/soc/i2s_pri_lpbk}>;
+		codec-name = "snd-soc-dummy";
+		codec-dai-name = "snd-soc-dummy-dai";
+		platform-node = <&{/soc/dolphin-pcm}>;
+	};
+};
+
+&{/soc/ethernet@f7b60000/mdio0} {
+	ethernet-phy@1 {
+		reg = <0x1>;
+		realtek,clkout-disable;
+		realtek,rxc-ssc-enable;
+		realtek,sysclk-ssc-enable;
+	};
+};
+
+&{/soc/pinctrl@f7ea8000} {
+	gmac0-pmux {
+		groups = "RGMII_MDC", "RGMII_MDIO", "RGMII_TXC", "RGMII_TXD0", "RGMII_TXD1", "RGMII_TXD2", "RGMII_TXD3", "RGMII_TXCTL", "RGMII_RXC", "RGMII_RXD0", "RGMII_RXD1", "RGMII_RXD2", "RGMII_RXD3", "RGMII_RXCTL";
+		function = "rgmii";
+		drive-strength = <0x3>;
+	};
+};
+
+&{/soc/pinctrl@f7ea8000} {
+	i2c1-pmux {
+		groups = "SPI1_SS2n", "SPI1_SS3n";
+		function = "tw1b";
+		drive-strength = <0x3>;
+	};
+};
+
+&{/soc/pinctrl@f7ea8000} {
+	pwm-pmux {
+		groups = "STS1_SOP", "STS1_SD";
+		function = "gpio";
+	};
+};
+
+&{/soc/pinctrl@f7ea8400} {
+	pcie-pmux {
+		groups = "I2S2_DI2", "I2S2_DI3", "I2S2_DI0";
+		function = "gpio";
+		drive-strength = <0x2>;
+	};
+};
+
+&{/soc/pinctrl@f7fe2c10} {
+	fanfoo-pmux {
+		groups = "SM_TW3_SCL";
+		function = "gpio";
+		drive-strength = <0x7>;
+	};
+};
+
+&{/soc/pinctrl@f7fe2c10} {
+	fanpwm-pmux {
+		groups = "SM_TW3_SDA";
+		function = "pwm";
+		drive-strength = <0x7>;
+	};
+};
+
+&{/soc/pinctrl@f7fe2c10} {
+	gmac0-gpio-pmux {
+		groups = "SM_TDO";
+		function = "gpio";
+	};
+};
+
+&{/soc/pinctrl@f7fe2c10} {
+	hrxhpd-pmux {
+		groups = "SM_HDMI_HPD";
+		function = "gpio";
+	};
+};
+
+&{/soc/pinctrl@f7fe2c10} {
+	i2c2-pmux {
+		groups = "SM_URT1_TXD", "SM_URT1_RXD";
+		function = "tw2b";
+		drive-strength = <0x7>;
+	};
+};
+
+&{/soc/pinctrl@f7fe2c10} {
+	levelshift-pmux {
+		groups = "SM_HDMIRX_HPD";
+		function = "gpio";
+	};
+};
+
+&{/soc/pinctrl@f7fe2c10} {
+	mt6990-pmux {
+		groups = "SM_TDI";
+		function = "gpio";
+		drive-strength = <0x7>;
+	};
+};
+
+&{/soc/pinctrl@f7fe2c10} {
+	sm-misc-pmux {
+		groups = "SM_TW2_SCL", "SM_TW2_SDA", "SM_HDMI_HPD", "SM_HDMI_CEC", "SM_TMS", "SM_SPI2_SCLK", "SM_SPI2_SS0n", "SM_SPI2_SS1n", "SM_HDMIRX_HPD", "SM_HDMIRX_PWR5V";
+		function = "gpio";
+	};
+};
+
+&{/soc/pinctrl@f7fe2c10} {
+	uart0-pmux {
+		groups = "SM_URT0_TXD", "SM_URT0_RXD";
+		function = "uart0";
+	};
+};
+
+&{/} {
+	thermal-zones {
+		cpu-thermal {
+			polling-delay-passive = <0xfa>;
+			polling-delay = <0x3e8>;
+			thermal-sensors = <&{/soc/hwmon@f7920100}>;
+			trips {
+				cpu-alert {
+					temperature = <0x18e70>;
+					hysteresis = <0x7d0>;
+					type = "passive";
+				};
+				cpu-crit {
+					temperature = <0x1adb0>;
+					hysteresis = <0x7d0>;
+					type = "critical";
+				};
+			};
+			cooling-maps {
+				map0 {
+					trip = <&{/thermal-zones/cpu-thermal/trips/cpu-alert}>;
+					cooling-device = <&{/cpus/cpu@0} 0xffffffff 0xffffffff>;
+				};
+			};
+		};
+	};
+};
+
+&{/} {
+	compatible = "syna,dolphin-evk", "syna,dolphin";
+	model = "Synaptics Dolphin RDK";
+};
+
+&{/cpus/cpu@0} {
+	#cooling-cells = <0x2>;
+	cpu0-supply = <&{/soc/apb@f7e80000/i2c@2000/regulator@00}>;
+};
+
+&{/soc/aout@f74ac000} {
+	status = "okay";
+};
+
+&{/soc/apb@f7e80000/i2c@1800} {
+	clock-frequency = <0x186a0>;
+	no-irq-suspend;
+	pinctrl-names = "default";
+	status = "okay";
+};
+
+&{/soc/apb@f7e80000/i2c@2000} {
+	pinctrl-0 = <&{/soc/pinctrl@f7ea8000/i2c1-pmux}>;
+	pinctrl-names = "default";
+	status = "okay";
+};
+
+&{/soc/apb@f7fc0000/i2c@b000} {
+	pinctrl-0 = <&{/soc/pinctrl@f7fe2c10/i2c2-pmux}>;
+	pinctrl-names = "default";
+	status = "okay";
+};
+
+&{/soc/apb@f7fc0000/i2c@c000} {
+	clock-frequency = <0x186a0>;
+	no-irq-suspend;
+	pinctrl-names = "default";
+	status = "okay";
+};
+
+&{/soc/apb@f7fc0000/uart@d000} {
+	pinctrl-0 = <&{/soc/pinctrl@f7fe2c10/uart0-pmux}>;
+	pinctrl-names = "default";
+	status = "okay";
+};
+
+&{/soc/axi_meter@f7940000} {
+	status = "okay";
+};
+
+&{/soc/bm} {
+	status = "okay";
+};
+
+&{/soc/cec@f7fe1000} {
+	status = "okay";
+};
+
+&{/soc/dolphin-asoc} {
+	status = "okay";
+};
+
+&{/soc/dolphin-pcm} {
+	status = "okay";
+};
+
+&{/soc/ethernet@f7b60000} {
+	phy-handle = <&{/soc/ethernet@f7b60000/mdio0/ethernet-phy@1}>;
+	phy-mode = "rgmii-id";
+	pinctrl-0 = <&{/soc/pinctrl@f7ea8000/gmac0-pmux} &{/soc/pinctrl@f7fe2c10/gmac0-gpio-pmux}>;
+	pinctrl-names = "default";
+	snps,reset-active-low;
+	snps,reset-delays-us = <0x0 0x2710 0xc350>;
+	snps,reset-gpio = <&{/soc/apb@f7fc0000/gpio@8000/gpio-port@4} 0x8 0x1>;
+	status = "okay";
+};
+
+&{/soc/fb} {
+	status = "okay";
+};
+
+&{/soc/gpu@0xf7980000} {
+	status = "okay";
+};
+
+&{/soc/h1@f7000000} {
+	status = "okay";
+};
+
+&{/soc/hrx@f74a0000} {
+	hrxhpd-gpio = <&{/soc/apb@f7fc0000/gpio@8000/gpio-port@4} 0x14 0x1>;
+	pinctrl-0 = <&{/soc/pinctrl@f7fe2c10/hrxhpd-pmux}>;
+	pinctrl-names = "default";
+	status = "okay";
+};
+
+&{/soc/hwmon@f7920100} {
+	#thermal-sensor-cells = <0x0>;
+};
+
+&{/soc/i2s_hdmi_lpbk} {
+	status = "okay";
+};
+
+&{/soc/i2s_pri_lpbk} {
+	status = "okay";
+};
+
+&{/soc/ir} {
+	status = "okay";
+};
+
+&{/soc/isp@f9100000} {
+	dev-addr = <0x70>;
+	i2c-bus = <&{/soc/apb@f7fc0000/i2c@c000}>;
+	status = "okay";
+};
+
+&{/soc/isp_be} {
+	status = "okay";
+};
+
+&{/soc/isp_scaler} {
+	status = "okay";
+};
+
+&{/soc/mc_dfc@f7cb0000} {
+	status = "okay";
+};
+
+&{/soc/npu@f7bc0000} {
+	status = "okay";
+};
+
+&{/soc/ovp@f78c0000} {
+	status = "okay";
+};
+
+&{/soc/pcie@f7e40000} {
+	enable-gpios = <&{/soc/apb@f7e80000/gpio@2400/gpio-port@0} 0x8 0x0>;
+	pinctrl-0 = <&{/soc/pinctrl@f7ea8400/pcie-pmux}>;
+	pinctrl-names = "default";
+	reset-gpios = <&{/soc/apb@f7e80000/gpio@2400/gpio-port@0} 0xb 0x1>;
+	status = "okay";
+};
+
+&{/soc/phy@f7c40000} {
+	status = "okay";
+};
+
+&{/soc/phy@f7d20100} {
+	status = "okay";
+};
+
+&{/soc/phy@f7e4a02c} {
+	status = "okay";
+};
+
+&{/soc/pwm@f7f20000} {
+	pinctrl-0 = <&{/soc/pinctrl@f7ea8000/pwm-pmux} &{/soc/pinctrl@f7fe2c10/fanpwm-pmux} &{/soc/pinctrl@f7fe2c10/fanfoo-pmux}>;
+	pinctrl-names = "default";
+	status = "okay";
+};
+
+&{/soc/sdhci@f7aa0000} {
+	dll-calibration;
+	dll-delay-offset = <0xfa>;
+	fixed-emmc-driver-type = <0x1>;
+	mmc-ddr-1_8v;
+	mmc-hs200-1_8v;
+	mmc-hs400-1_8v;
+	pad-sn = [0e];
+	pad-sp = [0e];
+	sdclkdl-dc = [1a];
+	status = "okay";
+};
+
+&{/soc/sdhci@f7ab0000} {
+	drv-strength = [03];
+	initial-voltage = [01];
+	mode1-tune;
+	no-mmc;
+	no-sd;
+	non-removable;
+	pad-sn = [0c];
+	pad-sp = [0c];
+	pinctrl-names = "default";
+	sdclkdl-dc = [4b];
+	status = "okay";
+	vmmc-supply = <&{/regulators/vmmc_sdio1}>;
+};
+
+&{/soc/shm} {
+	status = "okay";
+};
+
+&{/soc/sm@f7f80000} {
+	pinctrl-0 = <&{/soc/pinctrl@f7fe2c10/sm-misc-pmux} &{/soc/pinctrl@f7fe2c10/mt6990-pmux}>;
+	pinctrl-names = "default";
+	status = "okay";
+};
+
+&{/soc/tsp@f7a40000} {
+	status = "okay";
+};
+
+&{/soc/vpp} {
+	status = "okay";
+};
+
+&{/soc/vxg@f7600000} {
+	status = "okay";
+};
+
+&{/soc/xhci@f7d00000} {
+	status = "okay";
+	vbus-supply = <&{/regulators/xhci0_vbus}>;
+};

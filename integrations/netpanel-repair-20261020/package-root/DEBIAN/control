@@ -1,0 +1,7 @@
+Package: leon-netpanel-status
+Version: 0.1+leonb53.1
+Architecture: all
+Maintainer: Local Router Integration <root@localhost>
+Depends: bash, coreutils, iproute2, sudo, leon-asus-command-access
+Description: Fixed read-only network status collector for the BE19000AI Ubuntu host
+ Exposes port state, radio associations and uptime to the existing monitor.

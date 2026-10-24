@@ -1,0 +1,9 @@
+[Unit]
+Description=Already UUID-validated home for production kernel
+Before=local-fs.target
+After=blockdev@dev-mmcblk0p18.target
+[Mount]
+What=/dev/mmcblk0p18
+Where=/home
+Type=ext4
+Options=rw,relatime

@@ -1,0 +1,42 @@
+{
+  "url": "https://download.docker.com/linux/static/stable/aarch64/docker-29.9.1.tgz",
+  "sha256": "3e93cc6d1a686456a3b18eefdde26467a837a7a2b257af22e27cba1dbc1b2018",
+  "files": {
+    "containerd": {
+      "sha256": "ff1f67e7dc742511eae7729addab7086926106db6211173f9f11b4933780845d",
+      "bytes": 36700322,
+      "version": "containerd github.com/containerd/containerd/v2 v2.4.2 b7a25261e029d68978bbf290df0a62fc819b3c51"
+    },
+    "containerd-shim-runc-v2": {
+      "sha256": "675efbc328a18148312caa3acb2a554a70d79c699e477395db1f198cbf921843",
+      "bytes": 7733410
+    },
+    "ctr": {
+      "sha256": "e61a256a579a313aca7d2cbaafe2c4757d7d72e27e323dcc07918a00320ecbca",
+      "bytes": 21561506
+    },
+    "docker": {
+      "sha256": "77b9c2bb422945584e62cd3d3becb0228fa313d08e72434cb6f3b456ae75213d",
+      "bytes": 41635760,
+      "version": "Docker version 29.9.1, build dfc520d"
+    },
+    "docker-init": {
+      "sha256": "1acca8c1b9f66bfa655b0d224d6f061aa4c57b99f2f30c92fe777d33309edd7a",
+      "bytes": 664624
+    },
+    "docker-proxy": {
+      "sha256": "61d7e896f97c653ba6f0ad1c71f31d1dbf388f210d915a39c6f59bf68bb70b14",
+      "bytes": 2626672
+    },
+    "dockerd": {
+      "sha256": "3890b6a6834219e3b80f27a91304d94d6e1d2adfd86155c6e36646d964b24cc8",
+      "bytes": 96023696,
+      "version": "Docker version 29.9.1, build b26fb77"
+    },
+    "runc": {
+      "sha256": "08eb1b3398f31ac2837bba505e5496393ceff7d69806bc84a3a4b5e1c064217c",
+      "bytes": 13244936,
+      "version": "runc version 1.5.2\ncommit: v1.5.2-0-g29dd3dc\nspec: 1.3.0\ngo: go1.26.9\nlibseccomp: 2.6.0"
+    }
+  }
+}

@@ -1,0 +1,487 @@
+Package: binutils:arm64
+Pin: version 2.47-6ubuntu1+leonb53.1
+Pin-Priority: 1001
+
+Package: binutils:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: binutils-aarch64-linux-gnu:arm64
+Pin: version 2.47-6ubuntu1+leonb53.1
+Pin-Priority: 1001
+
+Package: binutils-aarch64-linux-gnu:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: binutils-arm-linux-gnueabi:arm64
+Pin: version 2.47-6ubuntu1+leonb53.1
+Pin-Priority: 1001
+
+Package: binutils-arm-linux-gnueabi:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: binutils-arm-linux-gnueabihf:arm64
+Pin: version 2.47-6ubuntu1+leonb53.1
+Pin-Priority: 1001
+
+Package: binutils-arm-linux-gnueabihf:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: binutils-common:arm64
+Pin: version 2.47-6ubuntu1+leonb53.1
+Pin-Priority: 1001
+
+Package: binutils-common:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: cpp-16:arm64
+Pin: version 16.2.0-3ubuntu1+leonb53.1
+Pin-Priority: 1001
+
+Package: cpp-16:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: cpp-16-aarch64-linux-gnu:arm64
+Pin: version 16.2.0-3ubuntu1+leonb53.1
+Pin-Priority: 1001
+
+Package: cpp-16-aarch64-linux-gnu:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: g++-16:arm64
+Pin: version 16.2.0-3ubuntu1+leonb53.1
+Pin-Priority: 1001
+
+Package: g++-16:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: g++-16-aarch64-linux-gnu:arm64
+Pin: version 16.2.0-3ubuntu1+leonb53.1
+Pin-Priority: 1001
+
+Package: g++-16-aarch64-linux-gnu:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: gcc-16:arm64
+Pin: version 16.2.0-3ubuntu1+leonb53.1
+Pin-Priority: 1001
+
+Package: gcc-16:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: gcc-16-aarch64-linux-gnu:arm64
+Pin: version 16.2.0-3ubuntu1+leonb53.1
+Pin-Priority: 1001
+
+Package: gcc-16-aarch64-linux-gnu:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: gcc-16-base:arm64
+Pin: version 16.2.0-3ubuntu1+leonb53.1
+Pin-Priority: 1001
+
+Package: gcc-16-base:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: leon-asus-command-map:any
+Pin: version 0.3
+Pin-Priority: 1001
+
+Package: leon-asus-command-map:any
+Pin: version *
+Pin-Priority: -1
+
+Package: leon-asus-integration:arm64
+Pin: version 0.7+asus3006.102.9+leonvpn1
+Pin-Priority: 1001
+
+Package: leon-asus-integration:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: leon-asus-notify:arm64
+Pin: version 0.2+leonb53.1
+Pin-Priority: 1001
+
+Package: leon-asus-notify:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: leon-asus-notify:armel
+Pin: version 0.2+leonb53.1
+Pin-Priority: 1001
+
+Package: leon-asus-notify:armel
+Pin: version *
+Pin-Priority: -1
+
+Package: leon-asus-openssh-control:arm64
+Pin: version 0.4+leonb53.2
+Pin-Priority: 1001
+
+Package: leon-asus-openssh-control:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: leon-asus-resolver:arm64
+Pin: version 0.2+asus3006.102.9
+Pin-Priority: 1001
+
+Package: leon-asus-resolver:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: leon-asus-runtime-arm64:arm64
+Pin: version 0.7
+Pin-Priority: 1001
+
+Package: leon-asus-runtime-arm64:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: leon-asus-runtime-armel:armel
+Pin: version 0.7
+Pin-Priority: 1001
+
+Package: leon-asus-runtime-armel:armel
+Pin: version *
+Pin-Priority: -1
+
+Package: leon-asus-shell:arm64
+Pin: version 0.2+asus3006.102.9
+Pin-Priority: 1001
+
+Package: leon-asus-shell:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: leon-asus-trial-control:arm64
+Pin: version 0.1+leonb53.1
+Pin-Priority: 1001
+
+Package: leon-asus-trial-control:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: leon-bcm-boot-profile:any
+Pin: version 0.1+leonb53.1
+Pin-Priority: 1001
+
+Package: leon-bcm-boot-profile:any
+Pin: version *
+Pin-Priority: -1
+
+Package: leon-bcm-kernel-modules:arm64
+Pin: version 4.19.294-10+leonb53.1
+Pin-Priority: 1001
+
+Package: leon-bcm-kernel-modules:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: leon-bcm-rootfs-config:any
+Pin: version 0.3
+Pin-Priority: 1001
+
+Package: leon-bcm-rootfs-config:any
+Pin: version *
+Pin-Priority: -1
+
+Package: leon-bcm-trial-activation:any
+Pin: version 0.3+leonb53.2
+Pin-Priority: 1001
+
+Package: leon-bcm-trial-activation:any
+Pin: version *
+Pin-Priority: -1
+
+Package: leon-gcc15-runtime:armel
+Pin: version 15.2.0-0leonb53.2
+Pin-Priority: 1001
+
+Package: leon-gcc15-runtime:armel
+Pin: version *
+Pin-Priority: -1
+
+Package: libasan8:arm64
+Pin: version 16.2.0-3ubuntu1+leonb53.1
+Pin-Priority: 1001
+
+Package: libasan8:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: libatomic1:arm64
+Pin: version 16.2.0-3ubuntu1+leonb53.1
+Pin-Priority: 1001
+
+Package: libatomic1:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: libbinutils:arm64
+Pin: version 2.47-6ubuntu1+leonb53.1
+Pin-Priority: 1001
+
+Package: libbinutils:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: libc-bin:arm64
+Pin: version 2.44-1ubuntu1+leonb53.1
+Pin-Priority: 1001
+
+Package: libc-bin:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: libc-dev-bin:arm64
+Pin: version 2.44-1ubuntu1+leonb53.1
+Pin-Priority: 1001
+
+Package: libc-dev-bin:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: libc-gconv-modules-extra:arm64
+Pin: version 2.44-1ubuntu1+leonb53.1
+Pin-Priority: 1001
+
+Package: libc-gconv-modules-extra:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: libc-gconv-modules-extra:armel
+Pin: version 2.44-1ubuntu1+leonb53.1
+Pin-Priority: 1001
+
+Package: libc-gconv-modules-extra:armel
+Pin: version *
+Pin-Priority: -1
+
+Package: libc6:arm64
+Pin: version 2.44-1ubuntu1+leonb53.1
+Pin-Priority: 1001
+
+Package: libc6:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: libc6:armel
+Pin: version 2.44-1ubuntu1+leonb53.1
+Pin-Priority: 1001
+
+Package: libc6:armel
+Pin: version *
+Pin-Priority: -1
+
+Package: libc6-dev:arm64
+Pin: version 2.44-1ubuntu1+leonb53.1
+Pin-Priority: 1001
+
+Package: libc6-dev:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: libcc1-0:arm64
+Pin: version 16.2.0-3ubuntu1+leonb53.1
+Pin-Priority: 1001
+
+Package: libcc1-0:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: libcrypt1:arm64
+Pin: version 1:4.5.1-1+leonb53.1
+Pin-Priority: 1001
+
+Package: libcrypt1:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: libcrypt1:armel
+Pin: version 1:4.5.1-1+leonb53.1
+Pin-Priority: 1001
+
+Package: libcrypt1:armel
+Pin: version *
+Pin-Priority: -1
+
+Package: libctf-nobfd0:arm64
+Pin: version 2.47-6ubuntu1+leonb53.1
+Pin-Priority: 1001
+
+Package: libctf-nobfd0:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: libctf0:arm64
+Pin: version 2.47-6ubuntu1+leonb53.1
+Pin-Priority: 1001
+
+Package: libctf0:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: libgcc-16-dev:arm64
+Pin: version 16.2.0-3ubuntu1+leonb53.1
+Pin-Priority: 1001
+
+Package: libgcc-16-dev:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: libgcc-s1:arm64
+Pin: version 16.2.0-3ubuntu1+leonb53.1
+Pin-Priority: 1001
+
+Package: libgcc-s1:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: libgomp1:arm64
+Pin: version 16.2.0-3ubuntu1+leonb53.1
+Pin-Priority: 1001
+
+Package: libgomp1:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: libgprofng0:arm64
+Pin: version 2.47-6ubuntu1+leonb53.1
+Pin-Priority: 1001
+
+Package: libgprofng0:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: libhwasan0:arm64
+Pin: version 16.2.0-3ubuntu1+leonb53.1
+Pin-Priority: 1001
+
+Package: libhwasan0:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: libitm1:arm64
+Pin: version 16.2.0-3ubuntu1+leonb53.1
+Pin-Priority: 1001
+
+Package: libitm1:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: liblsan0:arm64
+Pin: version 16.2.0-3ubuntu1+leonb53.1
+Pin-Priority: 1001
+
+Package: liblsan0:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: libsframe3:arm64
+Pin: version 2.47-6ubuntu1+leonb53.1
+Pin-Priority: 1001
+
+Package: libsframe3:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: libstdc++-16-dev:arm64
+Pin: version 16.2.0-3ubuntu1+leonb53.1
+Pin-Priority: 1001
+
+Package: libstdc++-16-dev:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: libstdc++6:arm64
+Pin: version 16.2.0-3ubuntu1+leonb53.1
+Pin-Priority: 1001
+
+Package: libstdc++6:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: libsystemd-shared:arm64
+Pin: version 259.5-0ubuntu3.4+leonb53.2
+Pin-Priority: 1001
+
+Package: libsystemd-shared:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: libsystemd0:arm64
+Pin: version 259.5-0ubuntu3.4+leonb53.2
+Pin-Priority: 1001
+
+Package: libsystemd0:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: libtsan2:arm64
+Pin: version 16.2.0-3ubuntu1+leonb53.1
+Pin-Priority: 1001
+
+Package: libtsan2:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: libubsan1:arm64
+Pin: version 16.2.0-3ubuntu1+leonb53.1
+Pin-Priority: 1001
+
+Package: libubsan1:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: libudev1:arm64
+Pin: version 259.5-0ubuntu3.4+leonb53.2
+Pin-Priority: 1001
+
+Package: libudev1:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: systemd:arm64
+Pin: version 259.5-0ubuntu3.4+leonb53.2
+Pin-Priority: 1001
+
+Package: systemd:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: systemd-sysv:arm64
+Pin: version 259.5-0ubuntu3.4+leonb53.2
+Pin-Priority: 1001
+
+Package: systemd-sysv:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: udev:arm64
+Pin: version 259.5-0ubuntu3.4+leonb53.2
+Pin-Priority: 1001
+
+Package: udev:arm64
+Pin: version *
+Pin-Priority: -1
+
+Package: gcc-16* libgcc-s1:any libstdc++6:any
+Pin: version 16-20*
+Pin-Priority: -1
+
+Package: libgcc-s1:armel libstdc++6:armel libgcc-s1:armhf libstdc++6:armhf
+Pin: version *
+Pin-Priority: -1

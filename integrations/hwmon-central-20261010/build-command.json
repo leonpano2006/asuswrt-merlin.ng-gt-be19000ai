@@ -1,0 +1,23 @@
+{
+  "argv": [
+    "make",
+    "-C",
+    "/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/source/release/src-rt-5.04behnd.4916/kernel/linux-4.19",
+    "M=/home/leonpano/Documents/ChatGPT/asuswrt/hwmon-central-20261010/module",
+    "ARCH=arm64",
+    "MODEL=GTBE19000AI",
+    "CROSS_COMPILE=/home/leonpano/br-sdk/br-aarch64/output/host/bin/aarch64-buildroot-linux-gnu-",
+    "CC=/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/build/tools/ccache/bin/ccache /home/leonpano/br-sdk/br-aarch64/output/host/bin/aarch64-buildroot-linux-gnu-gcc",
+    "KCFLAGS=-DGTBE19000AI -DBCA_HNDROUTER -DBCA_CPEROUTER -I/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/source/release/src-rt-5.04behnd.4916/bcmdrivers/opensource/include/bcm963xx -I/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/source/release/src-rt-5.04behnd.4916/bcmdrivers/broadcom/include/bcm963xx -I/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/source/release/src-rt-5.04behnd.4916/kernel/bcmkernel/include -I/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/source/release/src-rt-5.04behnd.4916/shared/opensource/include/bcm963xx -I/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/source/release/src-rt-5.04behnd.4916/kernel/bcmkernel/include/uapi -I/home/leonpano/Documents/Codex/2026-10-02/systemd/be19000ai-kernel/source/release/src-rt-5.04behnd.4916/kernel/linux-4.19/net/bridge",
+    "-j2",
+    "modules"
+  ],
+  "kernel_inputs": {
+    ".config": "118975160901cd82c58818fbd0bf16df745d2698035243ee3603c2cc3d0739de",
+    "Module.symvers": "87fdb90bbf53af05ef7740065786f9a033adf3ab378ff7efde7aed2d94a3a262",
+    "include/generated/autoconf.h": "bf8f7e273566ce8a39e8fd18fd0c20e384b0762af04525788bf692ecb092f42e",
+    "include/generated/compile.h": "7dc1c81fab566feed93360b8f0b834a4384dd89034d81a98b2a64270d7d425f2",
+    "include/generated/utsrelease.h": "1dace844b70df744fc9e5cf6ea76e598aaee9656df0cf1e45fafc92bfe067dce",
+    "include/config/auto.conf": "6f522fc4f8b1bdec21c07f2788ea536f780248a67c2afa463439ac130fa106f8"
+  }
+}

@@ -1,17 +1,22 @@
 # GT-BE19000AI kernel and node UI development
 
-Private, independent development repository for the GT-BE19000AI. The `source`
+Independent development repository for the GT-BE19000AI. The `source`
 Git submodule pins ASUSWRT-Merlin tag `3006.102.9` at
 `69838e4a60564e5550e97f11d8a8cf2c6260c4f0`. Its upstream history remains accessible
 through that repository; this repository records the ordered modification history
 as reviewable patches. It is not a second GitHub fork-network entry.
 
-The BCM side currently runs kernel11 with an Ubuntu 26.04 ext4 root, systemd,
-native OpenSSH and the ASUS services in their private compatibility environment.
-The V24 image has passed actual current-boot acceptance and survival after the
-external observer stopped. The separate SL1680 AI-board OS is not modified.
-The retained original firmware in slot2 is still the permanent boot default;
-this milestone does not enable permanent Ubuntu boot.
+The BCM work combines kernel11 with an Ubuntu 26.04 ext4 root, systemd,
+native OpenSSH and ASUS services in their private compatibility environment.
+The [October maintenance snapshot](integrations/README.md) adds subsequent BCM
+package, network-ownership, telemetry and locale fixes, plus the separate
+SL1680 AI-board kernel 6.12.62 and Docker 29.9.1 support sources. The AI board
+retains its Yocto userspace. These are recorded validation milestones, not a
+new firmware build or a claim of fresh hardware testing on publication day.
+
+The earlier V24 BCM image passed current-boot acceptance and survival after
+the external observer stopped. At that milestone the original slot2 remained
+the permanent boot default; publishing source does not change boot selection.
 
 See the [V24 Docker repair](reports/ubuntu26/docker-repair-v1.json) and earlier
 [V23 hardware milestone](reports/ubuntu26/v23-current-boot-milestone-v1.json)

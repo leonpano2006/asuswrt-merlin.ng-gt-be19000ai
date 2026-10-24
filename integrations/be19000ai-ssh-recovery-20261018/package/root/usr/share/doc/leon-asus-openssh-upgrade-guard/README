@@ -1,0 +1,32 @@
+OpenSSH upgrade integration for the ASUS-managed primary listener
+
+The native ssh.service deliberately remains disabled: ASUS controls its
+runtime configuration and startup. Ubuntu's OpenSSH preinst stops this unit
+on upgrade, while its postinst only restores enabled units. These dpkg hooks
+record an already-active managed listener and restore it after package
+configuration and verified executable/version replacement.
+
+The checkpoint in /run/leon-asus-openssh-upgrade-guard is sticky across separate
+unpack/configure invocations. No checkpoint is created for an inactive or
+unmanaged listener. Restoration requires ASUS sshd_enable=2, inactive primary,
+configured openssh-server, safe valid runtime configuration, and active ASUS
+control and recovery sockets. It uses one ASUS start_sshd request and verifies
+the resulting managed listener. No native unit is enabled; recovery port2222
+is not restarted. Hook errors are logged to syslog and return success to dpkg.
+
+Interrupted unpack/configure can be recovered by a later dpkg invocation in
+the same boot. Invalid configuration or unavailable dependencies leave a
+pending checkpoint. An uncertain start request is recorded as requested and
+is never automatically resent. Inspect the checkpoint and systemd journal;
+after explicit manual recovery, a later post hook clears an active checkpoint.
+Normal reboot discards /run state and retains normal ASUS startup behavior.
+
+ASUS disablement and package removal clear pending state. A concurrent manual
+systemctl stop with ASUS still enabled cannot be distinguished from a package
+stop after executable replacement; use the ASUS SSH setting for intentional
+disablement. These hooks cannot recover after an interrupted transaction until
+another applicable dpkg invocation runs. They are not a background watchdog.
+
+The dpkg conffile checks for the executable before invoking it so package
+removal without purge cannot leave a broken hook command. There are no package
+maintainer scripts, activation hooks, credential changes, or private data.

@@ -1,0 +1,24 @@
+{
+  "status": "PASS_SOURCE_REVIEW",
+  "sources": {
+    "research/boot/production-switch-v1/home.mount": "6dc2ae8347728a3311201970d86a1483f59a54146e0c0222ed48671c1e7dfa52",
+    "research/boot/production-switch-v1/leon-stock-module-renames.conf": "5939b5db92d4fa77ae1ea7081f0a499d41906a28356fd40fc77a636af74146ee",
+    "research/boot/production-switch-v1/bcm-production-watchdog.py": "10265cba154754f8bfc8fc6a3bc82c7dd1e282616d8d18608956636d447f5dfe",
+    "research/boot/production-switch-v1/watchdog-source-review.json": "8dc24e1bbe32cbb297ca97e76c647fd8731e9ff6fc421a43334b708fcb448fb7",
+    "research/boot/production-switch-v1/SOURCE-NOTES.txt": "16acac9de0877d711c802e40d7073ca91ff6b80d20b2a1a0cb544ae054d5c3b1",
+    "scripts/deploy-yocto-kernel-v1.py": "3b076bae0acb04adcd8b568898e4d19949ead35ca15decb977a5e970bf1eef12",
+    "research/boot/production-deployment-review-v1/kernel-qualified-candidate-v29.json": "7a55beb00b53f2d52d0b03a6c60d6700899c37d3adf2b68445512b766f1a38ea",
+    "research/boot/full-userspace-live-v29/accepted-placement-stability.json": "2cc0d14a011fc56aac89b30c1bb40336310d374f30a58ddb09a4a25d48af07e0",
+    "research/boot/production-switch-v1/20-ordering.conf": "58d82146227d0f9f161aa47c3f375ea76ceb78edd0a1cb26644ca7acc22bac41",
+    "research/boot/production-switch-v1/post-health-v2.py": "9b5a4322a65db95dc6cbcdc98f1c2de4e626643b1855c2a7c2c3b2c2d1de5a0f",
+    "research/boot/production-switch-v1/production-init-v3": "b88aed5ad6031d903443ac90ffd4902def09b1fd0cdca4044645d4d9fc7291fb"
+  },
+  "scope": "V33 same accepted payload; health simple process permitsmulti-user completion andusage-stats startup during90s healthwait",
+  "findings": [],
+  "first_guard_cancel_before_enable": true,
+  "stock_saved_before_every_candidate_load": true,
+  "automatic_bounded_production_recovery": false,
+  "root_and_userspace_preserved": true,
+  "device_actions": false,
+  "previous_attempt": "V32 health oneshot blockedtarget completion while requiringafter-target usage-stats active. Customhealth Type=simple fixessemanticwait; actualnative states queriedafterrecovery wereallactive."
+}

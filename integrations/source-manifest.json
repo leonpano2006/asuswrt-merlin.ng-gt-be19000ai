@@ -1,0 +1,856 @@
+{
+  "snapshot_date": "2026-10-24",
+  "files": [
+    {
+      "path": "integrations/ai-board-upgrade-20261010/build-tools/USAGE.txt",
+      "sha256": "a78813d902a1671e3aeba71e406aca5aba0e379e6d5b61f2c6f0b34f387d9920",
+      "bytes": 2509
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/build-tools/bin/aarch64-linux-gnu-addr2line",
+      "symlink": "tool-wrapper"
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/build-tools/bin/aarch64-linux-gnu-ar",
+      "symlink": "tool-wrapper"
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/build-tools/bin/aarch64-linux-gnu-as",
+      "symlink": "tool-wrapper"
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/build-tools/bin/aarch64-linux-gnu-c++filt",
+      "symlink": "tool-wrapper"
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/build-tools/bin/aarch64-linux-gnu-cc",
+      "symlink": "tool-wrapper"
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/build-tools/bin/aarch64-linux-gnu-cpp",
+      "symlink": "tool-wrapper"
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/build-tools/bin/aarch64-linux-gnu-elfedit",
+      "symlink": "tool-wrapper"
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/build-tools/bin/aarch64-linux-gnu-gcc",
+      "symlink": "tool-wrapper"
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/build-tools/bin/aarch64-linux-gnu-ld",
+      "symlink": "tool-wrapper"
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/build-tools/bin/aarch64-linux-gnu-ld.bfd",
+      "symlink": "tool-wrapper"
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/build-tools/bin/aarch64-linux-gnu-nm",
+      "symlink": "tool-wrapper"
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/build-tools/bin/aarch64-linux-gnu-objcopy",
+      "symlink": "tool-wrapper"
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/build-tools/bin/aarch64-linux-gnu-objdump",
+      "symlink": "tool-wrapper"
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/build-tools/bin/aarch64-linux-gnu-ranlib",
+      "symlink": "tool-wrapper"
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/build-tools/bin/aarch64-linux-gnu-readelf",
+      "symlink": "tool-wrapper"
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/build-tools/bin/aarch64-linux-gnu-size",
+      "symlink": "tool-wrapper"
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/build-tools/bin/aarch64-linux-gnu-strings",
+      "symlink": "tool-wrapper"
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/build-tools/bin/aarch64-linux-gnu-strip",
+      "symlink": "tool-wrapper"
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/build-tools/bin/addr2line",
+      "symlink": "tool-wrapper"
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/build-tools/bin/ar",
+      "symlink": "tool-wrapper"
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/build-tools/bin/as",
+      "symlink": "tool-wrapper"
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/build-tools/bin/c++filt",
+      "symlink": "tool-wrapper"
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/build-tools/bin/cc",
+      "symlink": "tool-wrapper"
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/build-tools/bin/cpp",
+      "symlink": "tool-wrapper"
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/build-tools/bin/elfedit",
+      "symlink": "tool-wrapper"
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/build-tools/bin/gcc",
+      "symlink": "tool-wrapper"
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/build-tools/bin/ld",
+      "symlink": "tool-wrapper"
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/build-tools/bin/ld.bfd",
+      "symlink": "tool-wrapper"
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/build-tools/bin/nm",
+      "symlink": "tool-wrapper"
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/build-tools/bin/objcopy",
+      "symlink": "tool-wrapper"
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/build-tools/bin/objdump",
+      "symlink": "tool-wrapper"
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/build-tools/bin/ranlib",
+      "symlink": "tool-wrapper"
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/build-tools/bin/readelf",
+      "symlink": "tool-wrapper"
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/build-tools/bin/size",
+      "symlink": "tool-wrapper"
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/build-tools/bin/strings",
+      "symlink": "tool-wrapper"
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/build-tools/bin/strip",
+      "symlink": "tool-wrapper"
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/build-tools/bin/tool-wrapper",
+      "sha256": "f97b51ab26f43da0387d02678559753068dcae64a1b33d1dd77d697b88ed64f8",
+      "bytes": 1537
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/build-tools/kernel-make",
+      "sha256": "8c58cd2c854adceaed551b040e0bf988fbd667bebcfce71d5e6740e03e144ac6",
+      "bytes": 914
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/research/boot/full-userspace-admission/ai-trial-enter.py",
+      "sha256": "9728f0ee693178d3482342145b2d4f66d4f5360ac03e459682200d81ebadcb67",
+      "bytes": 9451
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/research/boot/full-userspace-diagnostic-v29/build.py",
+      "sha256": "cfa52efa9c26274b18abf442e38df84760434115adf8e8d932aa34097c5f6a2e",
+      "bytes": 9586
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/research/boot/full-userspace-initramfs-v1/uuid-verify.c",
+      "sha256": "7ee32cdee570ac34c6a127a76d49381c67193f1e51f79e0b1920857a9ba28387",
+      "bytes": 3352
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/research/boot/production-switch-v1/20-ordering.conf",
+      "sha256": "58d82146227d0f9f161aa47c3f375ea76ceb78edd0a1cb26644ca7acc22bac41",
+      "bytes": 267
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/research/boot/production-switch-v1/CONTROLLER-SOURCE-NOTES.txt",
+      "sha256": "5fc625cb0c9d09d986d71e41561e5ed9dc2d29de9a84ff11b83fa6736360db14",
+      "bytes": 2042
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/research/boot/production-switch-v1/REBOOT-CONTROLLER-SOURCE-NOTES.txt",
+      "sha256": "8697b8fb4bb18c2f12adbec965fd956407d7830545ee8bc8792970295ea572cd",
+      "bytes": 2873
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/research/boot/production-switch-v1/SOURCE-NOTES.txt",
+      "sha256": "16acac9de0877d711c802e40d7073ca91ff6b80d20b2a1a0cb544ae054d5c3b1",
+      "bytes": 4498
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/research/boot/production-switch-v1/bcm-production-watchdog.py",
+      "sha256": "10265cba154754f8bfc8fc6a3bc82c7dd1e282616d8d18608956636d447f5dfe",
+      "bytes": 12826
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/research/boot/production-switch-v1/home.mount",
+      "sha256": "6dc2ae8347728a3311201970d86a1483f59a54146e0c0222ed48671c1e7dfa52",
+      "bytes": 200
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/research/boot/production-switch-v1/leon-stock-module-renames.conf",
+      "sha256": "5939b5db92d4fa77ae1ea7081f0a499d41906a28356fd40fc77a636af74146ee",
+      "bytes": 180
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/research/boot/production-switch-v1/no-udp-observer.py",
+      "sha256": "ea341b3c602adc71113bd74623c80f56f44626554df96ee4da9c05d632bed480",
+      "bytes": 690
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/research/boot/production-switch-v1/parent-review-v4.json",
+      "sha256": "6636c2d0ec0fc1f417595ebb5ba1d80b028a1e2d2f268e98657ec3dda854983a",
+      "bytes": 2100
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/research/boot/production-switch-v1/post-health-v2.py",
+      "sha256": "9b5a4322a65db95dc6cbcdc98f1c2de4e626643b1855c2a7c2c3b2c2d1de5a0f",
+      "bytes": 22069
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/research/boot/production-switch-v1/prepare-v4.py",
+      "sha256": "bf8d257abf3a3fdca708ff54d5182dc977f6eafae921f9015deb6f8426b43325",
+      "bytes": 5933
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/research/boot/production-switch-v1/production-init-v3",
+      "sha256": "77bbcaac2ae6e188e765aabbe56d20358de5756e179ef8fc61f11c2a5215a6ec",
+      "bytes": 8806
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/research/boot/production-switch-v1/spec-v4.json",
+      "sha256": "88f15bddcc2fe12108471fe9cdfe07ea7b800f9c53e22dd6d47079ee0e74898a",
+      "bytes": 2099
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/research/boot/ram-smoke-v1/build.py",
+      "sha256": "95d8162da957b3ff8f24f964cfe5e80948e1f17a16b28f3ce30521c5870f44f5",
+      "bytes": 11926
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/research/boot/ram-smoke-v1/udp-report.c",
+      "sha256": "13959a63aa542f51d4e465552cd002ec40bafa62151c9d5b8ca7a0b92c216fa9",
+      "bytes": 4455
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/research/kernel/asus-board.config",
+      "sha256": "0ad3320ff5e86198076de415ffd5ba6280e241cbbe3b6a947f3a8ceda72abab3",
+      "bytes": 406
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/research/kernel/gpu24-linux612.patch",
+      "sha256": "270b0a0d8697bf5ec4de594e1d04c36fb9c10912f016d1682057340067c828ce",
+      "bytes": 7353
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/research/kernel/gpu24-unsigned-offset-v1/fix.patch",
+      "sha256": "a4bdc10c2dcb9d4fb44138da5ae6ebdc8508a7695c89e7556b7648194c13c52f",
+      "bytes": 289
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/research/kernel/network-bbr-compat.config",
+      "sha256": "81fe696219e9b61908db31a0b3a80fa76e7fa914278ceefead048cb203f7d839",
+      "bytes": 220
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/research/kernel/network-vlan.config",
+      "sha256": "4d64a6ad1bb7418d0af61029b71569368f7b9f2306e096bb5028e2414c7d8a8e",
+      "bytes": 182
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/research/kernel/stock-feature-parity-v1/stock-feature-parity.config",
+      "sha256": "699420b4a07bde9286f4e32f80063cd851a3f9861fb13e021a25ca4c6179dec2",
+      "bytes": 860
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/research/kernel/vpu15-capture-scheduling-v1/fix.patch",
+      "sha256": "78703a8ccfe926c022cd198bacfa2f25381b4d34bf1d67c7fa7eade46560dd3d",
+      "bytes": 2315
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/research/kernel/vpu15-linux612.patch",
+      "sha256": "e9648999fb2c656ec9e5cc4adda508b7e52854558417a367664d034406137c07",
+      "bytes": 6536
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/research/toolchain/resolved-6.12.62-adjustments.config",
+      "sha256": "2b4bd45c6954ca93620c8808c55c7d4218b4ed4e2f30ca7b0520daa5d13441c7",
+      "bytes": 223
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/research/toolchain/sl1680-containers-common.config",
+      "sha256": "a656bb092182edab873583721168e103a17b50832bf99bcb35a0656b3cf86a05",
+      "bytes": 3467
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/research/userspace/full-service-trial/payload/stock-public.sha256",
+      "sha256": "bdfc36050a77465b246575fa65e446b80f76c7e1c8904c95595824e5c6cb4e4b",
+      "bytes": 1589
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/scripts/deploy-yocto-kernel-v1.py",
+      "sha256": "3b076bae0acb04adcd8b568898e4d19949ead35ca15decb977a5e970bf1eef12",
+      "bytes": 36477
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/scripts/reboot-yocto-kernel-v1.py",
+      "sha256": "99755f6350a7cec6fa7ee11f0aab80e6e7b16326ac29f56b543905533d650176",
+      "bytes": 35597
+    },
+    {
+      "path": "integrations/ai-board-upgrade-20261010/scripts/trial-common.py",
+      "sha256": "f5e98f1c8267af70e4fb4714cc24ae28c832346d97f254eb01d522458d379f7c",
+      "bytes": 6208
+    },
+    {
+      "path": "integrations/ai-docker-upgrade-20261017/backup-tool-test-v2.sh",
+      "sha256": "3730a779cb19b5e151cf1995acd4a06cd81453333c7f6298cd51db047cfcd287",
+      "bytes": 128
+    },
+    {
+      "path": "integrations/ai-docker-upgrade-20261017/candidate-manifest.json",
+      "sha256": "b1eccd0bf7ae476d9a434c448d4b54018f8a547fa9effeed363f57cf71c40632",
+      "bytes": 1599
+    },
+    {
+      "path": "integrations/ai-docker-upgrade-20261017/deploy-v3.py",
+      "sha256": "5396e3ec11801f0fb381bfdbcbde9a7a7ced035c6ce9270acb04469436b31aa4",
+      "bytes": 7632
+    },
+    {
+      "path": "integrations/ai-docker-upgrade-20261017/maintscript-test.sh",
+      "sha256": "84479e0ea86d9d9f96c0e55fc72b678a6f1f2d98d6a931e30635e34f3589052b",
+      "bytes": 155
+    },
+    {
+      "path": "integrations/ai-docker-upgrade-20261017/package-build/build.py",
+      "sha256": "9219dba88c1626669f29ae28eb7d97db7a1d21563de371bf2c93821ce455b76a",
+      "bytes": 9748
+    },
+    {
+      "path": "integrations/ai-docker-upgrade-20261017/package-build/test-maintainer-scripts.py",
+      "sha256": "debb6f2345457885f8fc4129b1d37f1a2efba6530753e809c9ef8101966615a7",
+      "bytes": 4435
+    },
+    {
+      "path": "integrations/ai-docker-upgrade-20261017/portable-tar/manifest.json",
+      "sha256": "0415677e170abc87bb2152b333a92b058a1fa1995875e51ce50a84452dc254af",
+      "bytes": 2755
+    },
+    {
+      "path": "integrations/ai-docker-upgrade-20261017/portable-tar/prepare.py",
+      "sha256": "32424627de11d6fc66cecdd5c1377a2e26a2e40163991c109350214a9b86c735",
+      "bytes": 4976
+    },
+    {
+      "path": "integrations/ai-docker-upgrade-20261017/portainer-compat-crud.py",
+      "sha256": "3eefb544d07ae3ceb96725f6002f207c063534e5a385f39dbf0df456acfbc7ac",
+      "bytes": 5154
+    },
+    {
+      "path": "integrations/ai-docker-upgrade-20261017/portainer-compat.py",
+      "sha256": "ecc3462424537e9440ebf3bcbf6cc990fc8c65a63d477dbd2ae1597e33d44eee",
+      "bytes": 5433
+    },
+    {
+      "path": "integrations/ai-docker-upgrade-20261017/postcheck.sh",
+      "sha256": "7fda5a4e2a4c395fd642c7bfa9847a2634e6dc716f027155b19ae0aa3af01807",
+      "bytes": 2317
+    },
+    {
+      "path": "integrations/ai-docker-upgrade-20261017/probe.c",
+      "sha256": "4f015622b55c2fdecde737dd5e6054a5a39942a48c3ef2ee2b9271fab18f313f",
+      "bytes": 396
+    },
+    {
+      "path": "integrations/ai-docker-upgrade-20261017/smoke.py",
+      "sha256": "c82919882e8867121b16971ecd854c1794e7c196b0f4c1741b2f32cce44ab29e",
+      "bytes": 4005
+    },
+    {
+      "path": "integrations/ai-docker-upgrade-20261017/tar-roundtrip.py",
+      "sha256": "8ee84364e3bbd50a2e41f7d0b2e6250638cbbeabbc6643800e0b5f5b63310cb3",
+      "bytes": 2695
+    },
+    {
+      "path": "integrations/ai-docker-upgrade-20261017/transaction.py",
+      "sha256": "9ab72c71ddc6779c7ea6f8da9fac1274473b68a4f609b2ad18396a16d18f037c",
+      "bytes": 12565
+    },
+    {
+      "path": "integrations/ai-docker-upgrade-20261017/transport.py",
+      "sha256": "44f4fe1088588ae53e4c9caa397446ceca99b4d64f0f32dc96c0fa75d709c25d",
+      "bytes": 2995
+    },
+    {
+      "path": "integrations/apt-devfix/build-development-archive.py",
+      "sha256": "4dba30abdb1388c40ffe3ee6b27cd8378ce6a68e7ce46a10db6bc3a243d11a27",
+      "bytes": 7028
+    },
+    {
+      "path": "integrations/apt-devfix/build-gcc16-defaults.py",
+      "sha256": "028fedd984fd60f448331b398eaca9b044fbab290f1adb3e0be8ca9b1d8178c4",
+      "bytes": 13140
+    },
+    {
+      "path": "integrations/apt-devfix/collect-crypt-dev.py",
+      "sha256": "58de1450a6e42390c3cf8cc47835051501515484633abfd6549b580a069e5856",
+      "bytes": 1510
+    },
+    {
+      "path": "integrations/apt-repair-20261007/build-repair-archive.py",
+      "sha256": "fde22ac3b2361a53abc7897f877c248faa720fafaf0a819793b142dd919312bd",
+      "bytes": 7006
+    },
+    {
+      "path": "integrations/apt-repair-20261007/metadata-v1/build-metadata.py",
+      "sha256": "b8a0557c7eecebf571f99594dd03dfcd63b700e4dab9531b0480fa1e67936b97",
+      "bytes": 15934
+    },
+    {
+      "path": "integrations/apt-repair-20261007/payload-evidence/live-payload-manifest.json",
+      "sha256": "769bb064aa2e6e0f350ae782a6ec5271ca34f7d6e291dae9e7f71afe3dcd009c",
+      "bytes": 810
+    },
+    {
+      "path": "integrations/apt-repair-20261007/release.pref.fixed",
+      "sha256": "b4b209d17e4e776b1461f9911ebb89490d6ef731f74723ab0715ed3cbd8b308a",
+      "bytes": 9099
+    },
+    {
+      "path": "integrations/apt-repair-20261007/release.pref.original",
+      "sha256": "15db3954c18b150a40391cf982217f60c9b438a4ce72e442909758fb210a2e55",
+      "bytes": 9090
+    },
+    {
+      "path": "integrations/be19000ai-ssh-recovery-20261018/package/build.py",
+      "sha256": "f84057e346c8df5c7482ab051951085aa3911e54b4e5f44245b515c4f5f503a7",
+      "bytes": 2151
+    },
+    {
+      "path": "integrations/be19000ai-ssh-recovery-20261018/package/root/DEBIAN/conffiles",
+      "sha256": "83194e32dc3fb5faea83c0d916e3e05d209417df6448ca9640a77c2e8688ecc6",
+      "bytes": 56
+    },
+    {
+      "path": "integrations/be19000ai-ssh-recovery-20261018/package/root/DEBIAN/control",
+      "sha256": "f122eb5d7ae1e1c0d6a902630f361612ea2edb5ab2f351e0566a7c9cbb88a690",
+      "bytes": 570
+    },
+    {
+      "path": "integrations/be19000ai-ssh-recovery-20261018/package/root/etc/dpkg/dpkg.cfg.d/90-leon-asus-openssh-upgrade-guard",
+      "sha256": "3d9f78d72d2d1b451833f0944215e7459f9ab3c81bc12e0e90e08d967d9aed35",
+      "bytes": 268
+    },
+    {
+      "path": "integrations/be19000ai-ssh-recovery-20261018/package/root/usr/libexec/leon-asus/openssh-upgrade-guard",
+      "sha256": "d101d83126f6ab3cd244cb6acff004053d45e9cdb6ffc56df56633aa76e6de13",
+      "bytes": 10066
+    },
+    {
+      "path": "integrations/be19000ai-ssh-recovery-20261018/package/root/usr/share/doc/leon-asus-openssh-upgrade-guard/README",
+      "sha256": "70c9c0d0a0b66afe605d440bc62f6637b531363d7c27ccdba7e3fa19c1f6d12f",
+      "bytes": 2043
+    },
+    {
+      "path": "integrations/be19000ai-ssh-recovery-20261018/package/test_guard.py",
+      "sha256": "f4e3af5b35ace692eb502292a444c3b46d9d80f5904ee1c1f5e1f42688f9cf07",
+      "bytes": 7007
+    },
+    {
+      "path": "integrations/cockpit-packagekit-repair-20261020/archive-v1/build-archive.py",
+      "sha256": "d03e61564b3010464e09fb2a9fa8f848faf43cefbbc94247af1bfdd015693224",
+      "bytes": 10421
+    },
+    {
+      "path": "integrations/cockpit-packagekit-repair-20261020/archive-v1/package-stage/etc/apt/preferences.d/leon-bcm-systemd-pam.pref",
+      "sha256": "389f4aa2443ff6f7e31bedebddc85accf82a68f9323583e6029bf4f76d132e92",
+      "bytes": 152
+    },
+    {
+      "path": "integrations/cockpit-packagekit-repair-20261020/archive-v1/package-stage/etc/apt/sources.list.d/leon-bcm-systemd-pam.sources",
+      "sha256": "d74bf68aeec61b229411094a3d5f6f47a2d32d0ff4697110c9795add5c814362",
+      "bytes": 176
+    },
+    {
+      "path": "integrations/cockpit-stability-20261020/repair-userbus.sh",
+      "sha256": "77df5cc840f94396e9d79d72ab67f5c046a3964f6cd0ddedad994c0eaad6b91b",
+      "bytes": 1988
+    },
+    {
+      "path": "integrations/hostname-separation-20261010/fix-bcm.sh",
+      "sha256": "6bbce72c5187bdd1ca9a5408dace429527639ec8270a3f124c2f22d11679910f",
+      "bytes": 2953
+    },
+    {
+      "path": "integrations/hwmon-central-20261010/build-command.json",
+      "sha256": "09cb7eb6663ccbc212c56f41f35d2178db4ec55730f3b13bad8f67cb72fcea09",
+      "bytes": 2109
+    },
+    {
+      "path": "integrations/hwmon-central-20261010/build-result.json",
+      "sha256": "9700d67e058cd801b84d0b972a54dcabe8db740953ac5fba9a9d9731b6209502",
+      "bytes": 252
+    },
+    {
+      "path": "integrations/hwmon-central-20261010/build.py",
+      "sha256": "a8af652703a1c0e5c55f0b1841a5d6d02e6feea3aa835ae95bb4bd581860d047",
+      "bytes": 2691
+    },
+    {
+      "path": "integrations/hwmon-central-20261010/ccache/ccache.conf",
+      "sha256": "f31e5bc250af832cb2bdc50007927bfde83b6f29a7fe9c414782f7bbaaf050ef",
+      "bytes": 54
+    },
+    {
+      "path": "integrations/hwmon-central-20261010/htop/LibSensors.c",
+      "sha256": "800a21fb62062a00ceec8dbf09fcef195750985eb1aca1513b74790a97609092",
+      "bytes": 15933
+    },
+    {
+      "path": "integrations/hwmon-central-20261010/htop/LibSensors.h",
+      "sha256": "f3170a2d198516db6ad8278387897718e95e28ba1f834ba6147c302636d279b9",
+      "bytes": 610
+    },
+    {
+      "path": "integrations/hwmon-central-20261010/htop/LinuxMachine.c",
+      "sha256": "095ab8ad215a5595e1b6dabe85fc3bb1a03ea07323a07caea14e93334dd8ef69",
+      "bytes": 33545
+    },
+    {
+      "path": "integrations/hwmon-central-20261010/htop/build-native.sh",
+      "sha256": "cfde3f755011ebf1a500bf4ff17f7afb0228995779474e47807d7ddf5a017e1f",
+      "bytes": 2427
+    },
+    {
+      "path": "integrations/hwmon-central-20261010/htop/htop-libsensors-cpu.patch",
+      "sha256": "8dc5e797a4270d29d42ad210c3a3655419b1589b0be8a25d037e722cfec7aa1b",
+      "bytes": 3632
+    },
+    {
+      "path": "integrations/hwmon-central-20261010/htop/review.txt",
+      "sha256": "83fbcb7d28651d2a6374a8689f3e6edd8ba78fc667f8fd90228e98f8a7ceb7cb",
+      "bytes": 1362
+    },
+    {
+      "path": "integrations/hwmon-central-20261010/kernel-config.fragment",
+      "sha256": "0730862cfc5a876b29c75493586ce2942badfa458cc138897aa98231ee9bdd52",
+      "bytes": 74
+    },
+    {
+      "path": "integrations/hwmon-central-20261010/kernel-integration.patch",
+      "sha256": "1427163e070d00d4ae9043db9ad28e99d22fed7613ab515e3568ccfc83fa331e",
+      "bytes": 7003
+    },
+    {
+      "path": "integrations/hwmon-central-20261010/leon-bcm4916-hwmon.service",
+      "sha256": "de2d3ceafc2b52f6437defc06d4b00fb8b5fb412b5f79be5c2bd3af4607d3e98",
+      "bytes": 347
+    },
+    {
+      "path": "integrations/hwmon-central-20261010/load-hwmon.py",
+      "sha256": "257b22b343df0407fd85023e6a4d05921473daea031372fb19f3f0652c0dcd2f",
+      "bytes": 2304
+    },
+    {
+      "path": "integrations/hwmon-central-20261010/make-package.py",
+      "sha256": "3abe8157f0329876ad073605879c0e3b682dba6678deb38ad707995c4c1c11c8",
+      "bytes": 2179
+    },
+    {
+      "path": "integrations/hwmon-central-20261010/module-abi.json",
+      "sha256": "2871e34a8e9b6a8cc9941c5ece5a44885280406adb41a9fe8afc8104adefd80f",
+      "bytes": 2146
+    },
+    {
+      "path": "integrations/hwmon-central-20261010/module/Kbuild",
+      "sha256": "42be1494d9e0d45d3cff0874de4ff48c332fa35f75cbc9fdc397aea326118b4f",
+      "bytes": 73
+    },
+    {
+      "path": "integrations/hwmon-central-20261010/module/README.txt",
+      "sha256": "85067370799f4cc054bbc1940fea1385f78fcce8cc85273bafbb10853efe3060",
+      "bytes": 1700
+    },
+    {
+      "path": "integrations/hwmon-central-20261010/module/bcm4916_hwmon.c",
+      "sha256": "5ed9351b738c6605faf693d00123a810202c42a07e4020dcc5d2e6dbdcd67686",
+      "bytes": 6016
+    },
+    {
+      "path": "integrations/hwmon-central-20261010/module/hwmon.c",
+      "sha256": "0ab871df6dc4c8e986f030386b5888df56cb1b1adac44fbcd5fea896600304fd",
+      "bytes": 24629
+    },
+    {
+      "path": "integrations/hwmon-central-20261010/source-audit.json",
+      "sha256": "811e145014ff8e8de65d681a5d3725f2f4e2799db2c155d92cedef27dcd2c401",
+      "bytes": 9358
+    },
+    {
+      "path": "integrations/hwmon-central-20261010/validate-libsensors.c",
+      "sha256": "80fd107e8a8fe4522e0f59cdb6f9ee16d1d8aa10381f4d04964c03188377bd32",
+      "bytes": 3848
+    },
+    {
+      "path": "integrations/locale-repair-20261020/apply.sh",
+      "sha256": "ce8f551c3ac36dd5e98ab6e174019d9b890bcc0642ac63b702d429eb7151e33a",
+      "bytes": 1510
+    },
+    {
+      "path": "integrations/locale-repair-20261020/source-change/build-ubuntu26-rootfs.py.patch",
+      "sha256": "9b333aa9cbcd2c207926c6d9fbfbd31e733f5d71a664f28a440c234204573763",
+      "bytes": 1610
+    },
+    {
+      "path": "integrations/locale-repair-20261020/source-change/terminal-support-v1.json.patch",
+      "sha256": "03200518a5015b1a20a435ec13cab01735522db9523764a4f228d046cc0c9f0a",
+      "bytes": 552
+    },
+    {
+      "path": "integrations/locale-repair-20261020/update-build-default.py",
+      "sha256": "36f2ac4b91f808dfff6e0751001982890317f3247c3f4df20612aafc07ff8935",
+      "bytes": 2064
+    },
+    {
+      "path": "integrations/locale-repair-20261020/verify-session.sh",
+      "sha256": "abe09d7f9dbe384abd767d1324ac7213374e0550778497b15d19edb8a58e6968",
+      "bytes": 757
+    },
+    {
+      "path": "integrations/netpanel-repair-20261020/asus-parse.jq",
+      "sha256": "8ab9e2cfd1fabe04c50459c207431cf5336e189efaa0bf7b36256b37cf191264",
+      "bytes": 2854
+    },
+    {
+      "path": "integrations/netpanel-repair-20261020/package-root/DEBIAN/control",
+      "sha256": "4b9d93dc1561f40335822732ae5c6e29cbb7759e9194c44d61ec3e8272d4d3ad",
+      "bytes": 352
+    },
+    {
+      "path": "integrations/netpanel-repair-20261020/package-root/etc/sudoers.d/leon-netpanel-status",
+      "sha256": "766caad5c2999d06abcf66d2b72cf7a28818a6edf8688fe117b731855b995eb8",
+      "bytes": 188
+    },
+    {
+      "path": "integrations/netpanel-repair-20261020/package-root/usr/libexec/leon-netpanel/status",
+      "sha256": "7b9bd9af5b18e1c54ab2f18676cef72fdd1e65f67556cbc3b0544ef041b5d49f",
+      "bytes": 3015
+    },
+    {
+      "path": "integrations/networkmanager-recovery-20261010/release-nm.sh",
+      "sha256": "1d185d92b2a119364f61da2bd18e9a748c7375bb88e7f6a1826a1f4a0194caf1",
+      "bytes": 2762
+    },
+    {
+      "path": "integrations/networkmanager-recovery-20261010/wrapper-fix/asus.patch",
+      "sha256": "af8b2e17e6def46eceb0a246a1e46a62a56f2e4527d513e73da04f991d5597da",
+      "bytes": 2342
+    },
+    {
+      "path": "integrations/networkmanager-recovery-20261010/wrapper-fix/package-root/DEBIAN/control",
+      "sha256": "204136c2176b553dbe1541e26fb0b1d65d34bc50315e003d6ee1f7b22d7bafc5",
+      "bytes": 531
+    },
+    {
+      "path": "integrations/networkmanager-recovery-20261010/wrapper-fix/package-root/usr/bin/asus",
+      "sha256": "2312c2fd8a7602429f22f382e2c117edfb9f68e4502893961d473da7bf9d280b",
+      "bytes": 6797
+    },
+    {
+      "path": "integrations/networkmanager-recovery-20261010/wrapper-fix/package-root/usr/bin/nvram",
+      "symlink": "asus"
+    },
+    {
+      "path": "integrations/networkmanager-recovery-20261010/wrapper-fix/package-root/usr/sbin/asus-service",
+      "symlink": "../bin/asus"
+    },
+    {
+      "path": "integrations/networkmanager-recovery-20261010/wrapper-fix/package-root/usr/sbin/ethctl",
+      "symlink": "../bin/asus"
+    },
+    {
+      "path": "integrations/networkmanager-recovery-20261010/wrapper-fix/package-root/usr/sbin/rc",
+      "symlink": "../bin/asus"
+    },
+    {
+      "path": "integrations/networkmanager-recovery-20261010/wrapper-fix/package-root/usr/sbin/wl",
+      "symlink": "../bin/asus"
+    },
+    {
+      "path": "integrations/networkmanager-recovery-20261010/wrapper-fix/test-broker-identity.sh",
+      "sha256": "b025238012f84d309d5a7598fbe56f8085ada42e7e0282b6e97bcec7335ea077",
+      "bytes": 2229
+    },
+    {
+      "path": "integrations/swap-zswap-20261007/build-policy.py",
+      "sha256": "73fa1cb385130e67101476827fd0a721a02c274f72f81d0185c7519132e81d20",
+      "bytes": 3832
+    },
+    {
+      "path": "integrations/tar-compat-v1/recipe/build-compile.sh",
+      "sha256": "80b78077a2e0c33f1b19e20f96b150371df3d4647b05b291ece59a52612169ec",
+      "bytes": 999
+    },
+    {
+      "path": "integrations/tar-compat-v1/recipe/build-declaration-resume.sh",
+      "sha256": "bd6fc75286202670370d0d1fb2cf2105575b36db67d5ee895f16d375e867e186",
+      "bytes": 1260
+    },
+    {
+      "path": "integrations/tar-compat-v1/recipe/build-once.sh",
+      "sha256": "984019f523a546e85db68bd1773c3a81ea95cf57084939f22f836375052bd006",
+      "bytes": 1653
+    },
+    {
+      "path": "integrations/tar-compat-v1/recipe/build-resume.sh",
+      "sha256": "eaf6f33ed3a4a151f7755d5d5b6947825e63c95bff3046baea79996d2ebb3808",
+      "bytes": 1502
+    },
+    {
+      "path": "integrations/tar-compat-v1/recipe/build-unprivileged.sh",
+      "sha256": "ee2b6e51fc77c35fcf8b772c4fbf58230ff2e3e7c25d8506b9525e13663286cd",
+      "bytes": 1082
+    },
+    {
+      "path": "integrations/tar-compat-v1/recipe/changelog.official",
+      "sha256": "091d39761c7090d49d961d285c2d5fb6ecaec7c5cdc8202b754c887ddd624d35",
+      "bytes": 42467
+    },
+    {
+      "path": "integrations/tar-compat-v1/recipe/declaration-fix.json",
+      "sha256": "8f416e87b382dfeef3afda5d79840023f3e584d7f7e4089e5d71f322001b7c08",
+      "bytes": 472
+    },
+    {
+      "path": "integrations/tar-compat-v1/recipe/focused-fixture.py",
+      "sha256": "a743c37e66140c30438d300423ff094dea08c1e511e39f1e659dbbd823dd42bc",
+      "bytes": 5867
+    },
+    {
+      "path": "integrations/tar-compat-v1/recipe/inspect-package.py",
+      "sha256": "b5a4adfca0105295ce4310504f0d37fda64f6abd476dcb8bb257edf0d73d57fa",
+      "bytes": 4526
+    },
+    {
+      "path": "integrations/tar-compat-v1/recipe/rules.diff",
+      "sha256": "22d9ca930f8c41d33c463c537eef6b4561c39768727b73d8c2ad096b7fb2fd35",
+      "bytes": 542
+    },
+    {
+      "path": "integrations/tar-compat-v1/recipe/rules.official",
+      "sha256": "decfb6c8f736835b50cd36cdf1c92409f49aaa3052be15f3f1e9ca813eb7120d",
+      "bytes": 916
+    },
+    {
+      "path": "integrations/tar-compat-v1/recipe/source-plan.json",
+      "sha256": "b301debde42d91d96e1895b10530e796ddb9b93bdea3e883b5343b8136e819c7",
+      "bytes": 6883
+    },
+    {
+      "path": "integrations/tar-compat-v1/source-inputs/tar_1.35+dfsg-4ubuntu0.4.dsc",
+      "sha256": "e42458c1675ec7ba43cca2ea8e085231337e7a4553d7c6e2c21d2003761e5d43",
+      "bytes": 2124
+    },
+    {
+      "path": "integrations/tar-compat-v1/source/debian/changelog",
+      "sha256": "caea00359c733656014756207a9b6a830723d666c64ae527503f5abe360a6c7d",
+      "bytes": 42881
+    },
+    {
+      "path": "integrations/tar-compat-v1/source/debian/patches/leon-openat2-legacy-declaration.patch",
+      "sha256": "7d30af38a9cc50afba6cc1a8945aa2b85c7326faa2e756348e0cb02d99dad20c",
+      "bytes": 622
+    },
+    {
+      "path": "integrations/tar-compat-v1/source/debian/patches/series",
+      "sha256": "3215c22626156abe47268070d6841f3cdbe7cb36e58c24690d73fa5d2a1106be",
+      "bytes": 732
+    },
+    {
+      "path": "integrations/tar-compat-v1/source/debian/rules",
+      "sha256": "c33c0ab73bc60cd38a3b5a7adde86526c1959e1b6ebfa3a6de8e40e40faebe26",
+      "bytes": 1160
+    },
+    {
+      "path": "integrations/vpn-ssh-v1/build-fixed-generator.py",
+      "sha256": "60ec2e955a99f57bd9901661e0e3f841829e8f32a585aa04fbb8b8d462b71a54",
+      "bytes": 6476
+    },
+    {
+      "path": "integrations/vpn-ssh-v1/native-control-vpn.patch",
+      "sha256": "bc3fd8ab2d904cb8ad764f1a2e4472141e1f1125a85c6d4f053e08f0267b8833",
+      "bytes": 1061
+    },
+    {
+      "path": "integrations/vpn-ssh-v1/source/control.h",
+      "sha256": "377b034a6ecc390316a40b1359997725a96db57a7db405d6201c7b5d13604ef9",
+      "bytes": 1036
+    },
+    {
+      "path": "integrations/vpn-ssh-v1/source/generator-test.c",
+      "sha256": "b97137da33388b4d4c9887b97b868b57f5beab6cb41d1c375cb9d981452cce93",
+      "bytes": 4007
+    },
+    {
+      "path": "integrations/vpn-ssh-v1/source/native-control.c",
+      "sha256": "d99ebf1b6dd65878e9425f89e6f2c1f0a7136e6b1d0262c0ad70a4e1220f4f77",
+      "bytes": 19230
+    },
+    {
+      "path": "integrations/vpn-ssh-v1/source/sshd-state.h",
+      "sha256": "1e315b40f3ca04a3ae7aca73d5b62f30b0822e1f29bc4507d437aa5c8b28d8b7",
+      "bytes": 1384
+    },
+    {
+      "path": "integrations/vpn-ssh-v1/source/validate.h",
+      "sha256": "4e0d4aec36833b2467d7d76f0fbf81ebd66381291573abcdf4bffa015261e5f4",
+      "bytes": 2952
+    },
+    {
+      "path": "integrations/sl1680-production/0001-linux-6.12-sl1680-production.patch",
+      "sha256": "69f097c294030671ab8dd2640dc6cd5bd2c86f3905c6692c2fa5284d2bbbe986",
+      "bytes": 19157
+    },
+    {
+      "path": "integrations/sl1680-production/0002-synaptics-dhub-clock-ownership.patch",
+      "sha256": "73136d9432da0d1a9385b8f3210beb28b1b4daae560b8d4195a15e4d2eea9f24",
+      "bytes": 2485
+    },
+    {
+      "path": "integrations/sl1680-production/UPSTREAM.json",
+      "sha256": "afaa5a598e96cca44c45943bd0e5e2f7c4a46189bf6da2cb99fa2531ff196b03",
+      "bytes": 5081
+    },
+    {
+      "path": "integrations/sl1680-production/dolphin-asus-be19000ai.dts",
+      "sha256": "07c1b0e3b5d37ebc7981b6d55756e83190601eb1981b704a5763403b55bf6c01",
+      "bytes": 9227
+    },
+    {
+      "path": "integrations/sl1680-production/leonai7-production.config",
+      "sha256": "0ad31b854094bf50e605ebbfbcf0705557e0c5932dfe6bad5b6f1c56c6772749",
+      "bytes": 189820
+    }
+  ],
+  "scope": "Selected support source files; no credentials, captured payload binaries or device evidence archives",
+  "publication_note": "Published source bytes; see PUBLICATION.md for identity placeholders and original evidence hashes."
+}

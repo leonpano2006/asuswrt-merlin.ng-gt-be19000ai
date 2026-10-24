@@ -1,0 +1,47 @@
+Isolated kernel build tools
+
+This host is AArch64, confirmed with uname -m, and has glibc 2.39. These GCC
+16.2.0 and binutils 2.47 AArch64 binaries run natively; QEMU is not involved.
+Ten existing authenticated-build artifacts were hash-checked and extracted
+without package installation or maintainer scripts. The originals are intact.
+See extraction-manifest.json for exact paths and package SHA256 values.
+
+Target compiler wrappers explicitly pass -mcpu=cortex-a73, overriding the
+reused package's Cortex-A53 default. Later caller flags still take precedence.
+Kbuild retains its own Arm64 architecture/errata flags; inspect recorded .cmd
+files to confirm their interaction. Host utilities use /usr/bin/gcc and g++.
+This tool set is for the kernel, modules and freestanding checks. It is not
+a complete SL1680 userspace sysroot and must not accidentally link target
+applications against the build host's glibc 2.39 development files.
+
+Example, from the ai-board-upgrade-20261010 directory:
+
+  build-tools/kernel-make build-source/linux build/kernel dolphin_defconfig
+
+After the exact BSP configuration and fragment merge are reviewed:
+
+  build-tools/kernel-make build-source/linux build/kernel olddefconfig
+  build-tools/kernel-make build-source/linux build/kernel -j8 Image modules dtbs
+
+The job count is an example; choose it from available build-host RAM and load.
+The wrapper writes only to the requested separate OUTPUT_DIR. This command
+does not install modules, modify boot media, flash a device, or contact it.
+
+Compiler and binutils query commands:
+
+  build-tools/bin/aarch64-linux-gnu-gcc --version
+  build-tools/bin/aarch64-linux-gnu-gcc -print-prog-name=as
+  build-tools/bin/aarch64-linux-gnu-gcc -print-prog-name=ld
+  build-tools/bin/aarch64-linux-gnu-ld.bfd --version
+
+The local library search path is scoped to each wrapper process. It adds the
+matching binutils libraries but no replacement host libc/loader. A native
+freestanding C/assembly/link probe is recorded in smoke-result.json. Full
+kernel and SL1680 acceptance are separate and must use the exact resolved
+config, DTB, modules and proprietary accelerator drivers.
+
+The locally extracted ccache 4.12.3 wraps the target compiler, with a task-local
+cache at build-tools/ccache, a 4 GiB cap, and compiler content checking. Its
+executable and three supporting libraries came from the existing isolated
+Ubuntu build environment (ccache-provenance.json). Host packages, compiler
+configuration and other projects' caches remain unchanged.

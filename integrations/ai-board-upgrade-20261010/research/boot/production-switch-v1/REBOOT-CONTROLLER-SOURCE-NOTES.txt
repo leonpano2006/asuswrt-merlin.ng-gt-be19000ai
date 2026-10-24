@@ -1,0 +1,42 @@
+Source only; scripts/reboot-yocto-kernel-v1.py was not invoked while written.
+No devices, network, builds or tests were used for this source task. The frozen
+first-switch driver remains unchanged at SHA256
+3b076bae0acb04adcd8b568898e4d19949ead35ca15decb977a5e970bf1eef12.
+These describe source construction. The parent separately owns and records
+later target execution; no claim is made that the controller is never run later.
+
+The repeat driver accepts the same admitted job, a new private --out directory,
+and --deployment-result from the successful first switch. It verifies that
+the current candidate boot and saved default match that result, carries forward
+the original stock environment and container IDs, and validates current runtime
+ready/rearmed records plus independent cohort/ENV/CRC/block/mount metadata.
+
+It renames the exact root-private enable-default marker to a fresh disabled
+basename and fsyncs the cohort directory, leaving the seven saved default keys
+unchanged. A fresh nonce names an independent sole-reset BCM watchdog; the
+persistent deployment nonce continues to bind the cohort, plan and health proof.
+The reboot is orderly and loads the already-saved guarded default. No new entry
+executor, payload staging or workloads are introduced. The repeat driver starts
+no second fixed-port early-init collector.
+
+The returned boot must be fresh and must prove READY_SAVED_STOCK, the complete
+native result, original container IDs and unchanged boot/misc blocks. After a
+confirmed cancel_deployed latch/terminal, the report clears recovery flags before
+stopping the guard. It then restores the disabled marker and starts only the
+runtime production health unit. ARMED plus an independent exact seven-key/CRC
+readback and unchanged native container start/restart metadata are required.
+Failures before cancellation attempt the old single-reset restoration path and
+the first deployment's original environment. This has an explicit recovery
+limit before a fresh boot has saved stock: a rejected or ambiguous reboot may
+leave candidate selected in ENV; the one guard reset then starts that candidate,
+not stock. A further hang needs manual fallback because the watcher cannot pulse
+twice. A failure before successful guard start likewise leaves the candidate
+default and disabled marker for diagnosis. No one-reset bounded-stock guarantee
+is claimed across that initial epoch. Failures after cancellation never force
+reset. The successful candidate remains running.
+
+The parent owns a persistent ordering drop-in for the custom health unit after
+finding its multi-user/usage-stats cycle during the first switch. The repeat
+controller invokes no custom health start before the new boot's ready.json;
+that report must therefore come from the automatic boot startup. Exact drop-in
+installation and source binding are recorded separately in the live record.

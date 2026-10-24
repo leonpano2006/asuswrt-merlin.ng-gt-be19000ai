@@ -1,0 +1,110 @@
+--- a/linux/LinuxMachine.c
++++ b/linux/LinuxMachine.c
+@@ -855,10 +855,22 @@
+    for (unsigned int i = 0; i <= super->existingCPUs; i++)
+       this->cpuData[i].frequency = NAN;
+ 
+-   if (scanCPUFrequencyFromSysCPUFreq(this) == 0)
++   if (scanCPUFrequencyFromSysCPUFreq(this) == 0 && isNonnegative(this->cpuData[0].frequency))
+       return;
+ 
+    scanCPUFrequencyFromCPUinfo(this);
++
++#ifdef HAVE_SENSORS_SENSORS_H
++   if (!isNonnegative(this->cpuData[0].frequency)) {
++      double frequency = LibSensors_getCPUFrequency();
++      if (isfinite(frequency) && frequency > 0.0) {
++         this->cpuData[0].frequency = frequency;
++         for (unsigned int i = 0; i < super->existingCPUs; ++i)
++            if (Machine_isCPUonline(super, i) && !isNonnegative(this->cpuData[i + 1].frequency))
++               this->cpuData[i + 1].frequency = frequency;
++      }
++   }
++#endif
+ }
+ 
+ void Machine_scan(Machine* super) {
+--- a/linux/LibSensors.c
++++ b/linux/LibSensors.c
+@@ -140,6 +140,7 @@
+       { "coretemp",           0 },
+       { "via_cputemp",        0 },
+       { "cpu_thermal",        0 },
++      { "bcm4916",            0 },
+       { "k10temp",            0 },
+       { "zenpower",           0 },
+       /* Rockchip RK3588 */
+@@ -174,6 +175,61 @@
+    return -1;
+ }
+ 
++/* One shared CPU-cluster clock, returned in MHz. CPUFreq remains preferred.
++ * Use known chip/channel contracts: user-configurable display labels must not
++ * turn DDR/reference clocks into CPU frequency. Multiple matching devices are
++ * ambiguous for this scalar API.
++ */
++double LibSensors_getCPUFrequency(void) {
++#if SENSORS_API_VERSION >= 0x510
++#ifndef BUILD_STATIC
++   if (!dlopenHandle)
++      return NAN;
++#endif
++
++   static const struct CPUClockDriver {
++      const char* prefix;
++      const char* feature;
++   } cpuClockDrivers[] = {
++      { "bcm4916", "freq1" },
++   };
++   double frequency = NAN;
++   bool seen = false;
++   int n = 0;
++   for (const sensors_chip_name* chip = sym_sensors_get_detected_chips(NULL, &n); chip; chip = sym_sensors_get_detected_chips(NULL, &n)) {
++      const char* channel = NULL;
++      for (size_t i = 0; i < ARRAYSIZE(cpuClockDrivers); ++i) {
++         if (String_eq(chip->prefix, cpuClockDrivers[i].prefix)) {
++            channel = cpuClockDrivers[i].feature;
++            break;
++         }
++      }
++      if (!channel)
++         continue;
++
++      int m = 0;
++      for (const sensors_feature* feature = sym_sensors_get_features(chip, &m); feature; feature = sym_sensors_get_features(chip, &m)) {
++         if (feature->type != SENSORS_FEATURE_FREQ || !feature->name || !String_eq(feature->name, channel))
++            continue;
++         if (seen)
++            return NAN;
++         seen = true;
++
++         const sensors_subfeature* input = sym_sensors_get_subfeature(chip, feature, SENSORS_SUBFEATURE_FREQ_INPUT);
++         if (!input)
++            continue;
++         double hz;
++         if (sym_sensors_get_value(chip, input->number, &hz) == 0 && isfinite(hz) && hz > 0.0)
++            frequency = hz / 1000000.0;
++      }
++   }
++   return frequency;
++#else
++   /* Older headers do not define the frequency feature enum. */
++   return NAN;
++#endif
++}
++
+ int LibSensors_countCCDs(void) {
+ 
+ #ifndef BUILD_STATIC
+--- a/linux/LibSensors.h
++++ b/linux/LibSensors.h
+@@ -14,6 +14,9 @@
+ void LibSensors_cleanup(void);
+ int LibSensors_reload(void);
+ 
++/* Shared CPU-cluster frequency in MHz, or NAN when unavailable. */
++double LibSensors_getCPUFrequency(void);
++
+ int LibSensors_countCCDs(void);
+ void LibSensors_getCPUTemperatures(CPUData* cpus, unsigned int existingCPUs, unsigned int activeCPUs);
+ 

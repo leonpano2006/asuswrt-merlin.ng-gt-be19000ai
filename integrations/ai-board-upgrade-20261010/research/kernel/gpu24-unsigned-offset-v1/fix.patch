@@ -1,0 +1,12 @@
+--- a/src/pvr_drm.c
++++ b/src/pvr_drm.c
+@@ -506,6 +506,9 @@
+ 
+ const struct file_operations pvr_drm_fops = {
+ 	.owner			= THIS_MODULE,
++#ifdef FOP_UNSIGNED_OFFSET
++	.fop_flags		= FOP_UNSIGNED_OFFSET,
++#endif
+ 	.open			= drm_open,
+ 	.release		= drm_release,
+ 	.unlocked_ioctl		= drm_ioctl,

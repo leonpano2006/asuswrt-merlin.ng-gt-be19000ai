@@ -1,0 +1,8 @@
+{
+  "returncode": 0,
+  "kernel_inputs_unchanged": true,
+  "modules": {
+    "hwmon.ko": "e680d524bf367b819f7107da32163a0dc7bdcaefb12a82089909195c094acd8f",
+    "bcm4916_hwmon.ko": "bb72e7461bbcfd3438357296220de748f580e29d857f6985afa4853630e3b53d"
+  }
+}

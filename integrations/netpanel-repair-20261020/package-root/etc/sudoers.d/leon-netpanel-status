@@ -1,0 +1,2 @@
+# Exact argument-free probe only; does not grant arbitrary ASUS/root commands.
+MastermixStudios ALL=(root) NOPASSWD: /usr/bin/timeout --kill-after=2s 35s /usr/libexec/leon-netpanel/status

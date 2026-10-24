@@ -1,0 +1,202 @@
+diff --git a/drivers/gpu/rogue_ws/dolphin_config_kernel.h b/drivers/gpu/rogue_ws/dolphin_config_kernel.h
+index 1f69688..730ab71 100644
+--- a/drivers/gpu/rogue_ws/dolphin_config_kernel.h
++++ b/drivers/gpu/rogue_ws/dolphin_config_kernel.h
+@@ -14,7 +14,10 @@
+ #define PVRSRV_ENABLE_XD_MEM
+ #define PVRSRV_NEED_PVR_DPF
+ #define SUPPORT_LINUX_FDINFO
+-#define PVRSRV_TRACE_ROGUE_EVENTS
++/* SDK1.5 public sources omit pvr_gputrace.c and trace_events.c.
++ * Keep optional Rogue profiling disabled; kernel/fence tracing remains enabled.
++ */
++/* #define PVRSRV_TRACE_ROGUE_EVENTS */
+ #define SUPPORT_PHYSMEM_TEST
+ #define SUPPORT_TRUSTED_DEVICE
+ #define SUPPORT_SECURE_ALLOC_KM
+diff --git a/drivers/gpu/rogue_ws/inc/pvr_fence_trace.h b/drivers/gpu/rogue_ws/inc/pvr_fence_trace.h
+index 95b2a0d..c5585f4 100644
+--- a/drivers/gpu/rogue_ws/inc/pvr_fence_trace.h
++++ b/drivers/gpu/rogue_ws/inc/pvr_fence_trace.h
+@@ -50,6 +50,12 @@
+ struct pvr_fence;
+ struct pvr_fence_context;
+ 
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(6, 10, 0))
++#define pvr_assign_str __assign_str
++#else
++#define pvr_assign_str(a, b) __assign_str(a)
++#endif
++
+ DECLARE_EVENT_CLASS(pvr_fence_context,
+ 
+ 	TP_PROTO(struct pvr_fence_context *fctx),
+@@ -61,7 +67,7 @@ DECLARE_EVENT_CLASS(pvr_fence_context,
+ 	),
+ 
+ 	TP_fast_assign(
+-		__assign_str(name, fctx->name)
++		pvr_assign_str(name, fctx->name);
+ 		pvr_context_value_str(fctx, __entry->val,
+ 			sizeof(__entry->val));
+ 	),
+@@ -106,10 +112,10 @@ DECLARE_EVENT_CLASS(pvr_fence,
+ 	),
+ 
+ 	TP_fast_assign(
+-		__assign_str(driver,
+-			fence->base.ops->get_driver_name(&fence->base))
+-		__assign_str(timeline,
+-			fence->base.ops->get_timeline_name(&fence->base))
++		pvr_assign_str(driver,
++			fence->base.ops->get_driver_name(&fence->base));
++		pvr_assign_str(timeline,
++			fence->base.ops->get_timeline_name(&fence->base));
+ 		fence->base.ops->fence_value_str(&fence->base,
+ 			__entry->val, sizeof(__entry->val));
+ 		__entry->context = fence->base.context;
+@@ -165,21 +171,21 @@ DECLARE_EVENT_CLASS(pvr_fence_foreign,
+ 	),
+ 
+ 	TP_fast_assign(
+-		__assign_str(driver,
+-			fence->base.ops->get_driver_name(&fence->base))
+-		__assign_str(timeline,
+-			fence->base.ops->get_timeline_name(&fence->base))
++		pvr_assign_str(driver,
++			fence->base.ops->get_driver_name(&fence->base));
++		pvr_assign_str(timeline,
++			fence->base.ops->get_timeline_name(&fence->base));
+ 		fence->base.ops->fence_value_str(&fence->base, __entry->val,
+ 			sizeof(__entry->val));
+ 		__entry->context = fence->base.context;
+-		__assign_str(foreign_driver,
++		pvr_assign_str(foreign_driver,
+ 			fence->fence->ops->get_driver_name ?
+ 			fence->fence->ops->get_driver_name(fence->fence) :
+-			"unknown")
+-		__assign_str(foreign_timeline,
++			"unknown");
++		pvr_assign_str(foreign_timeline,
+ 			fence->fence->ops->get_timeline_name ?
+ 			fence->fence->ops->get_timeline_name(fence->fence) :
+-			"unknown")
++			"unknown");
+ 		fence->fence->ops->fence_value_str ?
+ 			fence->fence->ops->fence_value_str(
+ 				fence->fence, __entry->foreign_val,
+diff --git a/drivers/gpu/rogue_ws/inc/trace_events.h b/drivers/gpu/rogue_ws/inc/trace_events.h
+index 5a4d056..5e11d53 100644
+--- a/drivers/gpu/rogue_ws/inc/trace_events.h
++++ b/drivers/gpu/rogue_ws/inc/trace_events.h
+@@ -171,7 +171,7 @@ void trace_rogue_ufo_checks_fail(IMG_UINT64 ui64OSTimestamp,
+ #endif /* if defined(SUPPORT_RGX)*/
+ #endif /* defined(CONFIG_EVENT_TRACING) && defined(PVRSRV_TRACE_ROGUE_EVENTS) */
+ 
+-#if defined(CONFIG_EVENT_TRACING)
++#if defined(CONFIG_EVENT_TRACING) && defined(PVRSRV_TRACE_ROGUE_EVENTS)
+ void TracepointUpdateGPUMemGlobal(IMG_UINT8 ui8GPUId,
+ 								  IMG_UINT64 ui64Size);
+ 
+diff --git a/drivers/gpu/rogue_ws/src/gpu_tee.c b/drivers/gpu/rogue_ws/src/gpu_tee.c
+index 472f537..f6f4867 100644
+--- a/drivers/gpu/rogue_ws/src/gpu_tee.c
++++ b/drivers/gpu/rogue_ws/src/gpu_tee.c
+@@ -65,7 +65,7 @@ static struct sg_table                 *fw_table;
+ 
+ extern int close_fd(unsigned int fd);
+ 
+-phys_addr_t getFWSecureHeapPaddr(struct sg_table *fw_table)
++static phys_addr_t getFWSecureHeapPaddr(struct sg_table *fw_table)
+ {
+ 	unsigned long ori = (unsigned long)PFN_PHYS(page_to_pfn(sg_page(fw_table->sgl)));
+ 
+@@ -156,7 +156,7 @@ static unsigned long ion_dmabuf_get_phy(struct dma_buf *dmabuf)
+ 	return (unsigned long)PFN_PHYS(page_to_pfn(page));
+ }
+ 
+-phys_addr_t getFWSecureHeapPaddr(void)
++static phys_addr_t getFWSecureHeapPaddr(void)
+ {
+ 	unsigned long ori = ion_dmabuf_get_phy(fw_dma_buf);
+ 
+@@ -233,7 +233,7 @@ phys_addr_t getSecureHeapPaddr(void)
+ 	return fw_phy_addr;
+ }
+ 
+-int getValueFromTA(int cmdId, int *size)
++static int getValueFromTA(int cmdId, int *size)
+ {
+ 	int result;
+ 	struct tee_ioctl_invoke_arg arg;
+@@ -258,7 +258,7 @@ int getValueFromTA(int cmdId, int *size)
+ 	return result;
+ }
+ 
+-int setFwParams(int cmdId, IMG_UINT64 a, IMG_UINT64 b, IMG_UINT32 c, IMG_UINT32 d)
++static int setFwParams(int cmdId, IMG_UINT64 a, IMG_UINT64 b, IMG_UINT32 c, IMG_UINT32 d)
+ {
+ 	int result;
+ 	struct tee_ioctl_invoke_arg arg;
+@@ -294,7 +294,7 @@ int setFwParams(int cmdId, IMG_UINT64 a, IMG_UINT64 b, IMG_UINT32 c, IMG_UINT32
+ 	return result;
+ }
+ 
+-int setFwPageTableAddr(int cmdId, IMG_UINT64 a, IMG_UINT64 b, IMG_UINT64 c, IMG_UINT64 d)
++static int setFwPageTableAddr(int cmdId, IMG_UINT64 a, IMG_UINT64 b, IMG_UINT64 c, IMG_UINT64 d)
+ {
+ 	int result;
+ 	struct tee_ioctl_invoke_arg arg;
+@@ -405,7 +405,7 @@ PVRSRV_ERROR syna_PFN_TD_SEND_FW_IMAGE(IMG_HANDLE hSysData, PVRSRV_FW_PARAMS *ps
+ 	int codeSize;
+ 	int dataSize;
+ #if (LINUX_VERSION_CODE > KERNEL_VERSION(5, 10, 0))
+-	struct dma_buf_map fw_src_data;
++	struct iosys_map fw_src_data;
+ #else
+ 	void *fw_src_data;
+ #endif
+@@ -428,7 +428,7 @@ PVRSRV_ERROR syna_PFN_TD_SEND_FW_IMAGE(IMG_HANDLE hSysData, PVRSRV_FW_PARAMS *ps
+ 	dma_buf_begin_cpu_access(fw_src_dma_buf, DMA_FROM_DEVICE);
+ #if (LINUX_VERSION_CODE > KERNEL_VERSION(5, 10, 0))
+ 	dma_buf_vmap(fw_src_dma_buf, &fw_src_data);
+-	if (dma_buf_map_is_null(&fw_src_data)) {
++	if (iosys_map_is_null(&fw_src_data)) {
+ 		printk(KERN_ERR "dma heap buffer map failed\n");
+ 		dma_buf_end_cpu_access(fw_src_dma_buf, DMA_FROM_DEVICE);
+ 		dma_buf_unmap_attachment(fw_src_buf_attach, fw_src_table, DMA_FROM_DEVICE);
+@@ -445,7 +445,7 @@ PVRSRV_ERROR syna_PFN_TD_SEND_FW_IMAGE(IMG_HANDLE hSysData, PVRSRV_FW_PARAMS *ps
+ 	dma_buf_kunmap(fw_src_dma_buf, 0, fw_src_data);
+ #endif
+ 	dma_buf_end_cpu_access(fw_src_dma_buf, DMA_FROM_DEVICE);
+-
++	get_dma_buf(fw_src_dma_buf); //take additional ref to account for fd close
+ 	fw_src_fd = dma_buf_fd(fw_src_dma_buf, O_RDWR);
+ 	if (fw_src_fd < 0) {
+ 		dma_buf_put(fw_src_dma_buf);
+diff --git a/drivers/gpu/rogue_ws/src/pvr_platform_drv.c b/drivers/gpu/rogue_ws/src/pvr_platform_drv.c
+index 2cdb2d0..149f3b8 100644
+--- a/drivers/gpu/rogue_ws/src/pvr_platform_drv.c
++++ b/drivers/gpu/rogue_ws/src/pvr_platform_drv.c
+@@ -203,7 +203,11 @@ err_drm_dev_put:
+ 	return	ret;
+ }
+ 
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(6, 11, 0))
+ static int pvr_remove(struct platform_device *pdev)
++#else
++static void pvr_remove(struct platform_device *pdev)
++#endif
+ {
+ 	struct drm_device *ddev = platform_get_drvdata(pdev);
+ 
+@@ -218,7 +222,9 @@ static int pvr_remove(struct platform_device *pdev)
+ 	pvr_drm_unload(ddev);
+ 
+ 	drm_dev_put(ddev);
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(6, 11, 0))
+ 	return 0;
++#endif
+ }
+ 
+ static void pvr_shutdown(struct platform_device *pdev)

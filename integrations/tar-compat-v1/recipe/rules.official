@@ -1,0 +1,43 @@
+#!/usr/bin/make -f
+
+include /usr/share/dpkg/architecture.mk
+
+export DEB_BUILD_MAINT_OPTIONS = future=+lfs
+export DEB_CFLAGS_MAINT_APPEND = -Wall -Wno-analyzer-null-argument
+
+%:
+	dh $@
+
+override_dh_clean:
+	-mv debian/testsuite.orig tests/testsuite
+	dh_clean
+
+override_dh_auto_configure:
+	dh_auto_configure -- \
+		RSH="/usr/bin/rsh" \
+		--libexecdir=/usr/sbin \
+		--enable-backup-scripts \
+		--with-lzma=xz \
+		--disable-silent-rules
+
+override_dh_auto_test:
+ifeq (,$(filter nocheck,$(DEB_BUILD_OPTIONS)))
+ifeq ($(DEB_BUILD_GNU_TYPE),$(DEB_HOST_GNU_TYPE))
+	@runas=`whoami` ; \
+	if test $$runas = "root" ; \
+	then \
+	  echo "Sorry, but the test suite is not designed to be run as root."; \
+	  exit 1 ;\
+	fi
+	cp tests/testsuite debian/testsuite.orig
+	dh_auto_test
+endif
+endif
+
+override_dh_install:
+	dh_install
+	cp doc/rmt.8 debian/rmt-tar.8
+
+override_dh_installdocs:
+	cp -a ChangeLog.1 debian/changelog.1
+	dh_installdocs

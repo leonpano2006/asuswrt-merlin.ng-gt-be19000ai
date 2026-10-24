@@ -1,0 +1,45 @@
+--- original/asus
++++ fixed/asus
+@@ -43,8 +43,32 @@
+ if [[ $tool == rc ]]; then
+  [[ $# == 1 && $1 =~ ^(ping|notify|start|stop|restart)$ ]] || { usage; exit 2; }
+ fi
++# A package reinstall can replace the executable inode while the same broker
++# keeps running. Only identical, protected executable bytes may bridge that gap.
++broker_fd_secure() {
++ local metadata owner mode
++ metadata=$(timeout -k 1s 2s stat -Lc '%u %f' "/proc/self/fd/$1") || return 1
++ read -r owner mode <<< "$metadata"
++ [[ $owner == 0 && $mode =~ ^[0-9a-fA-F]+$ ]] || return 1
++ (( (16#$mode & 0170000) == 0100000 && (16#$mode & 0022) == 0 && (16#$mode & 0111) != 0 ))
++}
++broker_fds_match() {
++ local live_hash disk_hash
++ [[ /proc/self/fd/$1 -ef /proc/self/fd/$2 ]] && return 0
++ broker_fd_secure "$1" && broker_fd_secure "$2" || return 1
++ live_hash=$(timeout -k 1s 2s sha256sum "/proc/self/fd/$1") || return 1
++ disk_hash=$(timeout -k 1s 2s sha256sum "/proc/self/fd/$2") || return 1
++ live_hash=${live_hash%% *}; disk_hash=${disk_hash%% *}
++ [[ $live_hash =~ ^[a-f0-9]{64}$ && $live_hash == "$disk_hash" ]] || return 1
++ broker_fd_secure "$1" && broker_fd_secure "$2"
++}
+ broker=$(timeout -k 1s 2s systemctl show leon-asus-broker.service -p MainPID --value)
+-[[ $broker =~ ^[1-9][0-9]*$ && /proc/$broker/exe -ef /usr/libexec/asus/rc-broker ]] || refuse 'ASUS broker unavailable'
++[[ $broker =~ ^[1-9][0-9]*$ ]] || refuse 'ASUS broker unavailable'
++exec {brokerfd}< /proc/$broker/exe || refuse 'ASUS broker executable unavailable'
++exec {broker_diskfd}< /usr/libexec/asus/rc-broker || refuse 'ASUS broker executable unavailable'
++broker_fds_match "$brokerfd" "$broker_diskfd" || refuse 'ASUS broker executable identity mismatch'
++exec {broker_diskfd}<&-
++[[ /proc/$broker/exe -ef /proc/self/fd/$brokerfd ]] || refuse 'ASUS broker changed'
+ identity() {
+  local raw tail; local -a fields=()
+  [[ $1 =~ ^[1-9][0-9]*$ ]] || return 1
+@@ -64,7 +88,7 @@
+ done
+ [[ $matches == 1 ]] || refuse 'unique active ASUS rc required'
+ alive() {
+- [[ /proc/$broker/exe -ef /usr/libexec/asus/rc-broker && /proc/$rc/exe -ef /usr/libexec/asus/rc ]] &&
++ [[ /proc/$broker/exe -ef /proc/self/fd/$brokerfd && /proc/$rc/exe -ef /usr/libexec/asus/rc ]] &&
+  identity "$broker" && [[ $start == "$broker_start" ]] &&
+  identity "$rc" && [[ $start == "$rc_start" && $parent == "$broker" ]]
+ }

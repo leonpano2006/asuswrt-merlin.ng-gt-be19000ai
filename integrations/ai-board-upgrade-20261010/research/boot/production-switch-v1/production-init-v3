@@ -1,0 +1,156 @@
+#!/bin/busybox sh
+# Source only. Each boot must have saved bootcmd=bootmmc before this init runs.
+# Embedded /trial-settings and /payload are the trust anchors, not home files.
+export PATH=/bin
+umask 077
+. /trial-settings
+hold() { while :; do /bin/busybox sleep 3600; done; }
+early_fail() { printf 'AI_PRODUCTION FATAL %s\n' "$1"; hold; }
+mount -t proc -o nosuid,nodev,noexec proc /proc || early_fail proc
+mount -t sysfs -o nosuid,nodev,noexec sysfs /sys || early_fail sys
+mount -t devtmpfs -o nosuid,noexec devtmpfs /dev || early_fail dev
+mount -t tmpfs -o mode=0755,nodev,nosuid,strictatime tmpfs /run || early_fail run
+exec </dev/null >/dev/console 2>&1
+trap '' INT TERM HUP
+mkdir -p /run/leon-production || early_fail runtime_dir
+LOG=/run/leon-production/init.log
+log() { printf '%s\n' "$*" >>"$LOG"; printf 'AI_PRODUCTION %s\n' "$*"; }
+fail() { log "FATAL $1"; hold; }
+need() { label=$1; shift; "$@" || fail "$label"; }
+case "$DEPLOYMENT_NONCE" in ''|*[!0-9a-f]*) fail deployment_nonce;; esac
+[ "${#DEPLOYMENT_NONCE}" = 32 ] || fail deployment_nonce_length
+[ "$COHORT_DIR" = "/home/leon-fulltrial-$DEPLOYMENT_NONCE" ] || fail cohort_path
+[ "$(uname -r)" = "$EXPECTED_KERNEL" ] || fail kernel_release
+case " $(cat /proc/cmdline) " in *" leon_trial=$DEPLOYMENT_NONCE "*) :;; *) fail cmdline_nonce;; esac
+case " $(cat /proc/cmdline) " in *" root=/dev/mmcblk0p13 "*) :;; *) fail cmdline_root;; esac
+case " $(cat /proc/cmdline) " in *" init=/__trial_no_rootfs "*) :;; *) fail cmdline_fallback;; esac
+case " $(cat /proc/cmdline) " in *" systemd.unified_cgroup_hierarchy=0 "*) :;; *) fail cgroup_policy;; esac
+PRODUCTION_PLAN_SHA256=
+PLAN_TOKEN_COUNT=0
+for token in $(cat /proc/cmdline); do
+    case "$token" in leon_production_plan=*)
+        PLAN_TOKEN_COUNT=$((PLAN_TOKEN_COUNT+1))
+        PRODUCTION_PLAN_SHA256=${token#leon_production_plan=}
+    ;; esac
+done
+[ "$PLAN_TOKEN_COUNT" = 1 ] || fail plan_cmdline_count
+case "$PRODUCTION_PLAN_SHA256" in ''|*[!0-9a-f]*) fail plan_cmdline_digest;; esac
+[ "${#PRODUCTION_PLAN_SHA256}" = 64 ] || fail plan_cmdline_digest_length
+BOOT_ID=$(cat /proc/sys/kernel/random/boot_id) || fail boot_id
+printf '%s\n' "$BOOT_ID" >/run/leon-production/boot-id
+log "INIT_REACHED kernel=$EXPECTED_KERNEL boot_id=$BOOT_ID cohort=$COHORT_DIR"
+
+# Public source requires private device enrollment before deployment.
+case "$ORIGINAL_MAC" in 02:00:00:f0:*|02:00:00:F0:*) fail public_placeholder_mac;; esac
+
+# Preserve the previously proved VLAN/MAC handoff to ASUS native networking.
+need vlan_module modprobe 8021q
+waits=0
+while [ ! -d /sys/class/net/eth0 ] && [ "$waits" -lt 20 ]; do sleep 1; waits=$((waits+1)); done
+[ -d /sys/class/net/eth0 ] || fail no_eth0
+need eth0_down ip link set eth0 down
+need eth0_mac ip link set eth0 address "$ORIGINAL_MAC"
+need vlan_naming vconfig set_name_type DEV_PLUS_VID_NO_PAD
+need vlan_add vconfig add eth0 10
+need vlan_name ip link set eth0.10 name eth0-10
+need vlan_mac ip link set eth0-10 address "$ORIGINAL_MAC"
+need eth0_up ip link set eth0 up
+need vlan_address ip addr add 169.254.0.2/16 dev eth0-10
+need vlan_up ip link set eth0-10 up
+need bcm_route ip route add 169.254.0.1/32 dev eth0-10 src 169.254.0.2 scope link
+
+waits=0
+while { [ ! -b /dev/mmcblk0p13 ] || [ ! -b /dev/mmcblk0p18 ]; } && [ "$waits" -lt 20 ]; do sleep 1; waits=$((waits+1)); done
+need root_uuid /bin/uuid-verify root
+if [ -e /dev/root ] || [ -L /dev/root ]; then
+    [ "$(readlink -f /dev/root)" = /dev/mmcblk0p13 ] || fail dev_root_conflict
+else
+    need dev_root_alias ln -s mmcblk0p13 /dev/root
+fi
+need home_uuid /bin/uuid-verify home
+need root_mount mount -t ext4 -o ro /dev/mmcblk0p13 /newroot
+for path in home lib/modules dev proc sys run; do
+    [ -d "/newroot/$path" ] && [ ! -L "/newroot/$path" ] || fail "root_path_$path"
+done
+[ "$(readlink /newroot/sbin/init)" = '../lib/systemd/systemd' ] || fail init_target
+[ -x /newroot/lib/systemd/systemd ] || fail systemd_absent
+need stock_public_hashes sh -c 'cd /newroot && sha256sum -c /payload/stock-public.sha256' >/run/leon-production/stock-public-check.log 2>&1
+for path in etc/systemd/system/multi-user.target.wants/arc_first_time.service etc/systemd/system/basic.target.wants/resize-helper.service system-update etc/system-update; do
+    [ ! -e "/newroot/$path" ] && [ ! -L "/newroot/$path" ] || fail "unexpected_marker_$path"
+done
+for path in etc/deb-postinsts etc/rpm-postinsts; do
+    if [ -d "/newroot/$path" ]; then
+        for item in "/newroot/$path"/* "/newroot/$path"/.[!.]* "/newroot/$path"/..?*; do
+            [ ! -e "$item" ] && [ ! -L "$item" ] || fail pending_postinst
+        done
+    fi
+done
+need home_mount mount -t ext4 -o rw /dev/mmcblk0p18 /newroot/home
+[ -s /newroot/home/root/config.json ] || fail existing_config_missing
+[ -s /newroot/home/docker/volumes/slm_data_asus/_data/version.json ] || fail existing_slm_marker_missing
+[ -f /newroot/home/root/swapfile ] || fail existing_swapfile_missing
+[ -d /newroot/home/docker ] || fail existing_docker_data_missing
+STAGED="/newroot$COHORT_DIR"
+MODULES="$STAGED/modules"
+[ "$(readlink -f "$STAGED")" = "$STAGED" ] || fail cohort_symlink
+[ "$(/bin/busybox stat -c '%a:%u:%g' "$STAGED")" = 700:0:0 ] || fail cohort_permissions
+[ "$(readlink -f "$MODULES")" = "$MODULES" ] || fail modules_symlink
+[ -d "$MODULES/$EXPECTED_KERNEL" ] || fail candidate_modules_absent
+for path in modules.sha256 plan.json post-health.py; do
+    [ -f "$STAGED/$path" ] && [ ! -L "$STAGED/$path" ] || fail "cohort_file_$path"
+done
+[ "$(sha256sum "$STAGED/modules.sha256" | cut -d ' ' -f 1)" = "$MODULES_MANIFEST_SHA256" ] || fail module_manifest_hash
+[ "$(sha256sum "$STAGED/plan.json" | cut -d ' ' -f 1)" = "$PRODUCTION_PLAN_SHA256" ] || fail production_plan_hash
+[ "$(sha256sum "$STAGED/post-health.py" | cut -d ' ' -f 1)" = "$POST_HEALTH_SHA256" ] || fail post_health_hash
+[ "$(/bin/busybox stat -c '%a:%u:%g:%h' "$STAGED/plan.json")" = 600:0:0:1 ] || fail plan_permissions
+[ "$(/bin/busybox stat -c '%a:%u:%g:%h' "$STAGED/post-health.py")" = 600:0:0:1 ] || fail post_health_permissions
+need candidate_hashes sh -c 'cd "$1" && sha256sum -c "$2"' sh "$MODULES" "$STAGED/modules.sha256" >/run/leon-production/module-check.log 2>&1
+need modules_bind mount -o bind "$MODULES" /newroot/lib/modules
+need modules_readonly mount -o remount,bind,ro /newroot/lib/modules
+awk '$2=="/newroot/lib/modules" && $4 ~ /(^|,)ro(,|$)/ {ok=1} END {exit !ok}' /proc/mounts || fail modules_bind_not_readonly
+
+need systemd_runtime mkdir -p /run/systemd/system/local-fs.target.requires /run/systemd/system/multi-user.target.wants /run/modprobe.d
+need home_unit cp /payload/home.mount /run/systemd/system/home.mount
+need home_link ln -s ../home.mount /run/systemd/system/local-fs.target.requires/home.mount
+cat >/run/systemd/system/lib-modules.mount <<UNIT
+[Unit]
+Description=Read-only verified production kernel modules
+Requires=home.mount
+After=home.mount
+Before=local-fs.target systemd-modules-load.service
+[Mount]
+What=$COHORT_DIR/modules
+Where=/lib/modules
+Type=none
+Options=bind,ro
+UNIT
+need module_link ln -s ../lib-modules.mount /run/systemd/system/local-fs.target.requires/lib-modules.mount
+need module_renames cp /payload/leon-stock-module-renames.conf /run/modprobe.d/leon-stock-module-renames.conf
+cat >/run/systemd/system/leon-production-health.service <<UNIT
+[Unit]
+Description=Bounded ASUS health before production kernel re-arm
+After=home.mount lib-modules.mount systemd-networkd.service avahi-daemon.service docker.service containerd.service systemd-timesyncd.service systemd-modules-load.service
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 -B $COHORT_DIR/post-health.py --plan $COHORT_DIR/plan.json --plan-sha256 $PRODUCTION_PLAN_SHA256
+RemainAfterExit=no
+Restart=no
+UMask=0077
+KillMode=process
+SendSIGKILL=no
+TimeoutStartSec=infinity
+TimeoutStopSec=infinity
+[Install]
+WantedBy=multi-user.target
+UNIT
+need health_link ln -s ../leon-production-health.service /run/systemd/system/multi-user.target.wants/leon-production-health.service
+need public_runtime_dirs chmod 0755 /run /run/systemd /run/systemd/system /run/systemd/system/local-fs.target.requires /run/systemd/system/multi-user.target.wants /run/modprobe.d
+need public_runtime_files chmod 0644 /run/systemd/system/home.mount /run/systemd/system/lib-modules.mount /run/systemd/system/leon-production-health.service /run/modprobe.d/leon-stock-module-renames.conf
+log "HANDOFF_READY module_files=$MODULE_FILE_COUNT modules_ro=1 home_rw=1 stock_next_boot_required=1"
+need move_dev mount -o move /dev /newroot/dev
+need move_sys mount -o move /sys /newroot/sys
+need move_proc mount -o move /proc /newroot/proc
+mount -o move /run /newroot/run || { printf 'AI_PRODUCTION FATAL move_run\n'; hold; }
+exec /bin/busybox switch_root -c /dev/console /newroot /sbin/init
+printf 'AI_PRODUCTION FATAL switch_root_exec\n'
+hold

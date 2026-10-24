@@ -1,0 +1,15 @@
+--- a/debian/rules
++++ b/debian/rules
+@@ -3,7 +3,11 @@
+ include /usr/share/dpkg/architecture.mk
+ 
+ export DEB_BUILD_MAINT_OPTIONS = future=+lfs
+-export DEB_CFLAGS_MAINT_APPEND = -Wall -Wno-analyzer-null-argument
++export DEB_CFLAGS_MAINT_APPEND = -Wall -Wno-analyzer-null-argument -mcpu=cortex-a53+crypto+crc -D_TIME_BITS=64 -D_FILE_OFFSET_BITS=64
++
++# Linux4.19 requires the shipped gnulib resolver even with glibc2.43+.
++# Keep the complete CVE hardening implementation and its ENOSYS fallback.
++export ac_cv_func_openat2 = no
+ 
+ %:
+ 	dh $@

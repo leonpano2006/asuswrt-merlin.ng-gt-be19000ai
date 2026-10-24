@@ -1,0 +1,83 @@
+{
+  "pass": true,
+  "stock_thermal_module_struct_size": 640,
+  "stock_thermal_vermagic": [
+    "vermagic=4.19.294 SMP preempt mod_unload aarch64"
+  ],
+  "modules": [
+    {
+      "file": "bcm4916_hwmon.ko",
+      "sha256": "bb72e7461bbcfd3438357296220de748f580e29d857f6985afa4853630e3b53d",
+      "imports": [
+        "UtilGetChipId",
+        "__ioremap",
+        "__iounmap",
+        "__root_device_register",
+        "__stack_chk_fail",
+        "__stack_chk_guard",
+        "arm64_const_caps_ready",
+        "biu_ch_freq_get",
+        "cpu_hwcap_keys",
+        "cpu_hwcaps",
+        "hwmon_device_register_with_groups",
+        "hwmon_device_unregister",
+        "of_address_to_resource",
+        "of_device_is_available",
+        "of_find_compatible_node",
+        "of_property_match_string",
+        "pmc_convert_pvtmon",
+        "printk",
+        "root_device_unregister",
+        "scnprintf"
+      ],
+      "missing_imports": [],
+      "module_struct_size": 640,
+      "modinfo": [
+        "license=GPL v2",
+        "depends=hwmon",
+        "vermagic=4.19.294 SMP preempt mod_unload aarch64"
+      ]
+    },
+    {
+      "file": "hwmon.ko",
+      "sha256": "e680d524bf367b819f7107da32163a0dc7bdcaefb12a82089909195c094acd8f",
+      "imports": [
+        "__class_register",
+        "__kmalloc",
+        "__stack_chk_fail",
+        "__stack_chk_guard",
+        "__sw_hweight32",
+        "_dev_warn",
+        "class_unregister",
+        "dev_set_name",
+        "device_register",
+        "device_unregister",
+        "devm_kmalloc",
+        "devm_thermal_zone_of_sensor_register",
+        "devres_add",
+        "devres_alloc_node",
+        "devres_free",
+        "devres_release",
+        "ida_alloc_range",
+        "ida_free",
+        "kfree",
+        "kmalloc_caches",
+        "kmem_cache_alloc",
+        "kstrtoll",
+        "printk",
+        "put_device",
+        "scnprintf",
+        "sprintf",
+        "sscanf",
+        "strpbrk"
+      ],
+      "missing_imports": [],
+      "module_struct_size": 640,
+      "modinfo": [
+        "license=GPL",
+        "depends=",
+        "vermagic=4.19.294 SMP preempt mod_unload aarch64"
+      ]
+    }
+  ]
+}

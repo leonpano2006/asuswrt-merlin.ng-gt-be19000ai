@@ -1,0 +1,113 @@
+{
+  "scope": "Accepted SL1680 AI-board source changes; separate from Broadcom BCM router kernel",
+  "kernel_release": "6.12.62-leonai7+",
+  "upstreams": [
+    {
+      "repository": "https://github.com/synaptics-astra/linux_6_12-main.git",
+      "commit": "bd655993c995f173bb6d41cd8e29709c4e55d1d4",
+      "branch": "scarthgap_6.12_v2.6.0",
+      "destination": "kernel"
+    },
+    {
+      "repository": "https://github.com/synaptics-astra/linux_6_12-drivers-synaptics.git",
+      "commit": "7bfaa9afcf53407f13383d88a1b0e4b6485201d2",
+      "destination": "kernel/drivers/synaptics"
+    },
+    {
+      "repository": "https://github.com/synaptics-astra/linux_5_15-modules",
+      "commit": "0cf31f3c719dbcc7a813e6e61657e395fbe1da46",
+      "tag": "v1.5.0",
+      "subtree": "drivers/gpu/rogue_ws",
+      "role": "stock GPU 24.2 external module"
+    },
+    {
+      "repository": "https://github.com/synaptics-astra/linux_5_15-overlay",
+      "commit": "8ee9fca453d05cacb7258085d5b0f1d101b1d19f",
+      "subtree": "drivers/soc/berlin/modules/vpu",
+      "role": "stock VPU 1.5 external module"
+    }
+  ],
+  "patch_application_order": [
+    {
+      "patch": "0001-linux-6.12-sl1680-production.patch",
+      "working_directory": "kernel",
+      "strip": 1,
+      "note": "Contains all final main-tree changes, including new ASUS DTS; supersedes historical diagnostic patch chain."
+    },
+    {
+      "patch": "0002-synaptics-dhub-clock-ownership.patch",
+      "working_directory": "kernel/drivers/synaptics",
+      "strip": 1
+    },
+    {
+      "patch": "ai-board-upgrade-20261010/research/kernel/gpu24-linux612.patch",
+      "working_directory": "linux_5_15-modules repository root at recorded commit",
+      "note": "Initial Linux 6.12 compatibility port; paths include drivers/gpu/rogue_ws. Alternatively -p4 from GPU subtree.",
+      "strip": 1
+    },
+    {
+      "patch": "ai-board-upgrade-20261010/research/kernel/gpu24-unsigned-offset-v1/fix.patch",
+      "working_directory": "linux_5_15-modules/drivers/gpu/rogue_ws",
+      "note": "Apply after initial port; accepted V27 fix.",
+      "strip": 1
+    },
+    {
+      "patch": "ai-board-upgrade-20261010/research/kernel/vpu15-linux612.patch",
+      "working_directory": "linux_5_15-overlay repository root at recorded commit",
+      "note": "Initial Linux 6.12 compatibility port; paths include drivers/soc/berlin/modules/vpu. Alternatively -p6 from VPU subtree.",
+      "strip": 1
+    },
+    {
+      "patch": "ai-board-upgrade-20261010/research/kernel/vpu15-capture-scheduling-v1/fix.patch",
+      "working_directory": "linux_5_15-overlay/drivers/soc/berlin/modules/vpu",
+      "note": "Apply after initial port; accepted V24/V25 fix.",
+      "strip": 1
+    }
+  ],
+  "configuration": {
+    "file": "leonai7-production.config",
+    "sha256": "0ad31b854094bf50e605ebbfbcf0705557e0c5932dfe6bad5b6f1c56c6772749",
+    "kernel_compiler": "GCC 16.2.0",
+    "binutils": "2.47",
+    "thp_default": "madvise",
+    "zram": "module"
+  },
+  "accepted_image_sha256": "5158ca81f22caea4fcabfcd7091a9a3e7c9ae4aec901994cee5411a2877513a1",
+  "checks": [
+    {
+      "patch": "0001-linux-6.12-sl1680-production.patch",
+      "reverse_apply_check_against_recorded_worktree": "pass"
+    },
+    {
+      "patch": "0002-synaptics-dhub-clock-ownership.patch",
+      "reverse_apply_check_against_recorded_worktree": "pass"
+    }
+  ],
+  "caveats": [
+    "Patches exported offline from final recorded working trees; no rebuild or new device validation performed for publication.",
+    "Production kernel reused 438 accepted V27 modules; this source export does not include that binary module cohort or complete external SynAP source closure.",
+    "Standalone DTS is the same source already added by 0001; it is provided for inspection, not a boot-ready DTB. Firmware runtime fixups and padded accepted DTB are separate artifacts.",
+    "SL1680 L2 placement is an opt-in board workaround; original SEA root cause and other boards or RAM maps are not validated.",
+    "Original Yocto 4.0.17/glibc 2.35/native compiler and hybrid/v1 cgroups retained; newer userspace and unified LXC migration deferred.",
+    "Saved-default deployment and repeat boot passed in local evidence; automatic bounded production recovery is unavailable, and manual power cycling may be required.",
+    "Tool wrappers and deployment sources retain private binary/evidence/device prerequisites; source export is not a self-contained installer."
+  ],
+  "files": {
+    "0001-linux-6.12-sl1680-production.patch": {
+      "sha256": "69f097c294030671ab8dd2640dc6cd5bd2c86f3905c6692c2fa5284d2bbbe986",
+      "bytes": 19157
+    },
+    "0002-synaptics-dhub-clock-ownership.patch": {
+      "sha256": "73136d9432da0d1a9385b8f3210beb28b1b4daae560b8d4195a15e4d2eea9f24",
+      "bytes": 2485
+    },
+    "leonai7-production.config": {
+      "sha256": "0ad31b854094bf50e605ebbfbcf0705557e0c5932dfe6bad5b6f1c56c6772749",
+      "bytes": 189820
+    },
+    "dolphin-asus-be19000ai.dts": {
+      "sha256": "07c1b0e3b5d37ebc7981b6d55756e83190601eb1981b704a5763403b55bf6c01",
+      "bytes": 9227
+    }
+  }
+}

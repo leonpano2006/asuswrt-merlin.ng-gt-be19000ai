@@ -1,0 +1,255 @@
+#!/usr/bin/python3
+"""Restore an ASUS-managed listener stopped by an OpenSSH package upgrade."""
+import fcntl
+import json
+import os
+from pathlib import Path
+import re
+import stat
+import subprocess
+import sys
+import syslog
+import time
+
+STATE = Path('/run/leon-asus-openssh-upgrade-guard')
+CONFIG = '/run/leon-asus-ssh/sshd_config'
+ENV = {'PATH': '/usr/sbin:/usr/bin:/sbin:/bin', 'LC_ALL': 'C'}
+ACTIONS = {'unpack', 'configure', 'install', 'triggers-only', 'remove', 'purge'}
+
+
+def log(message):
+    try:
+        syslog.openlog('leon-asus-openssh-upgrade-guard')
+        syslog.syslog(syslog.LOG_NOTICE, message)
+    except OSError:
+        pass
+
+
+class Store:
+    """Root-only, boot-local checkpoint with a lock and atomic replacement."""
+    def __init__(self):
+        STATE.mkdir(mode=0o700, exist_ok=True)
+        self.fd = os.open(STATE, os.O_DIRECTORY | os.O_NOFOLLOW | os.O_CLOEXEC)
+        st = os.fstat(self.fd)
+        if st.st_uid != 0 or stat.S_IMODE(st.st_mode) != 0o700:
+            raise RuntimeError('Unsafe state directory')
+        self.lock = os.open('lock', os.O_RDWR | os.O_CREAT | os.O_NOFOLLOW,
+                            0o600, dir_fd=self.fd)
+        self.check(os.fstat(self.lock))
+        fcntl.flock(self.lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+
+    @staticmethod
+    def check(st):
+        if not stat.S_ISREG(st.st_mode) or st.st_uid != 0 or st.st_nlink != 1 or stat.S_IMODE(st.st_mode) != 0o600:
+            raise RuntimeError('Unsafe checkpoint file')
+
+    def read(self):
+        try:
+            fd = os.open('state.json', os.O_RDONLY | os.O_NOFOLLOW, dir_fd=self.fd)
+        except FileNotFoundError:
+            return None
+        with os.fdopen(fd, 'rb') as stream:
+            self.check(os.fstat(stream.fileno()))
+            data = stream.read(8193)
+        if len(data) > 8192:
+            raise RuntimeError('Oversized checkpoint')
+        state = json.loads(data)
+        if (not isinstance(state, dict) or state.get('schema') != 1
+                or state.get('phase') not in ('pending', 'requested')
+                or not isinstance(state.get('boot'), str)
+                or not isinstance(state.get('version'), str)
+                or not isinstance(state.get('binary'), list)
+                or len(state['binary']) != 4
+                or any(type(v) is not int for v in state['binary'])):
+            raise RuntimeError('Invalid checkpoint')
+        return state
+
+    def write(self, state):
+        name = 'new-' + str(os.getpid())
+        fd = os.open(name, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW,
+                     0o600, dir_fd=self.fd)
+        try:
+            with os.fdopen(fd, 'w') as stream:
+                json.dump(state, stream, sort_keys=True)
+                stream.write('\n')
+                stream.flush()
+                os.fsync(stream.fileno())
+            os.replace(name, 'state.json', src_dir_fd=self.fd, dst_dir_fd=self.fd)
+            os.fsync(self.fd)
+        finally:
+            try:
+                os.unlink(name, dir_fd=self.fd)
+            except FileNotFoundError:
+                pass
+
+    def clear(self):
+        try:
+            os.unlink('state.json', dir_fd=self.fd)
+            os.fsync(self.fd)
+        except FileNotFoundError:
+            pass
+
+
+class Host:
+    def run(self, argv, timeout=5):
+        return subprocess.run(argv, stdin=subprocess.DEVNULL,
+                              stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
+                              text=True, env=ENV, timeout=timeout, check=False)
+
+    def boot(self):
+        return Path('/proc/sys/kernel/random/boot_id').read_text().strip()
+
+    def service(self):
+        result = self.run(['/usr/bin/systemctl', 'show', 'ssh.service',
+                           '--property=ActiveState', '--value'])
+        if result.returncode:
+            raise RuntimeError('Service query failed')
+        return result.stdout.strip()
+
+    def active(self, unit):
+        return self.run(['/usr/bin/systemctl', 'is-active', '--quiet', unit]).returncode == 0
+
+    def package(self):
+        result = self.run(['/usr/bin/dpkg-query', '-W', '-f=${Status}\t${Version}',
+                           'openssh-server'])
+        if result.returncode == 1:
+            return 'removed', ''
+        if result.returncode or '\t' not in result.stdout:
+            raise RuntimeError('Package query failed')
+        status, version = result.stdout.strip().split('\t', 1)
+        words = status.split()
+        if len(words) != 3:
+            raise RuntimeError('Invalid package status')
+        if words[2] in ('not-installed', 'config-files'):
+            return 'removed', version
+        return ('configured' if words[1:] == ['ok', 'installed'] else 'pending'), version
+
+    def binary(self):
+        st = os.stat('/usr/sbin/sshd', follow_symlinks=False)
+        if not stat.S_ISREG(st.st_mode) or st.st_uid != 0 or st.st_mode & 0o022:
+            raise RuntimeError('Unsafe sshd executable')
+        return [st.st_dev, st.st_ino, st.st_ctime_ns, st.st_size]
+
+    def managed(self):
+        result = self.run(['/usr/bin/systemctl', 'show', 'ssh.service', '--property=MainPID', '--value'])
+        if result.returncode or not result.stdout.strip().isdigit():
+            return False
+        pid = int(result.stdout.strip())
+        if pid <= 1:
+            return False
+        proc = Path('/proc') / str(pid)
+        before = proc.stat()
+        if before.st_uid or not (proc / 'exe').samefile('/usr/sbin/sshd'):
+            return False
+        if not (proc / 'ns/mnt').samefile('/proc/1/ns/mnt'):
+            return False
+        if (proc / 'cgroup').read_text() != '0::/system.slice/ssh.service\n':
+            return False
+        cmd = (proc / 'cmdline').read_bytes()
+        original = ('/usr/sbin/sshd\0-D\0-f\0' + CONFIG + '\0').encode()
+        title = (rb'sshd: /usr/sbin/sshd -D -f ' + re.escape(CONFIG.encode())
+                 + rb' \[listener\] [0-9]{1,10} of [0-9]{1,10}-[0-9]{1,10} startups\x00+')
+        after = proc.stat()
+        return ((cmd == original or re.fullmatch(title, cmd) is not None)
+                and before.st_ino == after.st_ino and self.service() == 'active')
+
+    def enabled(self):
+        result = self.run(['/usr/bin/asus', 'nvram', 'get', 'sshd_enable'])
+        if result.returncode or result.stdout.strip() not in ('0', '1', '2'):
+            raise RuntimeError('ASUS SSH policy unavailable')
+        return result.stdout.strip()
+
+    def ready(self):
+        for unit in ('leon-asus-ssh-recovery.socket', 'leon-asus-ssh.socket'):
+            if not self.active(unit):
+                return False
+        st = os.stat(CONFIG, follow_symlinks=False)
+        if not stat.S_ISREG(st.st_mode) or st.st_uid or st.st_mode & 0o022:
+            return False
+        return self.run(['/usr/sbin/sshd', '-t', '-f', CONFIG]).returncode == 0
+
+    def start(self):
+        return self.run(['/usr/bin/asus', 'service', 'start_sshd'], timeout=8).returncode == 0
+
+    def wait(self):
+        deadline = time.monotonic() + 12
+        while time.monotonic() < deadline:
+            if self.service() == 'active' and self.managed():
+                return True
+            time.sleep(0.5)
+        return False
+
+
+def reconcile(phase, host, store):
+    boot = host.boot()
+    state = store.read()
+    if state and state['boot'] != boot:
+        store.clear()
+        state = None
+    if phase == 'pre':
+        if state:
+            # An interrupted unpack/configure sequence must retain the original
+            # active listener and binary, even when later pre hooks see it off.
+            return
+        if host.service() != 'active' or not host.managed():
+            return
+        status, version = host.package()
+        if status != 'configured':
+            return
+        store.write({'schema': 1, 'phase': 'pending', 'boot': boot,
+                     'version': version, 'binary': host.binary()})
+        return
+    if not state:
+        return
+    if host.service() == 'active':
+        store.clear()
+        return
+    enabled = host.enabled()
+    status, version = host.package()
+    if enabled != '2' or status == 'removed':
+        store.clear()
+        return
+    if state['phase'] == 'requested':
+        return  # Never resend an asynchronous request whose outcome is uncertain.
+    changed = version != state['version'] or host.binary() != state['binary']
+    if status != 'configured':
+        return
+    if not changed:
+        store.clear()  # Unrelated packages or manual stops do not authorize start.
+        return
+    if host.service() != 'inactive' or not host.ready():
+        log('Recovery deferred: primary state, configuration, or recovery sockets not ready')
+        return
+    # Recheck user policy and state immediately before consuming this checkpoint.
+    if host.enabled() != '2' or host.service() != 'inactive':
+        return
+    state['phase'] = 'requested'
+    store.write(state)
+    requested = host.start()
+    if requested and host.wait():
+        store.clear()
+        log('Restored ASUS-managed SSH after OpenSSH package replacement')
+    else:
+        log('SSH recovery request did not verify; inspect checkpoint and service, no automatic retry')
+
+
+def main():
+    try:
+        if len(sys.argv) != 2 or sys.argv[1] not in ('pre', 'post'):
+            raise ValueError('Expected pre or post')
+        if (os.geteuid() != 0 or os.environ.get('DPKG_ROOT', '') not in ('', '/')
+                or os.environ.get('DPKG_ADMINDIR', '/var/lib/dpkg') != '/var/lib/dpkg'
+                or os.environ.get('DPKG_HOOK_ACTION') not in ACTIONS
+                or not Path('/run/systemd/system').is_dir()
+                or not Path('/proc/self/ns/mnt').samefile('/proc/1/ns/mnt')
+                or not Path('/').samefile('/proc/1/root')):
+            return 0
+        reconcile(sys.argv[1], Host(), Store())
+    except Exception as exc:
+        # Do not emit command output, configuration, or credentials into apt logs.
+        log('Hook deferred safely: ' + type(exc).__name__)
+    return 0
+
+
+if __name__ == '__main__':
+    sys.exit(main())

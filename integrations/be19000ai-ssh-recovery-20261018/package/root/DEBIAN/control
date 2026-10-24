@@ -1,0 +1,11 @@
+Package: leon-asus-openssh-upgrade-guard
+Version: 0.1+leonb53.1
+Architecture: all
+Section: admin
+Priority: optional
+Maintainer: BE19000AI local integration <local@invalid>
+Depends: python3-minimal, openssh-server, leon-asus-command-access (>= 0.1+leonb53.1+local1)
+Description: Preserve ASUS-controlled SSH availability through OpenSSH upgrades
+ Records an active managed listener before dpkg and requests its restoration
+ after verified OpenSSH replacement. Preserves ASUS enable policy and the
+ independent recovery socket without enabling the distribution SSH units.

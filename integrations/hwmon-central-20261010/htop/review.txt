@@ -1,0 +1,10 @@
+Bound to user htop commit d76b23eeb68515bd9e088a14c98e5c7d658f892f; copies start from the captured clean files, not the earlier private-fallback files.
+The three-file patch adds bcm4916 to CPU-temperature detection and a shared LibSensors_getCPUFrequency() backend.
+Stable chip/channel table binds bcm4916/freq1; human-readable labels are not used to identify readings.
+Exactly one matching device is accepted. Missing, ambiguous, failed, non-finite, or non-positive frequency returns NAN; Hz is converted to MHz.
+Existing CPUFreq and /proc/cpuinfo data retain priority; only missing values on online CPU slots receive the shared fallback.
+SENSORS_API_VERSION >= 0x510 guards new enum use. Older headers compile the getter as NAN; sensor-disabled and non-Linux builds keep their previous behavior.
+Exact downloaded Platform.c lines 1133-1146 show LibSensors_init() runs independently of temperature display settings. No extra initialization or changes to Platform.c are needed.
+Temperature uses the original libsensors route including valid negative values and package-to-core display behavior. Driver contract currently exposes exactly one CPU temperature channel.
+No private sysfs/proc path, BcmTelemetry header, root collector, or cache is referenced by the patched files.
+This task did not build or execute htop. Parent owns compilation and live validation.

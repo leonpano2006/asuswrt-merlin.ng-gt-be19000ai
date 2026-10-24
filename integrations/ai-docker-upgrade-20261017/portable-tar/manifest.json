@@ -1,0 +1,72 @@
+{
+  "archive": "/home/leonpano/Documents/ChatGPT/asuswrt/ai-docker-upgrade-20261017/portable-tar.tar.gz",
+  "sha256": "cac7a14a469e557ec0f4ffdea3245067650cefed7e1940032d20c588710e6753",
+  "bytes": 555569,
+  "source": "Official Ubuntu Jammy ARM64 packages; InRelease gpgv-verified with Ubuntu archive keyring, index and package SHA256 verified",
+  "packages": {
+    "libacl1": {
+      "Package": "libacl1",
+      "Version": "2.3.1-1",
+      "Architecture": "arm64",
+      "Filename": "pool/main/a/acl/libacl1_2.3.1-1_arm64.deb",
+      "Size": "16088",
+      "SHA256": "328e91b2d6e8ee44ad669fc7276b74f208bc781baf1ecdd7dbf5f092f8b41712",
+      "suite": "jammy"
+    },
+    "libpcre2-8-0": {
+      "Package": "libpcre2-8-0",
+      "Version": "10.39-3ubuntu0.1",
+      "Architecture": "arm64",
+      "Filename": "pool/main/p/pcre2/libpcre2-8-0_10.39-3ubuntu0.1_arm64.deb",
+      "Size": "201806",
+      "SHA256": "b85beefd54108f1c34a89cb26688eb1b2eeaa099e4995091295a1d39f9c67a91",
+      "suite": "jammy-updates"
+    },
+    "libselinux1": {
+      "Package": "libselinux1",
+      "Version": "3.3-1build2",
+      "Architecture": "arm64",
+      "Filename": "pool/main/libs/libselinux/libselinux1_3.3-1build2_arm64.deb",
+      "Size": "74408",
+      "SHA256": "3a0726b2174a40fa28e74712867aa6e40d3d725543e8f668af9e9e59a28c817c",
+      "suite": "jammy"
+    },
+    "tar": {
+      "Package": "tar",
+      "Version": "1.34+dfsg-1ubuntu0.1.22.04.6",
+      "Architecture": "arm64",
+      "Filename": "pool/main/t/tar/tar_1.34+dfsg-1ubuntu0.1.22.04.6_arm64.deb",
+      "Size": "290852",
+      "SHA256": "a6e8a42c2be5fdabf51578cc416714cca62f099cde841c3143178919150bda0f",
+      "suite": "jammy-updates"
+    }
+  },
+  "files": {
+    "bin/tar": {
+      "sha256": "d7c77b0dce2a9f7fea646065b36a0a2bd3a5749917b7fe568408330a66398566",
+      "bytes": 505200,
+      "max_glibc": "2.34"
+    },
+    "lib/libacl.so.1": {
+      "sha256": "60509bc0d37bb2d20c2d7ce6640c44d67b2173f27c59ce98ef4d6636ada22c17",
+      "bytes": 30568,
+      "max_glibc": "2.33"
+    },
+    "lib/libpcre2-8.so.0": {
+      "sha256": "f2cec5aa341e10b0cf75b22ea1f21137e2de0dc0d0ab9f59d4e94e4a944c24db",
+      "bytes": 530880,
+      "max_glibc": "2.17"
+    },
+    "lib/libselinux.so.1": {
+      "sha256": "ff05cf853040f452d88194a7e473759cf4d31ef253763799b5cf7631655249fa",
+      "bytes": 161936,
+      "max_glibc": "2.34"
+    }
+  },
+  "version": "tar (GNU tar) 1.34",
+  "entrypoint": "portable-tar/tar",
+  "glibc_provided": false,
+  "maximum_required_glibc": "2.34",
+  "target_requirement": "Native aarch64 loader /lib/ld-linux-aarch64.so.1 and glibc >=2.34",
+  "local_validation": "Version/options and ELF requirements only; parent performs isolated target xattr/ACL/hardlink roundtrip before any production stop."
+}

@@ -1,0 +1,6 @@
+Types: deb
+URIs: file:/var/lib/leon-apt/systemd-pam
+Suites: bcm26-systemd-pam
+Components: main
+Architectures: arm64
+Signed-By: /usr/share/keyrings/leon-bcm-archive-keyring.gpg

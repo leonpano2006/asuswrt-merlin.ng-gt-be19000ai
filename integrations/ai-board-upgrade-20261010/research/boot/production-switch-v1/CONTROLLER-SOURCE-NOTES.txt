@@ -1,0 +1,30 @@
+Source only; no controller invocation, network access, device action, build or
+test was performed while writing scripts/deploy-yocto-kernel-v1.py.
+These are construction notes. The parent separately owns and records later
+target execution; this does not claim that the controller was never run later.
+
+The driver copies the v2 trial's pinned SSH transport, initial stock-B/live
+admission, immutable evidence hashes, original-block/CRC restoration and sole
+BCM reset-owner recovery. The old AI entry executor is pinned to its exact
+admitted source digest. A new job stages exactly four boot payloads plus
+plan.json, post-health.py and stock-public.sha256 in /home/leon-fulltrial-NONCE.
+production_plan and post_health descriptors must repeat each corresponding
+file's path, bytes and SHA256. The plan stores one @PLAN_SHA256@ bootargs token;
+the deployment job contains the expanded seven-key environment.
+
+The first boot must return a root-private ready.json bound to its fresh boot,
+nonce and plan digest. The driver validates the full native health proof,
+original container IDs, all cohort/module hashes, read-only module bind, all
+three original boot/misc block hashes, exact saved-stock environment and both
+CRC copies. Only a confirmed cancel_deployed latch/terminal allows commitment.
+The report clears watch_started and armed before the stop/marker/rearm steps;
+later failures never request GPIO reset. Commitment creates and fsyncs the
+root-private schema1 enable-default marker and starts only our runtime health
+unit. A rearmed proof and independent exact seven-key environment readback
+must pass before success. The candidate remains running. This controller alone
+does not qualify a second boot from the new default.
+
+The parent subsequently identified a multi-user/usage-stats ordering cycle in
+the custom runtime health unit. Its separately reviewed persistent ordering
+drop-in changes only that custom unit; no native unit is changed or restarted.
+Execution evidence and the exact installed drop-in belong to the live record.

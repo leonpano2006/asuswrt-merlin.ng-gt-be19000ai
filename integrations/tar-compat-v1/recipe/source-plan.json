@@ -1,0 +1,139 @@
+{
+  "schema": 1,
+  "status": "source_prepared_not_built",
+  "version": "1.35+dfsg-4ubuntu0.4+leonb53.1",
+  "source_inputs": [
+    {
+      "path": "/home/leonpano/Documents/ChatGPT/asuswrt/tar-compat-v1/source-inputs/tar_1.35+dfsg-4ubuntu0.4.debian.tar.xz",
+      "sha256": "25d8e50e31629e85baef5da32b3030e5ad0c9148ab3ee6b1428212a10e307e4d"
+    },
+    {
+      "path": "/home/leonpano/Documents/ChatGPT/asuswrt/tar-compat-v1/source-inputs/tar_1.35+dfsg-4ubuntu0.4.dsc",
+      "sha256": "e42458c1675ec7ba43cca2ea8e085231337e7a4553d7c6e2c21d2003761e5d43"
+    },
+    {
+      "path": "/home/leonpano/Documents/ChatGPT/asuswrt/tar-compat-v1/source-inputs/tar_1.35+dfsg.orig.tar.xz",
+      "sha256": "9ae57e981c1e73c0eebc2b26c9b0c4497fe310ef1d516ea430efb5470b71f7a8"
+    }
+  ],
+  "rules": {
+    "path": "/home/leonpano/Documents/ChatGPT/asuswrt/tar-compat-v1/source/debian/rules",
+    "sha256": "c33c0ab73bc60cd38a3b5a7adde86526c1959e1b6ebfa3a6de8e40e40faebe26"
+  },
+  "rules_diff": {
+    "path": "/home/leonpano/Documents/ChatGPT/asuswrt/tar-compat-v1/recipe/rules.diff",
+    "sha256": "22d9ca930f8c41d33c463c537eef6b4561c39768727b73d8c2ad096b7fb2fd35"
+  },
+  "changelog": {
+    "path": "/home/leonpano/Documents/ChatGPT/asuswrt/tar-compat-v1/source/debian/changelog",
+    "sha256": "caea00359c733656014756207a9b6a830723d666c64ae527503f5abe360a6c7d"
+  },
+  "security_patch_series": {
+    "path": "/home/leonpano/Documents/ChatGPT/asuswrt/tar-compat-v1/source/debian/patches/series",
+    "sha256": "7bd5f6a223aacd698ed1ac6f71a4c8c7f1cdf809c76629bc622693b8c3805f47"
+  },
+  "security_patch_payloads": [
+    {
+      "path": "/home/leonpano/Documents/ChatGPT/asuswrt/tar-compat-v1/source/debian/patches/CVE-2025-45582-1.patch",
+      "sha256": "fff3ad30cbcff51358c304c628d21ec91cf87fdf9a7eab25a5aa5ddc2ded627d"
+    },
+    {
+      "path": "/home/leonpano/Documents/ChatGPT/asuswrt/tar-compat-v1/source/debian/patches/CVE-2025-45582-10.patch",
+      "sha256": "2c931abebee1d441f0b384b88cdfe3c10d9b9b29a0b5f35dc71defcb1369d83a"
+    },
+    {
+      "path": "/home/leonpano/Documents/ChatGPT/asuswrt/tar-compat-v1/source/debian/patches/CVE-2025-45582-2.patch",
+      "sha256": "0ad129bb161a77f425000ea6647d7390586ccfc63705c424ad67e222f2272be7"
+    },
+    {
+      "path": "/home/leonpano/Documents/ChatGPT/asuswrt/tar-compat-v1/source/debian/patches/CVE-2025-45582-3.patch",
+      "sha256": "af9c7a883b0b5a99db963a65e25d65226e65e750fdf014617cf314cffc62bcd7"
+    },
+    {
+      "path": "/home/leonpano/Documents/ChatGPT/asuswrt/tar-compat-v1/source/debian/patches/CVE-2025-45582-4.patch",
+      "sha256": "f923ff649475892e8d57892620295f3b8983369fde300d48549da7c3eba940b9"
+    },
+    {
+      "path": "/home/leonpano/Documents/ChatGPT/asuswrt/tar-compat-v1/source/debian/patches/CVE-2025-45582-5.patch",
+      "sha256": "cd9392a8cc7767d84bb023c3da9050cbca46a3808f4e0312a23826551504b349"
+    },
+    {
+      "path": "/home/leonpano/Documents/ChatGPT/asuswrt/tar-compat-v1/source/debian/patches/CVE-2025-45582-6.patch",
+      "sha256": "abd31f8780562d5d709697903b93624a97722c6dd20deca7af88674031daa6c6"
+    },
+    {
+      "path": "/home/leonpano/Documents/ChatGPT/asuswrt/tar-compat-v1/source/debian/patches/CVE-2025-45582-7.patch",
+      "sha256": "11843f45db26862ff454bab872a348c22273fe015dda03c877b0add69782802f"
+    },
+    {
+      "path": "/home/leonpano/Documents/ChatGPT/asuswrt/tar-compat-v1/source/debian/patches/CVE-2025-45582-8.patch",
+      "sha256": "632b34ebd6e12a1d823f085931d97c440f337477434b719af4580f7921b83d36"
+    },
+    {
+      "path": "/home/leonpano/Documents/ChatGPT/asuswrt/tar-compat-v1/source/debian/patches/CVE-2025-45582-9.patch",
+      "sha256": "46b60d79931b059c3d223e5e0a4cdd34cc4dd3a39ed4f0778194ef41e553270d"
+    },
+    {
+      "path": "/home/leonpano/Documents/ChatGPT/asuswrt/tar-compat-v1/source/debian/patches/CVE-2025-45582-gnulib-1.patch",
+      "sha256": "7448802ab7ee5de4d028af1d00c4a2da5af7a52fbaeb88cd604c71d9f80ad218"
+    },
+    {
+      "path": "/home/leonpano/Documents/ChatGPT/asuswrt/tar-compat-v1/source/debian/patches/CVE-2025-45582-gnulib-2.patch",
+      "sha256": "4a256cb0fd17d3cca2efc894ceca57a5714d300c4ff77238fb596d494bd0d074"
+    },
+    {
+      "path": "/home/leonpano/Documents/ChatGPT/asuswrt/tar-compat-v1/source/debian/patches/CVE-2025-45582-gnulib-3.patch",
+      "sha256": "80c0c2d0aae5d08cff2eaf2aed26f07cedf4c9286d8ec458dbda7a45ab736605"
+    },
+    {
+      "path": "/home/leonpano/Documents/ChatGPT/asuswrt/tar-compat-v1/source/debian/patches/CVE-2025-45582-gnulib-4.patch",
+      "sha256": "2ce3088eebf0d44dfa9f731e5ac985e72f618c449ece4f3a630f109a8cd386fd"
+    },
+    {
+      "path": "/home/leonpano/Documents/ChatGPT/asuswrt/tar-compat-v1/source/debian/patches/CVE-2025-45582-gnulib-5.patch",
+      "sha256": "58f70c722faece7e143ee2c8763e79f719372ed2f523f9eb923adba239246ed0"
+    },
+    {
+      "path": "/home/leonpano/Documents/ChatGPT/asuswrt/tar-compat-v1/source/debian/patches/CVE-2025-45582-gnulib-6.patch",
+      "sha256": "d98fc9a3aeb7d1ed3f8651fc504a64e72be223722ee5237ec3ee0af8a9efab5b"
+    },
+    {
+      "path": "/home/leonpano/Documents/ChatGPT/asuswrt/tar-compat-v1/source/debian/patches/CVE-2026-5704-2.patch",
+      "sha256": "5276f489f2f6f068875d4a9c27924d2f18399955e89b8004e11f7c80a1b4e4f1"
+    },
+    {
+      "path": "/home/leonpano/Documents/ChatGPT/asuswrt/tar-compat-v1/source/debian/patches/CVE-2026-5704-3.patch",
+      "sha256": "685c2e4424194f890f11d5c4a5201fb3c24bc36ebbf7c8cf346d88fda1f46f82"
+    },
+    {
+      "path": "/home/leonpano/Documents/ChatGPT/asuswrt/tar-compat-v1/source/debian/patches/CVE-2026-5704-4.patch",
+      "sha256": "91d3189935ab4f4733ae10a386643803f0c1dffedafe88a6e0e3c9786b8c6217"
+    },
+    {
+      "path": "/home/leonpano/Documents/ChatGPT/asuswrt/tar-compat-v1/source/debian/patches/CVE-2026-5704-5.patch",
+      "sha256": "bb1a7dea938e7ee110f45a09590697e2dc86f8824076a04ba17ee025590c2063"
+    },
+    {
+      "path": "/home/leonpano/Documents/ChatGPT/asuswrt/tar-compat-v1/source/debian/patches/CVE-2026-5704.patch",
+      "sha256": "a82c5c51168b9d4165792a7c14502626b1afd51e5f62be6df3c08f28b114bb7d"
+    }
+  ],
+  "gnulib_fallback": {
+    "path": "/home/leonpano/Documents/ChatGPT/asuswrt/tar-compat-v1/source/gnu/openat2.c",
+    "sha256": "6ee70345c4c8ced75b4c53dc931a8f27db42ad1036b8c5f7739a1298ee61ef52"
+  },
+  "openat2_detection": {
+    "path": "/home/leonpano/Documents/ChatGPT/asuswrt/tar-compat-v1/source/m4/openat2.m4",
+    "sha256": "b0f38d748300e2d512cf4f3c43ac60c33d7ef5151f7422964f322bd5dc1709b0"
+  },
+  "old_sources_modified": false,
+  "tests_planned": [
+    "qemu-aarch64 actual openat2 ENOSYS observation",
+    "flat and nested archive extraction",
+    "inside-root relative symlinks preserved",
+    "symlink traversal escape refuses outside write",
+    "dotdot and absolute traversal cannot escape extractionroot"
+  ],
+  "glibc_rebuilt": false,
+  "kernel_rebuilt": false
+}

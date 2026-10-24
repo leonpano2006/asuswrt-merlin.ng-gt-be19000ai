@@ -1,0 +1,38 @@
+#!/bin/bash
+set -euo pipefail
+tool_root=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
+package_root="$tool_root/packages-root"
+tool_name=${0##*/}
+tool_name=${tool_name#aarch64-linux-gnu-}
+# This setting applies only to this process and its children, never the host.
+export LD_LIBRARY_PATH="$package_root/usr/lib/aarch64-linux-gnu${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+export CCACHE_DIR="$tool_root/ccache"
+export CCACHE_MAXSIZE=4G
+export CCACHE_COMPILERCHECK=content
+case "$tool_name" in
+    gcc|cc)
+        compiler_command=("$package_root/usr/bin/aarch64-linux-gnu-gcc-16")
+        if [[ -x "$tool_root/ccache-native" ]]; then
+            compiler_command=("$tool_root/ccache-native" "${compiler_command[@]}")
+        elif command -v ccache >/dev/null 2>&1; then
+            compiler_command=(ccache "${compiler_command[@]}")
+        fi
+        exec "${compiler_command[@]}" \
+            -B"$tool_root/bin/" \
+            -B"$package_root/usr/lib/gcc/aarch64-linux-gnu/16/" \
+            -mcpu=cortex-a73 "$@"
+        ;;
+    cpp)
+        exec "$package_root/usr/bin/aarch64-linux-gnu-cpp-16" \
+            -B"$tool_root/bin/" \
+            -B"$package_root/usr/lib/gcc/aarch64-linux-gnu/16/" \
+            -mcpu=cortex-a73 "$@"
+        ;;
+    as|ld|ld.bfd|ar|nm|objcopy|objdump|ranlib|readelf|size|strings|strip|addr2line|c++filt|elfedit)
+        exec "$package_root/usr/bin/aarch64-linux-gnu-$tool_name" "$@"
+        ;;
+    *)
+        printf 'Unknown isolated tool name: %s\n' "$tool_name" >&2
+        exit 2
+        ;;
+esac

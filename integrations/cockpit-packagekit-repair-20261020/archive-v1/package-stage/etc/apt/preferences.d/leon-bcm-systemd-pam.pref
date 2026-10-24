@@ -1,0 +1,7 @@
+Package: libpam-systemd:arm64
+Pin: version 259.5-0ubuntu3.4+leonb53.2
+Pin-Priority: 1001
+
+Package: libpam-systemd:arm64
+Pin: version *
+Pin-Priority: -1

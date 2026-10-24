@@ -7,7 +7,7 @@
   "ordinary_packages": [
     "dialog"
   ],
-  "default_locale": "C.UTF-8",
+  "default_locale": "en_US.UTF-8",
   "generated_locales": [
     "en_US.UTF-8",
     "zh_TW.UTF-8"
@@ -23,7 +23,7 @@
   ],
   "validation": [
     "locale charmap UTF-8 with empty stderr for all three locales",
-    "fresh SSH default LANG=C.UTF-8",
+    "fresh SSH default LANG=en_US.UTF-8",
     "dialog terminal initialization",
     "dpkg --audit empty"
   ],

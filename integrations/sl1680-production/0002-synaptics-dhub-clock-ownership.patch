@@ -1,0 +1,69 @@
+diff --git a/irqchip/irq-berlin-dhub.c b/irqchip/irq-berlin-dhub.c
+index e424ece..b5e32bd 100644
+--- a/irqchip/irq-berlin-dhub.c
++++ b/irqchip/irq-berlin-dhub.c
+@@ -5,6 +5,7 @@
+  * Copyright (C) 2018 Synaptics Incorporated
+  */
+ 
++#include <linux/clk.h>
+ #include <linux/io.h>
+ #include <linux/irq.h>
+ #include <linux/irqchip.h>
+@@ -209,7 +210,7 @@ static void berlin_dhub_irq_resume(struct irq_data *d)
+ #define berlin_dhub_irq_resume	NULL
+ #endif /* CONFIG_PM */
+ 
+-static int __init berlin_dhub_irq_init(struct device_node *np,
++static int berlin_dhub_irq_init(struct device_node *np,
+ 				       struct device_node *parent)
+ {
+ 	unsigned int clr = IRQ_NOREQUEST | IRQ_NOPROBE | IRQ_NOAUTOEN;
+@@ -308,7 +309,7 @@ err_outmem:
+ 	return ret;
+ }
+ 
+-IRQCHIP_PLATFORM_DRIVER_BEGIN(berlin_dhub_ictl)
++static const struct of_device_id berlin_dhub_ictl_irqchip_match_table[] = {
+ IRQCHIP_MATCH("syna,as370-dhub-irq", berlin_dhub_irq_init)
+ IRQCHIP_MATCH("syna,myna-dhub-irq", berlin_dhub_irq_init)
+ IRQCHIP_MATCH("syna,berlin-dhub-irq", berlin_dhub_irq_init)
+@@ -316,6 +317,37 @@ IRQCHIP_MATCH("syna,myna2-dhub-irq", berlin_dhub_irq_init)
+ IRQCHIP_MATCH("syna,platypus-dhub-irq", berlin_dhub_irq_init)
+ IRQCHIP_MATCH("syna,dolphin-dhub-irq", berlin_dhub_irq_init)
+ IRQCHIP_MATCH("syna,klamath-dhub-irq", berlin_dhub_irq_init)
+-IRQCHIP_PLATFORM_DRIVER_END(berlin_dhub_ictl)
++	{ }
++};
++MODULE_DEVICE_TABLE(of, berlin_dhub_ictl_irqchip_match_table);
++
++static int berlin_dhub_ictl_probe(struct platform_device *pdev)
++{
++	struct clk *clk;
++
++	/* The Dolphin semaphore registers need AIO bus clock ownership even
++	 * when the separate AVIO/AIO device is disabled or not initialized.
++	 * Keep this clock enabled for the interrupt controller's lifetime.
++	 */
++	if (of_device_is_compatible(pdev->dev.of_node, "syna,dolphin-dhub-irq")) {
++		clk = devm_clk_get_enabled(&pdev->dev, "bus");
++		if (IS_ERR(clk))
++			return dev_err_probe(&pdev->dev, PTR_ERR(clk),
++					     "failed to enable dHub bus clock\n");
++	}
++
++	return platform_irqchip_probe(pdev);
++}
++
++static struct platform_driver berlin_dhub_ictl_driver = {
++	.probe = IS_ENABLED(CONFIG_IRQCHIP) ? berlin_dhub_ictl_probe : NULL,
++	.driver = {
++		.name = "berlin_dhub_ictl",
++		.owner = THIS_MODULE,
++		.of_match_table = berlin_dhub_ictl_irqchip_match_table,
++		.suppress_bind_attrs = true,
++	},
++};
++builtin_platform_driver(berlin_dhub_ictl_driver);
+ MODULE_DESCRIPTION("Synaptics dhub Interrupt Controller");
+ MODULE_LICENSE("GPL v2");

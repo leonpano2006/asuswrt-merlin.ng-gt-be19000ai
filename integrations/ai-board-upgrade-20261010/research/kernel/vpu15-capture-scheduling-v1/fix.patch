@@ -1,0 +1,69 @@
+--- a/v2/vpu_dec_drv.c
++++ b/v2/vpu_dec_drv.c
+@@ -25,6 +25,18 @@
+ #include "vpu_fw_data.h"
+ #include "v4g_iommu_mtr.h"
+ #include "vpu_dec_drv.h"
++
++/*
++ * Linux 6.8+ gates CAPTURE streaming separately from destination buffers.
++ * Match the SDK2.6 compatibility wrapper so OUTPUT-only header parsing can
++ * run, while the existing capture/buffer state transitions close both gates.
++ */
++static inline void syna_vdec_set_dst_buffered(struct v4l2_m2m_ctx *m2m_ctx,
++                                           bool buffered)
++{
++	m2m_ctx->ignore_cap_streaming = buffered;
++	v4l2_m2m_set_dst_buffered(m2m_ctx, buffered);
++}
+ 
+ /* NOTE: one second is not enough, how comes */
+ #define DEC_V4G_TIMEOUT_DELAY		(2000U)
+@@ -1814,11 +1826,11 @@
+ 			 * queued. Let the hardware parse the stream data
+ 			 * then report the information likes resolution.
+ 			 */
+-			v4l2_m2m_set_dst_buffered(m2m_ctx, true);
++			syna_vdec_set_dst_buffered(m2m_ctx, true);
+ 			return ret;
+ 		}
+ 	} else {
+-		v4l2_m2m_set_dst_buffered(m2m_ctx, false);
++		syna_vdec_set_dst_buffered(m2m_ctx, false);
+ 
+ 		src_vq = v4l2_m2m_get_src_vq(m2m_ctx);
+ 		if (!vb2_start_streaming_called(src_vq))
+@@ -2040,7 +2052,7 @@
+ 		ctrl->status.flags |= BERLIN_VPU_STATUS_PUSH_AUX_BUFS;
+ 		/* Allow decoder device_run with no new buffers queued */
+ 		if (!v4l2_m2m_num_dst_bufs_ready(m2m_ctx))
+-			v4l2_m2m_set_dst_buffered(m2m_ctx, true);
++			syna_vdec_set_dst_buffered(m2m_ctx, true);
+ 	}
+ 
+ 	if (ctrl->rbuf.push)
+@@ -2364,13 +2376,13 @@
+ 	/* let this instance be in job queue when a new buffer queued */
+ 	if (ctrl->status.flags & BERLIN_VPU_STATUS_WAIT_AUX_BUF) {
+ 		set_bit(SYNA_VPU_STATUS_WAIT_DISP_BUF, &ctx->status);
+-		v4l2_m2m_set_dst_buffered(m2m_ctx, false);
++		syna_vdec_set_dst_buffered(m2m_ctx, false);
+ 	}
+ 
+ 	if (ctrl->status.flags & BERLIN_VPU_STATUS_WAIT_OUTPUT_BUF) {
+ 		set_bit(SYNA_VPU_STATUS_WAIT_OUTPUT_BUF, &ctx->status);
+ 		if (!test_bit(SYNA_VPU_POOL_ON_REFS, &ctx->status))
+-			v4l2_m2m_set_dst_buffered(m2m_ctx, false);
++			syna_vdec_set_dst_buffered(m2m_ctx, false);
+ 	}
+ 
+ 	/**
+@@ -2379,7 +2391,7 @@
+ 	 */
+ 
+ 	if (ctrl->status.flags & BERLIN_VPU_STATUS_NEW_SEQUENCE) {
+-		v4l2_m2m_set_dst_buffered(m2m_ctx, false);
++		syna_vdec_set_dst_buffered(m2m_ctx, false);
+ 		set_bit(SYNA_VPU_STATUS_WAIT_NEW_RES_SETUP, &ctx->status);
+ 
+ 		/**
